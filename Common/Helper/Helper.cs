@@ -270,6 +270,21 @@ namespace Common.Helper
         }
         #endregion
 
+        #region 数值
+        public static int Compare(decimal value1, decimal value2)
+        {
+            decimal rate = value1 - value2;
+            if (Math.Abs(rate) < Precision)
+            {
+                return 0;
+            }
+            return rate < 0 ? -1 : 1;
+        }
+        private static decimal Precision
+        {
+            get { return 1e-10m; }
+        }
+        #endregion
         /// <summary>
         /// 判断是否是Guid
         /// </summary>
