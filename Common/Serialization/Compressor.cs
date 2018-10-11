@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Common.Serialization
 {
+    /// <summary>
+    /// 压缩类，用来压缩流数据
+    /// </summary>
     public class Compressor
     {
         private int overSize;

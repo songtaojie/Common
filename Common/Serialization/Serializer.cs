@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Common.Serialization
 {
+    /// <summary>
+    /// 序列化类
+    /// </summary>
     public class Serializer
     {
         private BinaryFormatter bf;
