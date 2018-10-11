@@ -221,54 +221,7 @@ namespace Common.Helper
         }
         #endregion
 
-        #region 文件
-        /// <summary>
-        /// 根据文件扩展名称判断是否是图片文件
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static bool IsImageFile(string name)
-        {
-            Match match = Regex.Match(name, @"\.[^\.]+$");
-            if (match.Success)
-            {
-                List<string> typeList = new List<string>(new string[] { ".bmp", ".png", ".gif", ".jpg", ".jpeg" });
-                return typeList.Contains(match.Value.ToLower());
-            }
-            return false;
-        }
-        /// <summary>
-        /// 根据文件名返回图片的文件格式
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static System.Drawing.Imaging.ImageFormat ImageFormat(string name)
-        {
-            Match match = Regex.Match(name, @"\.[^\.]+$");
-            if (match.Success)
-            {
-                string ma = match.Value.ToLower();
-                List<string> typeList = new List<string>(new string[] { ".bmp", ".png", ".gif", ".jpg", ".jpeg" });
-                if (ma == typeList[0]) return System.Drawing.Imaging.ImageFormat.Bmp;
-                if (ma == typeList[1]) return System.Drawing.Imaging.ImageFormat.Png;
-                if (ma == typeList[2]) return System.Drawing.Imaging.ImageFormat.Gif;
-                if (ma == typeList[3] || ma == typeList[4]) return System.Drawing.Imaging.ImageFormat.Jpeg;
-            }
-            return System.Drawing.Imaging.ImageFormat.Bmp;
-        }
-        /// <summary>
-        /// 根据文件大小返回文件描述的文本
-        /// 如1024返回1KB
-        /// </summary>
-        /// <param name="fileSize"></param>
-        /// <returns></returns>
-        public static string FileSizeToShow(long fileSize)
-        {
-            if (fileSize >= 1024 * 1024 * 1024) return string.Format("{0:#,##0.##} GB", 1.0m * fileSize / (1024 * 1024 * 1024));
-            if (fileSize >= 1024 * 1024) return string.Format("{0:0.##} MB", 1.0m * fileSize / (1024 * 1024));
-            return string.Format("{0:0.###} KB", 1.0m * fileSize / 1024);
-        }
-        #endregion
+       
 
         #region 数值
         public static int Compare(decimal value1, decimal value2)
@@ -432,5 +385,28 @@ namespace Common.Helper
             }
             return dic;
         }
+
+        #region 温度
+        /// <summary>
+        /// 摄氏温度转换成华氏温度
+        /// </summary>
+        /// <param name="temperatureCelsius"></param>
+        /// <returns></returns>
+        public static double CelsiusToFahrenheit(string temperatureCelsius)
+        {
+            double celsius = System.Double.Parse(temperatureCelsius);
+            return (celsius * 9 / 5) + 32;
+        }
+        /// <summary>
+        /// 华氏温度转换成摄氏温度
+        /// </summary>
+        /// <param name="temperatureFahrenheit"></param>
+        /// <returns></returns>
+        public static double FahrenheitToCelsius(string temperatureFahrenheit)
+        {
+            double fahrenheit = System.Double.Parse(temperatureFahrenheit);
+            return (fahrenheit - 32) * 5 / 9;
+        }
+        #endregion
     }
 }

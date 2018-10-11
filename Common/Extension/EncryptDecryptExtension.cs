@@ -12,10 +12,19 @@ namespace Common.Extension
     /// </summary>
     public static class EncryptDecryptExtension
     {
+        private static string EncryptKey = "60WE4U(7";
         // DES全称为Data Encryption Standard，即数据加密标准。
         // 1997年数据加密标准DES正式公布，其分组长度为64比特，密钥长度为64比特，
         // 其中8比特为奇偶校验位，所以实际长度为56比特。现在DES已经被AES所取代。
-
+        /// <summary>
+        /// string的扩展方法，使用DES进行加密(使用内置的秘钥)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static string DES3Encrypt(this string data)
+        {
+            return DES3Encrypt(data, EncryptKey);
+        }
         /// <summary>
         /// 加密
         /// </summary>
@@ -37,7 +46,15 @@ namespace Common.Extension
             byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
         }
-
+        /// <summary>
+        /// string的扩展方法，使用DES进行解密(使用内置的秘钥)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static string DES3Decrypt(this string data)
+        {
+            return DES3Decrypt(data,EncryptKey);
+        }
         /// <summary>
         /// 解密
         /// </summary>
@@ -90,7 +107,11 @@ namespace Common.Extension
             }
             return result.ToString();
         }
-
+        /// <summary>
+        /// 64位的MD5加密
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string MD5Encrypt64(this string value)
         {
             string str = value;
