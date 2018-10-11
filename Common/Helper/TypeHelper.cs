@@ -52,63 +52,103 @@ namespace Common.Helper
             return IsNull(value) ? default(long) : Convert.ToInt64(value);
         }
         /// <summary>
-        /// 将指定值表示形式转换为等效的 64位带符号整数
+        /// 将指定值表示形式转换为等效的 64位带符号整数，可返回null值
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static Nullable<long> GetNInt64(object value)
+        public static long? GetNInt64(object value)
         {
             if (IsNull(value)) return null;
             return (long)value;
         }
-
+        /// <summary>
+        /// 将指定值表示形式转换为等效的 32位带符号整数
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static int GetInt32(object value)
         {
             return IsNull(value) ? default(int) : Convert.ToInt32(value);
         }
-        public static Nullable<int> GetNInt32(object value)
+        /// <summary>
+        /// 将指定值表示形式转换为等效的 32位带符号整数，可返回null值
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int? GetNInt32(object value)
         {
             if (IsNull(value)) return null;
             return (int)value;
         }
-
+        /// <summary>
+        /// 将指定值表示形式转换为等效的 16位带符号整数
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Int16 GetInt16(object value)
         {
             return IsNull(value) ? default(Int16) : Convert.ToInt16(value);
         }
-        public static Nullable<Int16> GetNInt16(object value)
+        /// <summary>
+        /// 将指定值表示形式转换为等效的 16位带符号整数，可返回null值
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static short? GetNInt16(object value)
         {
             if (IsNull(value)) return null;
             return (Int16)value;
         }
-
+        /// <summary>
+        /// 将指定的对象栓换成十进制数值
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static decimal GetDecimal(object value)
         {
-            return IsNull(value) ? default(decimal) : (decimal)value;
+            return IsNull(value) ? default(decimal) : Convert.ToDecimal(value);
         }
-        public static Nullable<decimal> GetNDecimal(object value)
+        /// <summary>
+        /// 将指定的对象栓换成十进制数值，可返回null值
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static decimal? GetNDecimal(object value)
         {
             if (IsNull(value)) return null;
-            return (decimal)value;
+            return Convert.ToDecimal(value);
         }
         public static bool IsOverDecimal(decimal value)
         {
             return Helper.Compare(value, MAX_DECIMAL) > 0 || Helper.Compare(value, MIN_DECIMAL) < 0;
         }
-
+        /// <summary>
+        /// 将指定的对象转换成时间,如果给定的值为null则返回当前时间
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static DateTime GetDateTime(object value)
         {
-            return IsNull(value) ? DateTime.Today : (DateTime)value;
+            return IsNull(value) ? DateTime.Today : Convert.ToDateTime(value);
         }
-        public static Nullable<DateTime> GetNDateTime(object value)
+        /// <summary>
+        /// 将指定的对象转换成时间,如果给定的值为null则返回null
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime? GetNDateTime(object value)
         {
             if (IsNull(value)) return null;
-            return (DateTime)value;
+            return Convert.ToDateTime(value);
         }
-
+        /// <summary>
+        /// 将制定的对象转换成等效的字符串形式
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string GetString(object value)
         {
-            return IsNull(value) ? default(string) : (string)value;
+            return IsNull(value) ? default(string) : Convert.ToString(value);
         }
 
         public static bool GetBoolean(object value)
