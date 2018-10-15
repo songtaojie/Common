@@ -5,24 +5,31 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Extension;
 
 namespace Common.Security
 {
     public class SafeHelper
     {
+        #region Des加解密
         private static string EncryptKey = "60WE4U(7";
         /// <summary>
         /// 使用内置的秘钥进行加密
         /// </summary>
         /// <param name="pToEncrypt">要加密的文本</param>
         /// <returns></returns>
-        public static string EncryptDES(string pToEncrypt)
+        public static string DESEncrypt(string pToEncrypt)
         {
-            return EncryptDES(pToEncrypt, EncryptKey);
+            return DESEncrypt(pToEncrypt, EncryptKey);
         }
-        public static string DecryptDES(string pToEncrypt)
+        /// <summary>
+        /// 使用内置的秘钥进行DES解密
+        /// </summary>
+        /// <param name="pToDecrypt">要解密的字符串</param>
+        /// <returns>返回解密后的字符串</returns>
+        public static string DESDecrypt(string pToEncrypt)
         {
-            return DecryptDES(pToEncrypt, EncryptKey);
+            return DESDecrypt(pToEncrypt, EncryptKey);
         }
         /// <summary>
         /// 进行DES加密
@@ -30,7 +37,7 @@ namespace Common.Security
         /// <param name="pToEncrypt">要加密的字符串</param>
         /// <param name="key">密钥，必须为8位</param>
         /// <returns>以Base64格式返回的加密字符串</returns>
-        public static string EncryptDES(string pToEncrypt, string sKey)
+        public static string DESEncrypt(string pToEncrypt, string sKey)
         {
             sKey = GetKey(sKey, 8);
             using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
@@ -56,7 +63,7 @@ namespace Common.Security
         /// <param name="pToDecrypt">要解密的字符串</param>
         /// <param name="sKey">密钥，必须为8位</param>
         /// <returns>返回解密后的字符串</returns>
-        public static string DecryptDES(string pToDecrypt, string sKey)
+        public static string DESDecrypt(string pToDecrypt, string sKey)
         {
             sKey = GetKey(sKey, 8);
             byte[] inputByteArray = Convert.FromBase64String(pToDecrypt);
@@ -85,5 +92,27 @@ namespace Common.Security
                 sKey = sKey.PadRight(length, ' ');
             return sKey;
         }
+        #endregion
+        /// <summary>
+        /// 使用MD5对字符串进行加密
+        /// </summary>
+        /// <param name="pToEncrypt">要加密的字符串</param>
+        /// <returns>已经加密的字符串</returns>
+        public static string MD5Encrypt(string pToEncrypt)
+        {
+            return pToEncrypt.Md5Encrypt32();
+        }
+        /// <summary>
+        /// 使用MD5对字符串进行两次加密
+        /// </summary>
+        /// <param name="pToEncrypt">要加密的字符串</param>
+        /// <returns>已经加密的字符串</returns>
+        public static string MD5TwoEncrypt(string pToEncrypt)
+        {
+            return pToEncrypt.Md5Encrypt32().Md5Encrypt32();
+        }
+        #region MD5加密
+
+        #endregion
     }
 }
