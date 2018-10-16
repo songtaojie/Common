@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Log
+namespace Common.Logs
 {
     /// <summary>
     /// 写入日志的接口，实现可以使用log4net、NLog

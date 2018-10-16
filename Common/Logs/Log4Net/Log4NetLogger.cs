@@ -1,53 +1,53 @@
-﻿using System;
-using NLog;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Log.NLogs
+namespace Common.Logs.Log4Net
 {
     /// <summary>
-    /// 使用NLog记录日志的方式
+    /// 使用log4net记录日志信息
     /// </summary>
-    internal class NLogLogger : Common.Log.ILogger
+    internal class Log4NetLogger : Common.Logs.ILogger
     {
-        private NLog.ILogger log;
         /// <summary>
-        /// 获取NLoger对象，如果没有添加配置文件，则使用默认的配置创建对象
+        /// log4net对象
         /// </summary>
-        /// <param name="loggerName">日志名称，对应配置文件中rules->logger标签中的name属性的值</param>
-        /// <param name="category">日志文件的上一层目录，一般用来分类</param>
-        protected internal NLogLogger(string loggerName,string category)
+        private ILog log;
+        /// <summary>
+        /// 使用loggerName创建对象
+        /// </summary>
+        /// <param name="loggerName"></param>
+        protected internal Log4NetLogger(string loggerName)
         {
-            log = NLogManager.GetLogger(loggerName, category);
+            this.log = Log4NetManager.GetLogger(loggerName);
         }
-        protected internal NLogLogger() : this("Default")
+        protected internal Log4NetLogger(string loggerName,string category)
+        {
+            this.log = Log4NetManager.GetLogger(loggerName, category);
+        }
+        protected internal Log4NetLogger(Type type):this(type.FullName)
         {
         }
-        protected internal NLogLogger(string loggerName) : this(loggerName, null)
-        {
-        }
-        protected internal NLogLogger(Type type):this(type.FullName)
-        {
-        }
-        protected internal NLogLogger(Type type,string category):this(type.FullName, category)
+        protected internal Log4NetLogger(Type type, string category):this(type.FullName, category)
         {
         }
         public void Debug(string message)
         {
-            if (log.IsDebugEnabled)
+            if (this.log.IsDebugEnabled)
             {
-                log.Debug(message);
+                this.log.Debug(message);
             }
         }
 
         public void Debug(string message, Exception ex)
         {
-            if (log.IsDebugEnabled)
+            if (this.log.IsDebugEnabled)
             {
-                log.Debug(ex, message);
+                this.log.Debug(message,ex);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Common.Log.NLogs
         {
             if (log.IsErrorEnabled)
             {
-                log.Error(ex,message);
+                log.Error(message,ex);
             }
         }
 
@@ -77,9 +77,9 @@ namespace Common.Log.NLogs
 
         public void Fatal(string message, Exception ex)
         {
-            if(log.IsFatalEnabled)
+            if (log.IsFatalEnabled)
             {
-                log.Fatal(ex,message);
+                log.Fatal(message);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Common.Log.NLogs
         {
             if (log.IsInfoEnabled)
             {
-                log.Info(ex,message);
+                log.Info(message,ex);
             }
         }
 
@@ -111,10 +111,9 @@ namespace Common.Log.NLogs
         {
             if (log.IsWarnEnabled)
             {
-                log.Warn(ex,message);
+                log.Warn(message,ex);
             }
         }
-
         public void Write(DateTime start, MethodInfo method, object[] parameters, object result, int resultLength)
         {
             double totalMilliseconds = (DateTime.Now - start).TotalMilliseconds;
@@ -126,7 +125,7 @@ namespace Common.Log.NLogs
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine("数据包类型: ");
                 stringBuilder.Append("参数信息: ");
-
+                
                 for (int i = 1; i <= parameters.Length; i++)
                 {
                     if (i - 1 <= infoLength - 1)
@@ -141,7 +140,7 @@ namespace Common.Log.NLogs
                 }
                 stringBuilder.AppendLine();
                 stringBuilder.AppendLine(string.Format("方法定义: 方法名 = {0}; 所属 = [{1}]{2}", method, method.DeclaringType.Name, method.DeclaringType.FullName));
-                stringBuilder.AppendLine(string.Format("返回结果: {0};类型：{1}， 大小: {2}", result, method.ReturnType.ToString(), resultLength));
+                stringBuilder.AppendLine(string.Format("返回结果: {0};类型：{1}， 大小: {2}",result, method.ReturnType.ToString(), resultLength));
                 stringBuilder.AppendLine(string.Format("开始时间: DateTime = {0:yyyy-MM-dd HH:mm:ss}.{1:000}; Duration = {2}", start, start.Millisecond, totalMilliseconds));
                 stringBuilder.Append("----------------------------------------------------");
                 if (totalMilliseconds >= 20000.0)
@@ -174,7 +173,6 @@ namespace Common.Log.NLogs
                 this.Info(stringBuilder.ToString());
             }
         }
-
         protected string GetMethodName(MethodInfo method)
         {
             List<string> list = new List<string>();

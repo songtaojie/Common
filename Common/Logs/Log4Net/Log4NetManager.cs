@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 [assembly: XmlConfigurator(Watch = true)]
-namespace Common.Log.Log4Net
+namespace Common.Logs.Log4Net
 {
     /// <summary>
     /// 内置默认配置，引用dll后不需要添加或修改任何配置文件也可以使用,

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Log
+namespace Common.Logs
 {
     public class LoggerFactory : ILoggerFactory
     {
@@ -21,7 +21,7 @@ namespace Common.Log
         {
             this.type = LoggerType.Log4Net;
         }
-        public Common.Log.ILogger CreateLogger<T>(string category = null)
+        public Common.Logs.ILogger CreateLogger<T>(string category = null)
         {
             return this.CreateLogger(typeof(T).FullName, category);
         }
@@ -31,9 +31,9 @@ namespace Common.Log
         /// <param name="loggerName"></param>
         /// <param name="category"></param>
         /// <returns></returns>
-        public Common.Log.ILogger CreateLogger(string loggerName = "Default", string category = null)
+        public Common.Logs.ILogger CreateLogger(string loggerName = "Default", string category = null)
         {
-            Common.Log.ILogger log = null;
+            Common.Logs.ILogger log = null;
             if (this.type == LoggerType.Log4Net)
             {
                 log = new Log4Net.Log4NetLogger(loggerName, category);

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Log.NLogs
+namespace Common.Logs.NLogs
 {
     internal static class NLogManager
     {
