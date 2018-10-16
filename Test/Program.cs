@@ -15,8 +15,10 @@ namespace Test
         static void Main(string[] args)
         {
             // XmlConfigurator.Configure(new System.IO.FileInfo("~/App.config"));
-            ILog log = CustomFileLogger.GetLogger("pay");
-            log.Info("asdasdasdas");
+            //ILog log = CustomFileLogger.GetLogger("pay");
+            //log.Info("asdasdasdas");
+            NLog.ILogger log = CustomNLog.GetLogger("Default");
+            log.Info("Nlog日志");
             Console.WriteLine("成功");
             Console.ReadLine();
         }
