@@ -1,7 +1,7 @@
 ﻿using Common.Helper;
 using Common.Log;
-using log4net;
-using log4net.Config;
+//using log4net;
+//using log4net.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +17,8 @@ namespace Test
             // XmlConfigurator.Configure(new System.IO.FileInfo("~/App.config"));
             //ILog log = CustomFileLogger.GetLogger("pay");
             //log.Info("asdasdasdas");
-            NLog.ILogger log = CustomNLog.GetLogger("Default");
-            log.Info("Nlog日志");
+            //NLog.ILogger log = CustomNLog.GetLogger("Default");
+            //log.Info("Nlog日志");
             Console.WriteLine("成功");
             Console.ReadLine();
         }

@@ -6,26 +6,34 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Log
+namespace Common.Log.Log4Net
 {
     /// <summary>
     /// 使用log4net记录日志信息
     /// </summary>
-    internal class Log4NetLogger : ILogger
+    internal class Log4NetLogger : Common.Log.ILogger
     {
-        /// <summary>
-        /// 组
-        /// </summary>
-        private string group;
         /// <summary>
         /// log4net对象
         /// </summary>
         private ILog log;
-        public Log4NetLogger(Type type, string group)
+        /// <summary>
+        /// 使用loggerName创建对象
+        /// </summary>
+        /// <param name="loggerName"></param>
+        protected internal Log4NetLogger(string loggerName)
         {
-            this.group = group;
-            this.log = LogManager.GetLogger(type);
-
+            this.log = Log4NetManager.GetLogger(loggerName);
+        }
+        protected internal Log4NetLogger(string loggerName,string category)
+        {
+            this.log = Log4NetManager.GetLogger(loggerName, category);
+        }
+        protected internal Log4NetLogger(Type type):this(type.FullName)
+        {
+        }
+        protected internal Log4NetLogger(Type type, string category):this(type.FullName, category)
+        {
         }
         public void Debug(string message)
         {
