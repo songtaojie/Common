@@ -14,15 +14,16 @@ namespace Common.Logs.Log4Net
     /// StaticLogFileName = true;
     /// LockingModel = MinimalLock;
     /// </summary>
-    public class ReadParamAppender : RollingFileAppender
+    [Obsolete]
+    internal class ReadParamAppender : RollingFileAppender
     {
 
         public ReadParamAppender()
         {
-            this.AppendToFile = true;
-            this.RollingStyle = RollingFileAppender.RollingMode.Composite;
-            this.StaticLogFileName = true;
-            this.LockingModel = new MinimalLock();
+            //this.AppendToFile = true;
+            //this.RollingStyle = RollingFileAppender.RollingMode.Date;
+            //this.StaticLogFileName = false;
+            //this.LockingModel = new MinimalLock();
         }
 
         private string _layoutPattern;

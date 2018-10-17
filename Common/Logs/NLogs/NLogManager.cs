@@ -32,11 +32,11 @@ namespace Common.Logs.NLogs
                 //    Layout = "${date:format=HH\\:MM\\:ss} ${logger} ${message}"
                 //};
                 //config.AddTarget("console", consoleTarget);
-                string filename = string.IsNullOrEmpty(category) ? "" : category+"/";
+                string cg = string.IsNullOrEmpty(category) ? "" : category+"/";
                 FileTarget fileTarget = new FileTarget()
                 {
-                    FileName = "${basedir}/Log/"+filename+"Application."+ loggerName + ".txt",
-                    Layout = "${message}"
+                    FileName = "${basedir}/Log/" + cg + "${shortdate}.log",
+                    Layout = "${longdate} | ${message} ${onexception:${exception:format=tostring} ${newline} ${stacktrace} ${newline}"
                 };
                 config.AddTarget("file", fileTarget);
                 SimpleLayout layout = new SimpleLayout();

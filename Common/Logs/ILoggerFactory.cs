@@ -22,6 +22,6 @@ namespace Common.Logs
         /// 对应log4net置文件标签【appender name="pay" type="Common.Log.ReadParamAppender">】中的name的值</param>
         /// <param name="category">日志文件的上一层目录，一般用来分类</param>
         /// <returns></returns>
-        Common.Logs.ILogger CreateLogger(string loggerName, string category = null);
+        Common.Logs.ILogger CreateLogger(string loggerName = "Default", string category = null);
     }
 }
