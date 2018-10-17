@@ -60,14 +60,13 @@ namespace Common.Logs.Log4Net
         {
             return loggerContainer.GetOrAdd(loggerName, delegate (string name)
             {
-                IAppender appender = null;
                 if (appenderContainer.ContainsKey(loggerName))
                 {
                     return LogManager.GetLogger(loggerName);
                 }
                 else
                 {
-                    IAppender newAppender = GetNewFileApender(appender, loggerName, category);
+                    IAppender newAppender = GetNewFileApender(null, loggerName, category);
                     Hierarchy repository = (Hierarchy)LogManager.GetRepository();
                     Logger logger = repository.LoggerFactory.CreateLogger(repository, loggerName);
                     logger.Hierarchy = repository;
