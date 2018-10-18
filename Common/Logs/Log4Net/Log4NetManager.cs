@@ -23,7 +23,7 @@ namespace Common.Logs.Log4Net
     {
         private static readonly ConcurrentDictionary<string, ILog> loggerContainer = new ConcurrentDictionary<string, ILog>();
 
-        private static readonly Dictionary<string, IAppender> appenderContainer = new Dictionary<string, IAppender>();
+        // private static readonly Dictionary<string, IAppender> appenderContainer = new Dictionary<string, IAppender>();
         private static object lockObj = new object();
 
         //默认配置
@@ -31,24 +31,32 @@ namespace Common.Logs.Log4Net
         private const string LAYOUT_PATTERN = "%date [%t] %-5level %message%newline";
         private const string DATE_PATTERN = "yyyy-MM-dd\".log\"";
         private const string MAXIMUM_FILE_SIZE = "5MB";
-
+        public static bool UseConfig
+        {
+            get; set;
+        } = false;
         //读取配置文件并缓存
         static Log4NetManager()
         {
-            IAppender[] appenders = LogManager.GetRepository().GetAppenders();
-            for (int i = 0; i < appenders.Length; i++)
+            if (UseConfig)
             {
-                IAppender appender = appenders[i];
-                lock (lockObj)
-                {
-                    appenderContainer[appender.Name] = appender;
-                }
+
             }
+            //IAppender[] appenders = LogManager.GetRepository().GetAppenders();
+            //for (int i = 0; i < appenders.Length; i++)
+            //{
+            //    IAppender appender = appenders[i];
+            //    lock (lockObj)
+            //    {
+            //        appenderContainer[appender.Name] = appender;
+            //    }
+            //}
         }
         /// <summary>
-        /// 使用添加器的名字获取log4net对象，如果没有配置文件
+        /// 使用日志的名字获取log4net对象，如果没有配置文件，则使用默认的配置创建对象并返回
         /// </summary>
-        /// <param name="loggerName">即配置文件标签【appender name="pay" type="Common.Log.ReadParamAppender">】中的pay</param>
+        /// <param name="loggerName">如果使用的是配置文件则是&lt;logger name="loggerName">标签中的
+        /// name属性的值</param>
         /// <param name="category">
         ///     文件的上层文件夹，即类别,当使用默认配置时：
         ///     如果有值，则生成的日志路径为Log\{category}\{短时间}.log；
@@ -60,11 +68,8 @@ namespace Common.Logs.Log4Net
         {
             return loggerContainer.GetOrAdd(loggerName, delegate (string name)
             {
-                if (appenderContainer.ContainsKey(loggerName))
-                {
-                    return LogManager.GetLogger(loggerName);
-                }
-                else
+                ILog log= LogManager.Exists(loggerName);
+                if (log == null)
                 {
                     IAppender newAppender = GetNewFileApender(null, loggerName, category);
                     Hierarchy repository = (Hierarchy)LogManager.GetRepository();
@@ -75,8 +80,9 @@ namespace Common.Logs.Log4Net
                     logger.Additivity = additivity;
                     logger.AddAppender(newAppender);
                     logger.Repository.Configured = true;
-                    return new LogImpl(logger);
+                    log = new LogImpl(logger);
                 }
+                return log;
             });
         }
 
@@ -91,35 +97,6 @@ namespace Common.Logs.Log4Net
             {
                 return string.Format(@"Log\{0}\", category);
             }
-        }
-        /// <summary>
-        /// 获取日志的级别
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        private static Level GetLoggerLevel(string level)
-        {
-            if (!string.IsNullOrEmpty(level))
-            {
-                switch (level.ToLower().Trim())
-                {
-                    case "debug":
-                        return Level.Debug;
-
-                    case "info":
-                        return Level.Info;
-
-                    case "warn":
-                        return Level.Warn;
-
-                    case "error":
-                        return Level.Error;
-
-                    case "fatal":
-                        return Level.Fatal;
-                }
-            }
-            return Level.Debug;
         }
         /// <summary>
         /// 获取一个新的添加器
@@ -151,6 +128,36 @@ namespace Common.Logs.Log4Net
             }
 
             return appender;
+        }
+
+        /// <summary>
+        /// 获取日志的级别
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        private static Level GetLoggerLevel(string level)
+        {
+            if (!string.IsNullOrEmpty(level))
+            {
+                switch (level.ToLower().Trim())
+                {
+                    case "debug":
+                        return Level.Debug;
+
+                    case "info":
+                        return Level.Info;
+
+                    case "warn":
+                        return Level.Warn;
+
+                    case "error":
+                        return Level.Error;
+
+                    case "fatal":
+                        return Level.Fatal;
+                }
+            }
+            return Level.Debug;
         }
     }
 }

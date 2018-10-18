@@ -29,12 +29,6 @@ namespace Common.Logs.NLogs
         protected internal NLogLogger(string loggerName) : this(loggerName, null)
         {
         }
-        protected internal NLogLogger(Type type):this(type.FullName)
-        {
-        }
-        protected internal NLogLogger(Type type,string category):this(type.FullName, category)
-        {
-        }
         public void Debug(string message)
         {
             if (log.IsDebugEnabled)

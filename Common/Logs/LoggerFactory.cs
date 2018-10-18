@@ -21,10 +21,10 @@ namespace Common.Logs
         {
             this.type = LoggerType.Log4Net;
         }
-        public Common.Logs.ILogger CreateLogger<T>(string category = null)
-        {
-            return this.CreateLogger(typeof(T).FullName, category);
-        }
+        //public Common.Logs.ILogger CreateLogger<T>(string category = null)
+        //{
+        //    return this.CreateLogger(typeof(T).FullName, category);
+        //}
         /// <summary>
         /// 使用指定的日志名称创建日志对象
         /// </summary>

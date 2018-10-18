@@ -16,24 +16,17 @@ namespace Common.Logs.Log4Net
         /// <summary>
         /// log4net对象
         /// </summary>
-        private ILog log;
+        private log4net.ILog log;
         /// <summary>
         /// 使用loggerName创建对象
         /// </summary>
         /// <param name="loggerName"></param>
-        protected internal Log4NetLogger(string loggerName)
+        protected internal Log4NetLogger(string loggerName):this(loggerName,null)
         {
-            this.log = Log4NetManager.GetLogger(loggerName);
         }
         protected internal Log4NetLogger(string loggerName,string category)
         {
             this.log = Log4NetManager.GetLogger(loggerName, category);
-        }
-        protected internal Log4NetLogger(Type type):this(type.FullName)
-        {
-        }
-        protected internal Log4NetLogger(Type type, string category):this(type.FullName, category)
-        {
         }
         public void Debug(string message)
         {
