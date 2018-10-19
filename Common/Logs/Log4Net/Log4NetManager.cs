@@ -5,6 +5,7 @@ using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,7 @@ namespace Common.Logs.Log4Net
     {
         private static readonly ConcurrentDictionary<string, ILog> loggerContainer = new ConcurrentDictionary<string, ILog>();
 
-        // private static readonly Dictionary<string, IAppender> appenderContainer = new Dictionary<string, IAppender>();
+        private static readonly Dictionary<string, ICollection> configContainer = new Dictionary<string, ICollection>();
         private static object lockObj = new object();
 
         //默认配置
@@ -31,17 +32,17 @@ namespace Common.Logs.Log4Net
         private const string LAYOUT_PATTERN = "%date [%t] %-5level %message%newline";
         private const string DATE_PATTERN = "yyyy-MM-dd\".log\"";
         private const string MAXIMUM_FILE_SIZE = "5MB";
-        public static bool UseConfig
+        internal static bool UseConfig
         {
-            get; set;
+            private get; set;
         } = false;
+        internal static string ConfigPath
+        {
+            private get; set;
+        }
         //读取配置文件并缓存
         static Log4NetManager()
         {
-            if (UseConfig)
-            {
-
-            }
             //IAppender[] appenders = LogManager.GetRepository().GetAppenders();
             //for (int i = 0; i < appenders.Length; i++)
             //{
@@ -55,35 +56,52 @@ namespace Common.Logs.Log4Net
         /// <summary>
         /// 使用日志的名字获取log4net对象，如果没有配置文件，则使用默认的配置创建对象并返回
         /// </summary>
-        /// <param name="loggerName">如果使用的是配置文件则是&lt;logger name="loggerName">标签中的
+        /// <param name="loggerName">如果使用的是配置文件,则是&lt;logger name="loggerName"&gt;标签中的
         /// name属性的值</param>
         /// <param name="category">
         ///     文件的上层文件夹，即类别,当使用默认配置时：
-        ///     如果有值，则生成的日志路径为Log\{category}\{短时间}.log；
-        ///     如果没值，则声称的路径为Log\{短时间}.log
+        ///     <para>如果有值，则生成的日志路径为Log\{category}\{短时间}.log；</para>
+        ///     <para>如果没值，则生成的路径为Log\{短时间}.log</para>
         /// </param>
         /// <param name="additivity">该值指示子记录器是否继承其父级的appender。</param>
         /// <returns></returns>
         internal static ILog GetLogger(string loggerName, string category = null, bool additivity = false)
         {
-            return loggerContainer.GetOrAdd(loggerName, delegate (string name)
+            if (loggerContainer.ContainsKey(loggerName)) return loggerContainer[loggerName];
+            if (UseConfig)
             {
-                ILog log= LogManager.Exists(loggerName);
-                if (log == null)
+                string path = ConfigPath;
+                //首先判断根目录下是否有log4net.config文件
+                if(string.IsNullOrEmpty(path))
+                    path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + (@"\log4net.config");
+                if (File.Exists(path))
                 {
-                    IAppender newAppender = GetNewFileApender(null, loggerName, category);
-                    Hierarchy repository = (Hierarchy)LogManager.GetRepository();
-                    Logger logger = repository.LoggerFactory.CreateLogger(repository, loggerName);
-                    logger.Hierarchy = repository;
-                    logger.Parent = repository.Root;
-                    logger.Level = Level.Info;
-                    logger.Additivity = additivity;
-                    logger.AddAppender(newAppender);
-                    logger.Repository.Configured = true;
-                    log = new LogImpl(logger);
+                    XmlConfigurator.ConfigureAndWatch(new FileInfo(path));
                 }
-                return log;
-            });
+            }
+            ILog log = LogManager.Exists(loggerName);
+            if (UseConfig && log == null) throw new Exception("获取对象失败,请指定正确的日志名或者配置文件!");
+            if (log == null)
+            {
+                IAppender newAppender = GetNewFileApender(null, loggerName, category);
+                Hierarchy repository = (Hierarchy)LogManager.GetRepository();
+                Logger logger = repository.LoggerFactory.CreateLogger(repository, loggerName);
+                logger.Hierarchy = repository;
+                logger.Parent = repository.Root;
+                logger.Level = Level.Info;
+                logger.Additivity = additivity;
+                logger.AddAppender(newAppender);
+                logger.Repository.Configured = true;
+                log = new LogImpl(logger);
+            }
+            loggerContainer.TryAdd(loggerName, log);
+            return log;
+            //return loggerContainer.GetOrAdd(loggerName, delegate (string name)
+            //{
+            //    ILog log= LogManager.Exists(loggerName);
+                
+            //    return log;
+            //});
         }
 
         //如果没有指定文件路径则在运行路径下建立 Log\2018-10-10.log

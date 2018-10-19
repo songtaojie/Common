@@ -9,38 +9,44 @@ namespace Common.Logs
     public class LoggerFactory : ILoggerFactory
     {
         private LoggerType type;
+
+
         /// <summary>
-        /// 使用指定的日志框架初始化对象，默认使用的是log4net框架
+        /// 使用指定的日志框架初始化对象，
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">日志框架的类型，有log4net和NLog两个日志框架可供选择</param>
         public LoggerFactory(LoggerType type)
         {
             this.type = type;
         }
+        /// <summary>
+        /// 默认构造函数，默认使用的是log4net框架写入日志
+        /// </summary>
         public LoggerFactory()
         {
             this.type = LoggerType.Log4Net;
         }
-        //public Common.Logs.ILogger CreateLogger<T>(string category = null)
-        //{
-        //    return this.CreateLogger(typeof(T).FullName, category);
-        //}
+
+        public bool UseConfig { get; set; } = false;
+        public string ConfigPath { get; set; }
+
         /// <summary>
         /// 使用指定的日志名称创建日志对象
         /// </summary>
         /// <param name="loggerName"></param>
         /// <param name="category"></param>
         /// <returns></returns>
-        public Common.Logs.ILogger CreateLogger(string loggerName = "Default", string category = null)
+        public Common.Logs.ILogger CreateLogger(string loggerName = null, string category = null)
         {
             Common.Logs.ILogger log = null;
+            if (string.IsNullOrEmpty(loggerName)) loggerName = "Default";
             if (this.type == LoggerType.Log4Net)
             {
-                log = new Log4Net.Log4NetLogger(loggerName, category);
+                log = new Log4Net.Log4NetLogger(loggerName, category,UseConfig,ConfigPath);
             }
             else if (this.type == LoggerType.NLog)
             {
-                log = new NLogs.NLogLogger(loggerName, category);
+                log = new NLogs.NLogLogger(loggerName, category,UseConfig,ConfigPath);
             }
             return log;
         }

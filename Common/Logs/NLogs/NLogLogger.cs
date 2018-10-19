@@ -14,6 +14,8 @@ namespace Common.Logs.NLogs
     internal class NLogLogger : Common.Logs.ILogger
     {
         private NLog.ILogger log;
+        internal bool UseConfig { private get; set; }
+        internal string ConfigPath { private get; set; }
         /// <summary>
         /// 获取NLoger对象，如果没有添加配置文件，则使用默认的配置创建对象
         /// </summary>
@@ -23,11 +25,14 @@ namespace Common.Logs.NLogs
         {
             log = NLogManager.GetLogger(loggerName, category);
         }
-        protected internal NLogLogger() : this("Default")
-        {
-        }
         protected internal NLogLogger(string loggerName) : this(loggerName, null)
         {
+        }
+        protected internal NLogLogger(string loggerName, string category, bool useConfig, string configPath)
+        {
+            NLogManager.UseConfig = useConfig;
+            NLogManager.ConfigPath = configPath;
+            this.log = NLogManager.GetLogger(loggerName, category);
         }
         public void Debug(string message)
         {

@@ -17,6 +17,9 @@ namespace Common.Logs.Log4Net
         /// log4net对象
         /// </summary>
         private log4net.ILog log;
+
+        internal bool UseConfig { private get; set; }
+        internal string ConfigPath { private get; set; }
         /// <summary>
         /// 使用loggerName创建对象
         /// </summary>
@@ -26,6 +29,12 @@ namespace Common.Logs.Log4Net
         }
         protected internal Log4NetLogger(string loggerName,string category)
         {
+            this.log = Log4NetManager.GetLogger(loggerName, category);
+        }
+        protected internal Log4NetLogger(string loggerName, string category,bool useConfig, string configPath)
+        {
+            Log4NetManager.UseConfig = useConfig;
+            Log4NetManager.ConfigPath = configPath;
             this.log = Log4NetManager.GetLogger(loggerName, category);
         }
         public void Debug(string message)

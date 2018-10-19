@@ -19,8 +19,10 @@ namespace Test
             //log.Info("asdasdasdas");
             //NLog.ILogger log = CustomNLog.GetLogger("Default");
             //log.Info("Nlog日志");
-            ILoggerFactory factory = new LoggerFactory();
-            ILogger log = factory.CreateLogger("pay");
+            ILoggerFactory factory = new LoggerFactory(LoggerType.NLog);
+            //factory.UseConfig = true;
+            //factory.ConfigPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + (@"\Config\nlog.config");
+            ILogger log = factory.CreateLogger();
             log.Info("测试测试");
             Console.WriteLine("成功");
             Console.ReadLine();
