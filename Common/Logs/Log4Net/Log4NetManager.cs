@@ -24,7 +24,7 @@ namespace Common.Logs.Log4Net
     {
         private static readonly ConcurrentDictionary<string, ILog> loggerContainer = new ConcurrentDictionary<string, ILog>();
 
-        private static readonly Dictionary<string, ICollection> configContainer = new Dictionary<string, ICollection>();
+        // private static readonly Dictionary<string, ICollection> configContainer = new Dictionary<string, ICollection>();
         private static object lockObj = new object();
 
         //默认配置
