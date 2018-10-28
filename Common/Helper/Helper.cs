@@ -31,6 +31,24 @@ namespace Common.Helper
             return string.Equals(value1, value2, StringComparison.CurrentCultureIgnoreCase);
         }
         /// <summary>
+        /// 判断当前字符串是否为Y
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsYes(string value)
+        {
+            return Helper.AreEqual(value, "Y");
+        }
+        /// <summary>
+        /// 判断当前字符串是否为N
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsNo(string value)
+        {
+            return Helper.AreEqual(value, "N");
+        }
+        /// <summary>
         /// 批量比较字符串
         /// </summary>
         /// <param name="andOr">True:比较时以And作为标准.False:比较时以Or作为标准.</param>
