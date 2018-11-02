@@ -120,6 +120,7 @@ namespace Common.Logs.Log4Net
         /// 获取一个新的添加器
         /// </summary>
         /// <param name="appender"></param>
+        /// <param name="appenderName"></param>
         /// <param name="category"></param>
         /// <returns></returns>
         private static IAppender GetNewFileApender(IAppender appender,string appenderName, string category = null)
