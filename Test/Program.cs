@@ -44,8 +44,6 @@ namespace Test
         {
             EmailHelper email = new EmailHelper()
             {
-                MailPwd = "tao58568470jie",
-                MailFrom = "stjworkemail@163.com",
                 MailSubject = "欢迎您注册 海星·博客",
                 MailBody = EmailHelper.TempBody("宋先生", "请复制打开链接(或者右键新标签中打开)，激活账号", "链接地址"),
                 MailToArray = new string[] { "977601042@qq.com" }
