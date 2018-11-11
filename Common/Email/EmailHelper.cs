@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Common.Email
 {
+    /// <summary>
+    /// 邮箱发送帮助类
+    /// </summary>
     public class EmailHelper
     {
         #region Eail 属性
@@ -46,7 +49,8 @@ namespace Common.Email
         /// </summary>
         public string MailPwd { get; set; }
 
-        private string _host = "smtp.hxblog.net";
+        private string _host = "smtp.163.com";
+        
         /// <summary>
         /// SMTP邮件服务器
         /// </summary>
@@ -66,7 +70,7 @@ namespace Common.Email
             set { _isbodyHtml = value; }
         }
 
-        private string _nickname = "海星-博客 系统通知";
+        private string _nickname = "海星·博客 系统通知";
         /// <summary>
         /// 发送者昵称
         /// </summary>
@@ -78,7 +82,7 @@ namespace Common.Email
                 _nickname = value;
             }
         }
-
+        
         /// <summary>
         /// 附件
         /// </summary>
@@ -116,7 +120,7 @@ namespace Common.Email
 		                <tbody>
 			<tr>
 				<th valign='middle' style='height: 25px; line-height: 25px; padding: 15px 35px; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #6f5499; background-color: #6f5499; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;'>
-					<font face='微软雅黑' size='5' style='color: rgb(255, 255, 255); '>Hi-Blogs</font>
+					<font face='微软雅黑' size='5' style='color: rgb(255, 255, 255); '>海星·博客</font>
 				</th>
 			</tr>
 			
@@ -145,7 +149,7 @@ namespace Common.Email
 				<td>
 					<div style='line-height: 20px;color: #999;background: #f5f5f5;font-size: 12px;border-top: 1px solid #ddd;padding: 10px 20px;'>        				
         				<p> 
-        					如有疑问，请发邮件到 <a href='mailto:system@hxblog.net' target='_blank'>system@haojima.net</a>，感谢您的支持。
+        					如有疑问，请发邮件到 <a href='mailto:stjworkemail@163.com' target='_blank'>stjworkemail@163.com</a>，感谢您的支持。
         				</p>
     				</div>
 				</td>
@@ -156,14 +160,7 @@ namespace Common.Email
 ";
         }
 
-        #endregion
-        /// <summary>
-        /// 邮件发送
-        /// </summary>
-        /// <param name="CallSuccess">发送成功回调</param>
-        /// <param name="CallFailure">发送失败回调</param>
-        /// <returns></returns>
-        public bool Send(Action<MailMessage> CallSuccess = null, Action<MailMessage> CallFailure = null)
+        private MailMessage InitMailMessage()
         {
             //使用指定的邮件地址初始化MailAddress实例
             MailAddress maddr = new MailAddress(MailFrom, Nickname);
@@ -225,12 +222,32 @@ namespace Common.Email
             {
                 throw new Exception("在添加附件时有错误:" + err);
             }
+            return myMail;
+        }
 
+        private SmtpClient GetSmtpClient(bool isAsync = false)
+        {
             SmtpClient smtp = new SmtpClient();
             //指定发件人的邮件地址和密码以验证发件人身份
             smtp.Credentials = new System.Net.NetworkCredential(MailFrom, MailPwd);//115                 //设置SMTP邮件服务器
             smtp.Host = Host;
-            smtp.Port = 80;
+            smtp.Port = 25;
+            if(isAsync)
+                smtp.SendCompleted += Smtp_SendCompleted;
+            return smtp;
+        }
+        
+        #endregion
+        /// <summary>
+        /// 邮件发送
+        /// </summary>
+        /// <param name="CallSuccess">发送成功回调</param>
+        /// <param name="CallFailure">发送失败回调</param>
+        /// <returns></returns>
+        public bool Send(Action<MailMessage> CallSuccess = null, Action<MailMessage,Exception> CallFailure = null)
+        {
+            MailMessage myMail = InitMailMessage();
+            SmtpClient smtp = GetSmtpClient();
             try
             {
                 //将邮件发送到SMTP邮件服务器
@@ -241,11 +258,72 @@ namespace Common.Email
             }
             catch (SmtpException ex)
             {
-                if (CallFailure != null)
-                    CallFailure(myMail);
+                CallFailure?.Invoke(myMail,ex);
                 return false;
             }
-
         }
+        #region 异步发送邮件
+        private Action<bool,Exception> actionSendCompletedCallback = null;
+        private SmtpClient smtpClient = null;
+        private void Smtp_SendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            //同一组件下不需要回调方法,直接在此写入日志即可
+            //写入日志
+            //return;
+            smtpClient = null;
+            if (actionSendCompletedCallback == null) return;
+            bool success = false;
+            Exception ex = null;
+            if (e.Cancelled)
+            {
+                success = false;
+            }
+            else if (e.Error != null)
+            {
+                success = false;
+                ex = e.Error;
+            }
+            else
+                success = true;
+            //执行回调方法
+            actionSendCompletedCallback(success,ex);
+        }
+        /// <summary>
+        /// 异步发送邮件
+        /// </summary>
+        /// <param name="emailCompleted">邮件发送完成时需要调用的方法</param>
+        /// <returns></returns>
+        public void SendAsync(Action<bool,Exception> emailCompleted)
+        {
+            if (MailToArray == null || MailToArray.Length == 0) return;
+            MailMessage myMail = InitMailMessage();
+            actionSendCompletedCallback = emailCompleted;
+            SmtpClient smtp = GetSmtpClient(true);
+            smtpClient = smtp;
+            try
+            {
+                //将邮件发送到SMTP邮件服务器
+                smtp.SendAsync(myMail, true);
+            }
+            catch (SmtpException ex)
+            {
+            }
+            finally
+            {
+                myMail = null;
+            }
+        }
+        /// <summary>
+        /// 取消异步发送，和SendAsync对应
+        /// </summary>
+        public void SendAsyncCancel()
+        {
+            if (smtpClient != null)
+            {
+                smtpClient.SendAsyncCancel();
+            }
+        }
+        #endregion
+
     }
 }
