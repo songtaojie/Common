@@ -4,10 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Page
+namespace Common.Web
 {
+    /// <summary>
+    /// Page页面的一些帮助类
+    /// </summary>
     public static class PageHelper
     {
+        /// <summary>
+        /// 验证输入的数据转换特殊字符，并判断是否查过了最大限制
+        /// </summary>
+        /// <param name="inputText">输入的数据</param>
+        /// <param name="maxLength">最大长度</param>
+        /// <returns></returns>
         public static string ValidateInputText(string inputText, int maxLength)
         {
             StringBuilder sb = new StringBuilder();

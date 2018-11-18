@@ -1,7 +1,7 @@
 ﻿using Common.Email;
 using Common.Helper;
 using Common.Logs;
-using Common.Memcached;
+using Common.Cache;
 //using log4net;
 //using log4net.Config;
 using System;

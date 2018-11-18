@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Map
+namespace Common.Mapper
 {
     /// <summary>
     /// AutoMapper的帮助类，对属性进行映射
@@ -29,8 +29,8 @@ namespace Common.Map
             else
             {
                 Type sourceType = source.GetType();
-                Mapper.Initialize(c => c.CreateMap(sourceType, typeof(TDestination)));
-                destination = Mapper.Map<TDestination>(source);
+                AutoMapper.Mapper.Initialize(c => c.CreateMap(sourceType, typeof(TDestination)));
+                destination = AutoMapper.Mapper.Map<TDestination>(source);
             }
             return destination;
         }

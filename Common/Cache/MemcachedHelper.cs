@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Memcached
+namespace Common.Cache
 {
     /// <summary>
     /// Memcached的帮助类
     /// </summary>
-    public class MemcachedHelper
+    public sealed class MemcachedHelper
     {
         private static readonly MemcachedClient mc = null;
         static MemcachedHelper()
