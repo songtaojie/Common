@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Common.Redis
 {
+    /// <summary>
+    /// Redis的前缀
+    /// </summary>
     public enum RedisTypePrefix
     {
+        /// <summary>
+        /// 以S:为前缀
+        /// </summary>
         [Description("S:")]
         String
     }

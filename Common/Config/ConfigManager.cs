@@ -10,15 +10,8 @@ namespace Common.Config
     /// <summary>
     /// 配置文件
     /// </summary>
-    public class AppConfig
+    public class ConfigManager
     {
-        /// <summary>
-        /// 获取Redis的链接配置
-        /// </summary>
-        public static string RedisConnection
-        {
-            get { return ConfigurationManager.AppSettings["RedisConnection"]; }
-        }
         /// <summary>
         /// 获取Memcached的服务器端口的配置,多个服务器使用,分割
         /// </summary>
@@ -36,6 +29,16 @@ namespace Common.Config
                     return service.Split(',');
                 }
             }
+        }
+        /// <summary>
+        /// 获取Web.Config中的AppSetting中节点的值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetAppSettingValue(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return string.Empty;
+            return ConfigurationManager.AppSettings[key];
         }
     }
 }

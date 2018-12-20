@@ -19,7 +19,8 @@ namespace Common.SQLite
         /// </summary>
         /// <param name="strAction">标题</param>
         /// <param name="strText">内容</param>
-        /// <param name="FolderName">文件夹</param>
+        /// <param name="as_sql">语句</param>
+        /// <param name="as_param">参数</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
         internal static void WriteLine(string strAction, string strText, string as_sql, params string[] as_param)
         {
@@ -58,7 +59,8 @@ namespace Common.SQLite
         /// </summary>
         /// <param name="strAction">标题</param>
         /// <param name="strText">内容</param>
-        /// <param name="FolderName">文件夹</param>
+        /// <param name="as_sql">文件夹</param>
+        /// <param name="as_params">参数</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
         internal static void WriteLine(string strAction, string strText, string as_sql, SQLiteParameter[] as_params)
         {

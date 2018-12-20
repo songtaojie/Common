@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common.Logs
 {
+    /// <summary>
+    /// 日志工厂，可以使用log4net和nlog
+    /// </summary>
     public class LoggerFactory : ILoggerFactory
     {
         private LoggerType type;
@@ -26,8 +29,13 @@ namespace Common.Logs
         {
             this.type = LoggerType.Log4Net;
         }
-
+        /// <summary>
+        /// 是否使用配置文件
+        /// </summary>
         public bool UseConfig { get; set; } = false;
+        /// <summary>
+        /// 配置文件路径
+        /// </summary>
         public string ConfigPath { get; set; }
 
         /// <summary>

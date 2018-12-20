@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Common.Helper
 {
+    /// <summary>
+    /// 数组帮助类
+    /// </summary>
     public static class ArrayHelper
     {
         /// <summary>

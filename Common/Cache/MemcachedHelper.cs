@@ -16,7 +16,7 @@ namespace Common.Cache
         static MemcachedHelper()
         {
             //服务器配置
-            string[] serverlist = Config.AppConfig.MemcachedServices;
+            string[] serverlist = Config.ConfigManager.MemcachedServices;
             //初始化池
             SockIOPool pool = SockIOPool.GetInstance();
             pool.SetServers(serverlist);

@@ -540,6 +540,11 @@ namespace Common.Web
         #endregion
 
         #region 图片灰度化
+        /// <summary>
+        /// 图片灰度化
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public Color Gray(Color c)
         {
             int rgb = Convert.ToInt32((double)(((0.3 * c.R) + (0.59 * c.G)) + (0.11 * c.B)));
@@ -551,7 +556,7 @@ namespace Common.Web
         /// <summary>
         /// 转换为黑白图片
         /// </summary>
-        /// <param name="mybt">要进行处理的图片</param>
+        /// <param name="mybm">要进行处理的图片</param>
         /// <param name="width">图片的长度</param>
         /// <param name="height">图片的高度</param>
         public Bitmap BWPic(Bitmap mybm, int width, int height)

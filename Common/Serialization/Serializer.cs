@@ -16,7 +16,9 @@ namespace Common.Serialization
         private BinaryFormatter bf;
         private Compressor compressor;
 
-        // Methods
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public Serializer()
         {
             this.bf = new BinaryFormatter();

@@ -126,7 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\CacheHelper.cs" />
-    <Compile Include="Config\AppConfig.cs" />
+    <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Email\EmailHelper.cs" />
     <Compile Include="Extension\EncryptDecryptExtension.cs" />
     <Compile Include="Extension\EnumExtension.cs" />

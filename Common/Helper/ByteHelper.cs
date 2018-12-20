@@ -7,6 +7,9 @@ using Common.Serialization;
 
 namespace Common.Helper
 {
+    /// <summary>
+    /// 字节帮助类
+    /// </summary>
     public static class ByteHelper
     {
         /// <summary>

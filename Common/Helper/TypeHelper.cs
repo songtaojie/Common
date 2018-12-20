@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common.Helper
 {
+    /// <summary>
+    /// 类型帮助类
+    /// </summary>
     public class TypeHelper
     {
         /// <summary>
@@ -118,6 +121,11 @@ namespace Common.Helper
             if (IsNull(value)) return null;
             return Convert.ToDecimal(value);
         }
+        /// <summary>
+        /// 是否超出了十进制的范围
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static bool IsOverDecimal(decimal value)
         {
             return Helper.Compare(value, MAX_DECIMAL) > 0 || Helper.Compare(value, MIN_DECIMAL) < 0;
@@ -150,11 +158,21 @@ namespace Common.Helper
         {
             return IsNull(value) ? default(string) : Convert.ToString(value);
         }
-
+        /// <summary>
+        /// 判断该值是否等于Y
+        /// </summary>
+        /// <param name="value">要与Y比较的值</param>
+        /// <returns></returns>
         public static bool GetBoolean(object value)
         {
             return TypeHelper.GetBoolean(value, "Y");
         }
+        /// <summary>
+        /// 判断对象是否与另一个字符串相等
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="compare"></param>
+        /// <returns></returns>
         public static bool GetBoolean(object value, string compare)
         {
             return Helper.AreEqual(TypeHelper.GetString(value), compare);

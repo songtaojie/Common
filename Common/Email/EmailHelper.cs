@@ -305,7 +305,7 @@ namespace Common.Email
                 //将邮件发送到SMTP邮件服务器
                 smtp.SendAsync(myMail, true);
             }
-            catch (SmtpException ex)
+            catch (SmtpException)
             {
             }
             finally

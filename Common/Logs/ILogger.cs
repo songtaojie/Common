@@ -34,6 +34,10 @@ namespace Common.Logs
         /// <param name="message"></param>
         /// <param name="ex"></param>
         void Error(string message, Exception ex);
+        /// <summary>
+        /// 致命的错误信息
+        /// </summary>
+        /// <param name="message"></param>
         void Fatal(string message);
         /// <summary>
         /// 致命的信息

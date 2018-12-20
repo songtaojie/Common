@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Common.Json
 {
+    /// <summary>
+    /// Json帮助类
+    /// </summary>
     public class JsonHelper
     {
         /// <summary>

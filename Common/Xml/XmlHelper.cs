@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 
 namespace Common.Xml
 {
+    /// <summary>
+    /// Xml的帮助类
+    /// </summary>
     public static class XmlHelper
     {
         /// <summary>
@@ -166,7 +169,7 @@ namespace Common.Xml
                     return obj as T;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }
@@ -174,7 +177,7 @@ namespace Common.Xml
         /// <summary>
         /// 反序列化
         /// </summary>
-        /// <param name="xml"></param>
+        /// <param name="stream">反序列化的流</param>
         /// <returns></returns>
         public static T Deserialize<T>(Stream stream) where T : class
         {
@@ -186,7 +189,7 @@ namespace Common.Xml
 
                 return obj as T;
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }
@@ -197,7 +200,6 @@ namespace Common.Xml
         /// <summary>
         /// 序列化
         /// </summary>
-        /// <param name="type">类型</param>
         /// <param name="obj">对象</param>
         /// <returns></returns>
         public static string Serialize(object obj)

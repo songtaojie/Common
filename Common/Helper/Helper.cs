@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Common.Helper
 {
+    /// <summary>
+    /// 帮助类
+    /// </summary>
     public static class Helper
     {
         /// <summary>
@@ -242,6 +245,12 @@ namespace Common.Helper
        
 
         #region 数值
+        /// <summary>
+        /// 比较两个十进制的数值
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <returns></returns>
         public static int Compare(decimal value1, decimal value2)
         {
             decimal rate = value1 - value2;

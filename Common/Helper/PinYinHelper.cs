@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common.Helper
 {
+    /// <summary>
+    /// 拼音的帮助类
+    /// </summary>
     public class PinYinHelper
     {
         ///  summary>

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Common.Helper
 {
+    /// <summary>
+    /// 文件帮助类
+    /// </summary>
     public static class FileHelper
     {
         /// <summary>
@@ -27,6 +30,11 @@ namespace Common.Helper
             }
         }
         //文件信息
+        /// <summary>
+        /// 获取文件信息
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public static FileInfo GetFileInfo(string fileName)
         {
             FileInfo file = new FileInfo(fileName);
@@ -42,22 +50,30 @@ namespace Common.Helper
             {
                 File.Delete(fullFilePath);
             }
-            catch (DirectoryNotFoundException ex)
+            catch (DirectoryNotFoundException)
             {
                 return;
             }
             catch (IOException ex)
             {
-                throw new IOException("文件正在使用中,无法删除文件!");
+                throw new IOException("文件正在使用中,无法删除文件!消息:"+ex.Message);
             }
         }
-
+        /// <summary>
+        /// 删除文件，不会报错
+        /// </summary>
+        /// <param name="path"></param>
         public static void TryDelete(string path)
         {
-            if (ExistFile(path))
+            try
             {
-                File.Delete(path);
+                if (ExistFile(path))
+                {
+                    File.Delete(path);
+                }
             }
+            catch { }
+            
         }
         /// <summary>
         /// 创建文件夹

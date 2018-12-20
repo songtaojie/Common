@@ -79,7 +79,7 @@ namespace Common.Extension
         /// <summary>
         /// 16位MD5加密
         /// </summary>
-        /// <param name="password"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         public static string MD5Encrypt16(this string value)
         {

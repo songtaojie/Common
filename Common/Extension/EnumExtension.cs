@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Common.Extension
 {
+    /// <summary>
+    /// 枚举扩展
+    /// </summary>
     public static class EnumExtension
     {
         /// <summary>

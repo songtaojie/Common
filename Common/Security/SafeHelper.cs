@@ -9,6 +9,9 @@ using Common.Extension;
 
 namespace Common.Security
 {
+    /// <summary>
+    /// 一些加密解密的操作类
+    /// </summary>
     public class SafeHelper
     {
         #region Des加解密
@@ -25,7 +28,7 @@ namespace Common.Security
         /// <summary>
         /// 使用内置的秘钥进行DES解密
         /// </summary>
-        /// <param name="pToDecrypt">要解密的字符串</param>
+        /// <param name="pToEncrypt">要解密的字符串</param>
         /// <returns>返回解密后的字符串</returns>
         public static string DESDecrypt(string pToEncrypt)
         {
@@ -35,7 +38,7 @@ namespace Common.Security
         /// 进行DES加密
         /// </summary>
         /// <param name="pToEncrypt">要加密的字符串</param>
-        /// <param name="key">密钥，必须为8位</param>
+        /// <param name="sKey">密钥，必须为8位</param>
         /// <returns>以Base64格式返回的加密字符串</returns>
         public static string DESEncrypt(string pToEncrypt, string sKey)
         {

@@ -9,12 +9,15 @@ using Common.Config;
 
 namespace Common.Redis
 {
+    /// <summary>
+    /// Redis帮助类，需要在config的AppSetting中配置键为RedisConnection的连接字符串
+    /// </summary>
     public class RedisHelper
     {
         /// <summary>
         /// ConnectionMultiplexer是线程安全的，且是昂贵的。所以我们尽量重用。 
         /// </summary>
-        public readonly static ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(AppConfig.RedisConnection);
+        public readonly static ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(ConfigManager.GetAppSettingValue("RedisConnection"));
 
         /// <summary>
         /// 存储字符串
@@ -31,7 +34,7 @@ namespace Common.Redis
                 await db.StringSetAsync(RedisTypePrefix.String.GetDescription() + key, value, expiry);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Log.Logger.Error(ex.Message);
                 return false;
@@ -50,7 +53,7 @@ namespace Common.Redis
                 var db = connectionMultiplexer.GetDatabase();
                 return await db.StringGetAsync(RedisTypePrefix.String.GetDescription() + key);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Log.Logger.Error(ex.Message);
                 return string.Empty;
@@ -76,7 +79,7 @@ namespace Common.Redis
                     await db.KeyExpireAsync(key, expiry);//设置有效期
                 return nubmer;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Log.Logger.Error(ex.Message);
                 return -1;
@@ -87,7 +90,6 @@ namespace Common.Redis
         /// 计数器
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="value"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
         public static async Task<long> SetStringIncrAsync(string key, TimeSpan? expiry = null)
@@ -117,6 +119,7 @@ namespace Common.Redis
         /// 判断key是否存在
         /// </summary>
         /// <param name="key"></param>
+        /// <param name="redisTypePrefix"></param>
         /// <returns></returns>
         public static async Task<bool> KeyExistsAsync(string key, RedisTypePrefix redisTypePrefix)
         {
@@ -128,6 +131,7 @@ namespace Common.Redis
         /// 删除key
         /// </summary>
         /// <param name="key"></param>
+        /// <param name="redisTypePrefix"></param>
         /// <returns></returns>
         public static async Task<bool> DeleteKeyAsync(string key, RedisTypePrefix redisTypePrefix)
         {
