@@ -16,6 +16,7 @@ namespace Common.Web
     /// </summary>
     public class ImageManager
     {
+        private static string[] _imageExtList = new string[] { ".jpg", ".bmp", ".jpeg", ".png" };
         #region 缩略图
         /// <summary>
         /// 生成缩略图
@@ -25,7 +26,7 @@ namespace Common.Web
         /// <param name="width">缩略图宽度</param>
         /// <param name="height">缩略图高度</param>
         /// <param name="mode">生成缩略图的方式</param>    
-        public static void MakeThumbnail(string originalImagePath, string thumbnailPath, int width, int height, string mode)
+        public static void MakeThumbnail(string originalImagePath, string thumbnailPath, int width, int height, ThumbnailMode mode)
         {
             System.Drawing.Image originalImage = System.Drawing.Image.FromFile(originalImagePath);
 
@@ -39,15 +40,15 @@ namespace Common.Web
 
             switch (mode)
             {
-                case "HW":  //指定高宽缩放（可能变形）                
+                case ThumbnailMode.HW:  //指定高宽缩放（可能变形）                
                     break;
-                case "W":   //指定宽，高按比例                    
+                case ThumbnailMode.W:   //指定宽，高按比例                    
                     toheight = originalImage.Height * width / originalImage.Width;
                     break;
-                case "H":   //指定高，宽按比例
+                case ThumbnailMode.H:   //指定高，宽按比例
                     towidth = originalImage.Width * height / originalImage.Height;
                     break;
-                case "Cut": //指定高宽裁减（不变形）                
+                case ThumbnailMode.Cut: //指定高宽裁减（不变形）                
                     if ((double)originalImage.Width / (double)originalImage.Height > (double)towidth / (double)toheight)
                     {
                         oh = originalImage.Height;
@@ -91,7 +92,8 @@ namespace Common.Web
             try
             {
                 //以jpg格式保存缩略图
-                bitmap.Save(thumbnailPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                // bitmap.Save(thumbnailPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                bitmap.Save(thumbnailPath, originalImage.RawFormat);
             }
             catch (System.Exception e)
             {
@@ -113,10 +115,10 @@ namespace Common.Web
         /// <param name="path">需要加载水印的图片路径（绝对路径）</param>
         /// <param name="waterpath">水印图片（绝对路径）</param>
         /// <param name="location">水印位置（传送正确的代码）</param>
-        public static string ImageWatermark(string path, string waterpath, string location)
+        public static string ImageWatermark(string path, string waterpath, WaterLocation location)
         {
             string kz_name = Path.GetExtension(path);
-            if (kz_name == ".jpg" || kz_name == ".bmp" || kz_name == ".jpeg")
+            if (_imageExtList.Contains(kz_name))
             {
                 DateTime time = DateTime.Now;
                 string filename = "" + time.Year.ToString() + time.Month.ToString() + time.Day.ToString() + time.Hour.ToString() + time.Minute.ToString() + time.Second.ToString() + time.Millisecond.ToString();
@@ -145,48 +147,48 @@ namespace Common.Web
         /// <param name="location">水印位置</param>
         /// <param name="img">需要添加水印的图片</param>
         /// <param name="waterimg">水印图片</param>
-        private static ArrayList GetLocation(string location, Image img, Image waterimg)
+        private static ArrayList GetLocation(WaterLocation location, Image img, Image waterimg)
         {
             ArrayList loca = new ArrayList();
             int x = 0;
             int y = 0;
 
-            if (location == "LT")
+            if (location == WaterLocation.LT)
             {
                 x = 10;
                 y = 10;
             }
-            else if (location == "T")
+            else if (location == WaterLocation.T)
             {
                 x = img.Width / 2 - waterimg.Width / 2;
                 y = img.Height - waterimg.Height;
             }
-            else if (location == "RT")
+            else if (location == WaterLocation.RT)
             {
                 x = img.Width - waterimg.Width;
                 y = 10;
             }
-            else if (location == "LC")
+            else if (location == WaterLocation.LC)
             {
                 x = 10;
                 y = img.Height / 2 - waterimg.Height / 2;
             }
-            else if (location == "C")
+            else if (location == WaterLocation.C)
             {
                 x = img.Width / 2 - waterimg.Width / 2;
                 y = img.Height / 2 - waterimg.Height / 2;
             }
-            else if (location == "RC")
+            else if (location == WaterLocation.RC)
             {
                 x = img.Width - waterimg.Width;
                 y = img.Height / 2 - waterimg.Height / 2;
             }
-            else if (location == "LB")
+            else if (location == WaterLocation.LB)
             {
                 x = 10;
                 y = img.Height - waterimg.Height;
             }
-            else if (location == "B")
+            else if (location == WaterLocation.B)
             {
                 x = img.Width / 2 - waterimg.Width / 2;
                 y = img.Height - waterimg.Height;
@@ -211,12 +213,12 @@ namespace Common.Web
         /// <param name="letter">水印文字</param>
         /// <param name="color">颜色</param>
         /// <param name="location">水印位置</param>
-        public static string LetterWatermark(string path, int size, string letter, Color color, string location)
+        public static string LetterWatermark(string path, int size, string letter, Color color, WaterLocation location)
         {
             #region
 
             string kz_name = Path.GetExtension(path);
-            if (kz_name == ".jpg" || kz_name == ".bmp" || kz_name == ".jpeg")
+            if (_imageExtList.Contains(kz_name))
             {
                 DateTime time = DateTime.Now;
                 string filename = "" + time.Year.ToString() + time.Month.ToString() + time.Day.ToString() + time.Hour.ToString() + time.Minute.ToString() + time.Second.ToString() + time.Millisecond.ToString();
@@ -248,7 +250,7 @@ namespace Common.Web
         /// <param name="img">图片对象</param>
         /// <param name="width">宽(当水印类型为文字时,传过来的就是字体的大小)</param>
         /// <param name="height">高(当水印类型为文字时,传过来的就是字符的长度)</param>
-        private static ArrayList GetLocation(string location, Image img, int width, int height)
+        private static ArrayList GetLocation(WaterLocation location, Image img, int width, int height)
         {
             #region
 
@@ -256,40 +258,40 @@ namespace Common.Web
             float x = 10;
             float y = 10;
 
-            if (location == "LT")
+            if (location == WaterLocation.LT)
             {
                 loca.Add(x);
                 loca.Add(y);
             }
-            else if (location == "T")
+            else if (location == WaterLocation.T)
             {
                 x = img.Width / 2 - (width * height) / 2;
                 loca.Add(x);
                 loca.Add(y);
             }
-            else if (location == "RT")
+            else if (location == WaterLocation.RT)
             {
                 x = img.Width - width * height;
             }
-            else if (location == "LC")
+            else if (location == WaterLocation.LC)
             {
                 y = img.Height / 2;
             }
-            else if (location == "C")
+            else if (location == WaterLocation.C)
             {
                 x = img.Width / 2 - (width * height) / 2;
                 y = img.Height / 2;
             }
-            else if (location == "RC")
+            else if (location == WaterLocation.RC)
             {
                 x = img.Width - height;
                 y = img.Height / 2;
             }
-            else if (location == "LB")
+            else if (location == WaterLocation.LB)
             {
                 y = img.Height - width - 5;
             }
-            else if (location == "B")
+            else if (location == WaterLocation.B)
             {
                 x = img.Width / 2 - (width * height) / 2;
                 y = img.Height - width - 5;
@@ -595,5 +597,70 @@ namespace Common.Web
             }
         }
         #endregion
+    }
+
+    /// <summary>
+    /// 缩略图的模式
+    /// </summary>
+    public enum ThumbnailMode
+    {
+        /// <summary>
+        /// 指定高宽缩放（可能变形） 
+        /// </summary>
+        HW,
+        /// <summary>
+        ///指定高度，宽按比例  
+        /// </summary>
+        H,
+        /// <summary>
+        ///指定宽，高按比例  
+        /// </summary>
+        W,
+        /// <summary>
+        ///指定高宽裁减（不变形） 
+        /// </summary>
+        Cut
+    }
+    /// <summary>
+    /// 添加到图片中的水印的位置
+    /// </summary>
+    public enum WaterLocation
+    {
+        /// <summary>
+        /// 左上角
+        /// </summary>
+        LT,
+        /// <summary>
+        /// 上面
+        /// </summary>
+        T,
+        /// <summary>
+        /// 右上角
+        /// </summary>
+        RT,
+        /// <summary>
+        /// 左边中心
+        /// </summary>
+        LC,
+        /// <summary>
+        /// 中心
+        /// </summary>
+        C,
+        /// <summary>
+        /// 右边中心
+        /// </summary>
+        RC,
+        /// <summary>
+        /// 左边底部
+        /// </summary>
+        LB,
+        /// <summary>
+        /// 底部
+        /// </summary>
+        B,
+        /// <summary>
+        /// 右边底部
+        /// </summary>
+        RB
     }
 }

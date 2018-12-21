@@ -33,12 +33,26 @@ namespace Common.Config
         /// <summary>
         /// 获取Web.Config中的AppSetting中节点的值
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">AppSetting中节点键</param>
+        /// <param name="defValue">默认值</param>
         /// <returns></returns>
-        public static string GetAppSettingValue(string key)
+        public static string GetAppSettingValue(string key, string defValue = null)
         {
-            if (string.IsNullOrEmpty(key)) return string.Empty;
+            if (string.IsNullOrEmpty(key)) return defValue;
             return ConfigurationManager.AppSettings[key];
+        }
+        /// <summary>
+        /// 获取Web.Config中的AppSetting中节点的值
+        /// </summary>
+        /// <param name="key">AppSetting中节点键</param>
+        /// <param name="defValue">默认值</param>
+        /// <returns></returns>
+        public static long GetAppSettingValue(string key, long defValue)
+        {
+            if (string.IsNullOrEmpty(key)) return defValue;
+            string value = ConfigurationManager.AppSettings[key];
+            long.TryParse(value, out defValue);
+            return defValue;
         }
     }
 }
