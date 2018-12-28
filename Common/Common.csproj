@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="Commons, Version=0.4.2.8580, Culture=neutral, PublicKeyToken=44382d1b57473eda">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Commons.dll</HintPath>
@@ -145,7 +142,6 @@
     <Compile Include="Logs\LoggerFactory.cs" />
     <Compile Include="Logs\NLogs\NLogLogger.cs" />
     <Compile Include="Logs\NLogs\NLogManager.cs" />
-    <Compile Include="Mapper\MapperHelper.cs" />
     <Compile Include="Cache\MemcachedHelper.cs" />
     <Compile Include="Web\ImageManager.cs" />
     <Compile Include="Web\PageHelper.cs" />
