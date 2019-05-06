@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Common", "Common\Hx.Common.csproj", "{BBBABD3A-92F9-4D62-965F-84303FA8F67D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Common", "Hx.Common\Hx.Common.csproj", "{BBBABD3A-92F9-4D62-965F-84303FA8F67D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{74DA2EC5-4427-4D2A-AAE8-1B3CCDCA15CB}"
 EndProject

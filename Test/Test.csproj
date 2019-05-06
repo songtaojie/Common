@@ -57,7 +57,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Hx.Common.csproj">
+    <ProjectReference Include="..\Hx.Common\Hx.Common.csproj">
       <Project>{bbbabd3a-92f9-4d62-965f-84303fa8f67d}</Project>
       <Name>Hx.Common</Name>
     </ProjectReference>
