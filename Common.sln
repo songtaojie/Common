@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.SqlClient", "Hx.SqlClient\Hx.SqlClient.csproj", "{ADB19ABE-B1FA-46EB-A394-1156AAAECF33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Framework", "Hx.Framework\Hx.Framework.csproj", "{FBB75AE2-38F9-4ECE-A640-30D89B393110}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ADB19ABE-B1FA-46EB-A394-1156AAAECF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB19ABE-B1FA-46EB-A394-1156AAAECF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADB19ABE-B1FA-46EB-A394-1156AAAECF33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB75AE2-38F9-4ECE-A640-30D89B393110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB75AE2-38F9-4ECE-A640-30D89B393110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB75AE2-38F9-4ECE-A640-30D89B393110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB75AE2-38F9-4ECE-A640-30D89B393110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
