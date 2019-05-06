@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Serialization;
+using Hx.Common.Serialization;
 
-namespace Common.Helper
+namespace Hx.Common.Helper
 {
     /// <summary>
     /// 字节帮助类

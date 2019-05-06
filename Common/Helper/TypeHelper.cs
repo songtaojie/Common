@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Helper
+namespace Hx.Common.Helper
 {
     /// <summary>
     /// 类型帮助类

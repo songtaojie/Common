@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Common.Helper
+namespace Hx.Common.Helper
 {
     /// <summary>
     /// 文件帮助类

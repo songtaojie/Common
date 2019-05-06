@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Extension
+namespace Hx.Common.Extension
 {
     /// <summary>
     /// 枚举扩展

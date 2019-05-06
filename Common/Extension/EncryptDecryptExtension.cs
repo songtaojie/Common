@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Extension
+namespace Hx.Common.Extension
 {
     /// <summary>
     /// 字符串数据的加密解密主要用于密码等隐私类的文本

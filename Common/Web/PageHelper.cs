@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Web
+namespace Hx.Common.Web
 {
     /// <summary>
     /// Page页面的一些帮助类

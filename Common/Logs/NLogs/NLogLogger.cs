@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Logs.NLogs
+namespace Hx.Common.Logs.NLogs
 {
     /// <summary>
     /// 使用NLog记录日志的方式

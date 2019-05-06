@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.SQLite
+namespace Hx.Common.SQLite
 {
     /// <summary>
     /// 日志类(内部使用)

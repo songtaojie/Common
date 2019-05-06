@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Config
+namespace Hx.Common.Config
 {
     /// <summary>
     /// 配置文件

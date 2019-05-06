@@ -57,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
+    <ProjectReference Include="..\Common\Hx.Common.csproj">
       <Project>{bbbabd3a-92f9-4d62-965f-84303fa8f67d}</Project>
-      <Name>Common</Name>
+      <Name>Hx.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

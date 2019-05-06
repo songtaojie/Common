@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Email
+namespace Hx.Common.Email
 {
     /// <summary>
     /// 邮箱发送帮助类

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Common.Xml
+namespace Hx.Common.Xml
 {
     /// <summary>
     /// Xml的帮助类

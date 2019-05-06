@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Cache
+namespace Hx.Common.Cache
 {
     /// <summary>
     /// Memcached的帮助类

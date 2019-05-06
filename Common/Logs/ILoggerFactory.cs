@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Logs
+namespace Hx.Common.Logs
 {
     /// <summary>
     /// 日志工厂的接口

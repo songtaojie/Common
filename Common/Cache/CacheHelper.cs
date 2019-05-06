@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Cache
+namespace Hx.Common.Cache
 {
     /// <summary>
     /// System.Web.Caching.Cache缓存类的封装操作

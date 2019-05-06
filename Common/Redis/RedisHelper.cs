@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Extension;
-using Common.Config;
+using Hx.Common.Extension;
+using Hx.Common.Config;
 
-namespace Common.Redis
+namespace Hx.Common.Redis
 {
     /// <summary>
     /// Redis帮助类，需要在config的AppSetting中配置键为RedisConnection的连接字符串

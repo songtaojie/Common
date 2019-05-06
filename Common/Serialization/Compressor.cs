@@ -1,4 +1,4 @@
-﻿using Common.Helper;
+﻿using Hx.Common.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Serialization
+namespace Hx.Common.Serialization
 {
     /// <summary>
     /// 压缩类，用来压缩流数据

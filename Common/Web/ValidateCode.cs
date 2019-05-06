@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Common.Web
+namespace Hx.Common.Web
 {
     /// <summary>
     /// 验证码

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Logs.Log4Net
+namespace Hx.Common.Logs.Log4Net
 {
     /// <summary>
     /// 使用log4net记录日志信息

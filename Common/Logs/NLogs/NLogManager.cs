@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Logs.NLogs
+namespace Hx.Common.Logs.NLogs
 {
     internal static class NLogManager
     {

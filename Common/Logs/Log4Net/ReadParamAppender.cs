@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using log4net.Core;
 using log4net.Appender;
 
-namespace Common.Logs.Log4Net
+namespace Hx.Common.Logs.Log4Net
 {
     /// <summary>
     /// log4net自定义添加器，并在初始化时设置AppendToFile=true;

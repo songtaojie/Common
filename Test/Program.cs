@@ -1,7 +1,7 @@
-﻿using Common.Email;
-using Common.Helper;
-using Common.Logs;
-using Common.Cache;
+﻿using Hx.Common.Email;
+using Hx.Common.Helper;
+using Hx.Common.Logs;
+using Hx.Common.Cache;
 //using log4net;
 //using log4net.Config;
 using System;

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Extension;
+using Hx.Common.Extension;
 
-namespace Common.Security
+namespace Hx.Common.Security
 {
     /// <summary>
     /// 一些加密解密的操作类
