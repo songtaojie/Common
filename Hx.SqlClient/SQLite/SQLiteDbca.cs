@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Common.SQLite
+namespace Hx.SqlClient.SQLite
 {
     /// <summary>
     /// 支持事务的SQLite类

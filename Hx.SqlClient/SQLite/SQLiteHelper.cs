@@ -3,7 +3,7 @@ using System.Data.SQLite;
 using System.Data;
 using System.Data.Common;
 
-namespace Hx.Common.SQLite
+namespace Hx.SqlClient.SQLite
 {
     /*****************************************************************
      * 2018-06-15 更新 共四个类:SQLiteHelper SQLite_create_sql SQLiteDbca SQLiteMysysSet SQLiteLog
