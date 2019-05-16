@@ -22,7 +22,7 @@ namespace Hx.Common.Config
                 string service = ConfigurationManager.AppSettings["MemcachedServices"];
                 if (string.IsNullOrEmpty(service))
                 {
-                    return new string[] { "127.0.0.1:11211" };
+                    return new string[] { "127.0.0.1:11212" };
                 }
                 else
                 {

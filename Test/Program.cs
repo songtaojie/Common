@@ -28,14 +28,14 @@ namespace Test
             //log.Info("测试测试");
             //Console.WriteLine("成功");
             ////测试邮件发送
-            Console.WriteLine("开始异步发送邮件,时间:" + DateTime.Now.ToString());
-            SendEmail();
-            Console.WriteLine("邮件正在异步发送,时间:" + DateTime.Now.ToString());
+            //Console.WriteLine("开始异步发送邮件,时间:" + DateTime.Now.ToString());
+            //SendEmail();
+            //Console.WriteLine("邮件正在异步发送,时间:" + DateTime.Now.ToString());
             //System.Threading.Thread.Sleep(1000);
             // email.SendAsyncCancel();
             //测试Memcached
-            //MemcachedHelper.Set("test", "10");
-            //Console.WriteLine(MemcachedHelper.Get("test"));
+            MemcachedHelper.Set("test", "10");
+            Console.WriteLine(MemcachedHelper.Get("test"));
             //MemcachedHelper.Delete("test");
             //Console.WriteLine(MemcachedHelper.Get("test"));
             Console.ReadLine();

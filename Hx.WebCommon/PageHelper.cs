@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Hx.Common.Web
+namespace Hx.WebCommon
 {
     /// <summary>
     /// Page页面的一些帮助类

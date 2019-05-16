@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.SqlClient", "Hx.SqlClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Framework", "Hx.Framework\Hx.Framework.csproj", "{FBB75AE2-38F9-4ECE-A640-30D89B393110}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.WebCommon", "Hx.WebCommon\Hx.WebCommon.csproj", "{FBF34D0D-DA3C-4521-9A80-2FF1E489DCE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FBB75AE2-38F9-4ECE-A640-30D89B393110}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBB75AE2-38F9-4ECE-A640-30D89B393110}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBB75AE2-38F9-4ECE-A640-30D89B393110}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBF34D0D-DA3C-4521-9A80-2FF1E489DCE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBF34D0D-DA3C-4521-9A80-2FF1E489DCE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBF34D0D-DA3C-4521-9A80-2FF1E489DCE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBF34D0D-DA3C-4521-9A80-2FF1E489DCE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

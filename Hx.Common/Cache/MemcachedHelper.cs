@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace Hx.Common.Cache
 {
     /// <summary>
-    /// Memcached的帮助类
+    /// Memcached的帮助类，可以再web.config或者app.config的AppSettings节点配置
+    /// 键为MemcachedServices的值如127.0.0.1:11212，多个值使用,分割开来
     /// </summary>
     public sealed class MemcachedHelper
     {
