@@ -112,6 +112,7 @@
     <Compile Include="Email\EmailHelper.cs" />
     <Compile Include="Extension\EncryptDecryptExtension.cs" />
     <Compile Include="Extension\EnumExtension.cs" />
+    <Compile Include="Extension\ExpressionExtension.cs" />
     <Compile Include="Helper\ArrayHelper.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />

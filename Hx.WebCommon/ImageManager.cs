@@ -210,7 +210,7 @@ namespace Hx.WebCommon
         /// <param name="letter">水印文字</param>
         /// <param name="color">颜色</param>
         /// <param name="location">水印位置</param>
-        public static string LetterWatermark(string path, int size, string letter, Color color, WaterLocation location)
+        public static string LetterWatermark(string path, int size, string letter, Color color, WaterLocation location,bool adjustSize = true)
         {
             #region
 
@@ -221,8 +221,22 @@ namespace Hx.WebCommon
                 string filename = "" + time.Year.ToString() + time.Month.ToString() + time.Day.ToString() + time.Hour.ToString() + time.Minute.ToString() + time.Second.ToString() + time.Millisecond.ToString();
                 Image img = Bitmap.FromFile(path);
                 Graphics gs = Graphics.FromImage(img);
-                ArrayList loca = GetLocation(location, img, size, letter.Length);
                 Font font = new Font("宋体", size);
+                var sizeF = gs.MeasureString(letter, font);
+                if (adjustSize)
+                {
+                    while ((sizeF.Width * 2 > img.Width || sizeF.Height * 2 > img.Height) && size >8)
+                    {
+                        size--;
+                        font = new Font("宋体", size);
+                        sizeF = gs.MeasureString(letter, font);
+                    }
+                    if (sizeF.Width * 2 > img.Width || sizeF.Height * 2> img.Height)
+                    {
+                        return path;
+                    }
+                }
+                ArrayList loca = GetLocation(location, img, sizeF.Width, sizeF.Height);
                 Brush br = new SolidBrush(color);
                 gs.DrawString(letter, font, br, float.Parse(loca[0].ToString()), float.Parse(loca[1].ToString()));
                 gs.Dispose();
@@ -247,7 +261,7 @@ namespace Hx.WebCommon
         /// <param name="img">图片对象</param>
         /// <param name="width">宽(当水印类型为文字时,传过来的就是字体的大小)</param>
         /// <param name="height">高(当水印类型为文字时,传过来的就是字符的长度)</param>
-        private static ArrayList GetLocation(WaterLocation location, Image img, int width, int height)
+        private static ArrayList GetLocation(WaterLocation location, Image img, float width, float height)
         {
             #region
 
@@ -268,7 +282,7 @@ namespace Hx.WebCommon
             }
             else if (location == WaterLocation.RT)
             {
-                x = img.Width - width * height;
+                x = img.Width - width;
             }
             else if (location == WaterLocation.LC)
             {
@@ -276,27 +290,27 @@ namespace Hx.WebCommon
             }
             else if (location == WaterLocation.C)
             {
-                x = img.Width / 2 - (width * height) / 2;
+                x = img.Width / 2 - (width ) / 2;
                 y = img.Height / 2;
             }
             else if (location == WaterLocation.RC)
             {
-                x = img.Width - height;
+                x = img.Width - width;
                 y = img.Height / 2;
             }
             else if (location == WaterLocation.LB)
             {
-                y = img.Height - width - 5;
+                y = img.Height - height - 5;
             }
             else if (location == WaterLocation.B)
             {
-                x = img.Width / 2 - (width * height) / 2;
-                y = img.Height - width - 5;
+                x = img.Width / 2 - (width ) / 2;
+                y = img.Height - height - 5;
             }
             else
             {
-                x = img.Width - width * height;
-                y = img.Height - width - 5;
+                x = img.Width - width;
+                y = img.Height - height - 5;
             }
             loca.Add(x);
             loca.Add(y);
