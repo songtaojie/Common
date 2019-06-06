@@ -29,6 +29,27 @@ namespace Hx.Common.Helper
                 return buffer;
             }
         }
+        /// <summary>
+        /// 读取文件的文本
+        /// </summary>
+        /// <param name="fileFullPath">文件路径</param>
+        /// <returns></returns>
+        public static string GetString(string fileFullPath)
+        {
+            return GetString(fileFullPath, Encoding.UTF8);
+        }
+        /// <summary>
+        /// 使用指定的编码读取文件的文本
+        /// </summary>
+        /// <param name="fileFullPath">文件路径</param>
+        /// <param name="encoding">编码</param>
+        /// <returns></returns>
+        public static string GetString(string fileFullPath, Encoding encoding)
+        {
+            if (!File.Exists(fileFullPath))
+                throw new DirectoryNotFoundException("找不到文件!");
+            return File.ReadAllText(fileFullPath, encoding);
+        }
         //文件信息
         /// <summary>
         /// 获取文件信息
