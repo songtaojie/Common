@@ -117,6 +117,7 @@
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\Helper.cs" />
+    <Compile Include="Helper\Snowflake.cs" />
     <Compile Include="Helper\PinYinHelper.cs" />
     <Compile Include="Helper\TypeHelper.cs" />
     <Compile Include="Json\JsonHelper.cs" />

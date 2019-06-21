@@ -131,6 +131,14 @@ namespace Hx.Common.Helper
             if (ch >= 'A') return ch - 'A' + 10;
             return ch - '0';
         }
+        /// <summary>
+        /// 获取雪花ID
+        /// </summary>
+        /// <returns></returns>
+        public static long GetSnowId()
+        {
+            return Snowflake.Instance().GetId();
+        }
         #endregion
 
         #region 日期

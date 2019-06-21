@@ -34,8 +34,10 @@ namespace Test
             //System.Threading.Thread.Sleep(1000);
             // email.SendAsyncCancel();
             //测试Memcached
-            MemcachedHelper.Set("test", "10");
-            Console.WriteLine(MemcachedHelper.Get("test"));
+            //MemcachedHelper.Set("test", "10");
+            //Console.WriteLine(MemcachedHelper.Get("test"));
+            Console.WriteLine(GetTimestamp());
+            Console.WriteLine(Helper.GetSnowId().ToString());
             //MemcachedHelper.Delete("test");
             //Console.WriteLine(MemcachedHelper.Get("test"));
             Console.ReadLine();
@@ -58,6 +60,11 @@ namespace Test
             Console.WriteLine();
             Console.WriteLine("邮件发送结果:\r\n" + (success ? "邮件发送成功" : "邮件发送失败") + ",时间:" + DateTime.Now.ToString());
             //写入日志
+        }
+        private static long GetTimestamp()
+        {
+            //让他2000年开始
+            return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
         }
     }
 }
