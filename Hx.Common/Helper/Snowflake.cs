@@ -10,6 +10,7 @@ namespace Hx.Common.Helper
     /// <summary>
     /// 动态生产有规律的ID Snowflake算法是Twitter的工程师为实现递增而不重复的ID实现的
     /// C# 实现 Snowflake算法 
+    /// </summary>
     internal class Snowflake
     {
         private static long machineId;//机器ID

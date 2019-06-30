@@ -248,9 +248,17 @@ namespace Hx.Common.Helper
             DateTime ST = begin.AddDays(-(int)begin.DayOfWeek);
             return Convert.ToInt32((end - ST).Days) / 7;
         }
+        /// <summary>
+        /// 获取时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static long GetTimestamp()
+        {
+            return (long)(DateTime.UtcNow - new DateTime(1992, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+        }
         #endregion
 
-       
+
 
         #region 数值
         /// <summary>
