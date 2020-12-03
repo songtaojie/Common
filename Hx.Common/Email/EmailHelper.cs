@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Hx.Common.Email
 {
@@ -50,7 +48,7 @@ namespace Hx.Common.Email
         public string MailPwd { get; set; }
 
         private string _host = "smtp.163.com";
-        
+
         /// <summary>
         /// SMTP邮件服务器
         /// </summary>
@@ -82,7 +80,7 @@ namespace Hx.Common.Email
                 _nickname = value;
             }
         }
-        
+
         /// <summary>
         /// 附件
         /// </summary>
@@ -232,11 +230,11 @@ namespace Hx.Common.Email
             smtp.Credentials = new System.Net.NetworkCredential(MailFrom, MailPwd);//115                 //设置SMTP邮件服务器
             smtp.Host = Host;
             smtp.Port = 25;
-            if(isAsync)
+            if (isAsync)
                 smtp.SendCompleted += Smtp_SendCompleted;
             return smtp;
         }
-        
+
         #endregion
         /// <summary>
         /// 邮件发送
@@ -244,7 +242,7 @@ namespace Hx.Common.Email
         /// <param name="CallSuccess">发送成功回调</param>
         /// <param name="CallFailure">发送失败回调</param>
         /// <returns></returns>
-        public bool Send(Action<MailMessage> CallSuccess = null, Action<MailMessage,Exception> CallFailure = null)
+        public bool Send(Action<MailMessage> CallSuccess = null, Action<MailMessage, Exception> CallFailure = null)
         {
             MailMessage myMail = InitMailMessage();
             SmtpClient smtp = GetSmtpClient();
@@ -258,12 +256,12 @@ namespace Hx.Common.Email
             }
             catch (SmtpException ex)
             {
-                CallFailure?.Invoke(myMail,ex);
+                CallFailure?.Invoke(myMail, ex);
                 return false;
             }
         }
         #region 异步发送邮件
-        private Action<bool,Exception> actionSendCompletedCallback = null;
+        private Action<bool, Exception> actionSendCompletedCallback = null;
         private SmtpClient smtpClient = null;
         private void Smtp_SendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
@@ -286,14 +284,14 @@ namespace Hx.Common.Email
             else
                 success = true;
             //执行回调方法
-            actionSendCompletedCallback(success,ex);
+            actionSendCompletedCallback(success, ex);
         }
         /// <summary>
         /// 异步发送邮件
         /// </summary>
         /// <param name="emailCompleted">邮件发送完成时需要调用的方法</param>
         /// <returns></returns>
-        public void SendAsync(Action<bool,Exception> emailCompleted)
+        public void SendAsync(Action<bool, Exception> emailCompleted)
         {
             if (MailToArray == null || MailToArray.Length == 0) return;
             MailMessage myMail = InitMailMessage();

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Hx.Common.Helper
 {
@@ -77,7 +75,7 @@ namespace Hx.Common.Helper
             }
             catch (IOException ex)
             {
-                throw new IOException("文件正在使用中,无法删除文件!消息:"+ex.Message);
+                throw new IOException("文件正在使用中,无法删除文件!消息:" + ex.Message);
             }
         }
         /// <summary>
@@ -94,7 +92,7 @@ namespace Hx.Common.Helper
                 }
             }
             catch { }
-            
+
         }
         /// <summary>
         /// 创建文件夹
@@ -162,25 +160,25 @@ namespace Hx.Common.Helper
             }
             return false;
         }
-        /// <summary>
-        /// 根据文件名返回图片的文件格式
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static System.Drawing.Imaging.ImageFormat ImageFormat(string name)
-        {
-            Match match = Regex.Match(name, @"\.[^\.]+$");
-            if (match.Success)
-            {
-                string ma = match.Value.ToLower();
-                List<string> typeList = new List<string>(new string[] { ".bmp", ".png", ".gif", ".jpg", ".jpeg" });
-                if (ma == typeList[0]) return System.Drawing.Imaging.ImageFormat.Bmp;
-                if (ma == typeList[1]) return System.Drawing.Imaging.ImageFormat.Png;
-                if (ma == typeList[2]) return System.Drawing.Imaging.ImageFormat.Gif;
-                if (ma == typeList[3] || ma == typeList[4]) return System.Drawing.Imaging.ImageFormat.Jpeg;
-            }
-            return System.Drawing.Imaging.ImageFormat.Bmp;
-        }
+        ///// <summary>
+        ///// 根据文件名返回图片的文件格式
+        ///// </summary>
+        ///// <param name="name"></param>
+        ///// <returns></returns>
+        //public static System.Drawing.Imaging.ImageFormat ImageFormat(string name)
+        //{
+        //    Match match = Regex.Match(name, @"\.[^\.]+$");
+        //    if (match.Success)
+        //    {
+        //        string ma = match.Value.ToLower();
+        //        List<string> typeList = new List<string>(new string[] { ".bmp", ".png", ".gif", ".jpg", ".jpeg" });
+        //        if (ma == typeList[0]) return System.Drawing.Imaging.ImageFormat.Bmp;
+        //        if (ma == typeList[1]) return System.Drawing.Imaging.ImageFormat.Png;
+        //        if (ma == typeList[2]) return System.Drawing.Imaging.ImageFormat.Gif;
+        //        if (ma == typeList[3] || ma == typeList[4]) return System.Drawing.Imaging.ImageFormat.Jpeg;
+        //    }
+        //    return System.Drawing.Imaging.ImageFormat.Bmp;
+        //}
         /// <summary>
         /// 根据文件大小返回文件描述的文本
         /// 如1024返回1KB

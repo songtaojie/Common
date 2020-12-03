@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Hx.Common.Helper
 {
@@ -150,7 +147,7 @@ namespace Hx.Common.Helper
         /// <param name="month"></param>
         private static void GetYearAndMonth(string absID, out int year, out int month)
         {
-            if(string.IsNullOrEmpty(absID)) throw new Exception("无效的期间字符串.");
+            if (string.IsNullOrEmpty(absID)) throw new Exception("无效的期间字符串.");
             string yearStr = null, monthStr = null;
             if (absID.Length == 6)
             {
@@ -161,12 +158,13 @@ namespace Hx.Common.Helper
             {
                 yearStr = absID.Split('-')[0];
                 monthStr = absID.Split('-')[1];
-            } else if (absID.Length == 7 && absID.Contains("/"))
+            }
+            else if (absID.Length == 7 && absID.Contains("/"))
             {
                 yearStr = absID.Split('/')[0];
                 monthStr = absID.Split('/')[1];
             }
-            if(string.IsNullOrEmpty(yearStr) || string.IsNullOrEmpty(monthStr) || yearStr.Length!=4) throw new Exception("无效的期间字符串.");
+            if (string.IsNullOrEmpty(yearStr) || string.IsNullOrEmpty(monthStr) || yearStr.Length != 4) throw new Exception("无效的期间字符串.");
             year = int.Parse(yearStr);
             month = int.Parse(monthStr);
         }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Hx.Common.Helper
 {
@@ -11,6 +9,7 @@ namespace Hx.Common.Helper
     /// </summary>
     public class PinYinHelper
     {
+        #region 定义变量
         ///  summary>
         /// 汉字拼音首字母列表 本列表包含了20902个汉字,用于配合 GetChineseSpell 函数使用,本表收录的字符的Unicode编码范围为19968至40869
         ///  /summary>
@@ -404,6 +403,7 @@ namespace Hx.Common.Helper
 
              "Zui", "Zun", "Zuo"
          };
+        #endregion
 
         #region 二级汉字
         /// <summary>

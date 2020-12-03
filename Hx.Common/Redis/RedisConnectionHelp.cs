@@ -1,11 +1,9 @@
-﻿using Hx.Common.Config;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Hx.Common.Extensions;
 
 namespace Hx.Common.Redis
 {
@@ -14,55 +12,26 @@ namespace Hx.Common.Redis
 	/// </summary>
 	internal class RedisConnectionHelp
 	{
-		/// <summary>
-		/// redis连接的字符串
-		/// </summary>
-		private static string RedisConnectionString;
-
-		/// <summary>
-		/// 锁对象
-		/// </summary>
-		private static readonly object Locker = new object();
-
-		/// <summary>
-		/// 实例对象
-		/// </summary>
-		private static ConnectionMultiplexer _instance;
 
 		/// <summary>
 		/// 连接缓存集合
 		/// </summary>
 		private static readonly ConcurrentDictionary<string, ConnectionMultiplexer> ConnectionCache = new ConcurrentDictionary<string, ConnectionMultiplexer>();
-		/// <summary>
-		/// redis操作的实例对象
-		/// </summary>
-		public static ConnectionMultiplexer Instance
-		{
-			get
-			{
-				if (_instance == null)
-				{
-					object locker = Locker;
-					lock (locker)
-					{
-						if (_instance == null || !_instance.IsConnected)
-						{
-                            _instance = GetManager(null);
-						}
-					}
-				}
-				return _instance;
-			}
-		}
 
-		// Token: 0x06000111 RID: 273 RVA: 0x00004ED4 File Offset: 0x000030D4
+		/// <summary>
+		/// 获取连接的信息
+		/// </summary>
+		/// <param name="connectionString"></param>
+		/// <returns></returns>
 		public static ConnectionMultiplexer GetConnectionMultiplexer(string connectionString)
 		{
-			if (!ConnectionCache.ContainsKey(connectionString))
+			if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException("connectionString");
+			var key = connectionString.MD5Encrypt();
+			if (!ConnectionCache.ContainsKey(key))
 			{
-                ConnectionCache[connectionString] = GetManager(connectionString);
+				ConnectionCache[key] = GetManager(connectionString);
 			}
-			return ConnectionCache[connectionString];
+			return ConnectionCache[key];
 		}
 
 		/// <summary>
@@ -72,8 +41,6 @@ namespace Hx.Common.Redis
 		/// <returns></returns>
 		private static ConnectionMultiplexer GetManager(string connectionString = null)
 		{
-            RedisConnectionString = ConfigManager.GetAppSettingValue("RedisConnection");
-			connectionString = (connectionString ?? RedisConnectionString);
 			if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException("connectionString");
 			ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(connectionString, null);
 			connectionMultiplexer.ConnectionFailed += MuxerConnectionFailed;

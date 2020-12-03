@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Hx.Common.Serialization;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Hx.Common.Serialization;
 
 namespace Hx.Common.Helper
 {

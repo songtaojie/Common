@@ -1,13 +1,11 @@
-﻿using StackExchange.Redis;
+﻿using Hx.Common.Helper;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Hx.Common.Extension;
-using Hx.Common.Config;
-using Hx.Common.Helper;
-using Newtonsoft.Json;
 
 namespace Hx.Common.Redis
 {
@@ -15,9 +13,20 @@ namespace Hx.Common.Redis
 	/// redis的处理类
 	/// 需要在config的AppSetting中配置键为RedisConnection的连接字符串
 	/// </summary>
-	public class RedisHandler: IRedisHandler
+	public class RedisHandler : IRedisHandler
 	{
+
 		private readonly ConnectionMultiplexer _conn;
+		private readonly IDatabase _database;
+		/// <summary>
+		/// 构造函数
+		/// </summary>
+		/// <param name="connectionString">redis数据库连接的字符串</param>
+		public RedisHandler(string connectionString)
+		{
+			this._conn = RedisConnectionHelp.GetConnectionMultiplexer(connectionString);
+			_database = _conn.GetDatabase();
+		}
 
 		/// <summary>
 		/// key的前缀
@@ -30,45 +39,12 @@ namespace Hx.Common.Redis
 		private int DbNum { get; set; }
 
 		/// <summary>
-		/// 构造函数
-		/// </summary>
-		/// <param name="dbNum"></param>
-		public RedisHandler(int dbNum = 0) : this(dbNum, null)
-		{
-		}
-
-		/// <summary>
-		/// 构造函数
-		/// </summary>
-		/// <param name="dbNum"></param>
-		/// <param name="readWriteHosts">redis连接字符串</param>
-		public RedisHandler(int dbNum, string readWriteHosts)
-		{
-			this.DbNum = dbNum;
-			this._conn = (string.IsNullOrWhiteSpace(readWriteHosts) ? RedisConnectionHelp.Instance : RedisConnectionHelp.GetConnectionMultiplexer(readWriteHosts));
-		}
-
-		/// <summary>
 		/// 设置数据库编号
 		/// </summary>
 		/// <param name="dbNum"></param>
 		public void SetRedisDbNum(int dbNum = 0)
 		{
 			this.DbNum = dbNum;
-		}
-
-		/// <summary>
-		/// 清除某个数据库中的数据
-		/// </summary>
-		/// <param name="dbNum"></param>
-		public void ClearRedisDb(int dbNum)
-		{
-			ErrorHelper.ThrowIfTrue(dbNum < 0 && dbNum > 15, "redis数据库编号范围在0-15之间");
-			ErrorHelper.ThrowIfNullOrEmpty(this._conn.Configuration, "数据库连接不能为空");
-			this._conn.GetServer(this._conn.Configuration.Split(new char[]
-			{
-				','
-			})[0], null).FlushDatabase(dbNum, CommandFlags.None);
 		}
 
 		/// <summary>
@@ -81,27 +57,6 @@ namespace Hx.Common.Redis
 		{
 			key = this.AddSysCustomKey(key);
 			return this.Do<T>((IDatabase db) => JsonConvert.DeserializeObject<T>(db.StringGet(key, CommandFlags.None)));
-		}
-
-		/// <summary>
-		/// 获取指定的值
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="listKey"></param>
-		/// <returns></returns>
-		public List<T> Get<T>(List<string> listKey)
-		{
-			List<string> newKeys = listKey.Select(new Func<string, string>(this.AddSysCustomKey)).ToList<string>();
-			RedisValue[] array = this.Do<RedisValue[]>((IDatabase db) => db.StringGet(this.ConvertRedisKeys(newKeys), CommandFlags.None));
-			List<T> list = new List<T>();
-			if (array.Any<RedisValue>())
-			{
-				for (int i = 0; i < array.Length; i++)
-				{
-					list.Add(JsonConvert.DeserializeObject<T>(array[i]));
-				}
-			}
-			return list;
 		}
 
 		/// <summary>
@@ -131,12 +86,28 @@ namespace Hx.Common.Redis
 		}
 
 		/// <summary>
-		/// 移除数据库中所有值
+		/// 清除某个数据库中的数据
 		/// </summary>
-		/// <param name="DbNum"></param>
-		public void RemoveDb(int DbNum)
+		/// <param name="dbNum"></param>
+		public void RemoveDb(int dbNum)
 		{
-			this._conn.GetServer("", 111, null).FlushDatabase(DbNum, CommandFlags.None);
+			ErrorHelper.ThrowIfTrue(dbNum < 0 && dbNum > 15, "redis数据库编号范围在0-15之间");
+			ErrorHelper.ThrowIfNullOrEmpty(this._conn.Configuration, "数据库连接不能为空");
+			this._conn.GetServer(this._conn.Configuration.Split(new char[]
+			{
+				','
+			})[0], null).FlushDatabase(dbNum, CommandFlags.None);
+		}
+
+		/// <summary>
+		/// 清除数据库中所有值
+		/// </summary>
+		public void Clear()
+		{
+			//this._conn.GetServer("", 111, null).FlushDatabase(DbNum, CommandFlags.None);
+			var endpoint = _conn.GetEndPoints();
+			var server = _conn.GetServer(endpoint.First());
+			server.FlushAllDatabases(CommandFlags.None);
 		}
 
 		/// <summary>
@@ -149,27 +120,6 @@ namespace Hx.Common.Redis
 		{
 			key = this.AddSysCustomKey(key);
 			return JsonConvert.DeserializeObject<T>(await this.Do<Task<RedisValue>>((IDatabase db) => db.StringGetAsync(key, CommandFlags.None)));
-		}
-
-		/// <summary>
-		/// 异步获取集合
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="listKey"></param>
-		/// <returns></returns>
-		public async Task<List<T>> GetAsync<T>(List<string> listKey)
-		{
-			List<string> newKeys = listKey.Select(new Func<string, string>(this.AddSysCustomKey)).ToList<string>();
-			RedisValue[] array = await this.Do<Task<RedisValue[]>>((IDatabase db) => db.StringGetAsync(this.ConvertRedisKeys(newKeys), CommandFlags.None));
-			List<T> list = new List<T>();
-			if (array.Any<RedisValue>())
-			{
-				for (int i = 0; i < array.Length; i++)
-				{
-					list.Add(JsonConvert.DeserializeObject<T>(array[i]));
-				}
-			}
-			return list;
 		}
 
 		/// <summary>
@@ -199,6 +149,31 @@ namespace Hx.Common.Redis
 		}
 
 		/// <summary>
+		/// 清除某个数据库中的数据
+		/// </summary>
+		/// <param name="dbNum"></param>
+		public async Task RemoveDbAsync(int dbNum)
+		{
+			ErrorHelper.ThrowIfTrue(dbNum < 0 && dbNum > 15, "redis数据库编号范围在0-15之间");
+			ErrorHelper.ThrowIfNullOrEmpty(this._conn.Configuration, "数据库连接不能为空");
+			await this._conn.GetServer(this._conn.Configuration.Split(new char[]
+			{
+				','
+			})[0], null).FlushDatabaseAsync(dbNum, CommandFlags.None);
+		}
+
+		/// <summary>
+		/// 清除数据库中所有值
+		/// </summary>
+		/// <returns></returns>
+		public async Task ClearAsync()
+		{
+			var endpoint = _conn.GetEndPoints();
+			var server = _conn.GetServer(endpoint.First());
+			await server.FlushAllDatabasesAsync(CommandFlags.None);
+		}
+
+		/// <summary>
 		/// 获取key
 		/// </summary>
 		/// <param name="oldKey"></param>
@@ -220,17 +195,6 @@ namespace Hx.Common.Redis
 			return func(database);
 		}
 
-		
-		private RedisKey[] ConvertRedisKeys(List<string> redisKeys)
-		{
-			var redisKeyList = new List<RedisKey>();
-			foreach (var key in redisKeys)
-			{
-				redisKeyList.Add(key);
-			}
-			return redisKeyList.ToArray<RedisKey>();
-		}
-
 		/// <summary>
 		/// 释放资源
 		/// </summary>
@@ -239,6 +203,5 @@ namespace Hx.Common.Redis
 			this._conn.Dispose();
 		}
 
-		
 	}
 }
