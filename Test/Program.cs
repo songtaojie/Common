@@ -1,7 +1,7 @@
-﻿using Hx.Common.Email;
-using Hx.Common.Helper;
+﻿using Hx.Sdk.Common.Email;
+using Hx.Sdk.Common.Helper;
 using Hx.NetFramework.Logs;
-using Hx.NetFramework.Cache;
+using Hx.Sdk.NetFramework.Cache;
 //using log4net;
 //using log4net.Config;
 using System;

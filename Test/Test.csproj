@@ -58,13 +58,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Common\Hx.Common.csproj">
-      <Project>{7197b03c-3567-43af-9181-e201c8e56050}</Project>
-      <Name>Hx.Common</Name>
+    <ProjectReference Include="..\Hx.Sdk.Common\Hx.Sdk.Common.csproj">
+      <Project>{c31204ce-ed57-47cf-b26c-0f60b94781f0}</Project>
+      <Name>Hx.Sdk.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hx.NetFramework\Hx.NetFramework.csproj">
-      <Project>{2e7a7e7d-c41b-4d36-8e95-60fa28789c61}</Project>
-      <Name>Hx.NetFramework</Name>
+    <ProjectReference Include="..\Hx.Sdk.NetFramework\Hx.Sdk.NetFramework.csproj">
+      <Project>{d9517b07-d58d-4328-be95-3f6a9b4aa2bf}</Project>
+      <Name>Hx.Sdk.NetFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
