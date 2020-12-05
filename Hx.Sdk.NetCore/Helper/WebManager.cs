@@ -12,7 +12,7 @@ namespace Hx.Sdk.NetCore
     /// <summary>
     /// Web管理类
     /// </summary>
-    public class WebManager: IWebManager
+    internal class WebManager: IWebManager
     {
         private readonly IHostEnvironment env;
         /// <summary>

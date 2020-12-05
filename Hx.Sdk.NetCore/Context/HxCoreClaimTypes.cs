@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.UserContext
+namespace Hx.Sdk.NetCore.Context
 {
     /// <summary>
     /// 

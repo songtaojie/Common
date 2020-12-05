@@ -47,11 +47,18 @@ namespace Hx.Sdk.NetCore.Helper
         /// <summary>
         /// 获取指定程序集名称的程序集
         /// </summary>
-        /// <param name="assemblyName">程序集的全名</param>
+        /// <param name="assemblyNames">程序集的全名</param>
         /// <returns></returns>
-        public static Assembly GetAssembly(string assemblyName)
+        public static IEnumerable<Assembly> GetAssembly(params string[] assemblyNames)
         {
-            return GetAllAssembly().FirstOrDefault(assembly => assembly.FullName.Contains(assemblyName));
+            var allAssemblies = GetAllAssembly();
+            var result = new List<Assembly>();
+            foreach (var assemblyName in assemblyNames)
+            {
+                var assembly = allAssemblies.FirstOrDefault(assembly => assembly.FullName.Contains(assemblyName));
+                if (assembly != null) result.Add(assembly);
+            }
+            return result;
         }
     }
 }

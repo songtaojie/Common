@@ -3,14 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.UserContext
+namespace Hx.Sdk.NetCore.Context
 {
+    /// <summary>
+    /// HttpContext的一个管理类
+    /// </summary>
     public interface IUserContext
     {
         /// <summary>
         /// Http上下文
         /// </summary>
-        HttpContext HttpContext { get; }
+        public HttpContext HttpContext { get; }
         /// <summary>
         /// 用户名
         /// </summary>

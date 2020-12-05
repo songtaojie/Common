@@ -7,12 +7,12 @@ using Hx.Sdk.Common.Extensions;
 using System.Text;
 using System.Security.Claims;
 
-namespace Hx.Sdk.NetCore.UserContext
+namespace Hx.Sdk.NetCore.Context
 {
     /// <summary>
     /// 用户上下文操作类
     /// </summary>
-    public class UserContext : IUserContext
+    internal class UserContext : IUserContext
     {
         /// <summary>
         /// HttpContext访问器

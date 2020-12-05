@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.Startup
+namespace Hx.Sdk.NetCore.ServicesExtension
 {
     /// <summary>
     /// 缓存的扩展类
