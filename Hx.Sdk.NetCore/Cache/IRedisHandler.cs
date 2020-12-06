@@ -22,6 +22,14 @@ namespace Hx.Sdk.NetCore.Cache
 		/// <typeparam name="T"></typeparam>
 		/// <param name="key"></param>
 		/// <returns></returns>
+		string Get(string key);
+
+		/// <summary>
+		/// 获取数据
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="key"></param>
+		/// <returns></returns>
 		T Get<T>(string key);
 
 		/// <summary>
@@ -35,6 +43,13 @@ namespace Hx.Sdk.NetCore.Cache
 		bool Set<T>(string key, T value, TimeSpan? expiry = null);
 
 		/// <summary>
+		/// 是否存在key
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		bool KeyExists(string key);
+
+		/// <summary>
 		/// 移除数据
 		/// </summary>
 		/// <param name="key"></param>
@@ -44,14 +59,17 @@ namespace Hx.Sdk.NetCore.Cache
 		/// <summary>
 		/// 清除某个数据库中的数据
 		/// </summary>
-		/// <param name="dbNum"></param>
-		void RemoveDb(int dbNum);
+		/// <param name="dbNum">如果是清除摸个数据库，填写编号</param>
+		/// <param name="clearAll">清除所有，为true时，此时dbNum参数没用</param>
+		void ClearDb(int dbNum, bool clearAll = false);
 
 		/// <summary>
-		/// 清除数据库中所有值
+		/// 获取数据异步
 		/// </summary>
-		void Clear();
-
+		/// <typeparam name="T"></typeparam>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		Task<string> GetAsync(string key);
 
 		/// <summary>
 		/// 获取数据异步
@@ -72,6 +90,13 @@ namespace Hx.Sdk.NetCore.Cache
 		Task<bool> SetAsync<T>(string key, T value, TimeSpan? expiry = null);
 
 		/// <summary>
+		/// 是否存在key
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		Task<bool> KeyExistsAsync(string key);
+
+		/// <summary>
 		/// 移除数据，异步
 		/// </summary>
 		/// <param name="key"></param>
@@ -81,12 +106,8 @@ namespace Hx.Sdk.NetCore.Cache
 		/// <summary>
 		/// 清除某个数据库中的数据
 		/// </summary>
-		/// <param name="dbNum"></param>
-		Task RemoveDbAsync(int dbNum);
-
-		/// <summary>
-		/// 清除数据库中所有值
-		/// </summary>
-		Task ClearAsync();
+		/// <param name="dbNum">如果是清除摸个数据库，填写编号</param>
+		/// <param name="clearAll">清除所有，为true时，此时dbNum参数没用</param>
+		Task ClearDbAsync(int dbNum,bool clearAll = false);
 	}
 }

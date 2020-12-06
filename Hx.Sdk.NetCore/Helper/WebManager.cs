@@ -74,7 +74,7 @@ namespace Hx.Sdk.NetCore
         /// <returns></returns>
         public string GetFullUrl(string host, string routeUrl)
         {
-            if (string.IsNullOrEmpty(routeUrl)) return routeUrl;
+            if (string.IsNullOrEmpty(routeUrl)) return host;
 
             while (!string.IsNullOrEmpty(host) && host.Last() == '/')
             {

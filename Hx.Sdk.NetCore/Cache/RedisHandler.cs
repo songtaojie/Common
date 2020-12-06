@@ -44,6 +44,12 @@ namespace Hx.Sdk.NetCore.Cache
 			this.DbNum = dbNum;
 		}
 
+		public string Get(string key)
+		{
+			key = this.AddSysCustomKey(key);
+			return this.Do<string>(db => db.StringGet(key, CommandFlags.None));
+		}
+
 		/// <summary>
 		/// 获取指定的值
 		/// </summary>
@@ -53,7 +59,13 @@ namespace Hx.Sdk.NetCore.Cache
 		public T Get<T>(string key)
 		{
 			key = this.AddSysCustomKey(key);
-			return this.Do<T>((IDatabase db) => JsonConvert.DeserializeObject<T>(db.StringGet(key, CommandFlags.None)));
+			var result =  this.Do<T>(db =>
+			{
+				var value = db.StringGet(key, CommandFlags.None);
+				if (!value.HasValue) return default;
+				return JsonConvert.DeserializeObject<T>(value);
+			});
+			return result;
 		}
 
 		/// <summary>
@@ -71,6 +83,12 @@ namespace Hx.Sdk.NetCore.Cache
 			return this.Do<bool>((IDatabase db) => db.StringSet(key, json, expiry, When.Always, CommandFlags.None));
 		}
 
+		public bool KeyExists(string key)
+		{
+			key = this.AddSysCustomKey(key);
+			return this.Do<bool>(db => db.KeyExists(key, CommandFlags.None));
+		}
+
 		/// <summary>
 		/// 移除值
 		/// </summary>
@@ -85,26 +103,31 @@ namespace Hx.Sdk.NetCore.Cache
 		/// <summary>
 		/// 清除某个数据库中的数据
 		/// </summary>
-		/// <param name="dbNum"></param>
-		public void RemoveDb(int dbNum)
+		/// <param name="dbNum">如果是清除摸个数据库，填写编号</param>
+		/// <param name="clearAll">清除所有，为true时，此时dbNum参数没用</param>
+		public void ClearDb(int dbNum, bool clearAll = false)
 		{
 			ErrorHelper.ThrowIfTrue(dbNum < 0 && dbNum > 15, "redis数据库编号范围在0-15之间");
 			ErrorHelper.ThrowIfNullOrEmpty(this._conn.Configuration, "数据库连接不能为空");
-			this._conn.GetServer(this._conn.Configuration.Split(new char[]
+			//var endpoint = _conn.GetEndPoints();
+			//var server = _conn.GetServer(endpoint.First());
+			var server = this._conn.GetServer(this._conn.Configuration.Split(new char[]
 			{
 				','
-			})[0], null).FlushDatabase(dbNum, CommandFlags.None);
+			})[0], null);
+			if (clearAll)
+			{
+				server.FlushAllDatabases(CommandFlags.None);
+			}
+			else
+			{
+				server.FlushDatabase(dbNum, CommandFlags.None);
+			}
 		}
-
-		/// <summary>
-		/// 清除数据库中所有值
-		/// </summary>
-		public void Clear()
+		public async Task<string> GetAsync(string key)
 		{
-			//this._conn.GetServer("", 111, null).FlushDatabase(DbNum, CommandFlags.None);
-			var endpoint = _conn.GetEndPoints();
-			var server = _conn.GetServer(endpoint.First());
-			server.FlushAllDatabases(CommandFlags.None);
+			key = this.AddSysCustomKey(key);
+			return await this.Do((IDatabase db) => db.StringGetAsync(key, CommandFlags.None));
 		}
 
 		/// <summary>
@@ -116,7 +139,9 @@ namespace Hx.Sdk.NetCore.Cache
 		public async Task<T> GetAsync<T>(string key)
 		{
 			key = this.AddSysCustomKey(key);
-			return JsonConvert.DeserializeObject<T>(await this.Do<Task<RedisValue>>((IDatabase db) => db.StringGetAsync(key, CommandFlags.None)));
+			var value = await this.Do(db => db.StringGetAsync(key, CommandFlags.None));
+			if (!value.HasValue) return default;
+			return JsonConvert.DeserializeObject<T>(value);
 		}
 
 		/// <summary>
@@ -134,6 +159,12 @@ namespace Hx.Sdk.NetCore.Cache
 			return await this.Do<Task<bool>>((IDatabase db) => db.StringSetAsync(key, json, expiry, When.Always, CommandFlags.None));
 		}
 
+		public async Task<bool> KeyExistsAsync(string key)
+		{
+			key = this.AddSysCustomKey(key);
+			return await this.Do<Task<bool>>(db => db.KeyExistsAsync(key, CommandFlags.None));
+		}
+
 		/// <summary>
 		/// 移除值，异步
 		/// </summary>
@@ -148,26 +179,24 @@ namespace Hx.Sdk.NetCore.Cache
 		/// <summary>
 		/// 清除某个数据库中的数据
 		/// </summary>
-		/// <param name="dbNum"></param>
-		public async Task RemoveDbAsync(int dbNum)
+		/// <param name="dbNum">如果是清除摸个数据库，填写编号</param>
+		/// <param name="clearAll">清除所有，为true时，此时dbNum参数没用</param>
+		public async Task ClearDbAsync(int dbNum,bool clearAll = false)
 		{
 			ErrorHelper.ThrowIfTrue(dbNum < 0 && dbNum > 15, "redis数据库编号范围在0-15之间");
 			ErrorHelper.ThrowIfNullOrEmpty(this._conn.Configuration, "数据库连接不能为空");
-			await this._conn.GetServer(this._conn.Configuration.Split(new char[]
+			var server = this._conn.GetServer(this._conn.Configuration.Split(new char[]
 			{
 				','
-			})[0], null).FlushDatabaseAsync(dbNum, CommandFlags.None);
-		}
-
-		/// <summary>
-		/// 清除数据库中所有值
-		/// </summary>
-		/// <returns></returns>
-		public async Task ClearAsync()
-		{
-			var endpoint = _conn.GetEndPoints();
-			var server = _conn.GetServer(endpoint.First());
-			await server.FlushAllDatabasesAsync(CommandFlags.None);
+			})[0], null);
+			if (clearAll)
+			{
+				await	server.FlushAllDatabasesAsync(CommandFlags.None);
+			}
+			else
+			{
+				await	server.FlushDatabaseAsync(dbNum, CommandFlags.None);
+			}
 		}
 
 		/// <summary>
@@ -199,6 +228,6 @@ namespace Hx.Sdk.NetCore.Cache
 		{
 			this._conn.Dispose();
 		}
-
-	}
+      
+    }
 }

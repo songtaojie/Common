@@ -72,7 +72,7 @@ namespace Hx.Sdk.NetCore.Extensions
 					break;
 				}
 			}
-			ErrorHelper.ThrowIfFalse(isMatch, string.Format("This field {0} does not exist", fieldName));
+			ErrorHelper.ThrowIfFalse(isMatch, string.Format("This Sort field 【{0}】 does not exist", fieldName));
 			ParameterExpression param = Expression.Parameter(type, orderField);
 			Expression orderFieldExp = Expression.Property(param, orderField);
 			Expression expr = Expression.Call(typeof(Queryable), methodName, types,
