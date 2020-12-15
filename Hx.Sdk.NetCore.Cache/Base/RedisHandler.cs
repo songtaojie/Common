@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.Common.Helper;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -107,8 +106,8 @@ namespace Hx.Sdk.NetCore.Cache
 		/// <param name="clearAll">清除所有，为true时，此时dbNum参数没用</param>
 		public void ClearDb(int dbNum, bool clearAll = false)
 		{
-			ErrorHelper.ThrowIfTrue(dbNum < 0 && dbNum > 15, "redis数据库编号范围在0-15之间");
-			ErrorHelper.ThrowIfNullOrEmpty(this._conn.Configuration, "数据库连接不能为空");
+			if (dbNum < 0 && dbNum > 15) throw new Exception("redis数据库编号范围在0-15之间");
+			if (string.IsNullOrEmpty(this._conn.Configuration)) throw new Exception("数据库连接不能为空");
 			//var endpoint = _conn.GetEndPoints();
 			//var server = _conn.GetServer(endpoint.First());
 			var server = this._conn.GetServer(this._conn.Configuration.Split(new char[]
@@ -183,8 +182,8 @@ namespace Hx.Sdk.NetCore.Cache
 		/// <param name="clearAll">清除所有，为true时，此时dbNum参数没用</param>
 		public async Task ClearDbAsync(int dbNum,bool clearAll = false)
 		{
-			ErrorHelper.ThrowIfTrue(dbNum < 0 && dbNum > 15, "redis数据库编号范围在0-15之间");
-			ErrorHelper.ThrowIfNullOrEmpty(this._conn.Configuration, "数据库连接不能为空");
+			if (dbNum < 0 && dbNum > 15) throw new Exception("redis数据库编号范围在0-15之间");
+			if (string.IsNullOrEmpty(this._conn.Configuration)) throw new Exception("数据库连接不能为空");
 			var server = this._conn.GetServer(this._conn.Configuration.Split(new char[]
 			{
 				','

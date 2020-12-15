@@ -1,11 +1,10 @@
-﻿using Hx.Sdk.NetCore.Config;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.ServicesExtension
+namespace Hx.Sdk.NetCore.Config
 {
     public static class AppSettingsSetup
     {

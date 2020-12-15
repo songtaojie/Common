@@ -1,13 +1,9 @@
-﻿using Hx.Sdk.NetCore.Config;
-using Microsoft.Extensions.Hosting;
-using Hx.Sdk.Common.Extensions;
+﻿using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
-namespace Hx.Sdk.NetCore
+namespace Hx.Sdk.NetCore.Helper
 {
     /// <summary>
     /// Web管理类
@@ -29,8 +25,10 @@ namespace Hx.Sdk.NetCore
             }
             else
             {
-                WebRootPath = propInfo.GetValue(env).ObjToString();
+                object rootPath = propInfo.GetValue(env);
+                WebRootPath = rootPath?.ToString().Trim();
             }
+            if (string.IsNullOrEmpty(WebRootPath)) throw new Exception("获取web应用程序根路径失败");
         }
         /// <summary>
         /// web应用程序根路径

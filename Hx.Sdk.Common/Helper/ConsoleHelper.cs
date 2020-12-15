@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.Helper
+namespace Hx.Sdk.Common.Helper
 {
     /// <summary>
     /// 控制台帮助类

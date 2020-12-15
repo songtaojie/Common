@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using Hx.Sdk.Common.Extensions;
 using System.Text;
 using System.Security.Claims;
 
@@ -93,7 +92,9 @@ namespace Hx.Sdk.NetCore.Context
         /// <returns></returns>
         public string GetToken()
         {
-            return HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
+            var auth = HttpContext.Request.Headers["Authorization"];
+            if (Microsoft.Extensions.Primitives.StringValues.IsNullOrEmpty(auth)) return string.Empty;
+            return auth.ToString().Replace("Bearer ", "");
         }
         /// <summary>
         /// 获取用户信息

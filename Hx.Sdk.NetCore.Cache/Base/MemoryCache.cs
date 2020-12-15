@@ -8,11 +8,11 @@ namespace Hx.Sdk.NetCore.Cache
     /// <summary>
     /// 内置的缓存对象
     /// </summary>
-    internal class MemoryCaching : ICaching
+    internal class MemoryCache : IMemoryCache
     {
-        private readonly IMemoryCache _cache;
+        private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
         //还是通过构造函数的方法，获取
-        public MemoryCaching(IMemoryCache cache)
+        public MemoryCache(Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
         {
             _cache = cache;
         }

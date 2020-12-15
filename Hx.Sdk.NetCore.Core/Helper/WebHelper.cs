@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Hx.Sdk.NetCore
+namespace Hx.Sdk.NetCore.Helper
 {
     /// <summary>
     /// web帮助类

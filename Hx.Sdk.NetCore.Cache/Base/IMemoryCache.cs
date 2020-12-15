@@ -7,7 +7,7 @@ namespace Hx.Sdk.NetCore.Cache
     /// <summary>
     /// 内置缓存接口
     /// </summary>
-    public interface ICaching
+    public interface IMemoryCache
     {
         /// <summary>
         /// 根据缓存的键获取对象

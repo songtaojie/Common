@@ -2,8 +2,6 @@
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hx.Sdk.NetCore.Config
 {
