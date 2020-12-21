@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.Context
+namespace Hx.Sdk.NetCore.Core
 {
     /// <summary>
     /// HttpContext的一个管理类

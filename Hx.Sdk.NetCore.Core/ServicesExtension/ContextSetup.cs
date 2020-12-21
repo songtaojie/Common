@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.NetCore.Context;
+﻿using Hx.Sdk.NetCore.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;

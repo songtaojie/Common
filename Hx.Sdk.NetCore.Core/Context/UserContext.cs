@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Security.Claims;
 
-namespace Hx.Sdk.NetCore.Context
+namespace Hx.Sdk.NetCore.Core
 {
     /// <summary>
     /// 用户上下文操作类
