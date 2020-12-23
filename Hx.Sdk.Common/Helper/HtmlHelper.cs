@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Hx.Sdk.NetCore.Helper
+namespace Hx.Sdk.Common.Helper
 {
     /// <summary>
-    /// web帮助类
+    /// Html帮助类
     /// </summary>
-    public static class WebHelper
+    public static class HtmlHelper
     {
-        
+
         #region Html
         /// <summary>
         ///从html文本中获取图片链接

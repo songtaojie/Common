@@ -1,6 +1,5 @@
 ﻿using Hx.Sdk.NetCore.Core;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
 
 namespace Hx.Sdk.NetCore.Core
@@ -13,7 +12,7 @@ namespace Hx.Sdk.NetCore.Core
         /// 使用时只需要在构造函数注入IUserContext即可
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddUserContextSetup(this IServiceCollection services, IHostEnvironment env)
+        public static IServiceCollection AddUserContextSetup(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddHttpContextAccessor();

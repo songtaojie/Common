@@ -1,11 +1,10 @@
-﻿using Hx.Sdk.NetCore.Helper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.Core
+namespace Hx.Sdk.NetCore.Config
 {
     public static class WebManageSetup
     {

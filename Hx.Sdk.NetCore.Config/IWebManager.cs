@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.Helper
+namespace Hx.Sdk.NetCore.Config
 {
     /// <summary>
     /// Web管理类

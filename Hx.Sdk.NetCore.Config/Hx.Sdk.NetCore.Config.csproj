@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>songtaojie</Authors>
     <Description>.Net Core配置帮助类</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
