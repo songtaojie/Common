@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>songtaojie</Authors>
+    <Description>.Net Core核心类</Description>
   </PropertyGroup>
 
   <ItemGroup>
