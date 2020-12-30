@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,32 +13,59 @@ namespace Hx.Sdk.NetFramework.AutoMapper
     /// </summary>
     public class MapperManager
     {
-        /// <summary>
-        /// 一个委托在Build之前会执行当前委托
-        /// </summary>
-        public static event Action<IMapperConfigurationExpression> Config;
         private static IMapper _mapper;
         private static readonly object lockObj = new object();
         /// <summary>
+        /// 连接缓存集合
+        /// </summary>
+        private static readonly ConcurrentDictionary<string, IMapper> MapCache = new ConcurrentDictionary<string, IMapper>();
+        /// <summary>
         /// 初始化
         /// </summary>
-        public static void Init()
+        public static void InitWeb(Action<IMapperConfigurationExpression> config)
         {
+            var key = "webmapper";
+            MapCache.TryGetValue(key, out _mapper);
             if (_mapper == null)
             {
                 lock (lockObj)
                 {
                     if (_mapper == null)
                     {
-                        var config = new MapperConfiguration(cfg => {
+                        var mapperConfig = new MapperConfiguration(cfg => {
                             cfg.AddProfile<MyMapperProfile>();
-                            Config?.Invoke(cfg);
+                            config?.Invoke(cfg);
                         });
-                        _mapper = config.CreateMapper();
+                        _mapper = mapperConfig.CreateMapper();
+                        MapCache.TryAdd(key, _mapper);
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public static void Init(Action<IMapperConfigurationExpression> config)
+        {
+            var key = "mapper";
+            MapCache.TryGetValue(key, out _mapper);
+            if (_mapper == null)
+            {
+                lock (lockObj)
+                {
+                    if (_mapper == null)
+                    {
+                        var mapperConfig = new MapperConfiguration(cfg => {
+                            config?.Invoke(cfg);
+                        });
+                        _mapper = mapperConfig.CreateMapper();
+                        MapCache.TryAdd(key, _mapper);
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// 数据映射
@@ -47,7 +75,7 @@ namespace Hx.Sdk.NetFramework.AutoMapper
         /// <returns></returns>
         public static TDestination Map<TDestination>(object source)
         {
-            Init();
+            if (_mapper == null) throw new Exception("请先初始化Mapper");
             return _mapper.Map<TDestination>(source);
         }
 
@@ -60,7 +88,7 @@ namespace Hx.Sdk.NetFramework.AutoMapper
         /// <returns></returns>
         public static TDestination Map<TSource, TDestination>(TSource source)
         {
-            Init();
+            if (_mapper == null) throw new Exception("请先初始化Mapper");
             return _mapper.Map<TSource, TDestination>(source);
         }
     }

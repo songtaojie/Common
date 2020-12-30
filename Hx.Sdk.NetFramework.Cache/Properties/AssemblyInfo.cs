@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Hx.Sdk.NetFramework.Cache")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription(".NetFramework缓存帮助类")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Hx.Sdk.NetFramework.Cache")]

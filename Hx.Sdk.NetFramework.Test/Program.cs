@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Autofac;
+using Hx.Sdk.NetFramework.Autofac;
+using Hx.Sdk.NetFramework.Cache;
+using Hx.Sdk.NetFramework.Test.Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +14,16 @@ namespace Hx.Sdk.NetFramework.Test
     {
         static void Main(string[] args)
         {
+            ContainerManager manager = new ContainerManager();
+            manager.BeforeBuild += builder =>
+            {
+                builder.RegisterType<TestServices>().As<ITestService>();
+            };
+            manager.Build(null);
+            var service =  ContainerManager.Resolve<ITestService>();
+            service.TestAutofac();
+            Console.WriteLine("end");
+            Console.ReadLine();
         }
     }
 }

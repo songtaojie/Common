@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Hx.Sdk.NetFramework.Logs")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription(".NetFramework log的帮助类")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("songtaojie")]
 [assembly: AssemblyProduct("Hx.Sdk.NetFramework.Logs")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]

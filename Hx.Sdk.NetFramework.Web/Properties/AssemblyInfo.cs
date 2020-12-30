@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Hx.Sdk.NetFramework.Web")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription(".Net Framework Web帮助类")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("songtaojie")]
 [assembly: AssemblyProduct("Hx.Sdk.NetFramework.Web")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]

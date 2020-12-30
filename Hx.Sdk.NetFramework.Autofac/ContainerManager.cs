@@ -14,27 +14,25 @@ namespace Hx.Sdk.NetFramework.Autofac
     /// </summary>
     public class ContainerManager
     {
-        private static ContainerBuilder builder;
-        static ContainerManager()
-        {
-            builder = new ContainerBuilder();
-        }
-        private static IContainer _container;
+        private static ContainerBuilder _builder;
+
         /// <summary>
-        /// 设置容器
+        /// 获取当前容器的builder
         /// </summary>
-        /// <param name="container"></param>
-        public static void SetContainer(IContainer container)
+        public static ContainerBuilder Builder
         {
-            _container = container;
+            get
+            {
+                if (_builder == null) _builder = new ContainerBuilder();
+                return _builder;
+            }
         }
+
         /// <summary>
         /// 创建，连接依赖关系并管理一组组件的生命周期的容器
         /// </summary>
-        public static IContainer GetContainer()
-        {
-            return _container;
-        }
+        public static IContainer Container { get; private set; }
+
         /// <summary>
         /// 从上下文中检索服务。
         /// </summary>
@@ -42,7 +40,7 @@ namespace Hx.Sdk.NetFramework.Autofac
         /// <returns></returns>
         public static T Resolve<T>()
         {
-            return _container.Resolve<T>();
+            return Container.Resolve<T>();
         }
         /// <summary>
         /// 从上下文中检索服务。
@@ -51,45 +49,49 @@ namespace Hx.Sdk.NetFramework.Autofac
         /// <returns></returns>
         public static object Resolve(Type type)
         {
-            return _container.Resolve(type);
+            return Container.Resolve(type);
         }
-        /// <summary>
-        /// 一个委托在Build之前会执行当前委托
-        /// </summary>
-        public event Action<ContainerBuilder> BeforeRegister;
-        /// <summary>
-        /// 获取当前容器的builder
-        /// </summary>
-        public static ContainerBuilder Builder
-        {
-            get
-            {
-                return builder;
-            }
-        }
+
         /// <summary>
         /// 在应用程序启动时进行服务的注入
+        /// 如果要每次获取一个新实例，则类需要继承ITransientDependency
+        /// 如果要注入单例，则类需要继承ISingletonDependency
+        /// 如果同一个请求获取一个实例，则类需要继承IScopedDependency
         /// </summary>
-        public void Start()
+        /// <param name="assemblyList">要注入的程序集</param>
+        /// <param name="beforeBuild">一个委托在Build之前会执行当前委托</param>
+        public void Build(IEnumerable<Assembly> assemblyList, Action<ContainerBuilder> beforeBuild = null)
         {
-            Type baseType = typeof(ITransientDependency);
-            // 获取所有相关类库的程序集
+            if (assemblyList != null && assemblyList.Count() >= 0)
+            {
+                Type tdType = typeof(ITransientDependency);
+                // 获取所有相关类库的程序集
+                var assemblies = assemblyList.ToArray();
+                Builder.RegisterAssemblyTypes(assemblies).Where(type => tdType.IsAssignableFrom(type) && !type.IsAbstract)
+                    .AsImplementedInterfaces().InstancePerLifetimeScope();//每次解析获得新实例
+
+                Type singletonType = typeof(ISingletonDependency);
+                Builder.RegisterAssemblyTypes(assemblies).Where(type => singletonType.IsAssignableFrom(type) && !type.IsAbstract)
+                    .AsImplementedInterfaces().SingleInstance();// 保证对象生命周期基于单例
+
+                Type requestType = typeof(IScopedDependency);
+                Builder.RegisterAssemblyTypes(assemblies).Where(type => singletonType.IsAssignableFrom(type) && !type.IsAbstract)
+                    .AsImplementedInterfaces().InstancePerRequest();// 保证对象生命周期基于单例
+            }
+            beforeBuild?.Invoke(Builder);
+            Container = Builder.Build();
+        }
+
+        /// <summary>
+        /// 在应用程序启动时进行服务的注入，对于web应用程序使用该方法，可以直接进行autofac的初始化
+        /// 如果要每次获取一个新实例，则类需要继承ITransientDependency
+        /// 如果要注入单例，则类需要继承ISingletonDependency
+        /// 如果同一个请求获取一个实例，则类需要继承IScopedDependency
+        /// </summary>
+        public void BuildWeb(Action<ContainerBuilder> beforeBuild = null)
+        {
             Assembly[] assemblies = RuntimeHelper.GetAllAssembly().ToArray();
-            builder.RegisterAssemblyTypes(assemblies).Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract)
-                .AsImplementedInterfaces().InstancePerLifetimeScope();//每次解析获得新实例
-
-            Type singletonType = typeof(ISingletonDependency);
-            builder.RegisterAssemblyTypes(assemblies).Where(type => singletonType.IsAssignableFrom(type) && !type.IsAbstract)
-                .AsImplementedInterfaces().SingleInstance();// 保证对象生命周期基于单例
-
-            Type requestType = typeof(IScopedDependency);
-            builder.RegisterAssemblyTypes(assemblies).Where(type => singletonType.IsAssignableFrom(type) && !type.IsAbstract)
-                .AsImplementedInterfaces().InstancePerRequest();// 保证对象生命周期基于单例
-
-            // builder.RegisterAssemblyModules(assemblies);//所有继承module中的类都会被注册
-            BeforeRegister?.Invoke(builder);
-            IContainer container = builder.Build();
-            SetContainer(container);
+            Build(assemblies, beforeBuild);
         }
     }
 }
