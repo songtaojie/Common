@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Hx.Sdk.NetFramework.AutoMapper
 {
     /// <summary>
-    /// 数据模型映射帮助方法
+    /// 数据模型映射帮助方法，使用之前先进行初始化
     /// </summary>
     public class MapperManager
     {
@@ -20,9 +20,10 @@ namespace Hx.Sdk.NetFramework.AutoMapper
         /// </summary>
         private static readonly ConcurrentDictionary<string, IMapper> MapCache = new ConcurrentDictionary<string, IMapper>();
         /// <summary>
-        /// 初始化
+        /// 初始化Web中要使用的Automapper，默认会自动扫描全部程序集，来进行映射
+        /// 实现了IAutoMapper接口的类
         /// </summary>
-        public static void InitWeb(Action<IMapperConfigurationExpression> config)
+        public static void InitWebMapper(Action<IMapperConfigurationExpression> config = null)
         {
             var key = "webmapper";
             MapCache.TryGetValue(key, out _mapper);
@@ -44,9 +45,9 @@ namespace Hx.Sdk.NetFramework.AutoMapper
         }
 
         /// <summary>
-        /// 初始化
+        /// 初始化automapper
         /// </summary>
-        public static void Init(Action<IMapperConfigurationExpression> config)
+        public static void InitMapper(Action<IMapperConfigurationExpression> config)
         {
             var key = "mapper";
             MapCache.TryGetValue(key, out _mapper);

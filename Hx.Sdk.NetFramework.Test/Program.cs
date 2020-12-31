@@ -15,11 +15,14 @@ namespace Hx.Sdk.NetFramework.Test
         static void Main(string[] args)
         {
             ContainerManager manager = new ContainerManager();
-            manager.BeforeBuild += builder =>
+            //manager.BeforeBuild += builder =>
+            //{
+            //    builder.RegisterType<TestServices>().As<ITestService>();
+            //};
+            manager.Build(null,builder => 
             {
                 builder.RegisterType<TestServices>().As<ITestService>();
-            };
-            manager.Build(null);
+            });
             var service =  ContainerManager.Resolve<ITestService>();
             service.TestAutofac();
             Console.WriteLine("end");
