@@ -6,6 +6,50 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210103094927_InitTable.cs" />
+    <Compile Remove="Migrations\20210103094927_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103095231_InitTable.cs" />
+    <Compile Remove="Migrations\20210103095231_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103095840_InitTable.cs" />
+    <Compile Remove="Migrations\20210103095840_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103100720_InitTable.cs" />
+    <Compile Remove="Migrations\20210103100720_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103101857_InitTable.cs" />
+    <Compile Remove="Migrations\20210103101857_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103102032_InitTable.cs" />
+    <Compile Remove="Migrations\20210103102032_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103102358_InitTable.cs" />
+    <Compile Remove="Migrations\20210103102358_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103105208_InitTable.cs" />
+    <Compile Remove="Migrations\20210103105208_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103115030_InitTable.cs" />
+    <Compile Remove="Migrations\20210103115030_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103120128_InitTable.cs" />
+    <Compile Remove="Migrations\20210103120128_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103134047_InitTable.cs" />
+    <Compile Remove="Migrations\20210103134047_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103135518_InitTable.cs" />
+    <Compile Remove="Migrations\20210103135518_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103143619_InitTable.cs" />
+    <Compile Remove="Migrations\20210103143619_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103143721_InitTable.cs" />
+    <Compile Remove="Migrations\20210103143721_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103144109_InitTable.cs" />
+    <Compile Remove="Migrations\20210103144109_InitTable.Designer.cs" />
+    <Compile Remove="Migrations\20210103144453_InitTable.cs" />
+    <Compile Remove="Migrations\20210103144453_InitTable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hx.Sdk.EntityFrameworkCore\Hx.Sdk.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Hx.Sdk.NetCore.ImageSharp\Hx.Sdk.NetCore.ImageSharp.csproj" />
   </ItemGroup>
 
@@ -13,6 +57,10 @@
     <None Update="fb.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
