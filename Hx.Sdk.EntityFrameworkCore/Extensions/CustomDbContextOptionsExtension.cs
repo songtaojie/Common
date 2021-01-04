@@ -20,7 +20,7 @@ namespace Hx.Sdk.EntityFrameworkCore
         /// <param name="services"></param>
         public void ApplyServices(IServiceCollection services)
         {
-            Console.WriteLine("ApplyServices");
+            //Console.WriteLine("ApplyServices");
             services.AddSingleton<IConventionSetPlugin, CustomConventionSetPlugin>();
         }
         /// <summary>

@@ -32,7 +32,7 @@ namespace Hx.Sdk.EntityFrameworkCore.Convention
         /// <param name="context"></param>
         protected override void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, DecimalPrecisionAttribute attribute, MemberInfo clrMember, IConventionContext context)
         {
-            Console.WriteLine("开始ProcessPropertyAdded");
+            //Console.WriteLine("开始ProcessPropertyAdded");
             propertyBuilder.HasPrecision(attribute.Precision, attribute.Scale);
         }
     }

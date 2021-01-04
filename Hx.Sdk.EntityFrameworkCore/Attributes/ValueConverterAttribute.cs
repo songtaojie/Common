@@ -24,10 +24,20 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
         public ValueConverterAttribute(Type type):this(type,null)
         {
         }
-
+        /// <summary>
+        /// 值转换器
+        /// </summary>
+        /// <param name="type">值转换器的类型</param>
+        /// <param name="param">值转换器的参数</param>
         public ValueConverterAttribute(Type type, object param):this(type,param,null)
         {
         }
+        /// <summary>
+        /// 值转换器，两个参数时
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <param name="param1">值转换器参数</param>
+        /// <param name="param2">值转换器参数</param>
         public ValueConverterAttribute(Type type, object param1,object param2)
         {
             ConventionType = type;
@@ -105,7 +115,6 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
             {
                 object toIntInstance = Activator.CreateInstance(ConventionType, Params == null? new object[] { mappingHints } : newParams);
                 return toIntInstance as ValueConverter;
-                //object toIntInstance = CreateObject(ConventionType, Params ?? (new object[] { mappingHints }));
             }
         }
 
