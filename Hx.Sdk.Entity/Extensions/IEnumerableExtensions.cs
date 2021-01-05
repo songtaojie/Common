@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Hx.Sdk.Entity.Extensions
 {
+	/// <summary>
+	/// IEnumerable扩展类
+	/// </summary>
 	public static class IEnumerableExtensions
 	{
 		/// <summary>

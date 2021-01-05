@@ -85,6 +85,11 @@ namespace Hx.Sdk.Common.Extensions
             return type.IsGenericType(typeof(Nullable<>));
         }
 
+        /// <summary>
+        /// 获取Nullable类型
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Type GetTypeOfNullable(this Type type)
         {
             return type.GetTypeInfo().GenericTypeArguments[0];
@@ -176,16 +181,32 @@ namespace Hx.Sdk.Common.Extensions
             return type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
         }
 
+        /// <summary>
+        /// 获取IEnumerable的类型
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Type GetIEnumerableType(this Type type)
         {
             return type.GetGenericInterface(typeof(IEnumerable<>));
         }
 
+        /// <summary>
+        /// 获取Dictionary的类型
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Type GetDictionaryType(this Type type)
         {
             return type.GetGenericInterface(typeof(IDictionary<,>));
         }
 
+        /// <summary>
+        /// 获取泛型接口
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="genericInterface"></param>
+        /// <returns></returns>
         public static Type GetGenericInterface(this Type type, Type genericInterface)
         {
             if (type.IsGenericType(genericInterface))
@@ -211,6 +232,11 @@ namespace Hx.Sdk.Common.Extensions
             return typeList;
         }
 
+        /// <summary>
+        /// 获取ElementType
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Type GetGenericElementType(this Type type)
         {
             if (type.HasElementType)

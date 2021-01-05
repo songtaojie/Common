@@ -19,10 +19,9 @@ namespace Hx.Sdk.NetCore.ImageSharp
         private static readonly string[] _imageExtList = new string[] { ".gif", ".jpg", ".jpeg", ".png", ".bmp", ".icon" };
         private static readonly ConcurrentDictionary<string, Font> _fontDic = new ConcurrentDictionary<string, Font>();
         /// <summary>
-        /// 根据扩展名判断是否是图片
+        /// 根据文件流判断是否是图片
         /// </summary>
-        /// <param name="ext">文件扩展</param>
-        /// <param name="hasPoint">是否包含点</param>
+        /// <param name="stream">文件流</param>
         /// <returns></returns>
         public static bool IsImage(Stream stream)
         {

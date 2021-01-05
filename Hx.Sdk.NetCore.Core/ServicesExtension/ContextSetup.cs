@@ -4,6 +4,9 @@ using System;
 
 namespace Hx.Sdk.NetCore.Core
 {
+    /// <summary>
+    /// UserContext的启动扩展类
+    /// </summary>
     public static class ContextSetup
     {
         /// <summary>

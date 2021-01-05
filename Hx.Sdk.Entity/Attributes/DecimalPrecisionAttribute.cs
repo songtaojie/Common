@@ -12,7 +12,7 @@ namespace Hx.Sdk.Entity.Attributes
     {
         #region Field
         private byte _precision = 18;
-        public byte _scale = 4;
+        private byte _scale = 4;
         #endregion
 
         #region Construct

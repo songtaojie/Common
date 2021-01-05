@@ -210,6 +210,9 @@ namespace Hx.Sdk.NetFramework.Web
         /// <param name="letter">水印文字</param>
         /// <param name="color">颜色</param>
         /// <param name="location">水印位置</param>
+        /// <param name="adjustSize">调整大小</param>
+        /// <returns></returns>
+
         public static string LetterWatermark(string path, int size, string letter, Color color, WaterLocation location,bool adjustSize = true)
         {
             #region

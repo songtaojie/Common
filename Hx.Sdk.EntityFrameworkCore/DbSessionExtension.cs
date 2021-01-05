@@ -12,11 +12,12 @@ namespace Hx.Sdk.EntityFrameworkCore
         /// <summary>
         /// 添加数据库上下文
         /// </summary>
-        /// <param name="services">服务集合</param>
+        /// <typeparam name="T">数据库上下文实现类</typeparam>
+        /// <param name="services">服务</param>
         public static void AddDbSession<T>(this IServiceCollection services)where T:DbContext
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddDbContext<T>();
+            services.AddDbContext<DbContext, T>();
             services.AddScoped<IDbSession, DbSession>();
         }
     }

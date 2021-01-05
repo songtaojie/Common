@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Hx.Sdk.Entity.Page
 {
+    /// <summary>
+    /// 分页参数
+    /// </summary>
     public class BasePageParam
     {
         /// <summary>
@@ -18,13 +21,15 @@ namespace Hx.Sdk.Entity.Page
         /// <summary>
         /// 排序的键
         /// </summary>
-        public string SortKey { get; set; }
-        //
-        // 摘要:
-        //     0 正序 1倒序
+        public string SortKey { get; set; } = string.Empty;
+        /// <summary>
+        /// 0 正序 1倒序
+        /// </summary>
         public SortTypeEnum SortType { get; set; }
     }
-
+    /// <summary>
+    /// 排序类型
+    /// </summary>
     public enum SortTypeEnum
     {
         /// <summary>
