@@ -14,7 +14,7 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
 
         #region Field
         private byte _precision = 18;
-        public byte _scale = 4;
+        private byte _scale = 4;
         #endregion
 
         #region Construct
@@ -36,7 +36,6 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
         /// <summary>
         /// 精确度（默认18）
         /// </summary>
-        [EnumConverter(typeof(EnumToNumberConverter<EnumConventionType,int>))]
         public byte Precision
         {
             get { return this._precision; }

@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Hx.Sdk.EntityFrameworkCore.Extensions
 {
+    /// <summary>
+    /// 类型扩展函数
+    /// </summary>
     public static class TypeExtensions
     {
         /// <summary>

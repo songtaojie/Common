@@ -16,24 +16,14 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
         #endregion
 
         #region Construct
-        public EnumConverterAttribute(Type type)
-        {
-        }
         /// <summary>
-        /// 
+        /// 枚举转换器构造函数
         /// </summary>
-        /// <param name="conventionType"></param>
-        public EnumConverterAttribute(ValueConverter conventionType)
+        /// <param name="conventionType">要把枚举转换成的类型</param>
+        public EnumConverterAttribute(EnumConventionType conventionType)
         {
+            ConventionType = conventionType;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="conventionType"></param>
-        //public EnumToObjectAttribute(EnumConventionType conventionType)
-        //{
-        //    ConventionType = conventionType;
-        //}
         #endregion
 
         #region Property
@@ -41,7 +31,9 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
         /// 类型
         /// </summary>
         public EnumConventionType ConventionType { get; set; } = EnumConventionType.EnumToString;
-
+        /// <summary>
+        /// 转换器
+        /// </summary>
         public ValueConverter ValueConverter { get; set; }
 
         #endregion

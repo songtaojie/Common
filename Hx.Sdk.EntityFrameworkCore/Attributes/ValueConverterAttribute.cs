@@ -21,6 +21,10 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
         #endregion
 
         #region Construct
+        /// <summary>
+        /// 值转换器构造函数
+        /// </summary>
+        /// <param name="type"></param>
         public ValueConverterAttribute(Type type):this(type,null)
         {
         }
@@ -118,7 +122,7 @@ namespace Hx.Sdk.EntityFrameworkCore.Attributes
             }
         }
 
-        public object CreateObject(Type type,params object[] args)
+        private object CreateObject(Type type,params object[] args)
         {
             try
             {

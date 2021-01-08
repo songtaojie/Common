@@ -13,7 +13,7 @@ namespace Hx.Sdk.NetFramework.Cache
     /// <summary>
     /// Memcached的帮助类，需要在web.config或者app.config中配置
     /// </summary>
-    /// <include file='Enyim.xml' path='[@name="Enyim.xml"]'/>
+    /// <include file='Enyim.xml' path='Enyim.xml'/>
     public sealed class MemcachedHelper
     {
         private static MemcachedClient mc = null;

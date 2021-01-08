@@ -4,6 +4,9 @@ using System;
 
 namespace Hx.Sdk.EntityFrameworkCore
 {
+    /// <summary>
+    /// 自定义约束扩展类
+    /// </summary>
     public static class CustomConventionExtension
     {
         /// <summary>
