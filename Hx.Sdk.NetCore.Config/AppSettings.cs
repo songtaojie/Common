@@ -15,7 +15,7 @@ namespace Hx.Sdk.NetCore.Config
         /// <summary>
         /// appsettings.json
         /// </summary>
-        static string Path = "appsettings.json";
+        static readonly string Path = "appsettings.json";
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -26,9 +26,25 @@ namespace Hx.Sdk.NetCore.Config
             //可以直接读目录里的json文件，而不是 bin 文件夹下的，所以不用修改复制属性
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(ContentPath)
-                .Add(new JsonConfigurationSource() { Path = Path, ReloadOnChange = true, Optional = false })
+                .AddJsonFile(Path,true,true)
+                .AddJsonFile(option => 
+                {
+                    option.Path = $"appsettings.{env.EnvironmentName}.json";
+                    option.ReloadOnChange = true;
+                    option.Optional = true;
+                })
                 .Build();
         }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="config">配置</param>
+        internal AppSettings(IConfiguration config)
+        {
+            Configuration = config;
+        }
+
         /// <summary>
         /// 获取连接字符串
         /// </summary>
