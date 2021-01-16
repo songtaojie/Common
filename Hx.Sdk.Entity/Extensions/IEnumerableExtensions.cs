@@ -101,7 +101,7 @@ namespace Hx.Sdk.Entity.Extensions
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="source"></param>
-		/// <param name="pagemodel"></param>
+		/// <param name="param">分页参数</param>
 		/// <returns></returns>
 		public static async Task<PageModel<T>> ToPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
 		{

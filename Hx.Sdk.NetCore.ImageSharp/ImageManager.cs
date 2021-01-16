@@ -67,7 +67,7 @@ namespace Hx.Sdk.NetCore.ImageSharp
         /// <summary>
         /// 获取图片大大小
         /// </summary>
-        /// <param name="imagePath">图片路径</param>
+        /// <param name="stream">图片的流数据</param>
         /// <param name="width">图片宽度</param>
         /// <param name="height">图片高度</param>
         public static void GetImageSize(Stream stream, out int width, out int height)
@@ -146,10 +146,7 @@ namespace Hx.Sdk.NetCore.ImageSharp
         /// 文字水印处理方法
         /// </summary>
         /// <param name="path">图片路径（绝对路径）</param>
-        /// <param name="size">字体大小</param>
-        /// <param name="letter">水印文字</param>
-        /// <param name="color">颜色</param>
-        /// <param name="location">水印位置</param>
+        /// <param name="fontOptions">字体的配置</param>
         public static string MarkLetterWater(string path, Fonts.FontOptions fontOptions)
         {
             #region
@@ -184,7 +181,7 @@ namespace Hx.Sdk.NetCore.ImageSharp
         /// <summary>
         /// 文字水印位置的方法
         /// </summary>
-        /// <param name="location">位置代码</param>
+        /// <param name="fontOptions">字体配置</param>
         /// <param name="imgSize">图片的大小</param>
         /// <param name="width">宽(当水印类型为文字时,传过来的就是字体的大小)</param>
         /// <param name="height">高(当水印类型为文字时,传过来的就是字符的长度)</param>
@@ -329,9 +326,7 @@ namespace Hx.Sdk.NetCore.ImageSharp
         /// 
         /// </summary>
         /// <param name="processingContext"></param>
-        /// <param name="font">字体</param>
-        /// <param name="text">水印文本</param>
-        /// <param name="color">颜色</param>
+        /// <param name="fontOptions">字体配置</param>
         /// <returns></returns>
         private static IImageProcessingContext ApplyScalingWaterMarkSimple(this IImageProcessingContext processingContext,
             FontOptions fontOptions)

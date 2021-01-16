@@ -7,6 +7,7 @@ namespace Hx.Sdk.NetCore.Cache
 {
 	/// <summary>
 	/// redis处理类接口
+	/// 需要在config的AppSetting中配置键为RedisConnection的连接字符串
 	/// </summary>
 	public interface IRedisHandler
 	{
