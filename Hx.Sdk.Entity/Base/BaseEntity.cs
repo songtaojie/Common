@@ -16,6 +16,7 @@ namespace Hx.Sdk.Entity
         /// 主键
         /// </summary>
         [Key]
+        [MaxLength(36)]
         public virtual TKeyType Id
         {
             get;
@@ -31,13 +32,13 @@ namespace Hx.Sdk.Entity
         /// <summary>
         /// 创建人
         /// </summary>
-        [StringLength(36)]
+        [MaxLength(36)]
         public string CreaterId { get; set; } = string.Empty;
 
         /// <summary>
         /// 创建人姓名
         /// </summary>
-        [StringLength(36)]
+        [MaxLength(36)]
         public string Creater { get; set; } = string.Empty;
         #endregion
 
@@ -50,11 +51,13 @@ namespace Hx.Sdk.Entity
         /// <summary>
         /// 最后修改人
         /// </summary>
+        [MaxLength(36)]
         public string LastModifier { get; set; } = string.Empty;
 
         /// <summary>
         /// 最后修改人的id
         /// </summary>
+        [MaxLength(36)]
         public string LastModifierId { get; set; } = string.Empty;
 
         #region 实体操作

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Hx.Sdk.Entity.Base
+namespace Hx.Sdk.Entity
 {
     /// <summary>
     ///  该基类封装了删除，禁用等状态字段
@@ -30,6 +30,7 @@ namespace Hx.Sdk.Entity.Base
         /// 是否禁用,使用char字段存储，这样查询时不用进行取非的判断，所有都用等于判断
         /// Y:代表禁用，N代表没禁用，默认值为N
         /// </summary>
+        [Column(TypeName = "char(1)")]
         public virtual string Disable { get; set; } = No;
         #endregion
 

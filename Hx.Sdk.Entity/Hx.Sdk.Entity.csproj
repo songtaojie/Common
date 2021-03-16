@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>songtaojie</Authors>
-    <Description>提供常用的一些类，1.修改了Entity实体以及baseentity</Description>
-    <Version>1.0.4</Version>
+    <Description>提供常用的一些类，1.修复字段长度</Description>
+    <Version>1.0.4.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
