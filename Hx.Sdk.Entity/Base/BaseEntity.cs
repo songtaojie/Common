@@ -7,15 +7,16 @@ using System.Text;
 namespace Hx.Sdk.Entity
 {
     /// <summary>
-    /// 基础的实体类，封装了公共的字段,主键是string类型的
+    ///  基础的实体类，封装了创建，编辑的公共字段,
     /// </summary>
-    public abstract class BaseEntity : BaseModel, IEntity<string>
+    /// <typeparam name="TKeyType">主键的类型</typeparam>
+    public abstract class BaseEntity<TKeyType> : BaseModel, IEntity<TKeyType>
     {
         /// <summary>
         /// 主键
         /// </summary>
         [Key]
-        public string Id
+        public virtual TKeyType Id
         {
             get;
             set;
@@ -28,43 +29,62 @@ namespace Hx.Sdk.Entity
         public virtual DateTime CreateTime { get; set; } = DateTime.Now;
 
         /// <summary>
-        /// 这条记录属于哪个用户
+        /// 创建人
         /// </summary>
-        [StringLength(100)]
-        public virtual string UserId { get; set; }
+        [StringLength(36)]
+        public string CreaterId { get; set; } = string.Empty;
+
         /// <summary>
-        /// 用户的登录名称
+        /// 创建人姓名
         /// </summary>
-        [StringLength(50)]
-        public virtual string UserName { get; set; }
+        [StringLength(36)]
+        public string Creater { get; set; } = string.Empty;
         #endregion
 
-        #region 删除
-
-        /// <summary>
-        /// 是否删除
-        /// </summary>
-        [Column(TypeName = "char(1)")]
-        public virtual string Delete
-        {
-            get; set;
-        } = "N";
-        /// <summary>
-        /// 删除人ID
-        /// </summary>
-        [StringLength(100)]
-        public virtual string DeletelUserId { get; set; }
-
-        /// <summary>
-        /// 删除时间
-        /// </summary>
-        [DataType(DataType.DateTime)]
-        public virtual DateTime? DeleteTime { get; set; }
         /// <summary>
         /// 最后更新时间
         /// </summary>
         [DataType(DataType.DateTime)]
         public virtual DateTime? LastModifyTime { get; set; }
+
+        /// <summary>
+        /// 最后修改人
+        /// </summary>
+        public string LastModifier { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 最后修改人的id
+        /// </summary>
+        public string LastModifierId { get; set; } = string.Empty;
+
+        #region 实体操作
+
+        /// <summary>
+        /// 添加创建人信息
+        /// </summary>
+        /// <param name="createrId">创建人id</param>
+        /// <param name="creater">创建人姓名</param>
+        public virtual BaseEntity<TKeyType> SetCreater(string createrId, string creater)
+        {
+            CreaterId = createrId;
+            Creater = creater;
+            CreateTime = DateTime.Now;
+            SetModifier(createrId, creater);
+            return this;
+        }
+
+        /// <summary>
+        /// 添加修改人信息
+        /// </summary>
+        /// <param name="modifierId">修改者id</param>
+        /// <param name="modifier">修改者姓名</param>
+        public virtual BaseEntity<TKeyType> SetModifier(string modifierId, string modifier)
+        {
+            LastModifierId = modifierId;
+            LastModifier = modifier;
+            LastModifyTime = DateTime.Now;
+            return this;
+        }
 
         #endregion
     }

@@ -7,12 +7,12 @@ namespace Hx.Sdk.Entity
     /// <summary>
     /// 主键接口
     /// </summary>
-    /// <typeparam name="T">主键的类型</typeparam>
-    public interface IEntity<T>
+    /// <typeparam name="TKeyType">主键的类型</typeparam>
+    public interface IEntity<TKeyType>
     {
         /// <summary>
         /// 主键
         /// </summary>
-        T Id { get; set; }
+        TKeyType Id { get; set; }
     }
 }
