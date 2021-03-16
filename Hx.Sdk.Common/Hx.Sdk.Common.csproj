@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>E:\Develop\Git\Common\Hx.Sdk.Common\Hx.Sdk.Common.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\Hx.Sdk.Common.xml</DocumentationFile>
+    <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
