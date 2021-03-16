@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Hx.Sdk.Entity
+namespace Hx.Sdk.Entity.Base
 {
     /// <summary>
-    /// 基础的实体类，封装了公共的字段,主键是string类型的
+    /// 基础的实体类，封装了公共的字段，主键是Long类型的
     /// </summary>
-    public abstract class BaseEntity : BaseModel, IEntity<string>
+    public abstract class BaseLongEntity : BaseModel, IEntity<long>
     {
         /// <summary>
         /// 主键
         /// </summary>
         [Key]
-        public string Id
+        public long Id
         {
             get;
             set;
