@@ -7,15 +7,22 @@ namespace Hx.Sdk.NetCore.Core
     /// <summary>
     /// 
     /// </summary>
-    public static class HxCoreClaimTypes
+    internal static class HxCoreClaimTypes
     {
         /// <summary>
-        /// 
+        /// IdentityServer4的name claim
         /// </summary>
-        public static readonly string NickName = "Hx.NetCore:NickName";
+        public static readonly string Ids4Name = "name";
+    }
+
+    /// <summary>
+    /// Claim的常量值
+    /// </summary>
+    internal static class HxCoreClaimValues
+    {
         /// <summary>
-        /// 当前登录用户是否是管理员
+        /// 管理员的值
         /// </summary>
-        public static readonly string IsAdmin = "Hx.NetCore:IsAdmin";
+        public const string Admin = "Admin";
     }
 }

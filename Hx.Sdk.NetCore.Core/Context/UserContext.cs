@@ -14,6 +14,10 @@ namespace Hx.Sdk.NetCore.Core
     internal class UserContext : IUserContext
     {
         /// <summary>
+        /// 是否使用IdentityServer4
+        /// </summary>
+        internal static bool IsUseIds4 = false;
+        /// <summary>
         /// HttpContext访问器
         /// </summary>
         private IHttpContextAccessor _contextAccessor;
@@ -33,21 +37,44 @@ namespace Hx.Sdk.NetCore.Core
         /// <summary>
         /// 用户的名字
         /// </summary>
-        public string UserName => HttpContext.User.Identity.Name;
+        public string UserName
+        {
+            get
+            { 
+                string name = HttpContext.User.Identity.Name;
+                if (!string.IsNullOrEmpty(name)) return name;
+                string getNameType = IsUseIds4 ? HxCoreClaimTypes.Ids4Name : ClaimTypes.Name;
+               return GetClaimValueByType(getNameType).FirstOrDefault();
+            }
+        }
 
         /// <summary>
-        /// 用户的昵称
+        /// 是否是管理员
         /// </summary>
-        public string NickName => GetClaimValueByType(HxCoreClaimTypes.NickName).FirstOrDefault();
-
+        public bool IsAdmin
+        {
+            get
+            {
+                var claims = GetClaimsIdentity();
+                var isAdmin = claims.Any(c => c.Type == ClaimTypes.Role && c.Value == HxCoreClaimValues.Admin);
+                return IsAuthenticated && isAdmin;
+            }
+        }
         /// <summary>
-        /// 用户的昵称
+        /// Jwt的id
         /// </summary>
-        public bool IsAdmin => GetClaimValueByType<bool>(HxCoreClaimTypes.IsAdmin);
+        public string JwtId => GetClaimValueByType(JwtRegisteredClaimNames.Jti).FirstOrDefault();
+
         /// <summary>
         /// 用户的id
         /// </summary>
-        public string UserId => GetClaimValueByType(JwtRegisteredClaimNames.Jti).FirstOrDefault();
+        public string UserId
+        {
+            get
+            {
+                return GetClaimValueByType(ClaimTypes.NameIdentifier).FirstOrDefault();
+            }
+        }
 
         /// <summary>
         /// 获取cookie的值

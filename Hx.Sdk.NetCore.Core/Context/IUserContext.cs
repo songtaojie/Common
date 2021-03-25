@@ -14,21 +14,29 @@ namespace Hx.Sdk.NetCore.Core
         /// Http上下文
         /// </summary>
         public HttpContext HttpContext { get; }
+
+        /// <summary>
+        /// 是否已授权
+        /// </summary>
+        public bool IsAuthenticated { get; }
+
         /// <summary>
         /// 用户名
         /// </summary>
         public string UserName { get; }
-        /// <summary>
-        /// 昵称名
-        /// </summary>
-        public string NickName { get; }
 
         /// <summary>
-        /// 是否是管理员
+        /// 是否是管理员，判断角色中是否包含Admin的声明
         /// </summary>
         public bool IsAdmin { get; }
+
         /// <summary>
-        /// 用户的id
+        /// 用户的id，取的
+        /// </summary>
+        public string JwtId { get; }
+
+        /// <summary>
+        /// 用户的id,取的ClaimTypes.NameIdentifier值
         /// </summary>
         public string UserId { get; }
 
@@ -45,10 +53,7 @@ namespace Hx.Sdk.NetCore.Core
         /// <param name="cookieName">cookie的键</param>
         /// <returns></returns>
         string GetCookieValue(string cookieName);
-        /// <summary>
-        /// 是否已授权
-        /// </summary>
-        public bool IsAuthenticated { get; }
+       
 
         /// <summary>
         /// 根据claim获取相应的值

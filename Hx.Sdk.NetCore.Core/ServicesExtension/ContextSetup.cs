@@ -15,9 +15,11 @@ namespace Hx.Sdk.NetCore.Core
         /// 使用时只需要在构造函数注入IUserContext即可
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddUserContextSetup(this IServiceCollection services)
+        /// <param name="isUseIds4">是否是使用IdentityServer4认证</param>
+        public static IServiceCollection AddUserContextSetup(this IServiceCollection services,bool isUseIds4 = false)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+            UserContext.IsUseIds4 = isUseIds4;
             services.AddHttpContextAccessor();
             services.AddScoped<IUserContext, UserContext>();
             return services;

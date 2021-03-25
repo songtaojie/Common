@@ -3,8 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>songtaojie</Authors>
-    <Description>.Net Core核心类</Description>
-    <Version>1.0.1</Version>
+    <Description>.Net Core核心类
+1.修改UserContext，添加IdentityServer4的用户名解析</Description>
+    <Version>1.0.1.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
