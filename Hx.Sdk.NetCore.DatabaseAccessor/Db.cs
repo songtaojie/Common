@@ -16,16 +16,6 @@ namespace Furion.DatabaseAccessor
         internal static string MigrationAssemblyName = "Furion.Database.Migrations";
 
         /// <summary>
-        /// 是否启用自定义租户类型
-        /// </summary>
-        internal static bool CustomizeMultiTenants;
-
-        /// <summary>
-        /// 基于表的多租户外键名
-        /// </summary>
-        internal static string OnTableTenantId = nameof(Entity.TenantId);
-
-        /// <summary>
         /// 未找到服务错误消息
         /// </summary>
         private const string NotFoundServiceErrorMessage = "{0} Service not registered or uninstalled.";
