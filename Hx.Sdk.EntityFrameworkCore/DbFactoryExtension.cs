@@ -8,30 +8,30 @@ using System.Text;
 namespace Hx.Sdk.EntityFrameworkCore
 {
     /// <summary>
-    /// DBsession扩展类
+    /// DbFactory扩展类
     /// </summary>
-    public static class DbSessionExtension
+    public static class DbFactoryExtension
     {
         /// <summary>
         /// 添加数据库上下文
         /// </summary>
         /// <typeparam name="T">数据库上下文实现类</typeparam>
         /// <param name="services">服务</param>
-        public static void AddDbSession<T>(this IServiceCollection services)where T:DbContext
+        public static void AddDbFactory<T>(this IServiceCollection services)where T:DbContext
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddDbContext<DbContext, T>();
-            services.AddScoped<IDbSession, DbSession>();
+            services.AddScoped<IDbFactory, DbFactory>();
         }
 
         /// <summary>
-        /// 添加DbSession，使用前需要添加DBContext
+        /// 添加DbFactory，使用前需要添加DBContext
         /// </summary>
         /// <param name="services">服务</param>
-        public static void AddDbSession(this IServiceCollection services)
+        public static void AddDbFactory(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddScoped<IDbSession, DbSession>();
+            services.AddScoped<IDbFactory, DbFactory>();
         }
     }
 }

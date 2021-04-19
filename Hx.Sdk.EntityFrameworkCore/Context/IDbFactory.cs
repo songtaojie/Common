@@ -10,7 +10,7 @@ namespace Hx.Sdk.EntityFrameworkCore.Db
     /// <summary>
     /// 数据库上下文操作类
     /// </summary>
-    public interface IDbSession
+    public interface IDbFactory
     {
         /// <summary>
         /// 服务的实例
@@ -59,11 +59,6 @@ namespace Hx.Sdk.EntityFrameworkCore.Db
         /// 执行事务
         /// </summary>
         /// <param name="handler"></param>
-        bool Excute(EventHandler handler);
-        /// <summary>
-        /// 执行事务
-        /// </summary>
-        /// <param name="handler"></param>
         Task<bool> ExcuteAsync(EventHandler handler);
       
         /// <summary>
@@ -86,5 +81,45 @@ namespace Hx.Sdk.EntityFrameworkCore.Db
         /// <returns></returns>
         Task BatchInsertAsync<T>(IEnumerable<T> entityList) where T : class, new();
         #endregion
+
+        #region 更新
+        /// <summary>
+        /// 更新实体
+        /// </summary>
+        /// <param name="entity">要更新的实体对象</param>
+        /// <returns></returns>
+        Task<T> UpdateAsync<T>(T entity) where T : class, new();
+
+        /// <summary>
+        /// 更新实体的部分字段
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="fields">要更新的字段的集合</param>
+        Task UpdatePartialAsync<T>(T entity, params string[] fields) where T : class, new();
+
+        /// <summary>
+        /// 批量更新实体
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <returns></returns>
+        Task BatchUpdateAsync<T>(params T[] entitys) where T : class, new();
+        #endregion
+
+        #region 删除
+        /// <summary>
+        /// 删除某个实体
+        /// </summary>
+        /// <param name="entity">要删除的实体</param>
+        /// <returns></returns>
+        Task<T> RemoveAsync<T>(T entity) where T : class, new();
+
+        /// <summary>
+        ///批量删除实体
+        /// </summary>
+        /// <param name="entitys">要删除的实体集合</param>
+        /// <returns></returns>
+        Task<bool> BatchRemoveAsync<T>(IEnumerable<T> entitys) where T : class, new();
+        #endregion
+
     }
 }

@@ -13,7 +13,7 @@ namespace Hx.Sdk.EntityFrameworkCore.Db
     /// <summary>
     /// 如果没有提供对应模型的服务类，可以使用该方法进行CRUD操作
     /// </summary>
-    internal class DbSession : IDbSession
+    internal class DbFactory : IDbFactory
     {
         /// <summary>
         /// 服务的实例
@@ -24,7 +24,7 @@ namespace Hx.Sdk.EntityFrameworkCore.Db
         /// </summary>
         /// <param name="service">服务的实例</param>
         /// <param name="db">服务的实例</param>
-        public DbSession(IServiceProvider service, DbContext db)
+        public DbFactory(IServiceProvider service, DbContext db)
         {
             ServiceProvider = service;
             this.Db = db;
@@ -76,25 +76,6 @@ namespace Hx.Sdk.EntityFrameworkCore.Db
             return this.Db.Set<T>().Where(predicate);
         }
 
-        /// <summary>
-        /// 执行事务
-        /// </summary>
-        /// <param name="handler"></param>
-        public bool Excute(EventHandler handler)
-        {
-            using IDbContextTransaction transaction = Db.Database.BeginTransaction();
-            try
-            {
-                handler?.Invoke(null, EventArgs.Empty);
-                transaction.Commit();
-                return true;
-            }
-            catch (Exception e)
-            {
-                transaction.Rollback();
-                throw new System.Reflection.TargetInvocationException(e);
-            }
-        }
         /// <summary>
         /// 异步执行
         /// </summary>
@@ -154,6 +135,68 @@ namespace Hx.Sdk.EntityFrameworkCore.Db
         public async Task BatchInsertAsync<T>(IEnumerable<T> entityList) where T : class, new()
         {
             await this.Db.Set<T>().AddRangeAsync(entityList);
+        }
+        #endregion
+
+        #region 更新
+
+        /// <inheritdoc cref="IDbFactory.UpdateAsync{T}(T)"/>
+        public async Task<T> UpdateAsync<T>(T entity) where T : class,new()
+        {
+            return await Task.Run(() =>
+            {
+                var result = Db.Set<T>().Update(entity);
+                return result.Entity;
+            });
+        }
+
+        /// <inheritdoc cref="IDbFactory.BatchUpdateAsync{T}(T[])"/>
+        public async Task BatchUpdateAsync<T>(params T[] entitys) where T : class, new()
+        {
+            if (entitys != null && entitys.Length > 0)
+            {
+                await Task.Run(() =>
+                {
+                    Db.Set<T>().UpdateRange(entitys);
+                });
+            }
+        }
+
+        /// <inheritdoc cref="IDbFactory.UpdatePartialAsync{T}(T, string[])"/>
+        public async Task UpdatePartialAsync<T>(T entity, params string[] fields) where T : class, new()
+        {
+            if (entity != null && fields != null)
+            {
+                await Task.Run(() =>
+                {
+                    this.Db.Set<T>().Attach(entity);
+                    foreach (var item in fields)
+                    {
+                        this.Db.Entry<T>(entity).Property(item).IsModified = true;
+                    }
+                });
+            }
+        }
+        #endregion
+
+        #region 删除
+        /// <inheritdoc cref="IDbFactory.RemoveAsync{T}(T)"/>
+        public async Task<T> RemoveAsync<T>(T entity) where T : class,new()
+        {
+            return await Task.Run(() =>
+            {
+                return this.Db.Remove(entity).Entity;
+            });
+        }
+
+        /// <inheritdoc cref="IDbFactory.BatchRemoveAsync{T}(IEnumerable{T})"/>
+        public async Task<bool> BatchRemoveAsync<T>(IEnumerable<T> entitys) where T : class, new()
+        {
+            return await Task.Run(() =>
+            {
+                this.Db.RemoveRange(entitys);
+                return true;
+            });
         }
         #endregion
     }

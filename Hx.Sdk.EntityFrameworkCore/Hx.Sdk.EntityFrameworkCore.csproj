@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>songtaojie</Authors>
-    <Description>Hx.Sdk.EntityFrameworkCore扩展帮助，1.添加实体默认配置</Description>
-    <Version>1.0.1.1</Version>
+    <Description>Hx.Sdk.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
