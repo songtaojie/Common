@@ -13,33 +13,17 @@ namespace Hx.Sdk.ConfigurableOptions
     /// </summary>
     /// <typeparam name="TOptions"></typeparam>
     /// <typeparam name="TOptionsValidation"></typeparam>
-    public partial interface IConfigurableOptions<TOptions, TOptionsValidation> : IPostConfigureOptions<TOptions>
+    public partial interface IPostConfigureOptions<TOptions, TOptionsValidation> : IPostConfigureOptions<TOptions>
         where TOptions : class, IConfigurableOptions
         where TOptionsValidation : class, IValidateOptions<TOptions>
     {
     }
 
-    ///// <summary>
-    ///// 带监听的应用选项依赖接口
-    ///// </summary>
-    ///// <typeparam name="TOptions"></typeparam>
-    //public partial interface IConfigurableOptionsListener<TOptions> : IConfigurableOptions<TOptions>
-    //    where TOptions : class, IConfigurableOptions
-    //{
-    //    /// <summary>
-    //    /// 监听
-    //    /// </summary>
-    //    /// <param name="options"></param>
-    //    /// <param name="configuration"></param>
-    //    void OnListener(TOptions options, IConfiguration configuration);
-    //}
-
-
     /// <summary>
     /// 带监听的应用选项依赖接口
     /// </summary>
     /// <typeparam name="TOptions"></typeparam>
-    public interface IConfigureOptionsListener<TOptions> : IPostConfigureOptions<TOptions>
+    public interface IPostConfigureOptionsListener<TOptions> : IPostConfigureOptions<TOptions>
          where TOptions : class, IConfigurableOptions
     {
         /// <summary>
