@@ -25,12 +25,12 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 操作命令集合
         /// </summary>
         private readonly ConcurrentDictionary<Guid, CustomTiming>
-            _commands = new(),
-            _opening = new(),
-            _closing = new();
+            _commands = new ConcurrentDictionary<Guid, CustomTiming>(),
+            _opening = new ConcurrentDictionary<Guid, CustomTiming>(),
+            _closing = new ConcurrentDictionary<Guid, CustomTiming>();
 
         private readonly ConcurrentDictionary<Guid, CustomTiming>
-            _readers = new();
+            _readers = new ConcurrentDictionary<Guid, CustomTiming>();
 
         /// <summary>
         /// 操作完成监听

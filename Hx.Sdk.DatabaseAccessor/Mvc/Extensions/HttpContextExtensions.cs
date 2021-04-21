@@ -1,4 +1,4 @@
-using Furion.DependencyInjection;
+using Hx.Sdk.DependencyInjection;
 using System.Text;
 
 namespace Microsoft.AspNetCore.Http

@@ -1,7 +1,6 @@
 ﻿using Hx.Sdk;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 
 namespace Microsoft.AspNetCore.Builder
@@ -12,19 +11,6 @@ namespace Microsoft.AspNetCore.Builder
     [SkipScan]
     public static class AppApplicationBuilderExtensions
     {
-        /// <summary>
-        /// 注入基础中间件（带Swagger）
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="routePrefix">空字符串将为首页</param>
-        /// <param name="swaggerConfigure"></param>
-        /// <param name="swaggerUIConfigure"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseInject(this IApplicationBuilder app, string routePrefix = default, Action<SwaggerOptions> swaggerConfigure = null, Action<SwaggerUIOptions> swaggerUIConfigure = null)
-        {
-            app.UseSpecificationDocuments(routePrefix, swaggerConfigure, swaggerUIConfigure);
-            return app;
-        }
 
         /// <summary>
         /// 注入基础中间件

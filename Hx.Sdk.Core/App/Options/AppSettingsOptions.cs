@@ -8,7 +8,7 @@ namespace Hx.Sdk
     /// <summary>
     /// 应用全局配置
     /// </summary>
-    public sealed class AppSettingsOptions : IPostConfigureOptions<AppSettingsOptions>
+    public sealed class AppSettingsOptions : IConfigurableOptions<AppSettingsOptions>
     {
         /// <summary>
         /// 集成 MiniProfiler 组件
@@ -40,7 +40,7 @@ namespace Hx.Sdk
         /// </summary>
         /// <param name="options"></param>
         /// <param name="configuration"></param>
-        public void PostConfigure(string name, AppSettingsOptions options)
+        public void PostConfigure(AppSettingsOptions options, IConfiguration configuration)
         {
             options.InjectMiniProfiler ??= true;
             options.InjectSpecificationDocument ??= true;

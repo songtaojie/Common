@@ -162,9 +162,7 @@ namespace Hx.Sdk.DatabaseAccessor
             var tableName = tableAttribute?.Name ?? type.Name;
 
             // 判断是否是启用了多租户模式，如果是，则获取 Schema
-            string dynamicSchema = !typeof(IMultiTenantOnSchema).IsAssignableFrom(dbContextType)
-                ? default
-                : dbContextType.GetMethod(nameof(IMultiTenantOnSchema.GetSchemaName)).Invoke(dbContext, null)?.ToString();
+            string dynamicSchema = default;
 
             // 获取类型前缀 [TablePrefix] 特性
             var tablePrefixAttribute = !type.IsDefined(typeof(TablePrefixAttribute), true)

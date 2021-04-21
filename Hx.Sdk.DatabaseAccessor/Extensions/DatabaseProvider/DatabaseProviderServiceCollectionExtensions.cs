@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Hx.Sdk.DependencyInjection
 {
     /// <summary>
     /// Sqlite 数据库服务拓展
@@ -230,15 +231,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     dbContextOptionsBuilder = UseMethod
                         .Invoke(null, new object[] { options, connectionString, MySqlVersion, MigrationsAssemblyAction }) as DbContextOptionsBuilder;
-                }
-                // 处理 SqlServer 2005-2008 兼容问题
-                else if (DbProvider.IsDatabaseFor(providerName, DbProvider.SqlServer) && (version == "2008" || version == "2005"))
-                {
-                    // 替换工厂
-                    dbContextOptionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();
-
-                    dbContextOptionsBuilder = UseMethod
-                        .Invoke(null, new object[] { options, connectionString, MigrationsAssemblyAction }) as DbContextOptionsBuilder;
                 }
                 // 处理 Oracle 11 兼容问题
                 else if (DbProvider.IsDatabaseFor(providerName, DbProvider.Oracle) && !string.IsNullOrWhiteSpace(version))

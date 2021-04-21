@@ -10,7 +10,7 @@ namespace Hx.Sdk.DatabaseAccessor.Interceptors
     public interface ISaveChangesInterceptor : IInterceptor
     {
         /// <summary>
-        ///     Called at the start of <see cref="M:DbContext.SaveChanges" />.
+        ///     在DbContext.SaveChanges的开始时调用
         /// </summary>
         /// <param name="eventData"> Contextual information about the <see cref="DbContext" /> being used. </param>
         /// <param name="result">
@@ -26,9 +26,7 @@ namespace Hx.Sdk.DatabaseAccessor.Interceptors
         ///     A normal implementation of this method for any interceptor that is not attempting to change the result
         ///     is to return the <paramref name="result" /> value passed in.
         /// </returns>
-        InterceptionResult<int> SavingChanges(
-            DbContextEventData eventData,
-            InterceptionResult<int> result);
+        InterceptionResult<int> SavingChanges( DbContextEventData eventData, InterceptionResult<int> result);
 
         /// <summary>
         ///     <para>
@@ -49,16 +47,13 @@ namespace Hx.Sdk.DatabaseAccessor.Interceptors
         ///     A normal implementation of this method for any interceptor that is not attempting to change the result
         ///     is to return the <paramref name="result" /> value passed in.
         /// </returns>
-        int SavedChanges(
-            SaveChangesCompletedEventData eventData,
-            int result);
+        int SavedChanges(SaveChangesCompletedEventData eventData, int result);
 
         /// <summary>
         ///     Called when an exception has been thrown in <see cref="M:DbContext.SaveChanges" />.
         /// </summary>
         /// <param name="eventData"> Contextual information about the failure. </param>
-        void SaveChangesFailed(
-            DbContextErrorEventData eventData);
+        void SaveChangesFailed(DbContextErrorEventData eventData);
 
         /// <summary>
         ///     Called at the start of <see cref="M:DbContext.SaveChangesAsync" />.
@@ -79,10 +74,7 @@ namespace Hx.Sdk.DatabaseAccessor.Interceptors
         ///     is to return the <paramref name="result" /> value passed in.
         /// </returns>
         /// <exception cref="OperationCanceledException"> If the <see cref="CancellationToken"/> is canceled. </exception>
-        Task<InterceptionResult<int>> SavingChangesAsync(
-            DbContextEventData eventData,
-            InterceptionResult<int> result,
-            CancellationToken cancellationToken = default);
+        Task<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,InterceptionResult<int> result,CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     <para>
@@ -105,10 +97,7 @@ namespace Hx.Sdk.DatabaseAccessor.Interceptors
         ///     is to return the <paramref name="result" /> value passed in.
         /// </returns>
         /// <exception cref="OperationCanceledException"> If the <see cref="CancellationToken"/> is canceled. </exception>
-        Task<int> SavedChangesAsync(
-            SaveChangesCompletedEventData eventData,
-            int result,
-            CancellationToken cancellationToken = default);
+        Task<int> SavedChangesAsync(SaveChangesCompletedEventData eventData,int result,CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Called when an exception has been thrown in <see cref="M:DbContext.SaveChangesAsync" />.
@@ -117,8 +106,6 @@ namespace Hx.Sdk.DatabaseAccessor.Interceptors
         /// <param name="cancellationToken"> A <see cref="CancellationToken" /> to observe while waiting for the task to complete. </param>
         /// <returns> A <see cref="Task" /> representing the asynchronous operation. </returns>
         /// <exception cref="OperationCanceledException"> If the <see cref="CancellationToken"/> is canceled. </exception>
-        Task SaveChangesFailedAsync(
-            DbContextErrorEventData eventData,
-            CancellationToken cancellationToken = default);
+        Task SaveChangesFailedAsync(DbContextErrorEventData eventData,CancellationToken cancellationToken = default);
     }
 }

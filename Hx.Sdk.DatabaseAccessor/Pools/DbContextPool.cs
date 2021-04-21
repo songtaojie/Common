@@ -76,32 +76,30 @@ namespace Hx.Sdk.DatabaseAccessor
             {
                 dbContexts.Add(dbContext);
 
-                // 订阅数据库上下文操作失败事件
-                dbContext.SaveChangesFailed += (s, e) =>
-                {
-                    if (!failedDbContexts.Contains(dbContext))
-                    {
-                        var context = s as DbContext;
+                //// 订阅数据库上下文操作失败事件
+                //dbContext.SaveChangesFailed += (s, e) =>
+                //{
+                //    if (!failedDbContexts.Contains(dbContext))
+                //    {
+                //        var context = s as DbContext;
 
-                        // 当前事务
-                        var database = context.Database;
-                        var currentTransaction = database.CurrentTransaction;
-                        if (currentTransaction != null)
-                        {
-                            // 获取数据库连接信息
-                            var connection = database.GetDbConnection();
+                //        // 当前事务
+                //        var database = context.Database;
+                //        var currentTransaction = database.CurrentTransaction;
+                //        if (currentTransaction != null)
+                //        {
+                //            // 获取数据库连接信息
+                //            var connection = database.GetDbConnection();
+                //            // 回滚事务
+                //            currentTransaction.Rollback();
+                //            // 打印事务回滚消息
+                //            App.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", $"[Connection Id: {context.ContextId}] / [Database: {connection.Database}]{(IsPrintDbConnectionInfo ? $" / [Connection String: {connection.ConnectionString}]" : string.Empty)}", isError: true);
+                //        }
 
-                            // 回滚事务
-                            currentTransaction.Rollback();
-
-                            // 打印事务回滚消息
-                            App.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", $"[Connection Id: {context.ContextId}] / [Database: {connection.Database}]{(IsPrintDbConnectionInfo ? $" / [Connection String: {connection.ConnectionString}]" : string.Empty)}", isError: true);
-                        }
-
-                        // 记录错误上下文
-                        failedDbContexts.Add(context);
-                    }
-                };
+                //        // 记录错误上下文
+                //        failedDbContexts.Add(context);
+                //    }
+                //};
             }
         }
 

@@ -192,9 +192,6 @@ namespace Hx.Sdk.DatabaseAccessor
             ChangeTracker = Context.ChangeTracker;
             Model = Context.Model;
 
-            // 内置多租户
-            Tenant = DynamicContext.Tenant;
-
             // 设置提供器名称
             ProviderName = Database.ProviderName;
 
@@ -241,11 +238,6 @@ namespace Hx.Sdk.DatabaseAccessor
         public virtual IModel Model { get; }
 
         /// <summary>
-        /// 租户信息
-        /// </summary>
-        public virtual Tenant Tenant { get; }
-
-        /// <summary>
         /// 数据库提供器名
         /// </summary>
         public virtual string ProviderName { get; }
@@ -255,10 +247,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         public virtual IServiceProvider ServiceProvider { get; }
 
-        /// <summary>
-        /// 租户Id
-        /// </summary>
-        public virtual Guid? TenantId { get; }
 
         /// <summary>
         /// 判断上下文是否更改
@@ -666,15 +654,6 @@ namespace Hx.Sdk.DatabaseAccessor
         public virtual bool IsDm()
         {
             return DbProvider.IsDatabaseFor(ProviderName, DbProvider.Dm);
-        }
-
-        /// <summary>
-        /// 判断是否是关系型数据库
-        /// </summary>
-        /// <returns>bool</returns>
-        public virtual bool IsRelational()
-        {
-            return Database.IsRelational();
         }
 
         /// <summary>

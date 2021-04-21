@@ -148,11 +148,6 @@ namespace Hx.Sdk.DatabaseAccessor
         IModel Model { get; }
 
         /// <summary>
-        /// 租户信息
-        /// </summary>
-        Tenant Tenant { get; }
-
-        /// <summary>
         /// 数据库提供器名
         /// </summary>
         string ProviderName { get; }
@@ -161,11 +156,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 服务提供器
         /// </summary>
         IServiceProvider ServiceProvider { get; }
-
-        /// <summary>
-        /// 租户Id
-        /// </summary>
-        Guid? TenantId { get; }
 
         /// <summary>
         /// 判断上下文是否更改
@@ -434,12 +424,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <returns>bool</returns>
         bool IsDm();
-
-        /// <summary>
-        /// 判断是否是关系型数据库
-        /// </summary>
-        /// <returns>bool</returns>
-        bool IsRelational();
 
         /// <summary>
         /// 切换仓储

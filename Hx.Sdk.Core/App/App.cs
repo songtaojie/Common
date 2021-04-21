@@ -202,14 +202,7 @@ namespace Hx.Sdk.Core
             Assemblies = GetAssemblies();
             EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()
                 .Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false)));
-
-            AppStartups = new ConcurrentBag<AppStartup>();
         }
-
-        /// <summary>
-        /// 应用所有启动配置对象
-        /// </summary>
-        internal static ConcurrentBag<AppStartup> AppStartups;
 
         /// <summary>
         /// 获取应用有效程序集

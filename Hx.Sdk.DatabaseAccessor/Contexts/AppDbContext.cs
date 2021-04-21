@@ -118,7 +118,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entityBuilder">实体类型构建器</param>
         /// <param name="dbContext">数据库上下文</param>
-        /// <param name="isDeletedKey">多租户Id属性名</param>
+        /// <param name="isDeletedKey">删除的属性名</param>
         /// <returns>表达式</returns>
         protected virtual LambdaExpression FakeDeleteQueryFilterExpression(EntityTypeBuilder entityBuilder, DbContext dbContext, string isDeletedKey = default)
         {
@@ -126,8 +126,8 @@ namespace Hx.Sdk.DatabaseAccessor
 
             // 获取实体构建器元数据
             var metadata = entityBuilder.Metadata;
-            if (metadata.FindProperty(isDeletedKey) == null) return default;
-
+            var prop = metadata.FindProperty(isDeletedKey);
+            if (prop == null) return default;
             // 创建表达式元素
             var parameter = Expression.Parameter(metadata.ClrType, "u");
             var properyName = Expression.Constant(isDeletedKey);
