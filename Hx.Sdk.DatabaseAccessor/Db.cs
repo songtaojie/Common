@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hx.Sdk.Core;
+using Hx.Sdk.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -81,18 +83,6 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             return App.GetService<ISqlRepository<TDbContextLocator>>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(ISqlRepository<TDbContextLocator>)));
-        }
-
-        /// <summary>
-        /// 获取Sql代理
-        /// </summary>
-        /// <param name="scoped"></param>
-        /// <returns>ISqlRepository</returns>
-        public static TSqlDispatchProxy GetSqlProxy<TSqlDispatchProxy>(IServiceProvider scoped = default)
-            where TSqlDispatchProxy : class, ISqlDispatchProxy
-        {
-            return App.GetService<TSqlDispatchProxy>(scoped)
-                ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(ISqlDispatchProxy)));
         }
 
         /// <summary>

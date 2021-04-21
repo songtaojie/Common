@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Hx.Sdk.Entity.Attributes
 {
     /// <summary>
     /// 跳过全局代理

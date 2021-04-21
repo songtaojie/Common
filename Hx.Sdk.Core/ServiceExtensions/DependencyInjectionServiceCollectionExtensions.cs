@@ -24,9 +24,6 @@ namespace Hx.Sdk.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
-            // 添加外部程序集配置
-            services.AddConfigurableOptions<DependencyInjectionSettingsOptions>();
-
             services.AddScanDependencyInjection(App.EffectiveTypes);
             return services;
         }
@@ -40,37 +37,6 @@ namespace Hx.Sdk.DependencyInjection
         public static IServiceCollection AddRegisterTypes(this IServiceCollection services, IEnumerable<Type> types)
         {
             services.AddScanDependencyInjection(types);
-            return services;
-        }
-
-        /// <summary>
-        /// 添加接口代理
-        /// </summary>
-        /// <typeparam name="TDispatchProxy">代理类</typeparam>
-        /// <typeparam name="TIDispatchProxy">被代理接口依赖</typeparam>
-        /// <param name="services">服务集合</param>
-        /// <returns>服务集合</returns>
-        public static IServiceCollection AddScopedDispatchProxyForInterface<TDispatchProxy, TIDispatchProxy>(this IServiceCollection services)
-            where TDispatchProxy : AspectDispatchProxy, IDispatchProxy
-            where TIDispatchProxy : class
-        {
-            // 注册代理类
-            services.AddScoped<AspectDispatchProxy, TDispatchProxy>();
-
-            // 代理依赖接口类型
-            var proxyType = typeof(TDispatchProxy);
-            var typeDependency = typeof(TIDispatchProxy);
-
-            // 获取所有的代理接口类型
-            var dispatchProxyInterfaceTypes = App.EffectiveTypes
-                .Where(u => typeDependency.IsAssignableFrom(u) && u.IsInterface && u != typeDependency);
-
-            // 注册代理类型
-            foreach (var interfaceType in dispatchProxyInterfaceTypes)
-            {
-                AddScopedDispatchProxy(services, default, proxyType, interfaceType, false);
-            }
-
             return services;
         }
 
@@ -100,8 +66,8 @@ namespace Hx.Sdk.DependencyInjection
                     .Where(u => !injectionAttribute.ExpectInterfaces.Contains(u)
                                 && u != typeof(IPrivateDependency)
                                 && !typeof(IPrivateDependency).IsAssignableFrom(u)
-                                && u != typeof(IDynamicApiController)
-                                && !typeof(IDynamicApiController).IsAssignableFrom(u)
+                                //&& u != typeof(IDynamicApiController)
+                                //&& !typeof(IDynamicApiController).IsAssignableFrom(u)
                                 && projectAssemblies.Contains(u.Assembly)
                                 && (
                                     (!type.IsGenericType && !u.IsGenericType)
@@ -129,9 +95,6 @@ namespace Hx.Sdk.DependencyInjection
                 TypeNamedCollection.TryAdd(typeNamed, type);
             }
 
-            // 注册外部服务（appsetting.json）
-            RegisterExternalServices(services);
-
             // 注册命名服务
             RegisterNamed(services);
 
@@ -149,7 +112,9 @@ namespace Hx.Sdk.DependencyInjection
         private static void RegisterService(IServiceCollection services, RegisterType registerType, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces)
         {
             // 注册自己
-            if (injectionAttribute.Pattern is InjectionPatterns.Self or InjectionPatterns.All or InjectionPatterns.SelfWithFirstInterface)
+            if (injectionAttribute.Pattern is InjectionPatterns.Self 
+                || injectionAttribute.Pattern is InjectionPatterns.All 
+                || injectionAttribute.Pattern is InjectionPatterns.SelfWithFirstInterface)
             {
                 RegisterType(services, registerType, type, injectionAttribute);
             }
@@ -157,12 +122,14 @@ namespace Hx.Sdk.DependencyInjection
             if (!canInjectInterfaces.Any()) return;
 
             // 只注册第一个接口
-            if (injectionAttribute.Pattern is InjectionPatterns.FirstInterface or InjectionPatterns.SelfWithFirstInterface)
+            if (injectionAttribute.Pattern is InjectionPatterns.FirstInterface 
+                || injectionAttribute.Pattern is InjectionPatterns.SelfWithFirstInterface)
             {
                 RegisterType(services, registerType, type, injectionAttribute, canInjectInterfaces.First());
             }
             // 注册多个接口
-            else if (injectionAttribute.Pattern is InjectionPatterns.ImplementedInterfaces or InjectionPatterns.All)
+            else if (injectionAttribute.Pattern is InjectionPatterns.ImplementedInterfaces 
+                || injectionAttribute.Pattern is InjectionPatterns.All)
             {
                 foreach (var inter in canInjectInterfaces)
                 {
@@ -206,7 +173,6 @@ namespace Hx.Sdk.DependencyInjection
                     else
                     {
                         services.AddTransient(inter, type);
-                        AddTransientDispatchProxy(services, type, injectionAttribute.Proxy, inter, true);
                     }
                     break;
 
@@ -235,7 +201,6 @@ namespace Hx.Sdk.DependencyInjection
                     else
                     {
                         services.AddScoped(inter, type);
-                        AddScopedDispatchProxy(services, type, injectionAttribute.Proxy, inter, true);
                     }
                     break;
 
@@ -264,7 +229,6 @@ namespace Hx.Sdk.DependencyInjection
                     else
                     {
                         services.AddSingleton(inter, type);
-                        AddSingletonDispatchProxy(services, type, injectionAttribute.Proxy, inter, true);
                     }
                     break;
 
@@ -275,116 +239,6 @@ namespace Hx.Sdk.DependencyInjection
 
                 default: break;
             }
-        }
-
-        /// <summary>
-        /// 创建暂时瞬时代理
-        /// </summary>
-        /// <param name="services">服务集合</param>
-        /// <param name="type">拦截的类型</param>
-        /// <param name="proxyType">代理类型</param>
-        /// <param name="inter">代理接口</param>
-        /// <param name="hasTarget">是否有实现类</param>
-        private static void AddTransientDispatchProxy(IServiceCollection services, Type type, Type proxyType, Type inter, bool hasTarget = true)
-        {
-            proxyType ??= GlobalServiceProxyType;
-            if (proxyType == null || (type != null && type.IsDefined(typeof(SkipProxyAttribute), true))) return;
-
-            RegisterDispatchProxy(services, typeof(ITransient), proxyType);
-            services.AddTransient(inter, provider =>
-            {
-                dynamic proxy = DispatchCreateMethod.MakeGenericMethod(inter, proxyType).Invoke(null, null);
-                proxy.Services = provider;
-                if (hasTarget)
-                {
-                    proxy.Target = provider.GetService(type);
-                }
-
-                return proxy;
-            });
-        }
-
-        /// <summary>
-        /// 创建作用域代理
-        /// </summary>
-        /// <param name="services">服务集合</param>
-        /// <param name="type">被代理类型</param>
-        /// <param name="proxyType">代理类型</param>
-        /// <param name="inter">拦截接口</param>
-        /// <param name="hasTarget">是否有实例</param>
-        private static void AddScopedDispatchProxy(IServiceCollection services, Type type, Type proxyType, Type inter, bool hasTarget = true)
-        {
-            proxyType ??= GlobalServiceProxyType;
-            if (proxyType == null || (type != null && type.IsDefined(typeof(SkipProxyAttribute), true))) return;
-
-            RegisterDispatchProxy(services, typeof(IScoped), proxyType);
-            services.AddScoped(inter, provider =>
-            {
-                dynamic proxy = DispatchCreateMethod.MakeGenericMethod(inter, proxyType).Invoke(null, null);
-                proxy.Services = provider;
-                if (hasTarget)
-                {
-                    proxy.Target = provider.GetService(type);
-                }
-
-                return proxy;
-            });
-        }
-
-        /// <summary>
-        /// 创建作用域代理
-        /// </summary>
-        /// <param name="services">服务集合</param>
-        /// <param name="type">被代理类型</param>
-        /// <param name="proxyType">代理类型</param>
-        /// <param name="inter">拦截接口</param>
-        /// <param name="hasTarget">是否有实例</param>
-        private static void AddSingletonDispatchProxy(IServiceCollection services, Type type, Type proxyType, Type inter, bool hasTarget = true)
-        {
-            proxyType ??= GlobalServiceProxyType;
-            if (proxyType == null || (type != null && type.IsDefined(typeof(SkipProxyAttribute), true))) return;
-
-            RegisterDispatchProxy(services, typeof(ISingleton), proxyType);
-            services.AddSingleton(inter, provider =>
-            {
-                dynamic proxy = DispatchCreateMethod.MakeGenericMethod(inter, proxyType).Invoke(null, null);
-                proxy.Services = provider;
-                if (hasTarget)
-                {
-                    proxy.Target = provider.GetService(type);
-                }
-
-                return proxy;
-            });
-        }
-
-        /// <summary>
-        /// 注册代理类型
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="lifetime"></param>
-        /// <param name="proxyType"></param>
-        private static void RegisterDispatchProxy(IServiceCollection services, Type lifetime, Type proxyType)
-        {
-            if (RegisterDispatchProxies.Contains((lifetime, proxyType))) return;
-
-            var dispatchProxyType = typeof(AspectDispatchProxy);
-
-            if (lifetime == typeof(ITransient))
-            {
-                services.AddTransient(dispatchProxyType, proxyType);
-            }
-            else if (lifetime == typeof(IScoped))
-            {
-                services.AddScoped(dispatchProxyType, proxyType);
-            }
-            else if (lifetime == typeof(ISingleton))
-            {
-                services.AddSingleton(dispatchProxyType, proxyType);
-            }
-            else { }
-
-            RegisterDispatchProxies.Add((lifetime, proxyType));
         }
 
         /// <summary>
@@ -428,38 +282,6 @@ namespace Hx.Sdk.DependencyInjection
         }
 
         /// <summary>
-        /// 注册外部服务
-        /// </summary>
-        /// <param name="services"></param>
-        private static void RegisterExternalServices(IServiceCollection services)
-        {
-            var externalServices = App.GetOptions<DependencyInjectionSettingsOptions>();
-            if (externalServices is { Definitions: not null })
-            {
-                // 排序
-                var extServices = externalServices.Definitions.OrderBy(u => u.Order);
-                foreach (var externalService in extServices)
-                {
-                    var injectionAttribute = new InjectionAttribute
-                    {
-                        Action = externalService.Action,
-                        Named = externalService.Named,
-                        Order = externalService.Order,
-                        Pattern = externalService.Pattern
-                    };
-
-                    // 加载代理拦截
-                    if (!string.IsNullOrWhiteSpace(externalService.Proxy)) injectionAttribute.Proxy = LoadStringType(externalService.Proxy);
-
-                    RegisterService(services, externalService.RegisterType,
-                        LoadStringType(externalService.Service),
-                        injectionAttribute,
-                        new[] { LoadStringType(externalService.Interface) });
-                }
-            }
-        }
-
-        /// <summary>
         /// 修复泛型类型注册类型问题
         /// </summary>
         /// <param name="type">类型</param>
@@ -484,49 +306,16 @@ namespace Hx.Sdk.DependencyInjection
         }
 
         /// <summary>
-        /// 加载字符串类型
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        private static Type LoadStringType(string str)
-        {
-            var typeDefinitions = str.Split(";");
-            var assembly = App.Assemblies.First(u => u.GetName().Name == typeDefinitions[0]);
-            return assembly.GetType(typeDefinitions[1], true, true);
-        }
-
-        /// <summary>
         /// 类型名称集合
         /// </summary>
         private static readonly ConcurrentDictionary<string, Type> TypeNamedCollection;
-
-        /// <summary>
-        /// 已经注册的代理类
-        /// </summary>
-        private static readonly ConcurrentBag<(Type, Type)> RegisterDispatchProxies;
-
-        /// <summary>
-        /// 创建代理方法
-        /// </summary>
-        private static readonly MethodInfo DispatchCreateMethod;
-
-        /// <summary>
-        /// 全局服务代理类型
-        /// </summary>
-        private static readonly Type GlobalServiceProxyType;
 
         /// <summary>
         /// 静态构造函数
         /// </summary>
         static DependencyInjectionServiceCollectionExtensions()
         {
-            // 获取全局代理类型
-            GlobalServiceProxyType = App.EffectiveTypes
-                .FirstOrDefault(u => typeof(AspectDispatchProxy).IsAssignableFrom(u) && typeof(IGlobalDispatchProxy).IsAssignableFrom(u) && u.IsClass && !u.IsInterface && !u.IsAbstract);
-
             TypeNamedCollection = new ConcurrentDictionary<string, Type>();
-            DispatchCreateMethod = typeof(AspectDispatchProxy).GetMethod(nameof(AspectDispatchProxy.Create));
-            RegisterDispatchProxies = new ConcurrentBag<(Type, Type)>();
         }
     }
 }

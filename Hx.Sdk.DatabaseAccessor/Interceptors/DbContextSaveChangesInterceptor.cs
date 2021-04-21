@@ -9,7 +9,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 数据库上下文提交拦截器
     /// </summary>
     [SkipScan]
-    public class DbContextSaveChangesInterceptor : SaveChangesInterceptor
+    public class DbContextSaveChangesInterceptor : Interceptors.SaveChangesInterceptor
     {
         /// <summary>
         /// 拦截保存数据库之前
@@ -32,7 +32,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <param name="result"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        public override Task<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
             dynamic dbContext = eventData.Context;
             dbContext.SavingChangesEventInner(eventData, result);
@@ -61,7 +61,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <param name="result"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public override ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
+        public override Task<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
         {
             dynamic dbContext = eventData.Context;
             dbContext.SavedChangesEventInner(eventData, result);

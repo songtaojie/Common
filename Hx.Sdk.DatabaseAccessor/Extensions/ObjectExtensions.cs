@@ -5,10 +5,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.Extensions
+namespace Hx.Sdk.DatabaseAccessor.Extensions
 {
     /// <summary>
     /// 对象拓展类

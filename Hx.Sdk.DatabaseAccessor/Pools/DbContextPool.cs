@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.Core;
+using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;

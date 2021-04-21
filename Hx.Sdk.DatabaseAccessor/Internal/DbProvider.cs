@@ -1,3 +1,4 @@
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -181,7 +182,6 @@ namespace Hx.Sdk.DatabaseAccessor
             {
                 new SqlConnectionProfilerInterceptor(),
                 new SqlCommandProfilerInterceptor(),
-                new DbContextSaveChangesInterceptor()
             };
         }
 

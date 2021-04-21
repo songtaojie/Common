@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Hx.Sdk.Entity.Attributes
 {
     /// <summary>
     /// 不被扫描和发现的特性

@@ -1,6 +1,6 @@
+using Hx.Sdk.DatabaseAccessor.Extensions;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
-using Hx.Sdk.JsonSerialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -112,81 +112,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 启用实体数据更改监听
         /// </summary>
         public virtual bool EnabledEntityChangedListener { get; protected set; } = false;
-
-        /// <summary>
-        /// 获取租户信息
-        /// </summary>
-        public virtual Tenant Tenant
-        {
-            get
-            {
-                // 如果没有实现多租户方式，则无需查询
-                if (Db.CustomizeMultiTenants || !typeof(IPrivateMultiTenant).IsAssignableFrom(GetType())) return default;
-
-                // 判断 HttpContext 是否存在
-                var httpContext = App.HttpContext;
-                if (httpContext == null) return default;
-
-                // 获取主机地址
-                var host = httpContext.Request.Host.Value;
-
-                // 获取服务提供器
-                var scoped = httpContext.RequestServices;
-
-                // 从分布式缓存中读取或查询数据库
-                var tenantCachedKey = $"MULTI_TENANT:{host}";
-                var distributedCache = scoped.GetService<IDistributedCache>();
-                var cachedValue = distributedCache.GetString(tenantCachedKey);
-
-                // 当前租户
-                Tenant currentTenant;
-
-                // 获取序列化库
-                var jsonSerializerProvider = scoped.GetService<IJsonSerializerProvider>();
-
-                // 如果 Key 不存在
-                if (string.IsNullOrWhiteSpace(cachedValue))
-                {
-                    // 获取新的租户数据库上下文
-                    var tenantDbContext = scoped.GetService<Func<Type, ITransient, DbContext>>()(typeof(MultiTenantDbContextLocator), default);
-                    if (tenantDbContext == null) return default;
-
-                    currentTenant = tenantDbContext.Set<Tenant>().FirstOrDefault(u => u.Host == host);
-                    if (currentTenant != null)
-                    {
-                        distributedCache.SetString(tenantCachedKey, jsonSerializerProvider.Serialize(currentTenant));
-                    }
-                }
-                else currentTenant = jsonSerializerProvider.Deserialize<Tenant>(cachedValue);
-
-                return currentTenant;
-            }
-        }
-
-        /// <summary>
-        /// 构建基于表租户查询过滤器表达式
-        /// </summary>
-        /// <param name="entityBuilder">实体类型构建器</param>
-        /// <param name="dbContext">数据库上下文</param>
-        /// <param name="onTableTenantId">多租户Id属性名</param>
-        /// <returns>表达式</returns>
-        protected virtual LambdaExpression TenantIdQueryFilterExpression(EntityTypeBuilder entityBuilder, DbContext dbContext, string onTableTenantId = default)
-        {
-            onTableTenantId ??= Db.OnTableTenantId;
-
-            // 获取实体构建器元数据
-            var metadata = entityBuilder.Metadata;
-            if (metadata.FindProperty(onTableTenantId) == null) return default;
-
-            // 创建表达式元素
-            var parameter = Expression.Parameter(metadata.ClrType, "u");
-            var properyName = Expression.Constant(onTableTenantId);
-            var propertyValue = Expression.Call(Expression.Constant(dbContext), dbContext.GetType().GetMethod(nameof(IMultiTenantOnTable.GetTenantId)));
-
-            var expressionBody = Expression.Equal(Expression.Call(typeof(EF), nameof(EF.Property), new[] { typeof(object) }, parameter, properyName), propertyValue);
-            var expression = Expression.Lambda(expressionBody, parameter);
-            return expression;
-        }
 
         /// <summary>
         /// 构建假删除查询过滤器表达式

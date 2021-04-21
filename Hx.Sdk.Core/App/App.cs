@@ -228,7 +228,7 @@ namespace Hx.Sdk.Core
 
             var dependencyContext = DependencyContext.Default;
 
-            // 读取项目程序集或 Hx.Sdk 官方发布的包，或手动添加引用的dll，或配置特定的包前缀
+            // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
             var scanAssemblies = dependencyContext.CompileLibraries
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j))) ||

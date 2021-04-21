@@ -1,4 +1,6 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.Core;
+using Hx.Sdk.DatabaseAccessor.Extensions;
+using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -137,14 +139,6 @@ namespace Hx.Sdk.DatabaseAccessor
                 ConfigureEntityTableName(type, appDbContextAttribute, entityTypeBuilder, dbContext, dbContextType);
             }
 
-            // 如果未启用多租户支持或租户设置为OnDatabase 或 OnSchema 方案，则忽略多租户字段，另外还需要排除多租户数据库上下文定位器
-            if (dbContextLocator != typeof(MultiTenantDbContextLocator)
-                && (!typeof(IPrivateMultiTenant).IsAssignableFrom(dbContextType) || typeof(IMultiTenantOnDatabase).IsAssignableFrom(dbContextType) || typeof(IMultiTenantOnSchema).IsAssignableFrom(dbContextType))
-                && type.GetProperty(Db.OnTableTenantId) != null)
-            {
-                entityTypeBuilder.Ignore(Db.OnTableTenantId);
-            }
-
             return entityTypeBuilder;
         }
 
@@ -168,7 +162,7 @@ namespace Hx.Sdk.DatabaseAccessor
             var tableName = tableAttribute?.Name ?? type.Name;
 
             // 判断是否是启用了多租户模式，如果是，则获取 Schema
-            var dynamicSchema = !typeof(IMultiTenantOnSchema).IsAssignableFrom(dbContextType)
+            string dynamicSchema = !typeof(IMultiTenantOnSchema).IsAssignableFrom(dbContextType)
                 ? default
                 : dbContextType.GetMethod(nameof(IMultiTenantOnSchema.GetSchemaName)).Invoke(dbContext, null)?.ToString();
 
@@ -185,7 +179,7 @@ namespace Hx.Sdk.DatabaseAccessor
             else
             {
                 // 添加表统一前后缀，排除视图
-                if (!string.IsNullOrWhiteSpace(appDbContextAttribute.TableSuffix) || !string.IsNullOrWhiteSpace(appDbContextAttribute.TableSuffix))
+                if (!string.IsNullOrWhiteSpace(appDbContextAttribute.TablePrefix) || !string.IsNullOrWhiteSpace(appDbContextAttribute.TableSuffix))
                 {
                     var tablePrefix = appDbContextAttribute.TablePrefix;
                     var tableSuffix = appDbContextAttribute.TableSuffix;
@@ -384,9 +378,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>bool</returns>
         private static bool IsInThisDbContext(Type dbContextLocator, Type entityCorrelationType)
         {
-            // 处理自定义多租户的情况
-            if (dbContextLocator == typeof(MultiTenantDbContextLocator) && Db.CustomizeMultiTenants && entityCorrelationType == typeof(Tenant)) return false;
-
             // 获取所有祖先类型
             var ancestorTypes = entityCorrelationType.GetAncestorTypes();
             // 获取所有接口

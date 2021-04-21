@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk;
+using Hx.Sdk.Core;
 using Hx.Sdk.DatabaseAccessor;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -115,25 +116,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 return (Func<Type, IScoped, DbContext>)dbContextResolve;
             });
 
-            // 注册 Sql 代理接口
-            services.AddScopedDispatchProxyForInterface<SqlDispatchProxy, ISqlDispatchProxy>();
 
             // 注册全局工作单元过滤器
             services.AddMvcFilter<UnitOfWorkFilter>();
-
-            return services;
-        }
-
-        /// <summary>
-        /// 启动自定义租户类型
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="onTableTenantId">基于表的多租户Id名称</param>
-        /// <returns></returns>
-        public static IServiceCollection CustomizeMultiTenants(this IServiceCollection services, string onTableTenantId = default)
-        {
-            Db.CustomizeMultiTenants = true;
-            if (!string.IsNullOrWhiteSpace(onTableTenantId)) Db.OnTableTenantId = onTableTenantId;
 
             return services;
         }

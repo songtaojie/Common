@@ -36,9 +36,9 @@ namespace Hx.Sdk.DependencyInjection
             var optionsConfiguration = configurationRoot.GetSection(jsonKey);
 
             // 配置选项监听
-            if (typeof(IPostConfigureOptionsListener<TOptions>).IsAssignableFrom(optionsType))
+            if (typeof(IConfigurableOptionsListener<TOptions>).IsAssignableFrom(optionsType))
             {
-                var onListenerMethod = optionsType.GetMethod(nameof(IPostConfigureOptionsListener<TOptions>.OnListener));
+                var onListenerMethod = optionsType.GetMethod(nameof(IConfigurableOptionsListener<TOptions>.OnListener));
                 if (onListenerMethod != null)
                 {
                     ChangeToken.OnChange(() => configurationRoot.GetReloadToken(), () =>
@@ -58,7 +58,7 @@ namespace Hx.Sdk.DependencyInjection
 
             // 配置复杂验证后后期配置
             var validateInterface = optionsType.GetInterfaces()
-                .FirstOrDefault(u => u.IsGenericType && typeof(IPostConfigureOptions<,>).IsAssignableFrom(u.GetGenericTypeDefinition()));
+                .FirstOrDefault(u => u.IsGenericType && typeof(IConfigurableOptions).IsAssignableFrom(u.GetGenericTypeDefinition()));
             if (validateInterface != null)
             {
                 var genericArguments = validateInterface.GenericTypeArguments;
@@ -70,14 +70,14 @@ namespace Hx.Sdk.DependencyInjection
                 }
 
                 // 配置后期配置
-                //var postConfigureMethod = optionsType.GetMethod(nameof(ConfigurableOptions.IPostConfigureOptions<TOptions>.PostConfigure));
-                //if (postConfigureMethod != null)
-                //{
-                //    if (optionsSettings?.PostConfigureAll != true)
-                //        services.PostConfigure<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { options, optionsConfiguration }));
-                //    else
-                //        services.PostConfigureAll<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { options, optionsConfiguration }));
-                //}
+                var postConfigureMethod = optionsType.GetMethod(nameof(IConfigurableOptions<TOptions>.PostConfigure));
+                if (postConfigureMethod != null)
+                {
+                    if (optionsSettings?.PostConfigureAll != true)
+                        services.PostConfigure<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { options, configurationRoot }));
+                    else
+                        services.PostConfigureAll<TOptions>(options => postConfigureMethod.Invoke(options, new object[] {options, configurationRoot }));
+                }
             }
 
             return services;
