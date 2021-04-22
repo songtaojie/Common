@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace Hx.Sdk.Entity
+namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 基本的模型，封装了索引器登方法
     /// </summary>
     [Serializable]
-    public abstract class BaseModel : INotifyPropertyChanged
+    public abstract class EntityPropertyBase : INotifyPropertyChanged
     {
         /// <summary>
         /// 属性变化的事件
@@ -84,7 +83,7 @@ namespace Hx.Sdk.Entity
         /// 把指定的模型中值复制到当前模型中
         /// </summary>
         /// <param name="model">要复制数据的模型</param>
-        public void CopyFrom(BaseModel model)
+        public void CopyFrom(EntityPropertyBase model)
         {
             if (model == null) return;
             Type destType = this.GetType();

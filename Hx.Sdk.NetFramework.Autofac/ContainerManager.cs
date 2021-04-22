@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Entity.Dependency;
 using System;
 using System.Collections.Generic;

@@ -81,7 +81,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>表达式</returns>
         protected virtual LambdaExpression FakeDeleteQueryFilterExpression(EntityTypeBuilder entityBuilder, DbContext dbContext, string isDeletedKey = default)
         {
-            isDeletedKey ??= nameof(Entity.IsDeleted);
+            isDeletedKey ??= nameof(StatusEntityBase.Deleted);
 
             // 获取实体构建器元数据
             var metadata = entityBuilder.Metadata;

@@ -1,5 +1,6 @@
 ﻿using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -106,7 +107,7 @@ namespace Hx.Sdk.DatabaseAccessor
             // 判断是否注册了数据库上下文
             if (!Penetrates.DbContextWithLocatorCached.ContainsKey(dbContextLocator)) return default;
 
-            var dbContextResolve = App.GetService<Func<Type, IScoped, DbContext>>(scoped);
+            var dbContextResolve = App.GetService<Func<Type, IScopedDependency, DbContext>>(scoped);
             return dbContextResolve(dbContextLocator, default);
         }
 
@@ -143,7 +144,7 @@ namespace Hx.Sdk.DatabaseAccessor
             // 判断是否注册了数据库上下文
             if (!Penetrates.DbContextWithLocatorCached.ContainsKey(dbContextLocator)) return default;
 
-            var dbContextResolve = App.GetService<Func<Type, ITransient, DbContext>>(scoped);
+            var dbContextResolve = App.GetService<Func<Type, ITransientDependency, DbContext>>(scoped);
             return dbContextResolve(dbContextLocator, default);
         }
 

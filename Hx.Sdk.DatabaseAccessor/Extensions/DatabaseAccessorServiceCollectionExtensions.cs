@@ -58,7 +58,7 @@ namespace Hx.Sdk.DependencyInjection
             // 解析数据库上下文
             services.AddTransient(provider =>
             {
-                DbContext dbContextResolve(Type locator, ITransient transient)
+                DbContext dbContextResolve(Type locator, ITransientDependency transient)
                 {
                     // 判断定位器是否绑定了数据库上下文
                     var isRegistered = Penetrates.DbContextWithLocatorCached.TryGetValue(locator, out var dbContextType);
@@ -81,12 +81,12 @@ namespace Hx.Sdk.DependencyInjection
 
                     return dbContext;
                 }
-                return (Func<Type, ITransient, DbContext>)dbContextResolve;
+                return (Func<Type, ITransientDependency, DbContext>)dbContextResolve;
             });
 
             services.AddScoped(provider =>
             {
-                DbContext dbContextResolve(Type locator, IScoped scoped)
+                DbContext dbContextResolve(Type locator, IScopedDependency scoped)
                 {
                     // 判断定位器是否绑定了数据库上下文
                     var isRegistered = Penetrates.DbContextWithLocatorCached.TryGetValue(locator, out var dbContextType);
@@ -109,7 +109,7 @@ namespace Hx.Sdk.DependencyInjection
 
                     return dbContext;
                 }
-                return (Func<Type, IScoped, DbContext>)dbContextResolve;
+                return (Func<Type, IScopedDependency, DbContext>)dbContextResolve;
             });
 
 

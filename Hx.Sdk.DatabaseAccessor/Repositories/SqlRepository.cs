@@ -58,7 +58,7 @@ namespace Hx.Sdk.DatabaseAccessor
             _serviceProvider = scoped;
 
             // 解析数据库上下文
-            var dbContextResolve = scoped.GetService<Func<Type, IScoped, DbContext>>();
+            var dbContextResolve = scoped.GetService<Func<Type, IScopedDependency, DbContext>>();
             var dbContext = dbContextResolve(dbContextLocator, default);
             DynamicContext = Context = dbContext;
 

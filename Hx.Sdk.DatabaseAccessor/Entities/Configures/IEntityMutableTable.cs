@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hx.Sdk.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Hx.Sdk.DatabaseAccessor

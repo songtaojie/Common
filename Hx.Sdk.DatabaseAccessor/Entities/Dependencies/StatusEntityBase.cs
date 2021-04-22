@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Entity;
 using System;
 using System.Text.Json.Serialization;
 
@@ -8,7 +9,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 数据库实体依赖基类
     /// </summary>
     [SkipScan]
-    public abstract class Entity : Entity<int, MasterDbContextLocator>
+    public abstract class StatusEntityBase : StatusEntityBase<string, MasterDbContextLocator>
     {
     }
 
@@ -17,7 +18,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// </summary>
     /// <typeparam name="TKey">主键类型</typeparam>
     [SkipScan]
-    public abstract class Entity<TKey> : Entity<TKey, MasterDbContextLocator>
+    public abstract class StatusEntityBase<TKeyType> : StatusEntityBase<TKeyType, MasterDbContextLocator>
     {
     }
 
@@ -27,7 +28,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <typeparam name="TKey">主键类型</typeparam>
     /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
     [SkipScan]
-    public abstract class Entity<TKey, TDbContextLocator1> : PrivateEntity<TKey>
+    public abstract class StatusEntityBase<TKeyType, TDbContextLocator1> : PrivateStatusEntityBase<TKeyType>
         where TDbContextLocator1 : class, IDbContextLocator
     {
     }
@@ -39,33 +40,11 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
     /// <typeparam name="TDbContextLocator2">数据库上下文定位器</typeparam>
     [SkipScan]
-    public abstract class Entity<TKey, TDbContextLocator1, TDbContextLocator2> : PrivateEntity<TKey>
+    public abstract class StatusEntityBase<TKeyType, TDbContextLocator1, TDbContextLocator2> : PrivateStatusEntityBase<TKeyType>
         where TDbContextLocator1 : class, IDbContextLocator
         where TDbContextLocator2 : class, IDbContextLocator
     {
     }
 
-    /// <summary>
-    /// 数据库实体依赖基类（禁止外部继承）
-    /// </summary>
-    /// <typeparam name="TKey">主键类型</typeparam>
-    [SkipScan]
-    public abstract class PrivateEntity<TKey> : PrivateEntityBase<TKey>
-    {
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public virtual DateTimeOffset CreatedTime { get; set; }
-
-        /// <summary>
-        /// 更新时间
-        /// </summary>
-        public virtual DateTimeOffset? UpdatedTime { get; set; }
-
-        /// <summary>
-        /// 软删除
-        /// </summary>
-        [JsonIgnore, FakeDelete(true)]
-        public virtual bool IsDeleted { get; set; }
-    }
+   
 }

@@ -9,4 +9,8 @@
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
+  </ItemGroup>
+
 </Project>

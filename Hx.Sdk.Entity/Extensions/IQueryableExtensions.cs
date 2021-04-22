@@ -3,15 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.Entity.Extensions
+namespace Hx.Sdk.Extensions
 {
-	/// <summary>
-	/// IEnumerable扩展类
-	/// </summary>
-	public static class IEnumerableExtensions
+    /// <summary>
+    /// IQueryable扩展类
+    /// </summary>
+    public static class IQueryableExtensions
 	{
 		/// <summary>
 		/// 排序冰粉也

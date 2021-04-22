@@ -75,17 +75,17 @@ namespace Hx.Sdk.DependencyInjection
                                 );
 
                 // 注册暂时服务
-                if (typeof(ITransient).IsAssignableFrom(type))
+                if (typeof(ITransientDependency).IsAssignableFrom(type))
                 {
                     RegisterService(services, Hx.Sdk.DependencyInjection.RegisterType.Transient, type, injectionAttribute, canInjectInterfaces);
                 }
                 // 注册作用域服务
-                else if (typeof(IScoped).IsAssignableFrom(type))
+                else if (typeof(IScopedDependency).IsAssignableFrom(type))
                 {
                     RegisterService(services, Hx.Sdk.DependencyInjection.RegisterType.Scoped, type, injectionAttribute, canInjectInterfaces);
                 }
                 // 注册单例服务
-                else if (typeof(ISingleton).IsAssignableFrom(type))
+                else if (typeof(ISingletonDependency).IsAssignableFrom(type))
                 {
                     RegisterService(services, Hx.Sdk.DependencyInjection.RegisterType.Singleton, type, injectionAttribute, canInjectInterfaces);
                 }
@@ -250,34 +250,34 @@ namespace Hx.Sdk.DependencyInjection
             // 注册暂时命名服务
             services.AddTransient(provider =>
             {
-                object ResolveService(string named, ITransient transient)
+                object ResolveService(string named, ITransientDependency transient)
                 {
                     var isRegister = TypeNamedCollection.TryGetValue(named, out var serviceType);
                     return isRegister ? provider.GetService(serviceType) : null;
                 }
-                return (Func<string, ITransient, object>)ResolveService;
+                return (Func<string, ITransientDependency, object>)ResolveService;
             });
 
             // 注册作用域命名服务
             services.AddScoped(provider =>
             {
-                object ResolveService(string named, IScoped scoped)
+                object ResolveService(string named, IScopedDependency scoped)
                 {
                     var isRegister = TypeNamedCollection.TryGetValue(named, out var serviceType);
                     return isRegister ? provider.GetService(serviceType) : null;
                 }
-                return (Func<string, IScoped, object>)ResolveService;
+                return (Func<string, IScopedDependency, object>)ResolveService;
             });
 
             // 注册单例命名服务
             services.AddSingleton(provider =>
             {
-                object ResolveService(string named, ISingleton singleton)
+                object ResolveService(string named, ISingletonDependency singleton)
                 {
                     var isRegister = TypeNamedCollection.TryGetValue(named, out var serviceType);
                     return isRegister ? provider.GetService(serviceType) : null;
                 }
-                return (Func<string, ISingleton, object>)ResolveService;
+                return (Func<string, ISingletonDependency, object>)ResolveService;
             });
         }
 

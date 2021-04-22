@@ -27,7 +27,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
-            InternalApp.HostEnvironment = services.BuildServiceProvider
             // 注册内存和分布式内存
             services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
             services.AddDistributedMemoryCache();
@@ -52,5 +51,30 @@ namespace Microsoft.Extensions.DependencyInjection
             configure?.Invoke(services);
             return services;
         }
+
+        /// <summary>
+        /// 添加主机应用配置
+        /// </summary>
+        /// <param name="services">服务集合</param>
+        /// <param name="configure">服务配置</param>
+        /// <returns>服务集合</returns>
+        internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
+        {
+            // 注册内存和分布式内存
+            services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
+            services.AddDistributedMemoryCache();
+
+            // 注册全局配置选项
+            services.AddConfigurableOptions<AppSettingsOptions>();
+
+            // 注册全局依赖注入
+            services.AddDependencyInjection();
+
+            // 自定义服务
+            configure?.Invoke(services);
+
+            return services;
+        }
+
     }
 }

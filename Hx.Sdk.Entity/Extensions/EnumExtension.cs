@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-namespace Hx.Sdk.Common.Extensions
+namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 枚举扩展

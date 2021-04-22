@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.Common.Extensions;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;

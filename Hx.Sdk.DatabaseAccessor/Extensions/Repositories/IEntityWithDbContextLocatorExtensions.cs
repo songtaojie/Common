@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;

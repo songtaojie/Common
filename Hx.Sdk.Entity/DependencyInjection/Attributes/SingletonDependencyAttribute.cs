@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.Entity.Dependency
+namespace Hx.Sdk.DependencyInjection
 {
     /// <summary>
     /// 单例模式

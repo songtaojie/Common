@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hx.Sdk.Entity
+namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     ///  该基类封装了删除，禁用等状态字段
     /// </summary>
     /// <typeparam name="TKeyType">主键的类型</typeparam>
-    public abstract class BaseStatusEntity<TKeyType>:BaseEntity<TKeyType>
+    public abstract class StatusEntityBase<TKeyType> : PrivateStatusEntityBase<TKeyType>
+    { }
+
+    /// <summary>
+    ///  该基类封装了删除，禁用等状态字段（禁止外部继承）
+    /// </summary>
+    /// <typeparam name="TKeyType">主键的类型</typeparam>
+    public abstract class PrivateStatusEntityBase<TKeyType>:PrivateEntityBase<TKeyType>
     {
         private const string No = "N";
         private const string Yes = "Y";
@@ -21,7 +24,7 @@ namespace Hx.Sdk.Entity
         /// Y:代表删除，N代表没删除，默认值为N
         /// </summary>
         [Column(TypeName = "char(1)")]
-        public virtual string Delete
+        public virtual string Deleted
         {
             get; set;
         } = No;
@@ -31,7 +34,7 @@ namespace Hx.Sdk.Entity
         /// Y:代表禁用，N代表没禁用，默认值为N
         /// </summary>
         [Column(TypeName = "char(1)")]
-        public virtual string Disable { get; set; } = No;
+        public virtual string Disabled { get; set; } = No;
         #endregion
 
         #region 实体操作
@@ -43,7 +46,7 @@ namespace Hx.Sdk.Entity
         /// <param name="modifier">删除者的姓名</param>
         public virtual void SetDelete(string modifierId, string modifier)
         {
-            Delete = Yes;
+            Deleted = Yes;
             SetModifier(modifierId, modifier);
         }
 
@@ -55,7 +58,7 @@ namespace Hx.Sdk.Entity
         /// <param name="modifier">删除者的姓名</param>
         public virtual void SetDelete(StatusEntityEnum deleted, string modifierId, string modifier)
         {
-            Delete = deleted == StatusEntityEnum.Yes?Yes:No;
+            Deleted = deleted == StatusEntityEnum.Yes?Yes:No;
             SetModifier(modifierId, modifier);
         }
 
@@ -66,7 +69,7 @@ namespace Hx.Sdk.Entity
         /// <param name="modifier">禁用者的姓名</param>
         public virtual void SetDisable(string modifierId, string modifier)
         {
-            Disable = Yes;
+            Disabled = Yes;
             SetModifier(modifierId, modifier);
         }
 
@@ -78,7 +81,7 @@ namespace Hx.Sdk.Entity
         /// <param name="modifier">禁用者的姓名</param>
         public virtual void SetDisable(StatusEntityEnum disabled, string modifierId, string modifier)
         {
-            Disable = disabled == StatusEntityEnum.Yes ? Yes : No;
+            Disabled = disabled == StatusEntityEnum.Yes ? Yes : No;
             SetModifier(modifierId, modifier);
         }
         #endregion

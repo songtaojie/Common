@@ -1,21 +1,32 @@
-﻿using System;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Hx.Sdk.Entity
+namespace Hx.Sdk.DatabaseAccessor
 {
+
     /// <summary>
-    ///  基础的实体类，封装了创建，编辑的公共字段,
+    /// 数据库实体依赖基类（禁止外部继承）
     /// </summary>
-    /// <typeparam name="TKeyType">主键的类型</typeparam>
-    public abstract class BaseEntity<TKeyType> : BaseModel, IEntity<TKeyType>
+    /// <typeparam name="TKeyType">主键类型</typeparam>
+    public abstract class EntityBase<TKeyType> : PrivateEntityBase<TKeyType>
+    { }
+
+    /// <summary>
+    /// 数据库实体依赖基类（禁止外部继承）
+    /// </summary>
+    /// <typeparam name="TKeyType">主键类型</typeparam>
+    [SkipScan]
+    public abstract class PrivateEntityBase<TKeyType> : EntityPropertyBase, IEntity
     {
         /// <summary>
         /// 主键
         /// </summary>
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [MaxLength(36)]
         public virtual TKeyType Id
         {
@@ -67,7 +78,7 @@ namespace Hx.Sdk.Entity
         /// </summary>
         /// <param name="createrId">创建人id</param>
         /// <param name="creater">创建人姓名</param>
-        public virtual BaseEntity<TKeyType> SetCreater(string createrId, string creater)
+        public virtual PrivateEntityBase<TKeyType> SetCreater(string createrId, string creater)
         {
             CreaterId = createrId;
             Creater = creater;
@@ -81,7 +92,7 @@ namespace Hx.Sdk.Entity
         /// </summary>
         /// <param name="modifierId">修改者id</param>
         /// <param name="modifier">修改者姓名</param>
-        public virtual BaseEntity<TKeyType> SetModifier(string modifierId, string modifier)
+        public virtual PrivateEntityBase<TKeyType> SetModifier(string modifierId, string modifier)
         {
             LastModifierId = modifierId;
             LastModifier = modifier;
