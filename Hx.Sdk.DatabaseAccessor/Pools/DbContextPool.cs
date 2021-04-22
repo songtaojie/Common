@@ -128,19 +128,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <summary>
         /// 保存数据库上下文池中所有已更改的数据库上下文
         /// </summary>
-        /// <param name="acceptAllChangesOnSuccess"></param>
-        /// <returns></returns>
-        public int SavePoolNow(bool acceptAllChangesOnSuccess)
-        {
-            // 查找所有已改变的数据库上下文并保存更改
-            return dbContexts
-                .Where(u => u != null && u.ChangeTracker.HasChanges() && !failedDbContexts.Contains(u))
-                .Select(u => u.SaveChanges(acceptAllChangesOnSuccess)).Count();
-        }
-
-        /// <summary>
-        /// 保存数据库上下文池中所有已更改的数据库上下文
-        /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<int> SavePoolNowAsync(CancellationToken cancellationToken = default)
@@ -149,24 +136,6 @@ namespace Hx.Sdk.DatabaseAccessor
             var tasks = dbContexts
                 .Where(u => u != null && u.ChangeTracker.HasChanges() && !failedDbContexts.Contains(u))
                 .Select(u => u.SaveChangesAsync(cancellationToken));
-
-            // 等待所有异步完成
-            var results = await Task.WhenAll(tasks);
-            return results.Length;
-        }
-
-        /// <summary>
-        /// 保存数据库上下文池中所有已更改的数据库上下文（异步）
-        /// </summary>
-        /// <param name="acceptAllChangesOnSuccess"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<int> SavePoolNowAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            // 查找所有已改变的数据库上下文并保存更改
-            var tasks = dbContexts
-                .Where(u => u != null && u.ChangeTracker.HasChanges() && !failedDbContexts.Contains(u))
-                .Select(u => u.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken));
 
             // 等待所有异步完成
             var results = await Task.WhenAll(tasks);

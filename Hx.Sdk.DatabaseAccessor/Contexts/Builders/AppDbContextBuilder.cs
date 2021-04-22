@@ -92,9 +92,6 @@ namespace Hx.Sdk.DatabaseAccessor
                 var entityBuilder = CreateEntityTypeBuilder(entityType, modelBuilder, dbContext, dbContextType, dbContextLocator, dbContextCorrelationType, appDbContextAttribute);
                 if (entityBuilder == null) continue;
 
-                // 配置无键实体构建器
-                ConfigureEntityNoKeyType(entityType, entityBuilder, dbContextCorrelationType.EntityNoKeyTypes);
-
                 // 实体构建成功注入拦截
                 LoadModelBuilderOnCreating(modelBuilder, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType.ModelBuilderFilterInstances);
 
@@ -156,7 +153,7 @@ namespace Hx.Sdk.DatabaseAccessor
             var tableAttribute = type.IsDefined(typeof(TableAttribute), true) ? type.GetCustomAttribute<TableAttribute>(true) : default;
 
             // 排除无键实体或已经贴了 [Table] 特性的类型
-            if (typeof(IPrivateEntityNotKey).IsAssignableFrom(type) || !string.IsNullOrWhiteSpace(tableAttribute?.Schema)) return;
+            if (!string.IsNullOrWhiteSpace(tableAttribute?.Schema)) return;
 
             // 获取真实表名
             var tableName = tableAttribute?.Name ?? type.Name;
@@ -232,21 +229,6 @@ namespace Hx.Sdk.DatabaseAccessor
             }
 
             return isSet;
-        }
-
-        /// <summary>
-        /// 配置无键实体类型
-        /// </summary>
-        /// <param name="entityType">实体类型</param>
-        /// <param name="entityBuilder">实体类型构建器</param>
-        /// <param name="EntityNoKeyTypes">无键实体列表</param>
-        private static void ConfigureEntityNoKeyType(Type entityType, EntityTypeBuilder entityBuilder, List<Type> EntityNoKeyTypes)
-        {
-            if (!EntityNoKeyTypes.Contains(entityType)) return;
-
-            // 配置视图、存储过程、函数无键实体
-            entityBuilder.HasNoKey();
-            entityBuilder.ToView((Activator.CreateInstance(entityType) as IPrivateEntityNotKey).GetName());
         }
 
         /// <summary>
@@ -442,11 +424,6 @@ namespace Hx.Sdk.DatabaseAccessor
                         // 添加实体
                         result.EntityTypes.Add(entityCorrelationType);
 
-                        // 添加无键实体
-                        if (typeof(IPrivateEntityNotKey).IsAssignableFrom(entityCorrelationType))
-                        {
-                            result.EntityNoKeyTypes.Add(entityCorrelationType);
-                        }
                     }
 
                     if (typeof(IPrivateModelBuilder).IsAssignableFrom(entityCorrelationType))
@@ -489,12 +466,7 @@ namespace Hx.Sdk.DatabaseAccessor
                         {
                             result.EntityMutableTableTypes.Add(entityCorrelationType);
                         }
-
-                        // 添加实体数据改变监听
-                        if (entityCorrelationType.HasImplementedRawGeneric(typeof(IPrivateEntityChangedListener<>)))
-                        {
-                            result.EntityChangedTypes.Add(entityCorrelationType);
-                        }
+                       
                     }
                 }
 

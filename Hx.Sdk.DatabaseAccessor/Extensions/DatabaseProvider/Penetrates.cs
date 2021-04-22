@@ -56,7 +56,7 @@ namespace Hx.Sdk.DatabaseAccessor
                 AddInterceptors(interceptors, options);
 
                 // .NET 5 版本已不再起作用
-                // options.UseInternalServiceProvider(scoped);
+                options.UseInternalServiceProvider(scoped);
             };
         }
 

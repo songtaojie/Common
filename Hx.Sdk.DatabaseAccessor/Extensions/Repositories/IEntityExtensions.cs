@@ -118,19 +118,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNow(ignoreNullValues);
         }
 
-        /// <summary>
-        /// 新增一条记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有提交更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertNow<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNow(acceptAllChangesOnSuccess, ignoreNullValues);
-        }
 
         /// <summary>
         /// 新增一条记录并立即提交
@@ -146,20 +133,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNowAsync(ignoreNullValues, cancellationToken);
         }
 
-        /// <summary>
-        /// 新增一条记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有提交更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertNowAsync<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNowAsync(acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
-        }
 
         /// <summary>
         /// 更新一条记录
@@ -205,20 +178,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateNow<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-             where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNow(acceptAllChangesOnSuccess, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
@@ -226,21 +185,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNowAsync(ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateNowAsync<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNowAsync(acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
         }
 
         /// <summary>
@@ -374,21 +318,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中实体</returns>
@@ -396,21 +325,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues);
         }
 
         /// <summary>
@@ -432,21 +346,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-             where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
@@ -455,22 +354,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates, ignoreNullValues);
         }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues);
-        }
-
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
@@ -498,22 +381,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
         }
 
         /// <summary>
@@ -550,22 +417,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
         /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
@@ -581,22 +432,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
@@ -605,22 +440,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录中的特定属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
         }
 
         /// <summary>
@@ -754,21 +573,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中实体</returns>
@@ -776,21 +580,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues);
         }
 
         /// <summary>
@@ -812,21 +601,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-             where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
@@ -834,21 +608,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates, ignoreNullValues);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues);
         }
 
         /// <summary>
@@ -885,22 +644,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
@@ -930,22 +673,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
         /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
@@ -961,22 +688,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
@@ -985,22 +696,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
-        }
-
-        /// <summary>
-        /// 更新一条记录并排除属性并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, ignoreNullValues, cancellationToken);
         }
 
         /// <summary>
@@ -1038,20 +733,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).DeleteNow();
         }
-
-        /// <summary>
-        /// 删除一条记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns></returns>
-        public static EntityEntry<TEntity> DeleteNow<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).DeleteNow(acceptAllChangesOnSuccess);
-        }
-
         /// <summary>
         /// 删除一条记录并立即提交
         /// </summary>
@@ -1063,20 +744,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).DeleteNowAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// 删除一条记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> DeleteNowAsync<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).DeleteNowAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -1127,21 +794,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="checkProperty"></param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateNow<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNow(acceptAllChangesOnSuccess, ignoreNullValues, checkProperty);
-        }
-
-        /// <summary>
-        /// 新增或更新一条记录并立即执行
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
@@ -1152,22 +804,7 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNowAsync(ignoreNullValues, checkProperty, cancellationToken);
         }
 
-        /// <summary>
-        /// 新增或更新一条记录并立即执行
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="ignoreNullValues"></param>
-        /// <param name="checkProperty"></param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNowAsync(acceptAllChangesOnSuccess, ignoreNullValues, checkProperty, cancellationToken);
-        }
-
+       
         /// <summary>
         /// 新增或更新一条特定属性记录
         /// </summary>
@@ -1238,40 +875,12 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeAsync<TEntity>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeAsync(propertyNames, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>代理中的实体</returns>
         public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeAsync<TEntity>(this TEntity entity, params Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeAsync(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -1320,40 +929,12 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateIncludeNow<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNow(propertyNames, acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>数据库中的实体</returns>
         public static EntityEntry<TEntity> InsertOrUpdateIncludeNow<TEntity>(this TEntity entity, params Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNow(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateIncludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNow(propertyPredicates, acceptAllChangesOnSuccess);
         }
 
         /// <summary>
@@ -1374,40 +955,12 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNow(propertyNames, acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>数据库中的实体</returns>
         public static EntityEntry<TEntity> InsertOrUpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNow(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNow(propertyPredicates, acceptAllChangesOnSuccess);
         }
 
         /// <summary>
@@ -1423,34 +976,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyNames);
         }
 
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyNames, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyNames, acceptAllChangesOnSuccess, cancellationToken);
-        }
 
         /// <summary>
         /// 新增或更新一条特定属性记录并立即提交
@@ -1463,35 +988,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyPredicates, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -1513,21 +1009,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyNames, acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
@@ -1535,21 +1016,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyPredicates, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateIncludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -1622,40 +1088,12 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeAsync<TEntity>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeAsync(propertyNames, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>代理中的实体</returns>
         public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeAsync<TEntity>(this TEntity entity, params Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeAsync(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -1704,40 +1142,12 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateExcludeNow<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNow(propertyNames, acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>数据库中的实体</returns>
         public static EntityEntry<TEntity> InsertOrUpdateExcludeNow<TEntity>(this TEntity entity, params Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNow(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateExcludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNow(propertyPredicates, acceptAllChangesOnSuccess);
         }
 
         /// <summary>
@@ -1758,40 +1168,12 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNow(propertyNames, acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>数据库中的实体</returns>
         public static EntityEntry<TEntity> InsertOrUpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNow(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNow(propertyPredicates, acceptAllChangesOnSuccess);
         }
 
         /// <summary>
@@ -1807,34 +1189,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyNames);
         }
 
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyNames, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyNames, acceptAllChangesOnSuccess, cancellationToken);
-        }
 
         /// <summary>
         /// 新增或更新一条排除特定属性记录并立即提交
@@ -1847,35 +1201,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyPredicates);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyPredicates, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -1897,21 +1222,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="propertyNames">属性名</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyNames, acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
@@ -1919,21 +1229,6 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyPredicates, cancellationToken);
-        }
-
-        /// <summary>
-        /// 新增或更新一条排除特定属性记录并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateExcludeNowAsync(propertyPredicates, acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -1977,39 +1272,12 @@ namespace Hx.Sdk.DatabaseAccessor.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns></returns>
-        public static EntityEntry<TEntity> FakeDeleteNow<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess)
-            where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).FakeDeleteNow(acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 假删除并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns></returns>
         public static Task<EntityEntry<TEntity>> FakeDeleteNowAsync<TEntity>(this TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).FakeDeleteNowAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// 假删除并立即提交
-        /// </summary>
-        /// <typeparam name="TEntity">实体</typeparam>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns></returns>
-        public static Task<EntityEntry<TEntity>> FakeDeleteNowAsync<TEntity>(this TEntity entity, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-             where TEntity : class, IPrivateEntity, new()
-        {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).FakeDeleteNowAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
     }
 }

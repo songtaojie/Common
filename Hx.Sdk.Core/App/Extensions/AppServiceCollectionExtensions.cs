@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
+            InternalApp.HostEnvironment = services.BuildServiceProvider
             // 注册内存和分布式内存
             services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
             services.AddDistributedMemoryCache();
@@ -35,7 +36,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 添加 HttContext 访问器
             services.AddHttpContextAccessor();
-            //// 注册MiniProfiler 组件
+            ////// 注册MiniProfiler 组件
             //if (App.Settings.InjectMiniProfiler == true)
             //{
             //    services.AddMiniProfiler(options =>

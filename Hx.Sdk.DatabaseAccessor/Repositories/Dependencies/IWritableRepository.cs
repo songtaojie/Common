@@ -53,24 +53,9 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <summary>
         /// 保存数据库上下文池中所有已更改的数据库上下文
         /// </summary>
-        /// <param name="acceptAllChangesOnSuccess"></param>
-        /// <returns></returns>
-        int SavePoolNow(bool acceptAllChangesOnSuccess);
-
-        /// <summary>
-        /// 保存数据库上下文池中所有已更改的数据库上下文
-        /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<int> SavePoolNowAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// 保存数据库上下文池中所有已更改的数据库上下文
-        /// </summary>
-        /// <param name="acceptAllChangesOnSuccess"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<int> SavePoolNowAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 提交更改操作
@@ -79,25 +64,11 @@ namespace Hx.Sdk.DatabaseAccessor
         int SaveNow();
 
         /// <summary>
-        /// 提交更改操作
-        /// </summary>
-        /// <param name="acceptAllChangesOnSuccess"></param>
-        /// <returns></returns>
-        int SaveNow(bool acceptAllChangesOnSuccess);
-
-        /// <summary>
         /// 提交更改操作（异步）
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<int> SaveNowAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// 提交更改操作（异步）
-        /// </summary>
-        /// <param name="acceptAllChangesOnSuccess"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<int> SaveNowAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
+      
     }
 }

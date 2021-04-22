@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Hx.Sdk.Core
@@ -15,27 +16,32 @@ namespace Hx.Sdk.Core
     /// 内部 App 副本
     /// </summary>
     [SkipScan]
-    internal static class InternalApp
+    internal class InternalApp1
     {
-        /// <summary>
-        /// 应用服务
-        /// </summary>
-        internal static IServiceCollection InternalServices;
-
         /// <summary>
         /// 全局配置构建器
         /// </summary>
-        internal static IConfigurationBuilder ConfigurationBuilder;
+        internal static IConfiguration Configuration;
+        /// <summary>
+        /// 获取泛型主机环境
+        /// </summary>
+        internal static IHostEnvironment HostEnvironment;
 
         /// <summary>
         /// 获取Web主机环境
         /// </summary>
         internal static IWebHostEnvironment WebHostEnvironment;
 
+        public InternalApp1(IConfiguration _Configuration, IHostEnvironment _HostEnvironment)
+        {
+            Configuration = _Configuration;
+            HostEnvironment = _HostEnvironment;
+            WebHostEnvironment = _HostEnvironment as IWebHostEnvironment;
+        }
         /// <summary>
-        /// 获取泛型主机环境
+        /// 应用服务
         /// </summary>
-        internal static IHostEnvironment HostEnvironment;
+        internal static IServiceCollection InternalServices;
 
         /// <summary>
         /// 添加配置文件
@@ -53,9 +59,6 @@ namespace Hx.Sdk.Core
 
             // 加载配置
             AutoAddJsonFiles(config, env, ignoreConfigurationFiles);
-
-            // 存储配置
-            ConfigurationBuilder = config;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
@@ -128,6 +129,11 @@ namespace Hx.Sdk.DatabaseAccessor
             }
 
             return this as TRestrainRepository;
+        }
+
+        public List<T1> SqlQueries<T1>(string sql, object model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

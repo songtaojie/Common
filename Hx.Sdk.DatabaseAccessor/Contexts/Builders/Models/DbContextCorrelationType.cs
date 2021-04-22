@@ -17,10 +17,8 @@ namespace Hx.Sdk.DatabaseAccessor
         internal DbContextCorrelationType()
         {
             EntityTypes = new List<Type>();
-            EntityNoKeyTypes = new List<Type>();
             EntityTypeBuilderTypes = new List<Type>();
             EntitySeedDataTypes = new List<Type>();
-            EntityChangedTypes = new List<Type>();
             ModelBuilderFilterTypes = new List<Type>();
             EntityMutableTableTypes = new List<Type>();
             ModelBuilderFilterInstances = new List<IPrivateModelBuilderFilter>();
@@ -43,11 +41,6 @@ namespace Hx.Sdk.DatabaseAccessor
         internal List<Type> EntityTypes { get; set; }
 
         /// <summary>
-        /// 无键实体类型集合
-        /// </summary>
-        internal List<Type> EntityNoKeyTypes { get; set; }
-
-        /// <summary>
         /// 实体构建器类型集合
         /// </summary>
         internal List<Type> EntityTypeBuilderTypes { get; set; }
@@ -57,10 +50,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         internal List<Type> EntitySeedDataTypes { get; set; }
 
-        /// <summary>
-        /// 实体数据改变类型
-        /// </summary>
-        internal List<Type> EntityChangedTypes { get; set; }
 
         /// <summary>
         /// 模型构建筛选器类型集合

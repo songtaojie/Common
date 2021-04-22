@@ -29,15 +29,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 删除多条记录
         /// </summary>
         /// <param name="entities">多个实体</param>
-        public virtual void Delete(params TEntity[] entities)
-        {
-            Entities.RemoveRange(entities);
-        }
-
-        /// <summary>
-        /// 删除多条记录
-        /// </summary>
-        /// <param name="entities">多个实体</param>
         public virtual void Delete(IEnumerable<TEntity> entities)
         {
             Entities.RemoveRange(entities);
@@ -51,17 +42,6 @@ namespace Hx.Sdk.DatabaseAccessor
         public virtual Task<EntityEntry<TEntity>> DeleteAsync(TEntity entity)
         {
             return Task.FromResult(Delete(entity));
-        }
-
-        /// <summary>
-        /// 删除多条记录
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        /// <returns>Task</returns>
-        public virtual Task DeleteAsync(params TEntity[] entities)
-        {
-            Delete(entities);
-            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -88,40 +68,6 @@ namespace Hx.Sdk.DatabaseAccessor
         }
 
         /// <summary>
-        /// 删除一条记录并立即提交
-        /// </summary>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns></returns>
-        public virtual EntityEntry<TEntity> DeleteNow(TEntity entity, bool acceptAllChangesOnSuccess)
-        {
-            var entityEntry = Delete(entity);
-            SaveNow(acceptAllChangesOnSuccess);
-            return entityEntry;
-        }
-
-        /// <summary>
-        /// 删除多条记录并立即提交
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        public virtual void DeleteNow(params TEntity[] entities)
-        {
-            Delete(entities);
-            SaveNow();
-        }
-
-        /// <summary>
-        /// 删除多条记录并立即提交
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        public virtual void DeleteNow(TEntity[] entities, bool acceptAllChangesOnSuccess)
-        {
-            Delete(entities);
-            SaveNow(acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
         /// 删除多条记录并立即提交
         /// </summary>
         /// <param name="entities">多个实体</param>
@@ -129,17 +75,6 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             Delete(entities);
             SaveNow();
-        }
-
-        /// <summary>
-        /// 删除多条记录并立即提交
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        public virtual void DeleteNow(IEnumerable<TEntity> entities, bool acceptAllChangesOnSuccess)
-        {
-            Delete(entities);
-            SaveNow(acceptAllChangesOnSuccess);
         }
 
         /// <summary>
@@ -155,55 +90,6 @@ namespace Hx.Sdk.DatabaseAccessor
             return entityEntry;
         }
 
-        /// <summary>
-        /// 删除一条记录并立即提交
-        /// </summary>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>代理中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> DeleteNowAsync(TEntity entity, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            var entityEntry = await DeleteAsync(entity);
-            await SaveNowAsync(acceptAllChangesOnSuccess, cancellationToken);
-            return entityEntry;
-        }
-
-        /// <summary>
-        /// 删除多条记录并立即提交
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        /// <returns>Task</returns>
-        public virtual async Task DeleteNowAsync(params TEntity[] entities)
-        {
-            await DeleteAsync(entities);
-            await SaveNowAsync();
-        }
-
-        /// <summary>
-        /// 删除多条记录并立即提交
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>Task</returns>
-        public virtual async Task DeleteNowAsync(TEntity[] entities, CancellationToken cancellationToken = default)
-        {
-            await DeleteAsync(entities);
-            await SaveNowAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// 删除多条记录并立即提交
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>Task</returns>
-        public virtual async Task DeleteNowAsync(TEntity[] entities, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            await DeleteAsync(entities);
-            await SaveNowAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
 
         /// <summary>
         /// 删除多条记录并立即提交
@@ -215,19 +101,6 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             await DeleteAsync(entities);
             await SaveNowAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// 删除多条记录并立即提交
-        /// </summary>
-        /// <param name="entities">多个实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>Task</returns>
-        public virtual async Task DeleteNowAsync(IEnumerable<TEntity> entities, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            await DeleteAsync(entities);
-            await SaveNowAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -274,36 +147,12 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 根据主键删除一条记录并立即提交
         /// </summary>
         /// <param name="key">主键</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        public virtual void DeleteNow(object key, bool acceptAllChangesOnSuccess)
-        {
-            Delete(key);
-            SaveNow(acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 根据主键删除一条记录并立即提交
-        /// </summary>
-        /// <param name="key">主键</param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns></returns>
         public virtual async Task DeleteNowAsync(object key, CancellationToken cancellationToken = default)
         {
             await DeleteAsync(key, cancellationToken);
             await SaveNowAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// 根据主键删除一条记录并立即提交
-        /// </summary>
-        /// <param name="key">主键</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns></returns>
-        public virtual async Task DeleteNowAsync(object key, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            await DeleteAsync(key, cancellationToken);
-            await SaveNowAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -344,36 +193,12 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 根据主键删除一条记录并立即提交
         /// </summary>
         /// <param name="key">主键</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        public virtual void DeleteExistsNow(object key, bool acceptAllChangesOnSuccess)
-        {
-            DeleteExists(key);
-            SaveNow(acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 根据主键删除一条记录并立即提交
-        /// </summary>
-        /// <param name="key">主键</param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns></returns>
         public virtual async Task DeleteExistsNowAsync(object key, CancellationToken cancellationToken = default)
         {
             await DeleteExistsAsync(key, cancellationToken);
             await SaveNowAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// 根据主键删除一条记录并立即提交
-        /// </summary>
-        /// <param name="key">主键</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns></returns>
-        public virtual async Task DeleteExistsNowAsync(object key, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            await DeleteExistsAsync(key, cancellationToken);
-            await SaveNowAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -413,37 +238,12 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 假删除并立即提交
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns></returns>
-        public virtual EntityEntry<TEntity> FakeDeleteNow(TEntity entity, bool acceptAllChangesOnSuccess)
-        {
-            var fakeDeleteProperty = SetFakePropertyValue(entity);
-            return UpdateIncludeNow(entity, new[] { fakeDeleteProperty.Name }, acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 假删除并立即提交
-        /// </summary>
-        /// <param name="entity">实体</param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns></returns>
         public virtual Task<EntityEntry<TEntity>> FakeDeleteNowAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             var fakeDeleteProperty = SetFakePropertyValue(entity);
             return UpdateIncludeNowAsync(entity, new[] { fakeDeleteProperty.Name }, null, cancellationToken);
-        }
-
-        /// <summary>
-        /// 假删除并立即提交
-        /// </summary>
-        /// <param name="entity">实体</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns></returns>
-        public virtual Task<EntityEntry<TEntity>> FakeDeleteNowAsync(TEntity entity, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            var fakeDeleteProperty = SetFakePropertyValue(entity);
-            return UpdateIncludeNowAsync(entity, new[] { fakeDeleteProperty.Name }, acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
@@ -492,21 +292,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 假删除并立即提交
         /// </summary>
         /// <param name="key">键</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <returns></returns>
-        public virtual EntityEntry<TEntity> FakeDeleteNow(object key, bool acceptAllChangesOnSuccess)
-        {
-            var deletedEntity = BuildDeletedEntity(key, false);
-            if (deletedEntity == null) return default;
-
-            var fakeDeleteProperty = SetFakePropertyValue(deletedEntity);
-            return UpdateIncludeNow(deletedEntity, new[] { fakeDeleteProperty.Name }, acceptAllChangesOnSuccess);
-        }
-
-        /// <summary>
-        /// 假删除并立即提交
-        /// </summary>
-        /// <param name="key">键</param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns></returns>
         public virtual Task<EntityEntry<TEntity>> FakeDeleteNowAsync(object key, CancellationToken cancellationToken = default)
@@ -516,22 +301,6 @@ namespace Hx.Sdk.DatabaseAccessor
 
             var fakeDeleteProperty = SetFakePropertyValue(deletedEntity);
             return UpdateIncludeNowAsync(deletedEntity, new[] { fakeDeleteProperty.Name }, null, cancellationToken);
-        }
-
-        /// <summary>
-        /// 假删除并立即提交
-        /// </summary>
-        /// <param name="key">键</param>
-        /// <param name="acceptAllChangesOnSuccess">接受所有更改</param>
-        /// <param name="cancellationToken">异步取消令牌</param>
-        /// <returns></returns>
-        public virtual Task<EntityEntry<TEntity>> FakeDeleteNowAsync(object key, bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            var deletedEntity = BuildDeletedEntity(key, false);
-            if (deletedEntity == null) return default;
-
-            var fakeDeleteProperty = SetFakePropertyValue(deletedEntity);
-            return UpdateIncludeNowAsync(deletedEntity, new[] { fakeDeleteProperty.Name }, acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>

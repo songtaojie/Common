@@ -3,10 +3,11 @@ using Hx.Sdk.Core;
 using Hx.Sdk.DatabaseAccessor;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Hx.Sdk.DependencyInjection
 {
     /// <summary>
     /// 数据库访问器服务拓展类
@@ -47,11 +48,6 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册主从库仓储
             services.TryAddScoped(typeof(IMSRepository<,>), typeof(MSRepository<,>));
             services.TryAddScoped(typeof(IMSRepository<,,>), typeof(MSRepository<,,>));
-            services.TryAddScoped(typeof(IMSRepository<,,,>), typeof(MSRepository<,,,>));
-            services.TryAddScoped(typeof(IMSRepository<,,,,>), typeof(MSRepository<,,,,>));
-            services.TryAddScoped(typeof(IMSRepository<,,,,,>), typeof(MSRepository<,,,,,>));
-            services.TryAddScoped(typeof(IMSRepository<,,,,,,>), typeof(MSRepository<,,,,,,>));
-            services.TryAddScoped(typeof(IMSRepository<,,,,,,,>), typeof(MSRepository<,,,,,,,>));
 
             // 注册非泛型仓储
             services.TryAddScoped<IRepository, EFCoreRepository>();

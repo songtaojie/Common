@@ -43,34 +43,12 @@ namespace Hx.Sdk.DatabaseAccessor
         TEntity Find(object key);
 
         /// <summary>
-        /// 根据多个键查询一条记录
-        /// </summary>
-        /// <param name="keyValues">多个键</param>
-        /// <returns>数据库中的实体</returns>
-        TEntity Find(params object[] keyValues);
-
-        /// <summary>
         /// 根据键查询一条记录
         /// </summary>
         /// <param name="key">键</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库实体</returns>
         Task<TEntity> FindAsync(object key, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// 根据多个键查询一条记录
-        /// </summary>
-        /// <param name="keyValues">多个键</param>
-        /// <returns>数据库中的实体</returns>
-        Task<TEntity> FindAsync(params object[] keyValues);
-
-        /// <summary>
-        /// 根据多个键查询一条记录
-        /// </summary>
-        /// <param name="keyValues">多个键</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 根据键查询一条记录
@@ -80,34 +58,12 @@ namespace Hx.Sdk.DatabaseAccessor
         TEntity FindOrDefault(object key);
 
         /// <summary>
-        /// 根据多个键查询一条记录
-        /// </summary>
-        /// <param name="keyValues">多个键</param>
-        /// <returns>数据库中的实体</returns>
-        TEntity FindOrDefault(params object[] keyValues);
-
-        /// <summary>
         /// 根据键查询一条记录
         /// </summary>
         /// <param name="key">键</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
         Task<TEntity> FindOrDefaultAsync(object key, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// 根据多个键查询一条记录
-        /// </summary>
-        /// <param name="keyValues">多个键</param>
-        /// <returns>数据库中的实体</returns>
-        Task<TEntity> FindOrDefaultAsync(params object[] keyValues);
-
-        /// <summary>
-        /// 根据多个键查询一条记录
-        /// </summary>
-        /// <param name="keyValues">多个键</param>
-        /// <param name="cancellationToken">取消异步令牌</param>
-        /// <returns>数据库中的实体</returns>
-        Task<TEntity> FindOrDefaultAsync(object[] keyValues, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 查询一条记录
@@ -338,70 +294,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <param name="ignoreQueryFilters">是否忽略查询过滤器</param>
         /// <returns>数据库中的多个实体</returns>
         IQueryable<TEntity> Where(bool condition, Expression<Func<TEntity, int, bool>> predicate, bool? tracking = null, bool ignoreQueryFilters = false);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="predicates">表达式集合</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where(params Expression<Func<TEntity, bool>>[] predicates);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="predicates">表达式集合</param>
-        /// <param name="tracking">是否跟踪实体</param>
-        /// <param name="ignoreQueryFilters">是否忽略查询过滤器</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where(Expression<Func<TEntity, bool>>[] predicates, bool? tracking = null, bool ignoreQueryFilters = false);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="predicates">表达式集合</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where(params Expression<Func<TEntity, int, bool>>[] predicates);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="predicates">表达式集合</param>
-        /// <param name="tracking">是否跟踪实体</param>
-        /// <param name="ignoreQueryFilters">是否忽略查询过滤器</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where(Expression<Func<TEntity, int, bool>>[] predicates, bool? tracking = null, bool ignoreQueryFilters = false);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="conditionPredicates">条件表达式集合</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where(params (bool condition, Expression<Func<TEntity, bool>> expression)[] conditionPredicates);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="conditionPredicates">条件表达式集合</param>
-        /// <param name="tracking">是否跟踪实体</param>
-        /// <param name="ignoreQueryFilters">是否忽略查询过滤器</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where((bool condition, Expression<Func<TEntity, bool>> expression)[] conditionPredicates, bool? tracking = null, bool ignoreQueryFilters = false);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="conditionPredicates">条件表达式集合</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where(params (bool condition, Expression<Func<TEntity, int, bool>> expression)[] conditionPredicates);
-
-        /// <summary>
-        /// 根据条件执行表达式查询多条记录
-        /// </summary>
-        /// <param name="conditionPredicates">条件表达式集合</param>
-        /// <param name="tracking">是否跟踪实体</param>
-        /// <param name="ignoreQueryFilters">是否忽略查询过滤器</param>
-        /// <returns>数据库中的多个实体</returns>
-        IQueryable<TEntity> Where((bool condition, Expression<Func<TEntity, int, bool>> expression)[] conditionPredicates, bool? tracking = null, bool ignoreQueryFilters = false);
 
         /// <summary>
         /// 加载关联数据

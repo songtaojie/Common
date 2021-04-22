@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 
-namespace Hx.Sdk
+namespace Hx.Sdk.Core
 {
     /// <summary>
     /// 应用全局配置
