@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Entity.Page;
+﻿using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Entity.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Hx.Sdk.Extensions
 {
-    /// <summary>
-    /// IQueryable扩展类
-    /// </summary>
-    public static class IQueryableExtensions
+	/// <summary>
+	/// IQueryable扩展类
+	/// </summary>
+	[SkipScan]
+	public static class IQueryableExtensions
 	{
 		/// <summary>
 		/// 排序冰粉也

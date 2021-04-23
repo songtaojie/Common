@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Hx.Sdk.DependencyInjection;
 using System.Threading;
 
 namespace Hx.Sdk.Extensions
@@ -8,6 +6,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// string类型扩展
     /// </summary>
+    [SkipScan]
     public static class StringExtensions
     {
         /// <summary>

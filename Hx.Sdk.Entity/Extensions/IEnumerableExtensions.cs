@@ -1,12 +1,12 @@
-﻿using Hx.Sdk.Core.LinqBuilder;
-using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Extensions.LinqBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace System.Linq
+namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// IEnumerable 拓展

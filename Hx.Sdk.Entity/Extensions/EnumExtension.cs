@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 using System.ComponentModel;
 using System.Reflection;
-using System.Text;
 
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 枚举扩展
     /// </summary>
+    [SkipScan]
     public static class EnumExtension
     {
         /// <summary>

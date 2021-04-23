@@ -1,4 +1,4 @@
-using Hx.Sdk.Core.LinqBuilder;
+using Hx.Sdk.Extensions.LinqBuilder;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;

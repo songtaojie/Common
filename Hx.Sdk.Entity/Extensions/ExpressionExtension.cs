@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,6 +9,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// lambda扩展
     /// </summary>
+    [SkipScan]
     public static class ExpressionExtension
     {
         /// <summary>

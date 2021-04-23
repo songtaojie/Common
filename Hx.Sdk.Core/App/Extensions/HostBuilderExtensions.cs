@@ -43,7 +43,7 @@ namespace Microsoft.Extensions.Hosting
         }
 
         /// <summary>
-        /// 泛型主机注入
+        /// 泛型主机注入Hx.Sdk.Core
         /// </summary>
         /// <param name="hostBuilder">泛型主机注入构建器</param>
         /// <returns>IWebHostBuilder</returns>

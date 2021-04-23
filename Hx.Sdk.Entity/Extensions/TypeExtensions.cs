@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hx.Sdk.Extensions
@@ -10,6 +10,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// 类型扩展类
     /// </summary>
+    [SkipScan]
     public static class TypeExtensions
     {
         /// <summary>

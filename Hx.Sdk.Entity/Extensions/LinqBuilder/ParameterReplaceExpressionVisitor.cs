@@ -1,10 +1,8 @@
 ﻿using Hx.Sdk.DependencyInjection;
-using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace Hx.Sdk.Core.LinqBuilder
+namespace Hx.Sdk.Extensions.LinqBuilder
 {
     /// <summary>
     /// 处理 Lambda 参数不一致问题

@@ -40,13 +40,13 @@ namespace Hx.Sdk.ConfigureOptions
         /// </summary>
         /// <param name="name">正在配置的选项实例的名称</param>
         /// <param name="options">要配置的选项实例。</param>
-        public void PostConfigure(string name,AppSettingsOptions options)
+        public void PostConfigure(string name, AppSettingsOptions options)
         {
             options.InjectMiniProfiler ??= true;
             options.InjectSpecificationDocument ??= true;
             options.EnabledReferenceAssemblyScan ??= false;
             options.PrintDbConnectionInfo ??= true;
-            options.SupportPackageNamePrefixs ??= new string[] {"HxCore"};
+            options.SupportPackageNamePrefixs ??= new string[] { "HxCore" };
         }
     }
 }

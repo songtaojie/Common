@@ -1,47 +1,37 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Hx.Sdk.Core
 {
-    /// <summary>
-    /// 内部 App 副本
-    /// </summary>
-    [SkipScan]
-    internal class InternalApp1
+    public class InternalApp1
     {
+        public InternalApp1()
+        { 
+            
+        }
+
+
+
+        /// <summary>
+        /// 应用服务
+        /// </summary>
+        internal static IServiceCollection InternalServices;
+
         /// <summary>
         /// 全局配置构建器
         /// </summary>
-        internal static IConfiguration Configuration;
-        /// <summary>
-        /// 获取泛型主机环境
-        /// </summary>
-        internal static IHostEnvironment HostEnvironment;
+        internal static IConfigurationBuilder ConfigurationBuilder;
 
         /// <summary>
         /// 获取Web主机环境
         /// </summary>
         internal static IWebHostEnvironment WebHostEnvironment;
 
-        public InternalApp1(IConfiguration _Configuration, IHostEnvironment _HostEnvironment)
-        {
-            Configuration = _Configuration;
-            HostEnvironment = _HostEnvironment;
-            WebHostEnvironment = _HostEnvironment as IWebHostEnvironment;
-        }
         /// <summary>
-        /// 应用服务
+        /// 获取泛型主机环境
         /// </summary>
-        internal static IServiceCollection InternalServices;
+        internal static IHostEnvironment HostEnvironment;
 
         /// <summary>
         /// 添加配置文件
@@ -59,6 +49,9 @@ namespace Hx.Sdk.Core
 
             // 加载配置
             AutoAddJsonFiles(config, env, ignoreConfigurationFiles);
+
+            // 存储配置
+            ConfigurationBuilder = config;
         }
 
         /// <summary>

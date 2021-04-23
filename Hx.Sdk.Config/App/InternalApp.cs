@@ -80,8 +80,8 @@ namespace Hx.Sdk.ConfigureOptions
                 .Union(
                     Directory.GetFiles(Directory.GetCurrentDirectory(), "*.json", SearchOption.TopDirectoryOnly)
                 )
-                .Where(u => CheckIncludeDefaultSettings(Path.GetFileName(u)) 
-                    && !ignoreConfigurationFiles.Contains(Path.GetFileName(u)) 
+                .Where(u => CheckIncludeDefaultSettings(Path.GetFileName(u))
+                    && !ignoreConfigurationFiles.Contains(Path.GetFileName(u))
                     && !runtimeJsonSuffixs.Any(j => u.EndsWith(j)));
 
             if (!jsonFiles.Any()) return;
