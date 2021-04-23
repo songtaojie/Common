@@ -15,7 +15,7 @@ namespace Hx.Sdk.Core
     /// 内部 App 副本
     /// </summary>
     [SkipScan]
-    internal static class InternalApp
+    internal class InternalApp
     {
         /// <summary>
         /// 应用服务

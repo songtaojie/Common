@@ -31,8 +31,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 构造函数
         /// </summary>
         /// <param name="scoped">服务提供器</param>
-        public EFCoreRepository(
-            IServiceProvider scoped)
+        public EFCoreRepository(IServiceProvider scoped)
         {
             _serviceProvider = scoped;
         }

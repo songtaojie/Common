@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>IWebHostBuilder</returns>
         public static IWebHostBuilder InjectHx(this IWebHostBuilder hostBuilder, string assemblyName = nameof(Hx.Sdk.Core))
         {
-            hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, assemblyName);
+            //hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, assemblyName);
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
                 // 存储环境对象

@@ -20,6 +20,7 @@ namespace Hx.Sdk.Core
 {
     public class App2
     {
+
         /// <summary>
         /// 私有设置，避免重复解析
         /// </summary>
@@ -43,16 +44,17 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 获取泛型主机环境，如，是否是开发环境，生产环境等
         /// </summary>
-        public static IHostEnvironment HostEnvironment => InternalApp.HostEnvironment;
+        public static IHostEnvironment HostEnvironment;
 
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public App2(IConfiguration configuration)
+        internal App2(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
             // 编译配置
             Configuration = configuration;
+            HostEnvironment = hostEnvironment;
 
             Assemblies = GetAssemblies();
             EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.Entity.Attributes
+namespace Hx.Sdk.Attributes
 {
     /// <summary>
     /// 缓存数据
