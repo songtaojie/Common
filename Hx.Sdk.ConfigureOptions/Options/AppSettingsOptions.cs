@@ -1,9 +1,9 @@
-﻿using Hx.Sdk.ConfigurableOptions;
+﻿using Hx.Sdk.ConfigureOptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 
-namespace Hx.Sdk.Core
+namespace Hx.Sdk.ConfigureOptions
 {
     /// <summary>
     /// 应用全局配置

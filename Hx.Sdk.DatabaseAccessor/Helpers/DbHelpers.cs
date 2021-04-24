@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -132,10 +133,10 @@ namespace Hx.Sdk.DatabaseAccessor
                 var path = match.Groups["path"].Value;
 
                 // 读取配置
-                var realSql = App.Configuration[path];
+                var realSql = AppSettings.Configuration[path];
                 if (string.IsNullOrWhiteSpace(realSql))
                 {
-                    var sqlConfiguration = App.GetConfig<SqlTemplate>(path) ?? throw new InvalidOperationException($"Not found {path} configuration information.");
+                    var sqlConfiguration = AppSettings.GetConfig<SqlTemplate>(path) ?? throw new InvalidOperationException($"Not found {path} configuration information.");
                     realSql = sqlConfiguration.Sql;
                 }
 

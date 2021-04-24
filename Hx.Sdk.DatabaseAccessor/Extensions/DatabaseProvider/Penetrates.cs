@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -67,7 +68,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <param name="options"></param>
         private static void AddInterceptors(IInterceptor[] interceptors, DbContextOptionsBuilder options)
         {
-            if (App.Settings.InjectMiniProfiler != true) return;
+            if (AppSettings.Settings.InjectMiniProfiler != true) return;
 
             // 添加拦截器
             var interceptorList = DbProvider.GetDefaultInterceptors();

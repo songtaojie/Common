@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
@@ -28,7 +29,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         public SqlConnectionProfilerInterceptor()
         {
-            IsPrintDbConnectionInfo = App.Settings.PrintDbConnectionInfo.Value;
+            IsPrintDbConnectionInfo = AppSettings.Settings.PrintDbConnectionInfo.Value;
         }
 
         /// <summary>

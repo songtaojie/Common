@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,22 +22,8 @@ namespace Hx.Sdk.Core
     /// 全局应用类
     /// </summary>
     [SkipScan]
-    public static class App
+    public static partial class App
     {
-        /// <summary>
-        /// 私有设置，避免重复解析
-        /// </summary>
-        private static AppSettingsOptions _settings;
-
-        /// <summary>
-        /// 应用全局配置
-        /// </summary>
-        public static AppSettingsOptions Settings => _settings ??= GetOptions<AppSettingsOptions>();
-
-        /// <summary>
-        /// 全局配置选项
-        /// </summary>
-        public static readonly IConfiguration Configuration;
 
         /// <summary>
         /// 获取Web主机环境，如，是否是开发环境，生产环境等
@@ -120,53 +107,6 @@ namespace Hx.Sdk.Core
         }
 
         /// <summary>
-        /// 获取配置
-        /// </summary>
-        /// <typeparam name="TOptions">强类型选项类</typeparam>
-        /// <param name="jsonKey">配置中对应的Key</param>
-        /// <returns>TOptions</returns>
-        public static TOptions GetConfig<TOptions>(string jsonKey)
-        {
-            return Configuration.GetSection(jsonKey).Get<TOptions>();
-        }
-
-        /// <summary>
-        /// 获取选项
-        /// </summary>
-        /// <typeparam name="TOptions">强类型选项类</typeparam>
-        /// <param name="scoped"></param>
-        /// <returns>TOptions</returns>
-        public static TOptions GetOptions<TOptions>(IServiceProvider scoped = default)
-            where TOptions : class, new()
-        {
-            return GetService<IOptions<TOptions>>(scoped)?.Value;
-        }
-
-        /// <summary>
-        /// 获取选项
-        /// </summary>
-        /// <typeparam name="TOptions">强类型选项类</typeparam>
-        /// <param name="scoped"></param>
-        /// <returns>TOptions</returns>
-        public static TOptions GetOptionsMonitor<TOptions>(IServiceProvider scoped = default)
-            where TOptions : class, new()
-        {
-            return GetService<IOptionsMonitor<TOptions>>(scoped)?.CurrentValue;
-        }
-
-        /// <summary>
-        /// 获取选项
-        /// </summary>
-        /// <typeparam name="TOptions">强类型选项类</typeparam>
-        /// <param name="scoped"></param>
-        /// <returns>TOptions</returns>
-        public static TOptions GetOptionsSnapshot<TOptions>(IServiceProvider scoped = default)
-            where TOptions : class, new()
-        {
-            return GetService<IOptionsSnapshot<TOptions>>(scoped)?.Value;
-        }
-
-        /// <summary>
         /// 打印验证信息到 MiniProfiler
         /// </summary>
         /// <param name="category">分类</param>
@@ -176,7 +116,7 @@ namespace Hx.Sdk.Core
         public static void PrintToMiniProfiler(string category, string state, string message = null, bool isError = false)
         {
             // 判断是否注入 MiniProfiler 组件
-            if (Settings.InjectMiniProfiler != true) return;
+            if (AppSettings.Settings.InjectMiniProfiler != true) return;
 
             // 打印消息
             var customTiming = MiniProfiler.Current.CustomTiming(category, string.IsNullOrWhiteSpace(message) ? $"{category.ToTitleCase()} {state}" : message, state);
@@ -191,9 +131,6 @@ namespace Hx.Sdk.Core
         /// </summary>
         static App()
         {
-            // 编译配置
-            Configuration = InternalApp.ConfigurationBuilder.Build();
-
             Assemblies = GetAssemblies();
             EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()
                 .Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false)));
@@ -211,7 +148,7 @@ namespace Hx.Sdk.Core
             };
 
             // 读取应用配置
-            var settings = GetConfig<AppSettingsOptions>("AppSettings") ?? new AppSettingsOptions { };
+            var settings = AppSettings.GetConfig<AppSettingsOptions>("AppSettings") ?? new AppSettingsOptions { };
             var supportPackageNamePrefixs = settings.SupportPackageNamePrefixs ?? Array.Empty<string>(); ;
 
             var dependencyContext = DependencyContext.Default;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace Hx.Sdk.Entity.Page
 	/// <summary>
 	/// 分页的实体类
 	/// </summary>
+	[SkipScan]
 	public class PageModel<T>
+		where T : new()
 	{
 		/// <summary>
 		/// 构造函数
@@ -41,6 +44,10 @@ namespace Hx.Sdk.Entity.Page
 			this.Items = items;
 			this.PageIndex = pageIndex;
 			this.PageSize = pageSize;
+			var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+			this.TotalPages = totalPages;
+			HasNextPage = pageIndex < totalPages;
+			HasPrevPage = pageIndex - 1 > 0;
 		}
 		/// <summary>
 		/// 页码
@@ -58,6 +65,11 @@ namespace Hx.Sdk.Entity.Page
 		public int TotalCount { get; set; }
 
 		/// <summary>
+		/// 总页数
+		/// </summary>
+		public int TotalPages { get; set; }
+
+		/// <summary>
 		/// 扩展数据
 		/// </summary>
 		public object ExtendData { get; set; }
@@ -66,5 +78,15 @@ namespace Hx.Sdk.Entity.Page
 		/// 数据
 		/// </summary>
 		public List<T> Items { get; set; }
+
+		/// <summary>
+		/// 是否有上一页
+		/// </summary>
+		public bool HasPrevPage { get; set; }
+
+		/// <summary>
+		/// 是否有下一页
+		/// </summary>
+		public bool HasNextPage { get; set; }
 	}
 }

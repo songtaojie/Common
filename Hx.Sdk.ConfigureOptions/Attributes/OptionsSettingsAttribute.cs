@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.Sdk.ConfigurableOptions
+namespace Hx.Sdk.ConfigureOptions
 {
     /// <summary>
     /// 选项配置特性

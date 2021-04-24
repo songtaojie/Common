@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Profiling;
@@ -39,8 +40,8 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         public DbContextPool()
         {
-            InjectMiniProfiler = App.Settings.InjectMiniProfiler.Value;
-            IsPrintDbConnectionInfo = App.Settings.PrintDbConnectionInfo.Value;
+            InjectMiniProfiler = AppSettings.Settings.InjectMiniProfiler.Value;
+            IsPrintDbConnectionInfo = AppSettings.Settings.PrintDbConnectionInfo.Value;
 
             dbContexts = new ConcurrentBag<DbContext>();
             failedDbContexts = new ConcurrentBag<DbContext>();

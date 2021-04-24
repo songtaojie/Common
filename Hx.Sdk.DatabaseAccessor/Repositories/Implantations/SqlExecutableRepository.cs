@@ -1,8 +1,4 @@
-﻿using Hx.Sdk.DatabaseAccessor.Extensions;
-using Hx.Sdk.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Hx.Sdk.Extensions;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.Core;
-using Hx.Sdk.DatabaseAccessor.Extensions;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.EntityFrameworkCore;

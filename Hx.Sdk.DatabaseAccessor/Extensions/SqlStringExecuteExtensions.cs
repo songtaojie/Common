@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DatabaseAccessor;
+using Hx.Sdk.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +7,7 @@ using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.DatabaseAccessor.Extensions
+namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// Sql 字符串执行拓展类

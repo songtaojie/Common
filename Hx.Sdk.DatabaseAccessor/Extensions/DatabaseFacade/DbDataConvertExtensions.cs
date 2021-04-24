@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DatabaseAccessor.Extensions;
-using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.DatabaseAccessor
+namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 数据库数据转换拓展

@@ -1,5 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity;
+﻿using Hx.Sdk.DatabaseAccessor;
+using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.DatabaseAccessor.Extensions
+namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 实体多数据库上下文拓展类

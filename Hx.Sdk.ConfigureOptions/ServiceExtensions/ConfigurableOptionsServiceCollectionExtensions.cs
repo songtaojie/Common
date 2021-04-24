@@ -1,7 +1,5 @@
-﻿using Furion;
-using Furion.ConfigurableOptions;
+﻿using Hx.Sdk.ConfigureOptions;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
@@ -9,15 +7,29 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 可变选项服务拓展类
     /// </summary>
     public static class ConfigurableOptionsServiceCollectionExtensions
     {
+
         /// <summary>
-        /// 添加选项配置
+        /// 添加AppSettings,注入为单例模式，
+        /// 可以获取AppSettings.Json中的配置信息
+        /// </summary>
+        /// <param name="services"></param>
+        public static IServiceCollection AddAppSettings(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            //添加AppSettings
+            services.AddSingleton<AppSettings>();
+            return services;
+        }
+
+        /// <summary>
+        /// 添加选项配置，放在AddAppSettings
         /// </summary>
         /// <typeparam name="TOptions">选项类型</typeparam>
         /// <param name="services">服务集合</param>
@@ -25,6 +37,7 @@ namespace Hx.Sdk.DependencyInjection
         public static IServiceCollection AddConfigurableOptions<TOptions>(this IServiceCollection services)
             where TOptions : class, IConfigurableOptions
         {
+            if (services == null) throw new ArgumentNullException(nameof(services));
             var optionsType = typeof(TOptions);
             var optionsSettings = optionsType.GetCustomAttribute<OptionsSettingsAttribute>(false);
 
@@ -32,7 +45,7 @@ namespace Hx.Sdk.DependencyInjection
             var jsonKey = GetOptionsJsonKey(optionsSettings, optionsType);
 
             // 配置选项（含验证信息）
-            var configurationRoot = App.Configuration;
+            var configurationRoot = AppSettings.Configuration;
             var optionsConfiguration = configurationRoot.GetSection(jsonKey);
 
             // 配置选项监听
@@ -74,9 +87,9 @@ namespace Hx.Sdk.DependencyInjection
                 if (postConfigureMethod != null)
                 {
                     if (optionsSettings?.PostConfigureAll != true)
-                        services.PostConfigure<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { options, optionsConfiguration }));
+                        services.PostConfigure<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { options, configurationRoot }));
                     else
-                        services.PostConfigureAll<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { options, optionsConfiguration }));
+                        services.PostConfigureAll<TOptions>(options => postConfigureMethod.Invoke(options, new object[] {options, configurationRoot }));
                 }
             }
 

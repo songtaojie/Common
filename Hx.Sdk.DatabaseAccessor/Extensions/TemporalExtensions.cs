@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Hx.Sdk.DatabaseAccessor
+namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 时态查询拓展

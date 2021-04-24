@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace Hx.Sdk.ConfigurableOptions
+namespace Hx.Sdk.ConfigureOptions
 {
 
     /// <summary>

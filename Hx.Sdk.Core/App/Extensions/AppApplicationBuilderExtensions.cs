@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk;
+using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using System;
@@ -13,25 +14,15 @@ namespace Microsoft.AspNetCore.Builder
     {
 
         /// <summary>
-        /// 注入基础中间件
-        /// </summary>
-        /// <param name="app"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseInjectBase(this IApplicationBuilder app)
-        {
-            return app;
-        }
-
-        /// <summary>
         /// 添加应用中间件
         /// </summary>
         /// <param name="app">应用构建器</param>
         /// <param name="configure">应用配置</param>
         /// <returns>应用构建器</returns>
-        internal static IApplicationBuilder UseApp(this IApplicationBuilder app, Action<IApplicationBuilder> configure = null)
+        internal static IApplicationBuilder UseHxApp(this IApplicationBuilder app, Action<IApplicationBuilder> configure = null)
         {
             // 启用 MiniProfiler组件
-            if (App.Settings.InjectMiniProfiler == true)
+            if (AppSettings.Settings.InjectMiniProfiler == true)
             {
                 app.UseMiniProfiler();
             }

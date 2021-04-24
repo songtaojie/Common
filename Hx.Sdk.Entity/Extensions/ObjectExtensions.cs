@@ -14,13 +14,13 @@ namespace Hx.Sdk.Extensions
     [SkipScan]
     public static class ObjectExtensions
     {
-        
+
         /// <summary>
         /// 判断是否是匿名类型
         /// </summary>
         /// <param name="obj">对象</param>
         /// <returns></returns>
-        internal static bool IsAnonymous(this object obj)
+        public static bool IsAnonymous(this object obj)
         {
             var type = obj.GetType();
 
@@ -35,7 +35,7 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal static IEnumerable<Type> GetAncestorTypes(this Type type)
+        public static IEnumerable<Type> GetAncestorTypes(this Type type)
         {
             var ancestorTypes = new List<Type>();
             while (type != null && type != typeof(object))
@@ -54,14 +54,14 @@ namespace Hx.Sdk.Extensions
             bool IsNoObjectBaseType(Type t) => t.BaseType != typeof(object);
         }
 
-       
+
         /// <summary>
         /// 返回异步类型
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="realType"></param>
         /// <returns></returns>
-        internal static object ToTaskResult(this object obj, Type realType)
+        public static object ToTaskResult(this object obj, Type realType)
         {
             return typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(realType).Invoke(null, new object[] { obj });
         }
@@ -73,7 +73,7 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        internal static T ChangeType<T>(this object obj)
+        public static T ChangeType<T>(this object obj)
         {
             return (T)ChangeType(obj, typeof(T));
         }
@@ -84,7 +84,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="obj">待转换的对象</param>
         /// <param name="type">目标类型</param>
         /// <returns>转换后的对象</returns>
-        internal static object ChangeType(this object obj, Type type)
+        public static object ChangeType(this object obj, Type type)
         {
             if (type == null) return obj;
             if (obj == null) return type.IsValueType ? Activator.CreateInstance(type) : null;
@@ -149,7 +149,7 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TValue"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        internal static Dictionary<string, TValue> ToDictionary<TValue>(this object obj)
+        public static Dictionary<string, TValue> ToDictionary<TValue>(this object obj)
         {
             var dic = new Dictionary<string, TValue>();
 

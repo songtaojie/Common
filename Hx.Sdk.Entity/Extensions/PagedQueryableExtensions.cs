@@ -12,7 +12,7 @@ namespace Hx.Sdk.Extensions
 	/// IQueryable扩展类
 	/// </summary>
 	[SkipScan]
-	public static class IQueryableExtensions
+	public static class PagedQueryableExtensions
 	{
 		/// <summary>
 		/// 排序冰粉也
@@ -22,6 +22,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="param"></param>
 		/// <returns></returns>
 		public static PageModel<T> ToOrderAndPageList<T>(this IQueryable<T> source, BasePageParam param)
+			where T : new()
 		{
 			if (!string.IsNullOrWhiteSpace(param.SortKey))
 			{
@@ -38,6 +39,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="param"></param>
 		/// <returns></returns>
 		public async static Task<PageModel<T>> ToOrderAndPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
+			where T : new()
 		{
 			if (!string.IsNullOrWhiteSpace(param.SortKey))
 			{
@@ -92,6 +94,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="param">分页的参数</param>
 		/// <returns></returns>
 		public static PageModel<T> ToPageList<T>(this IQueryable<T> source, BasePageParam param)
+			where T : new()
 		{
 			if (param == null) throw new ArgumentNullException("param is null");
 			return source.ToPageList(param.PageIndex, param.PageSize);
@@ -105,6 +108,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="param">分页参数</param>
 		/// <returns></returns>
 		public static async Task<PageModel<T>> ToPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
+			where T : new()
 		{
 			if (param == null) throw new ArgumentNullException("param is null");
 			return await source.ToPageListAsync(param.PageIndex, param.PageSize);
@@ -119,6 +123,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="pageSize">每页显示的数据条数</param>
 		/// <returns></returns>
 		public static PageModel<T> ToPageList<T>(this IQueryable<T> source, int pageIndex, int pageSize)
+			where T : new()
 		{
 			if (source == null) throw new ArgumentNullException("source is null");
 			if (pageIndex <= 0)
@@ -155,6 +160,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
 		public static async Task<PageModel<T>> ToPageListAsync<T>(this IQueryable<T> source, int pageIndex, int pageSize)
+			where T : new()
 		{
 			return await Task.FromResult(source.ToPageList(pageIndex, pageSize));
 		}

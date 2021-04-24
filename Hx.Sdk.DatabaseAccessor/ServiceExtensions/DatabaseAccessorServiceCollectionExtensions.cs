@@ -1,13 +1,12 @@
-﻿using Hx.Sdk;
+﻿using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Core;
 using Hx.Sdk.DatabaseAccessor;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 数据库访问器服务拓展类
@@ -15,6 +14,10 @@ namespace Hx.Sdk.DependencyInjection
     [SkipScan]
     public static class DatabaseAccessorServiceCollectionExtensions
     {
+        /// <summary>
+        /// MiniProfiler 插件路径
+        /// </summary>
+        private const string MiniProfilerRouteBasePath = "/index-mini-profiler";
         /// <summary>
         /// 添加数据库上下文
         /// </summary>
@@ -26,7 +29,14 @@ namespace Hx.Sdk.DependencyInjection
         {
             // 设置迁移类库名称
             if (!string.IsNullOrWhiteSpace(migrationAssemblyName)) Db.MigrationAssemblyName = migrationAssemblyName;
-
+            //// 注册MiniProfiler 组件
+            if (AppSettings.Settings!=null && AppSettings.Settings.InjectMiniProfiler == true)
+            {
+                services.AddMiniProfiler(options =>
+                {
+                    options.RouteBasePath = MiniProfilerRouteBasePath;
+                }).AddRelationalDiagnosticListener();
+            }
             // 配置数据库上下文
             configure?.Invoke(services);
 

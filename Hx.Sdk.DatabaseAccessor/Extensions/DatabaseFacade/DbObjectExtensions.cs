@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -46,7 +47,7 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             IsDevelopment = App.HostEnvironment.IsDevelopment();
 
-            var appsettings = App.Settings;
+            var appsettings = AppSettings.Settings;
             InjectMiniProfiler = appsettings.InjectMiniProfiler.Value;
             IsPrintDbConnectionInfo = appsettings.PrintDbConnectionInfo.Value;
         }

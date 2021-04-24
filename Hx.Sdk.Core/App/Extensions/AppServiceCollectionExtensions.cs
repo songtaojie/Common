@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk;
+using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,10 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
     [SkipScan]
     public static class AppServiceCollectionExtensions
     {
-        /// <summary>
-        /// MiniProfiler 插件路径
-        /// </summary>
-        private const string MiniProfilerRouteBasePath = "/index-mini-profiler";
+       
 
         /// <summary>
         /// 添加应用配置
@@ -30,7 +28,9 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册内存和分布式内存
             services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
             services.AddDistributedMemoryCache();
+
             // 注册全局配置选项
+            services.AddAppSettings();
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 添加 HttContext 访问器
@@ -65,6 +65,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDistributedMemoryCache();
 
             // 注册全局配置选项
+            services.AddAppSettings();
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 注册全局依赖注入

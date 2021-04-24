@@ -16,7 +16,7 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        internal static Type GetRealReturnType(this MethodInfo method)
+        public static Type GetRealReturnType(this MethodInfo method)
         {
             // 判断是否是异步方法
             var isAsyncMethod = method.IsAsync();
@@ -31,11 +31,9 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <param name="method">方法</param>
         /// <returns></returns>
-        internal static bool IsAsync(this MethodInfo method)
+        public static bool IsAsync(this MethodInfo method)
         {
             return method.ReturnType.IsAsync();
         }
-
-
     }
 }

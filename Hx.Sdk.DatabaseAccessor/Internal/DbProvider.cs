@@ -1,3 +1,4 @@
+using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -160,7 +161,7 @@ namespace Hx.Sdk.DatabaseAccessor
             if (connStr.Contains("=")) return connStr;
             else
             {
-                var configuration = App.Configuration;
+                var configuration = AppSettings.Configuration;
 
                 // 如果包含 : 符号，那么认为是一个 Key 路径
                 if (connStr.Contains(":")) return configuration[connStr];

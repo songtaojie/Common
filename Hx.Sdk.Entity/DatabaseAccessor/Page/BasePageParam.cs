@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace Hx.Sdk.Entity.Page
     /// <summary>
     /// 分页参数
     /// </summary>
+    [SkipScan]
     public class BasePageParam
     {
         /// <summary>
@@ -30,6 +32,7 @@ namespace Hx.Sdk.Entity.Page
     /// <summary>
     /// 排序类型
     /// </summary>
+    [SkipScan]
     public enum SortTypeEnum
     {
         /// <summary>

@@ -273,7 +273,7 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <param name="type">类型</param>
         /// <returns></returns>
-        internal static bool IsRichPrimitive(this Type type)
+        public static bool IsRichPrimitive(this Type type)
         {
             // 处理元组类型
             if (type.IsValueTuple()) return false;
@@ -294,18 +294,18 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <param name="type">类型</param>
         /// <returns></returns>
-        internal static bool IsValueTuple(this Type type)
+        public static bool IsValueTuple(this Type type)
         {
             return type.ToString().StartsWith(typeof(ValueTuple).FullName);
         }
 
-       
+
         /// <summary>
         /// 判断类型是否是异步类型
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal static bool IsAsync(this Type type)
+        public static bool IsAsync(this Type type)
         {
             return type.ToString().StartsWith(typeof(Task).FullName);
         }
@@ -316,7 +316,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="type">类型</param>
         /// <param name="generic">泛型类型</param>
         /// <returns>bool</returns>
-        internal static bool HasImplementedRawGeneric(this Type type, Type generic)
+        public static bool HasImplementedRawGeneric(this Type type, Type generic)
         {
             // 检查接口类型
             var isTheRawGenericType = type.GetInterfaces().Any(IsTheRawGenericType);

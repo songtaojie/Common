@@ -18,7 +18,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="dic">字典</param>
         /// <param name="newDic">新字典</param>
         /// <returns></returns>
-        internal static Dictionary<string, T> AddOrUpdate<T>(this Dictionary<string, T> dic, Dictionary<string, T> newDic)
+        public static Dictionary<string, T> AddOrUpdate<T>(this Dictionary<string, T> dic, Dictionary<string, T> newDic)
         {
             foreach (var key in newDic.Keys)
             {
