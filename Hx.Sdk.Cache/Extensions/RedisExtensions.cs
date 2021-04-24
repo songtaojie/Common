@@ -4,32 +4,25 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.Cache.Base
+namespace Hx.Sdk.Cache
 {
+    /// <summary>
+    /// redis IDatabase扩展
+    /// </summary>
     internal static class RedisExtensions
     {
         private const string HmGetScript = (@"return redis.call('HMGET', KEYS[1], unpack(ARGV))");
 
         internal static RedisValue[] HashMemberGet(this IDatabase cache, string key, params string[] members)
         {
-            var result = cache.ScriptEvaluate(
-                HmGetScript,
-                new RedisKey[] { key },
-                GetRedisMembers(members));
-
+            var result = cache.ScriptEvaluate( HmGetScript,new RedisKey[] { key },GetRedisMembers(members));
             // TODO: Error checking?
             return (RedisValue[])result;
         }
 
-        internal static async Task<RedisValue[]> HashMemberGetAsync(
-            this IDatabase cache,
-            string key,
-            params string[] members)
+        internal static async Task<RedisValue[]> HashMemberGetAsync( this IDatabase cache, string key, params string[] members)
         {
-            var result = await cache.ScriptEvaluateAsync(
-                HmGetScript,
-                new RedisKey[] { key },
-                GetRedisMembers(members));
+            var result = await cache.ScriptEvaluateAsync( HmGetScript, new RedisKey[] { key },  GetRedisMembers(members));
 
             // TODO: Error checking?
             return (RedisValue[])result;

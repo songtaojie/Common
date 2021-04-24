@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Hx.Sdk.Cache
 {
@@ -22,9 +23,39 @@ namespace Hx.Sdk.Cache
             return _cache.Get<T>(key);
         }
 
+        public Task<T> GetAsync<T>(string key)
+        {
+            return Task.FromResult(Get<T>(key));
+        }
+
+        public bool Remove(string key)
+        {
+            try
+            {
+                _cache.Remove(key);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public Task<bool> RemoveAsync(string key)
+        {
+            var result = Remove(key);
+            return Task.FromResult(result);
+        }
+
         public void Set<T>(string key, T value, TimeSpan time)
         {
             _cache.Set<T>(key, value, time);
+        }
+
+        public Task SetAsync<T>(string key, T value, TimeSpan time)
+        {
+            Set<T>(key, value, time);
+            return Task.CompletedTask;
         }
     }
 }

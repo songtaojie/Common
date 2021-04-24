@@ -225,7 +225,7 @@ namespace Hx.Sdk.Cache
 
 
 
-    public class RedisCache : IDistributedCache, IDisposable
+    public class RedisCache2 : IDistributedCache, IDisposable
     {
         // KEYS[1] = = key
         // ARGV[1] = absolute-expiration - ticks as long (-1 for none)
