@@ -10,7 +10,7 @@ namespace Hx.Sdk.Cache.Options
     /// <summary>
     /// RedisCache的配置选项
     /// </summary>
-    public class RedisCacheOptions : IConfigurableOptions<RedisSettingsOptions>
+    public class RedisCacheOptions : IConfigurableOptions<RedisCacheOptions>
     {
         public RedisCacheOptions()
         { 
@@ -29,12 +29,14 @@ namespace Hx.Sdk.Cache.Options
         /// </summary>
         public string InstanceName { get; set; }
 
-        public void PostConfigure(RedisSettingsOptions options, IConfiguration configuration)
+        public void PostConfigure(RedisCacheOptions options, IConfiguration configuration)
         {
-            ConfigurationOptions ??= new ConfigurationOptions()
+            options.InstanceName ??= "Hx";
+            if (!string.IsNullOrEmpty(Configuration) && ConfigurationOptions ==null)
             {
-                DefaultDatabase = 0
-            };
+                ConfigurationOptions = ConfigurationOptions.Parse(Configuration, true);
+                ConfigurationOptions.DefaultDatabase ??= 0;
+            }
         }
     }
 }

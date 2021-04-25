@@ -1,4 +1,7 @@
-﻿namespace Hx.Sdk.DatabaseAccessor
+﻿using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
+
+namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 多数据库仓储

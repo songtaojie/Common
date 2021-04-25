@@ -14,7 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class ConfigurableOptionsServiceCollectionExtensions
     {
-
         /// <summary>
         /// 添加AppSettings,注入为单例模式，
         /// 可以获取AppSettings.Json中的配置信息
@@ -24,12 +23,19 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             //添加AppSettings
-            services.AddSingleton<AppSettings>();
+            services.AddSingleton<AppSettings>(resolver =>
+            {
+                var configuration = resolver.GetService<IConfiguration>();
+                var serviceProvider = resolver.GetService<IServiceProvider>();
+                return new AppSettings(configuration, serviceProvider);
+            });
+            // 调用立即生效
+            services.BuildServiceProvider().GetService<AppSettings>();
             return services;
         }
 
         /// <summary>
-        /// 添加选项配置，放在AddAppSettings
+        /// 添加选项配置，放在AddAppSettings之后
         /// </summary>
         /// <typeparam name="TOptions">选项类型</typeparam>
         /// <param name="services">服务集合</param>
@@ -61,7 +67,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     });
                 }
             }
-
             services.AddOptions<TOptions>()
                 .Bind(optionsConfiguration, options =>
                 {

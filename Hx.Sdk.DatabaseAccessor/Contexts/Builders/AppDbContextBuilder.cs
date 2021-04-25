@@ -1,5 +1,8 @@
 ﻿using Hx.Sdk.Core;
+using Hx.Sdk.DatabaseAccessor.Internal;
 using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
 using Hx.Sdk.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

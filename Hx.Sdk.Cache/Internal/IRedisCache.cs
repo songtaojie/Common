@@ -24,7 +24,7 @@ namespace Hx.Sdk.Cache
 		/// <typeparam name="T"></typeparam>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		string GetString(string key);
+		string StringGet(string key);
 
 		/// <summary>
 		/// 获取数据
@@ -64,7 +64,7 @@ namespace Hx.Sdk.Cache
 		/// <typeparam name="T"></typeparam>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		Task<string> GetAsync(string key);
+		Task<string> StringGetAsync(string key);
 
 		/// <summary>
 		/// 获取数据异步
@@ -90,13 +90,6 @@ namespace Hx.Sdk.Cache
 		/// <param name="key"></param>
 		/// <returns></returns>
 		Task<bool> KeyExistsAsync(string key);
-
-		/// <summary>
-		/// 移除数据，异步
-		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
-		Task<bool> RemoveAsync(string key);
 
 		/// <summary>
 		/// 清除某个数据库中的数据

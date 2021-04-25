@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Hx.Sdk.DatabaseAccessor
+namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// 基本的模型，封装了索引器登方法
     /// </summary>
     [Serializable]
+    [SkipScan]
     public abstract class EntityPropertyBase : INotifyPropertyChanged
     {
         /// <summary>

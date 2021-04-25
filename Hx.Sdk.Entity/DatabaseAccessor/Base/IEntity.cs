@@ -1,16 +1,9 @@
-﻿namespace Hx.Sdk.DatabaseAccessor
+﻿namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// 主键接口
     /// </summary>
-    public interface IEntity: IPrivateEntity
-    {
-    }
-
-    /// <summary>
-    /// 数据库实体依赖接口（禁止外部继承）
-    /// </summary>
-    public interface IPrivateEntity
+    public interface IEntity: Internal.IPrivateEntity
     {
     }
 }

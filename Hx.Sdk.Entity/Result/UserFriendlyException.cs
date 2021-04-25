@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Hx.Sdk.DependencyInjection;
+using System;
 
 namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// 用户友好的异常提示
     /// </summary>
+    [SkipScan]
     public class UserFriendlyException : Exception
     {
         /// <summary>

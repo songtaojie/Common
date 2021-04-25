@@ -1,4 +1,6 @@
-﻿using Hx.Sdk.Entity;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -37,19 +39,5 @@ namespace Hx.Sdk.DatabaseAccessor
     {
     }
 
-    /// <summary>
-    /// 动态表名依赖接口（禁止外部继承）
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    public interface IPrivateEntityMutableTable<TEntity> : IPrivateModelBuilder
-        where TEntity : class, IPrivateEntity, new()
-    {
-        /// <summary>
-        /// 获取表名
-        /// </summary>
-        /// <param name="dbContext"></param>
-        /// <param name="dbContextLocator"></param>
-        /// <returns></returns>
-        string GetTableName(DbContext dbContext, Type dbContextLocator);
-    }
+  
 }

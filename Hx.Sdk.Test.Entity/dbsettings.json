@@ -1,0 +1,7 @@
+﻿{
+  "ConnectionStrings": {
+    "SqlServerConnectionString": "Server=localhost;Database=hx_sdk_core;User=sa;Password=000000;MultipleActiveResultSets=True;",
+    "Sqlite3ConnectionString": "Data Source=./hx_sdk_core.db",
+    "MySqlConnectionString": "Data Source=localhost;Database=hx_sdk_core;User ID=root;Password=song123;pooling=true;port=3306;sslmode=none;CharSet=utf8;"
+  }
+}

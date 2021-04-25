@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Hx.Sdk.Entity.Internal;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
@@ -35,21 +34,5 @@ namespace Hx.Sdk.DatabaseAccessor
         where TDbContextLocator1 : class, IDbContextLocator
         where TDbContextLocator2 : class, IDbContextLocator
     {
-    }
-
-    /// <summary>
-    /// 数据库种子数据依赖接口（禁止外部继承）
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    public interface IPrivateEntitySeedData<TEntity> : IPrivateModelBuilder
-        where TEntity : class, IPrivateEntity, new()
-    {
-        /// <summary>
-        /// 配置种子数据
-        /// </summary>
-        /// <param name="dbContext">数据库上下文</param>
-        /// <param name="dbContextLocator">数据库上下文定位器</param>
-        /// <returns></returns>
-        IEnumerable<TEntity> HasData(DbContext dbContext, Type dbContextLocator);
     }
 }

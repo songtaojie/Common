@@ -1,9 +1,6 @@
 ﻿using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Entity;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+using Hx.Sdk.Entity.Internal;
 
 namespace Hx.Sdk.DatabaseAccessor
 {

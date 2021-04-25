@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

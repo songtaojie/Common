@@ -8,7 +8,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// HttpContext的一个管理类
     /// </summary>
-    public interface IUserContext
+    public interface IUserContextProvider
     {
         /// <summary>
         /// Http上下文

@@ -1,13 +1,12 @@
 ﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;

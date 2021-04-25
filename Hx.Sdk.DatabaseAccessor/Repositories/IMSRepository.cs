@@ -1,4 +1,7 @@
-﻿namespace Hx.Sdk.DatabaseAccessor
+﻿using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
+
+namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 主从库仓储

@@ -15,8 +15,6 @@ namespace Microsoft.Extensions.DependencyInjection
     [SkipScan]
     public static class AppServiceCollectionExtensions
     {
-       
-
         /// <summary>
         /// 添加应用配置
         /// </summary>
@@ -30,7 +28,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDistributedMemoryCache();
 
             // 注册全局配置选项
+            
             services.AddAppSettings();
+            //services.BuildServiceProvider().GetService<AppSettings>();
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 添加 HttContext 访问器

@@ -162,7 +162,7 @@ namespace Hx.Sdk.DatabaseAccessor
             else
             {
                 var configuration = AppSettings.Configuration;
-
+                
                 // 如果包含 : 符号，那么认为是一个 Key 路径
                 if (connStr.Contains(":")) return configuration[connStr];
                 else

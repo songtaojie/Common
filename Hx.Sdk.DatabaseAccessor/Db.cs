@@ -1,10 +1,9 @@
 ﻿using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hx.Sdk.DatabaseAccessor
 {

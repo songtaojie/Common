@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.Cache
+namespace Hx.Sdk.Cache.Internal
 {
     /// <summary>
     /// 内置的缓存对象

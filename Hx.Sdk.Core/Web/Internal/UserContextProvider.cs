@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace Hx.Sdk.Core
+namespace Hx.Sdk.Core.Internal
 {
     /// <summary>
     /// 用户上下文操作类
     /// </summary>
-    internal class UserContext : IUserContext
+    internal class UserContextProvider : IUserContextProvider
     {
         /// <summary>
         /// 是否使用IdentityServer4
@@ -28,7 +28,7 @@ namespace Hx.Sdk.Core
             }
         }
 
-        public UserContext(IHttpContextAccessor contextAccessor)
+        public UserContextProvider(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
         }

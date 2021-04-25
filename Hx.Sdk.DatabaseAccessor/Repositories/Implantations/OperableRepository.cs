@@ -1,3 +1,5 @@
+using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
 using Hx.Sdk.Extensions.LinqBuilder;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;

@@ -1,4 +1,6 @@
 ﻿using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
 using System;
 
 namespace Hx.Sdk.DatabaseAccessor

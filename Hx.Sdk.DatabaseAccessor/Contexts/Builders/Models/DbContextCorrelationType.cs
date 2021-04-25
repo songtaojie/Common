@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Hx.Sdk.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
@@ -35,21 +38,5 @@ namespace Hx.Sdk.DatabaseAccessor
         where TDbContextLocator1 : class, IDbContextLocator
         where TDbContextLocator2 : class, IDbContextLocator
     {
-    }
-
-    /// <summary>
-    /// 数据库实体类型配置依赖接口（禁止外部继承）
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    public interface IPrivateEntityTypeBuilder<TEntity> : IPrivateModelBuilder
-        where TEntity : class, IPrivateEntity, new()
-    {
-        /// <summary>
-        /// 实体类型配置
-        /// </summary>
-        /// <param name="entityBuilder">实体类型构建器</param>
-        /// <param name="dbContext">数据库上下文</param>
-        /// <param name="dbContextLocator">数据库上下文定位器</param>
-        void Configure(EntityTypeBuilder<TEntity> entityBuilder, DbContext dbContext, Type dbContextLocator);
     }
 }

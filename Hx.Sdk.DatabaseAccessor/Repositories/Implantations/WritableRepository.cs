@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hx.Sdk.DatabaseAccessor

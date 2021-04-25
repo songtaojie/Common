@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Hx.Sdk.Core
+namespace Hx.Sdk.Core.Internal
 {
     /// <summary>
     /// 内部 App 副本

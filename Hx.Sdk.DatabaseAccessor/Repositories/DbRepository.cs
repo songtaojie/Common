@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace Hx.Sdk.DatabaseAccessor

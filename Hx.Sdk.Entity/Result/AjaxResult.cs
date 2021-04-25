@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Hx.Sdk.DependencyInjection;
 
 namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// ajax返回结果统一封装
     /// </summary>
+    [SkipScan]
     public class AjaxResult
     {
         /// <summary>

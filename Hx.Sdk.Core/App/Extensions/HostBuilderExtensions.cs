@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

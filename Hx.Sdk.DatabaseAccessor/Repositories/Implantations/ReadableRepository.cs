@@ -7,6 +7,8 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Hx.Sdk.Extensions;
+using Hx.Sdk.Entity;
+using Hx.Sdk.Entity.Internal;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
