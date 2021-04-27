@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Builder
         internal static IApplicationBuilder UseHxApp(this IApplicationBuilder app, Action<IApplicationBuilder> configure = null)
         {
             // 启用 MiniProfiler组件
-            if (AppSettings.Settings.InjectMiniProfiler == true)
+            if (App.Settings.InjectMiniProfiler == true)
             {
                 app.UseMiniProfiler();
             }

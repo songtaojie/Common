@@ -10,7 +10,7 @@ namespace Hx.Sdk.ConfigureOptions
     /// 读取appsettings.json中的配置的类
     /// </summary>
     [SkipScan]
-    public class AppSettings
+    public sealed class AppSettings
     {
         /// <summary>
         /// 全局配置选项
@@ -29,15 +29,6 @@ namespace Hx.Sdk.ConfigureOptions
             ServiceProvider = serviceProvider;
         }
 
-        /// <summary>
-        /// 私有设置，避免重复解析
-        /// </summary>
-        private static AppSettingsOptions _settings;
-
-        /// <summary>
-        /// 应用全局配置
-        /// </summary>
-        public static AppSettingsOptions Settings => _settings ??= GetOptions<AppSettingsOptions>();
 
         /// <summary>
         /// 获取请求生命周期的服务

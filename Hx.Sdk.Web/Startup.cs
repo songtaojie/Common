@@ -29,6 +29,7 @@ namespace Hx.Sdk.Web
             {
                 options.AddDbPool<DefaultDbContext>();
             }, "Hx.Sdk.Test.Entity");
+            services.AddSwaggerSetup();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +38,7 @@ namespace Hx.Sdk.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwaggerSetup();
             }
             else
             {

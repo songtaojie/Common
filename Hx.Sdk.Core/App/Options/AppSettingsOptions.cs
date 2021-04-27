@@ -1,9 +1,8 @@
 ﻿using Hx.Sdk.ConfigureOptions;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System;
 
-namespace Hx.Sdk.ConfigureOptions
+namespace Hx.Sdk.Core.Options
 {
     /// <summary>
     /// 应用全局配置
@@ -36,6 +35,11 @@ namespace Hx.Sdk.ConfigureOptions
         public string[] SupportPackageNamePrefixs { get; set; }
 
         /// <summary>
+        /// 是否使用IdentityServer4授权认证，false：使用jwt授权认证
+        /// </summary>
+        public bool? UseIdentityServer4 { get; set; }
+
+        /// <summary>
         /// 后期配置
         /// </summary>
         /// <param name="options"></param>
@@ -47,6 +51,7 @@ namespace Hx.Sdk.ConfigureOptions
             options.EnabledReferenceAssemblyScan ??= false;
             options.PrintDbConnectionInfo ??= true;
             options.SupportPackageNamePrefixs ??= Array.Empty<string>();
+            options.UseIdentityServer4 ??= false;
         }
     }
 }

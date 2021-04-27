@@ -8,7 +8,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// HttpContext的一个管理类
     /// </summary>
-    public interface IUserContextProvider
+    public interface IUserContext
     {
         /// <summary>
         /// Http上下文
@@ -26,7 +26,7 @@ namespace Hx.Sdk.Core
         public string UserName { get; }
 
         /// <summary>
-        /// 是否是管理员，判断角色中是否包含SuperAdmin的声明
+        /// 是否是超级管理员，判断角色中是否包含SuperAdmin的声明
         /// </summary>
         public bool IsSuperAdmin { get; }
 
@@ -36,7 +36,7 @@ namespace Hx.Sdk.Core
         public bool IsAdmin { get; }
 
         /// <summary>
-        /// 用户的id，取的
+        /// 用户的id，取的jti
         /// </summary>
         public string JwtId { get; }
 
@@ -63,7 +63,7 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 根据claim获取相应的值
         /// </summary>
-        /// <param name="ClaimType"></param>
+        /// <param name="ClaimType">声明</param>
         /// <returns></returns>
         public List<string> GetClaimValueByType(string ClaimType);
     }

@@ -1,7 +1,5 @@
-﻿using Hx.Sdk;
-using Hx.Sdk.Core;
+﻿using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Concurrent;
@@ -9,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 依赖注入拓展类

@@ -1,11 +1,6 @@
-﻿using Hx.Sdk;
-using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.Core;
+﻿using Hx.Sdk.Core.Options;
 using Hx.Sdk.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -30,11 +25,10 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册全局配置选项
             
             services.AddAppSettings();
-            //services.BuildServiceProvider().GetService<AppSettings>();
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 添加 HttContext 访问器
-            services.AddHttpContextAccessor();
+            services.AddUserContext();
             ////// 注册MiniProfiler 组件
             //if (App.Settings.InjectMiniProfiler == true)
             //{

@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // 设置迁移类库名称
             if (!string.IsNullOrWhiteSpace(migrationAssemblyName)) Db.MigrationAssemblyName = migrationAssemblyName;
             //// 注册MiniProfiler 组件
-            if (AppSettings.Settings!=null && AppSettings.Settings.InjectMiniProfiler == true)
+            if (App.Settings!=null && App.Settings.InjectMiniProfiler == true)
             {
                 services.AddMiniProfiler(options =>
                 {

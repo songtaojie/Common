@@ -40,8 +40,8 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         public DbContextPool()
         {
-            InjectMiniProfiler = AppSettings.Settings.InjectMiniProfiler == true;
-            IsPrintDbConnectionInfo = AppSettings.Settings.PrintDbConnectionInfo == true;
+            InjectMiniProfiler = App.Settings.InjectMiniProfiler == true;
+            IsPrintDbConnectionInfo = App.Settings.PrintDbConnectionInfo == true;
 
             dbContexts = new ConcurrentBag<DbContext>();
             failedDbContexts = new ConcurrentBag<DbContext>();

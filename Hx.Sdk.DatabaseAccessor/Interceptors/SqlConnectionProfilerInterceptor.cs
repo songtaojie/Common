@@ -29,7 +29,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         public SqlConnectionProfilerInterceptor()
         {
-            IsPrintDbConnectionInfo = AppSettings.Settings.PrintDbConnectionInfo.Value;
+            IsPrintDbConnectionInfo = App.Settings.PrintDbConnectionInfo.Value;
         }
 
         /// <summary>

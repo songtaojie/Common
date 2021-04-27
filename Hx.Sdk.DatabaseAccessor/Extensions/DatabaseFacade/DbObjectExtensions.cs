@@ -47,7 +47,7 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             IsDevelopment = App.HostEnvironment.IsDevelopment();
 
-            var appsettings = AppSettings.Settings;
+            var appsettings = App.Settings;
             InjectMiniProfiler = appsettings.InjectMiniProfiler.Value;
             IsPrintDbConnectionInfo = appsettings.PrintDbConnectionInfo.Value;
         }

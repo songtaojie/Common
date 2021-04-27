@@ -9,12 +9,12 @@ namespace Hx.Sdk.Core.Internal
     /// <summary>
     /// 用户上下文操作类
     /// </summary>
-    internal class UserContextProvider : IUserContextProvider
+    internal class UserContext : IUserContext
     {
         /// <summary>
         /// 是否使用IdentityServer4
         /// </summary>
-        internal static bool IsUseIds4 = false;
+        private static bool _isUseIds4 = false;
         /// <summary>
         /// HttpContext访问器
         /// </summary>
@@ -28,9 +28,10 @@ namespace Hx.Sdk.Core.Internal
             }
         }
 
-        public UserContextProvider(IHttpContextAccessor contextAccessor)
+        public UserContext(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
+            _isUseIds4 = App.Settings.UseIdentityServer4 == true;
         }
         /// <summary>
         /// 用户的名字
@@ -41,7 +42,7 @@ namespace Hx.Sdk.Core.Internal
             { 
                 string name = HttpContext.User.Identity.Name;
                 if (!string.IsNullOrEmpty(name)) return name;
-                string getNameType = IsUseIds4 ? HxClaimTypes.Ids4Name : ClaimTypes.Name;
+                string getNameType = _isUseIds4 ? HxClaimTypes.Ids4Name : ClaimTypes.Name;
                return GetClaimValueByType(getNameType).FirstOrDefault();
             }
         }

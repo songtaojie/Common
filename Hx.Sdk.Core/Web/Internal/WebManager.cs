@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Hx.Sdk.NetCore.Config
+namespace Hx.Sdk.Core.Internal
 {
     /// <summary>
     /// Web管理类

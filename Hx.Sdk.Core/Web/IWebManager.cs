@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hx.Sdk.NetCore.Config
+﻿namespace Hx.Sdk.Core
 {
     /// <summary>
     /// Web管理类

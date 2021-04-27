@@ -1,5 +1,6 @@
 ﻿using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Core.Internal;
+using Hx.Sdk.Core.Options;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
@@ -58,6 +60,27 @@ namespace Hx.Sdk.Core
         /// 获取请求上下文用户
         /// </summary>
         public static ClaimsPrincipal User => HttpContext?.User;
+
+        /// <summary>
+        /// 私有设置，避免重复解析
+        /// </summary>
+        private static AppSettingsOptions _settings;
+
+        /// <summary>
+        /// 应用全局配置
+        /// </summary>
+        public static AppSettingsOptions Settings
+        { 
+            get
+            {
+                if (_settings == null)
+                {
+                    var options = GetService<IOptions<AppSettingsOptions>>();
+                    _settings = options == null ? new AppSettingsOptions(): options.Value;
+                }
+                return _settings;
+            }
+        }
 
         /// <summary>
         /// 获取请求生命周期的服务
@@ -115,7 +138,7 @@ namespace Hx.Sdk.Core
         public static void PrintToMiniProfiler(string category, string state, string message = null, bool isError = false)
         {
             // 判断是否注入 MiniProfiler 组件
-            if (AppSettings.Settings.InjectMiniProfiler != true) return;
+            if (App.Settings.InjectMiniProfiler != true) return;
 
             // 打印消息
             var customTiming = MiniProfiler.Current.CustomTiming(category, string.IsNullOrWhiteSpace(message) ? $"{category.ToTitleCase()} {state}" : message, state);
