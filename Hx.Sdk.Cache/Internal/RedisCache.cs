@@ -30,7 +30,6 @@ namespace Hx.Sdk.Cache.Internal
         private const long NotPresent = -1;
 
         private volatile ConnectionMultiplexer _connection;
-        private IDatabase _database;
         /// <summary>
 		/// 数据库编号
 		/// </summary>
@@ -40,13 +39,9 @@ namespace Hx.Sdk.Cache.Internal
         private readonly string _instance;
 
         private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
-
-        internal RedisCache(IOptions<RedisCacheOptions> optionsAccessor)
+        public RedisCache(IOptions<RedisCacheOptions> optionsAccessor)
         {
-            if (optionsAccessor == null)
-            {
-                throw new ArgumentNullException(nameof(optionsAccessor));
-            }
+            if (optionsAccessor == null)throw new ArgumentNullException(nameof(optionsAccessor));
             _options = optionsAccessor.Value;
 
             // 这允许对单个后端缓存进行分区，以与多个应用程序/服务一起使用。.
@@ -60,7 +55,7 @@ namespace Hx.Sdk.Cache.Internal
             return GetAndRefresh(key, getData: true);
         }
 
-        public async Task<byte[]> GetAsync(string key, CancellationToken token = default(CancellationToken))
+        public async Task<byte[]> GetAsync(string key, CancellationToken token = default)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             token.ThrowIfCancellationRequested();
@@ -90,22 +85,16 @@ namespace Hx.Sdk.Cache.Internal
             });
         }
 
-        public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options, CancellationToken token = default(CancellationToken))
+        public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options, CancellationToken token = default)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-
             if (value == null) throw new ArgumentNullException(nameof(value));
-
             if (options == null) throw new ArgumentNullException(nameof(options));
-
             token.ThrowIfCancellationRequested();
-
             await ConnectAsync(token);
 
             var now = DateTimeOffset.UtcNow;
-
             var absoluteExpiration = GetAbsoluteExpiration(now, options);
-
             await this.Do(db =>
             {
                 var result = db.ScriptEvaluateAsync(SetScript, new RedisKey[] { GetFullKey(key) },
@@ -130,7 +119,6 @@ namespace Hx.Sdk.Cache.Internal
         public async Task RefreshAsync(string key, CancellationToken token = default)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-
             token.ThrowIfCancellationRequested();
 
             await GetAndRefreshAsync(key, getData: false, token: token);
@@ -167,7 +155,7 @@ namespace Hx.Sdk.Cache.Internal
             return null;
         }
 
-        private async Task<byte[]> GetAndRefreshAsync(string key, bool getData, CancellationToken token = default(CancellationToken))
+        private async Task<byte[]> GetAndRefreshAsync(string key, bool getData, CancellationToken token = default)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
@@ -347,13 +335,8 @@ namespace Hx.Sdk.Cache.Internal
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             var value = StringGet(key);
-            var result = this.Do<T>(db =>
-            {
-                var value = db.StringGet(key, CommandFlags.None);
-                if (!value.HasValue) return default;
-                return JsonConvert.DeserializeObject<T>(value);
-            });
-            return result;
+            if (string.IsNullOrEmpty(value)) return default;
+            return JsonConvert.DeserializeObject<T>(value);
         }
 
         public bool Set<T>(string key, T value, TimeSpan? expiry = null)
@@ -392,7 +375,7 @@ namespace Hx.Sdk.Cache.Internal
         public async Task<string> StringGetAsync(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            Connect();
+            await ConnectAsync();
             return await this.Do(db => db.StringGetAsync(GetFullKey(key), CommandFlags.None));
         }
 
@@ -400,7 +383,27 @@ namespace Hx.Sdk.Cache.Internal
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             var value = await StringGetAsync(key);
+            if (string.IsNullOrEmpty(value)) return default;
 			return JsonConvert.DeserializeObject<T>(value);
+        }
+
+
+        public bool StringSet(string key, string value, TimeSpan? expiry = null)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+            key = this.GetFullKey(key);
+            Connect();
+            return this.Do<bool>((IDatabase db) => db.StringSet(key, value, expiry, When.Always, CommandFlags.None));
+        }
+
+        public async Task<bool> StringSetAsync(string key, string value, TimeSpan? expiry = null)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+            key = this.GetFullKey(key);
+            await ConnectAsync();
+            return await this.Do((IDatabase db) => db.StringSetAsync(key, value, expiry, When.Always, CommandFlags.None));
         }
 
         public async Task<bool> SetAsync<T>(string key, T value, TimeSpan? expiry = null)
@@ -409,7 +412,7 @@ namespace Hx.Sdk.Cache.Internal
             if (value == null) throw new ArgumentNullException(nameof(value));
             key = this.GetFullKey(key);
             string json = JsonConvert.SerializeObject(value);
-            Connect();
+            await ConnectAsync();
             return await this.Do((IDatabase db) => db.StringSetAsync(key, json, expiry, When.Always, CommandFlags.None));
         }
 
@@ -417,14 +420,14 @@ namespace Hx.Sdk.Cache.Internal
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             key = this.GetFullKey(key);
-            Connect();
+            await ConnectAsync();
             return await this.Do(db => db.KeyExistsAsync(key, CommandFlags.None));
         }
 
         public async Task ClearDbAsync(int dbNum, bool clearAll = false)
         {
             if (dbNum < 0 && dbNum > 15) throw new ArgumentOutOfRangeException(nameof(dbNum), "The redis database numbers range from 0 to 15.");
-            Connect();
+            await ConnectAsync();
             var server = _connection.GetServer(_options.ConfigurationOptions.SslHost);
             if (clearAll)
             {
@@ -437,25 +440,53 @@ namespace Hx.Sdk.Cache.Internal
         }
         #endregion
 
+        #region Hash
+        public string HashGet(string key)
+        {
+            byte[] value = this.Get(key);
+            if (value == null) throw new Exception($"The value for the key [{key}] could not be found");
+            return System.Text.Encoding.UTF8.GetString(value);
+        }
+
+        public bool HashSet(string key, string value, DistributedCacheEntryOptions options = null)
+        {
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+            var byteValue = System.Text.Encoding.UTF8.GetBytes(value);
+            this.Set(key, byteValue, options?? new DistributedCacheEntryOptions());
+            return true;
+        }
+
+        public async Task<string> HashGetAsync(string key)
+        {
+            byte[] value = await this.GetAsync(key);
+            if (value == null) throw new Exception($"The value for the key [{key}] could not be found");
+            return System.Text.Encoding.UTF8.GetString(value);
+        }
+
+        public async Task<bool> HashSetAsync(string key, string value, DistributedCacheEntryOptions options = null)
+        {
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+            byte[] byteValue = System.Text.Encoding.UTF8.GetBytes(value);
+            await this.SetAsync(key, byteValue, options ?? new DistributedCacheEntryOptions());
+            return true;
+        }
+        #endregion 
+
+
         #region 私有方法
 
         private void Connect()
         {
-            if (_database != null) return;
             _connectionLock.Wait();
             try
             {
-                if (_database == null)
+                if (_options.ConfigurationOptions != null)
                 {
-                    if (_options.ConfigurationOptions != null)
-                    {
-                        _connection = ConnectionMultiplexer.Connect(_options.ConfigurationOptions);
-                    }
-                    else
-                    {
-                        _connection = ConnectionMultiplexer.Connect(_options.Configuration);
-                    }
-                    _database = _connection.GetDatabase();
+                    _connection = ConnectionMultiplexer.Connect(_options.ConfigurationOptions);
+                }
+                else
+                {
+                    _connection = ConnectionMultiplexer.Connect(_options.Configuration);
                 }
             }
             finally
@@ -496,6 +527,9 @@ namespace Hx.Sdk.Cache.Internal
             IDatabase database = this._connection.GetDatabase(_dbNum, null);
             return func(database);
         }
+
+        
+
         #endregion
     }
 }

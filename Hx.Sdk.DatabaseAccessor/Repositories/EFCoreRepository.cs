@@ -64,6 +64,7 @@ namespace Hx.Sdk.DatabaseAccessor
 
         /// <summary>
         /// 重新构建并切换仓储
+        /// 可动态改变表名
         /// </summary>
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <returns>仓储</returns>
@@ -75,6 +76,7 @@ namespace Hx.Sdk.DatabaseAccessor
 
         /// <summary>
         /// 重新构建并切换多数据库上下文仓储
+        /// 可动态改变表名
         /// </summary>
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
@@ -528,19 +530,6 @@ namespace Hx.Sdk.DatabaseAccessor
         }
 
         /// <summary>
-        /// 动态改变表名
-        /// </summary>
-        /// <param name="tableName">表名</param>
-        [Obsolete("该方法已过时，请调用 BuildChange<TEntity> 方法代替。")]
-        public virtual void ChangeTable(string tableName)
-        {
-            if (EntityType is IConventionEntityType convention)
-            {
-                convention.SetTableName(tableName);
-            }
-        }
-
-        /// <summary>
         /// 动态改变数据库
         /// </summary>
         /// <param name="connectionString">连接字符串</param>
@@ -683,6 +672,7 @@ namespace Hx.Sdk.DatabaseAccessor
 
         /// <summary>
         /// 重新构建并切换仓储
+        /// 可动态改变表名
         /// </summary>
         /// <typeparam name="TChangeEntity">实体类型</typeparam>
         /// <returns>仓储</returns>
@@ -694,6 +684,7 @@ namespace Hx.Sdk.DatabaseAccessor
 
         /// <summary>
         /// 重新构建并切换多数据库上下文仓储
+        /// 可动态改变表名
         /// </summary>
         /// <typeparam name="TChangeEntity">实体类型</typeparam>
         /// <typeparam name="TChangeDbContextLocator">数据库上下文定位器</typeparam>

@@ -11,7 +11,7 @@ namespace Hx.Sdk.Cache
     /// </summary>
     internal static class RedisExtensions
     {
-        private const string HmGetScript = (@"return redis.call('HMGET', KEYS[1], unpack(ARGV))");
+        private const string HmGetScript = @"return redis.call('HMGET', KEYS[1], unpack(ARGV))";
 
         internal static RedisValue[] HashMemberGet(this IDatabase cache, string key, params string[] members)
         {

@@ -35,41 +35,32 @@ namespace Microsoft.Extensions.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddConfigurableOptions<RedisCacheOptions>();
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
-            services.AddSingleton<ConnectionMultiplexer>(resolver =>
-            {
-                var options = resolver.GetRequiredService<IOptions<RedisCacheOptions>>().Value;
-                if (options.ConfigurationOptions == null)
-                {
-                    return ConnectionMultiplexer.Connect(options.ConfigurationOptions);
-                }
-                return ConnectionMultiplexer.Connect(options.Configuration);
-            });
+            //services.AddSingleton<ConnectionMultiplexer>(resolver =>
+            //{
+            //    var options = resolver.GetRequiredService<IOptions<RedisCacheOptions>>().Value;
+            //    if (options.ConfigurationOptions == null)
+            //    {
+            //        return ConnectionMultiplexer.Connect(options.Configuration);
+            //    }
+            //    return ConnectionMultiplexer.Connect(options.ConfigurationOptions);
+            //});
             services.AddSingleton<IDistributedCache, RedisCache>();
-            services.AddScoped<IRedisCache, RedisCache>();
+            services.AddTransient<IRedisCache, RedisCache>();
         }
 
         /// <summary>
         /// 添加redis缓存
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="setupAction">redis连接字符串</param>
+        /// <param name="setupAction">redis配置</param>
         public static void AddRedisCache(this IServiceCollection services, Action<RedisCacheOptions> setupAction)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            //services.AddOptions();
+            services.AddOptions();
             services.Configure(setupAction);
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
-            services.AddSingleton<ConnectionMultiplexer>(resolver =>
-            {
-                var options = resolver.GetRequiredService<IOptions<RedisCacheOptions>>().Value;
-                if (options.ConfigurationOptions == null)
-                {
-                    return ConnectionMultiplexer.Connect(options.ConfigurationOptions);
-                }
-                return ConnectionMultiplexer.Connect(options.Configuration);
-            });
             services.AddSingleton<IDistributedCache, RedisCache>();
-            services.AddScoped<IRedisCache, RedisCache>();
+            services.AddTransient<IRedisCache, RedisCache>();
         }
     }
 }

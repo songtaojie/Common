@@ -261,3 +261,5 @@ __pycache__/
 *.pyc
 *.nuspec
 Hx.Sdk.*.xml
+/Hx.Sdk.Test.Entity/dbsettings.Development.json
+/Hx.Sdk.WebApi/appsettings.Development.json

@@ -347,13 +347,6 @@ namespace Hx.Sdk.DatabaseAccessor
         Task EnsureCreatedAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// 动态改变表名
-        /// </summary>
-        /// <param name="tableName">表名</param>
-        [Obsolete("该方法已过时，请调用 BuildChange<TEntity> 方法代替。")]
-        void ChangeTable(string tableName);
-
-        /// <summary>
         /// 动态改变数据库
         /// </summary>
         /// <param name="connectionString">连接字符串</param>
