@@ -85,15 +85,13 @@ namespace Hx.Sdk.Cache
 		/// <summary>
 		/// 获取数据异步
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="key"></param>
+		/// <param name="key">缓存的键</param>
 		/// <returns></returns>
 		Task<string> StringGetAsync(string key);
 
 		/// <summary>
 		/// 获取Hash数据异步
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
 		/// <param name="key"></param>
 		/// <returns></returns>
 		Task<string> HashGetAsync(string key);
@@ -120,7 +118,7 @@ namespace Hx.Sdk.Cache
 		/// </summary>
 		/// <param name="key">缓存的键</param>
 		/// <param name="value">缓存的值</param>
-		/// <param name="expiry">过期时间设置</param>
+		/// <param name="options">过期时间设置</param>
 		/// <returns></returns>
 		Task<bool> HashSetAsync(string key, string value, DistributedCacheEntryOptions options = null);
 

@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Jay Song</Authors>
+    <Company>Jay Song</Company>
+    <Description>.Net Core核心类</Description>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\Hx.Sdk.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

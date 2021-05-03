@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.0.1</Version>
+    <Authors>Jay Song</Authors>
+    <Company>Jay Song</Company>
+    <Description>缓存帮助类</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\Hx.Sdk.Cache.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

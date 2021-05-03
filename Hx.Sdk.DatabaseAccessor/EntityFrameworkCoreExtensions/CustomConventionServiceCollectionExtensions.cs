@@ -1,11 +1,7 @@
 ﻿using Hx.Sdk.DatabaseAccessor;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.EntityFrameworkCore
 {
     /// <summary>
     /// 自定义约束扩展类

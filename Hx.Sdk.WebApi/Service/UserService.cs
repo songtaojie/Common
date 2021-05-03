@@ -13,13 +13,10 @@ using System.Threading.Tasks;
 
 namespace Hx.Sdk.WebApi.Service
 {
-    public class UserService:IUserService,IScopedDependency
+    public class UserService: BaseService<UserInfo>,IUserService, IScopedDependency
     {
-        private readonly IRepository<UserInfo> _userRepository;
-
-        public UserService(IRepository<UserInfo> userRepository)
+        public UserService(IRepository<UserInfo> userRepository):base(userRepository)
         {
-            _userRepository = userRepository;
         }
         /// <summary>
         /// 新增一条
@@ -36,7 +33,7 @@ namespace Hx.Sdk.WebApi.Service
                 UserName = input.UserName,
                 PassWord = input.PassWord
             };
-            var newEntity = await _userRepository.InsertNowAsync(userInfo);
+            var newEntity = await this.Repository.InsertNowAsync(userInfo);
             return newEntity.Entity.Id;
 
             // 还可以直接操作
@@ -50,12 +47,12 @@ namespace Hx.Sdk.WebApi.Service
         /// <returns></returns>
         public async Task Update(UserInputDto input)
         {
-            var person = await _userRepository.SingleAsync(u => u.Id == input.Id);
+            var person = await Repository.SingleAsync(u => u.Id == input.Id);
             person.NickName = input.NickName;
             person.UserName = input.UserName;
             person.PassWord = input.PassWord;
             person.LastModifyTime = DateTime.Now;
-            await _userRepository.UpdateAsync(person);
+            await Repository.UpdateAsync(person);
 
             // 还可以直接操作
             // await personDto.Adapt<Person>().UpdateAsync();
@@ -67,7 +64,7 @@ namespace Hx.Sdk.WebApi.Service
         /// <param name="id"></param>
         public async Task Delete(string id)
         {
-            await _userRepository.DeleteAsync(id);
+            await Repository.DeleteAsync(id);
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace Hx.Sdk.WebApi.Service
         /// <param name="id"></param>
         public async Task<UserDto> Find(string id)
         {
-            var person = await _userRepository.FindAsync(id);
+            var person = await Repository.FindAsync(id);
             return new UserDto
             {
                 Id = person.Id,
@@ -92,7 +89,7 @@ namespace Hx.Sdk.WebApi.Service
         /// <param name="id"></param>
         public async Task<ApplicationUserDto> FindApplicationUser(string id)
         {
-           var appRepository = _userRepository.Change<ApplicationUser, IdsDbContextLocator>();
+           var appRepository = Repository.Change<ApplicationUser, IdsDbContextLocator>();
             var user =  await appRepository.FindAsync(id);
             return new ApplicationUserDto
             {
@@ -108,7 +105,7 @@ namespace Hx.Sdk.WebApi.Service
         /// <returns></returns>
         public async Task<List<UserDto>> GetAll()
         {
-            var persons = _userRepository.AsQueryable(false)
+            var persons = Repository.AsQueryable(false)
                 .Select(u => new UserDto
                 { 
                     Id = u.Id,

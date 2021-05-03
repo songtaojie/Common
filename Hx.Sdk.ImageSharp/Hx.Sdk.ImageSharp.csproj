@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Jay Song</Authors>
+    <Description>图片处理帮助类</Description>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\Hx.Sdk.ImageSharp.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -131,6 +131,13 @@ namespace Hx.Sdk.DatabaseAccessor
             return this as TRestrainRepository;
         }
 
+        /// <summary>
+        /// sql查询
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public List<T1> SqlQueries<T1>(string sql, object model)
         {
             throw new NotImplementedException();

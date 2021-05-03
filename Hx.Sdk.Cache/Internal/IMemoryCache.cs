@@ -29,6 +29,7 @@ namespace Hx.Sdk.Cache
         /// </summary>
         /// <param name="key">缓存的键</param>
         /// <param name="value">缓存的值</param>
+        /// <param name="time">过期时间</param>
         void Set<T>(string key, T value, TimeSpan time);
 
         /// <summary>
@@ -36,6 +37,7 @@ namespace Hx.Sdk.Cache
         /// </summary>
         /// <param name="key">缓存的键</param>
         /// <param name="value">缓存的值</param>
+        /// <param name="time">过期时间</param>
         Task SetAsync<T>(string key, T value, TimeSpan time);
 
         /// <summary>

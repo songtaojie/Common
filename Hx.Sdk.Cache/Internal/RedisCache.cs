@@ -262,7 +262,7 @@ namespace Hx.Sdk.Cache.Internal
         /// <summary>
         /// 获取过期秒数
         /// </summary>
-        /// <param name="creationTime">当前时间</param>
+        /// <param name="now">当前时间</param>
         /// <param name="absoluteExpiration">绝对过期时间</param>
         /// <param name="options">配置</param>
         /// <returns></returns>

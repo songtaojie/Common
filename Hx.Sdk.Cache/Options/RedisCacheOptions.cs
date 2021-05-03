@@ -12,6 +12,9 @@ namespace Hx.Sdk.Cache.Options
     /// </summary>
     public class RedisCacheOptions : IConfigurableOptions<RedisCacheOptions>
     {
+        /// <summary>
+        /// RedisCache的配置选项
+        /// </summary>
         public RedisCacheOptions()
         { 
         }
@@ -29,6 +32,11 @@ namespace Hx.Sdk.Cache.Options
         /// </summary>
         public string InstanceName { get; set; }
 
+        /// <summary>
+        /// 配置
+        /// </summary>
+        /// <param name="options">选项</param>
+        /// <param name="configuration">配置对象</param>
         public void PostConfigure(RedisCacheOptions options, IConfiguration configuration)
         {
             options.InstanceName ??= "Hx";

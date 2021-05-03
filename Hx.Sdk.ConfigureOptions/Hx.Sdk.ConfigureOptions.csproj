@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.0.1</Version>
+    <Authors>Jay Song</Authors>
+    <Description>配置和选项帮助类</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\Hx.Sdk.ConfigureOptions.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

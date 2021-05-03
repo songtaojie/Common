@@ -17,7 +17,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 使用时只需要在构造函数注入IUserContext即可
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="isUseIds4">是否是使用IdentityServer4认证</param>
         public static IServiceCollection AddUserContext(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));

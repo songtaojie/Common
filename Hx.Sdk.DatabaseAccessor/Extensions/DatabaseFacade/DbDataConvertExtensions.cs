@@ -55,7 +55,7 @@ namespace Hx.Sdk.Extensions
         /// 将 DataSet 转 特定类型
         /// </summary>
         /// <param name="dataSet">DataSet</param>
-        /// <param name="returnTypes">特定类型集合</param>
+        /// <param name="returnType">特定类型集合</param>
         /// <returns>List{object}</returns>
         public static List<object> ToList(this DataSet dataSet, Type returnType)
         {
@@ -81,7 +81,7 @@ namespace Hx.Sdk.Extensions
         /// 将 DataSet 转 特定类型
         /// </summary>
         /// <param name="dataSet">DataSet</param>
-        /// <param name="returnTypes">特定类型集合</param>
+        /// <param name="returnType">特定类型集合</param>
         /// <returns>object</returns>
         public static Task<List<object>> ToListAsync(this DataSet dataSet, Type returnType)
         {

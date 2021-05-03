@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Jay Song</Authors>
+    <Company>Jay Song</Company>
+    <Description>数据库访问，支持读写分离，多数据库，主从数据库</Description>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\Hx.Sdk.DatabaseAccessor.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

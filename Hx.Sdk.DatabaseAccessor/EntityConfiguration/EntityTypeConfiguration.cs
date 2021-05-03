@@ -11,7 +11,6 @@ namespace Hx.Sdk.DatabaseAccessor.EntityConfiguration
     /// EntityType配置
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="KeyType"></typeparam>
     public class EntityTypeConfiguration<T> : IEntityTypeConfiguration<T>
         where T : class, Hx.Sdk.Entity.IEntity
     {
