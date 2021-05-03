@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>songtaojie</Authors>
     <Description>Hx.Sdk.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
-    <Version>1.0.2</Version>
+    <Version>1.0.2.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <PackageReference Include="Hx.Sdk.Entity" Version="1.0.4.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
   </ItemGroup>
 

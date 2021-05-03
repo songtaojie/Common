@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hx.Sdk.NetCore.ImageSharp
+﻿namespace Hx.Sdk.ImageSharp
 {
     /// <summary>
     /// 缩略图的模式

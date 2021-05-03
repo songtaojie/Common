@@ -11,7 +11,7 @@ using System.Reflection;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Sqlite 数据库服务拓展
+    ///  数据库服务拓展
     /// </summary>
     [SkipScan]
     public static class DatabaseProviderServiceCollectionExtensions

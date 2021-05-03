@@ -8,7 +8,7 @@ namespace Hx.Sdk.Entity.Internal
     /// </summary>
     /// <typeparam name="TKeyType">主键的类型</typeparam>
     [SkipScan]
-    public abstract class PrivateStatusEntityBase<TKeyType> : PrivateEntityBase<TKeyType>
+    public abstract class PrivateStatusEntityBase<TKeyType> : EntityBase<TKeyType>
     {
         private const string No = "N";
         private const string Yes = "Y";

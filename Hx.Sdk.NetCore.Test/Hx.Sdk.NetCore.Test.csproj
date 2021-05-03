@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hx.Sdk.EntityFrameworkCore\Hx.Sdk.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.NetCore.ImageSharp\Hx.Sdk.NetCore.ImageSharp.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.ImageSharp\Hx.Sdk.ImageSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

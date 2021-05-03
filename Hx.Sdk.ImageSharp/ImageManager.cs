@@ -6,10 +6,10 @@ using System.IO;
 using System.Linq;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp.Drawing.Processing;
-using Hx.Sdk.NetCore.ImageSharp.Fonts;
+using Hx.Sdk.ImageSharp.Fonts;
 using System.Collections.Concurrent;
 
-namespace Hx.Sdk.NetCore.ImageSharp
+namespace Hx.Sdk.ImageSharp
 {
     /// <summary>
     /// image帮助类

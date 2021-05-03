@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.NetCore.ImageSharp;
+﻿using Hx.Sdk.ImageSharp;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 

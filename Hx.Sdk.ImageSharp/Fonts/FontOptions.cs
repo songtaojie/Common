@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.NetCore.ImageSharp.Fonts
+namespace Hx.Sdk.ImageSharp.Fonts
 {
     /// <summary>
     /// 水印字体的配置
