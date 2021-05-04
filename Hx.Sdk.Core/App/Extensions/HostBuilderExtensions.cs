@@ -1,4 +1,5 @@
 ﻿using Autofac.Extensions.DependencyInjection;
+using Hx.Sdk.Core;
 using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
@@ -12,15 +13,27 @@ namespace Microsoft.Extensions.Hosting
     [SkipScan]
     public static class HostBuilderExtensions
     {
+
         /// <summary>
         /// Web 主机注入Hx.Sdk.Core
         /// </summary>
         /// <param name="hostBuilder">Web主机构建器</param>
         /// <param name="assemblyName">外部程序集名称</param>
         /// <returns>IWebHostBuilder</returns>
-        public static IWebHostBuilder InjectHx(this IWebHostBuilder hostBuilder, string assemblyName = nameof(Hx.Sdk.Core))
+        public static IWebHostBuilder InjectHxWebApp(this IWebHostBuilder hostBuilder, string assemblyName = "Hx.Sdk.Core")
         {
-            //hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, assemblyName);
+            hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, assemblyName);
+            return hostBuilder;
+        }
+
+
+        /// <summary>
+        /// Web 主机注入Hx.Sdk.Core
+        /// </summary>
+        /// <param name="hostBuilder">Web主机构建器</param>
+        /// <returns>IWebHostBuilder</returns>
+        public static IWebHostBuilder InjectHxWebApp(this IWebHostBuilder hostBuilder)
+        {
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
                 // 存储环境对象
@@ -39,7 +52,6 @@ namespace Microsoft.Extensions.Hosting
                 // 初始化应用服务
                 services.AddApp();
             });
-            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             return hostBuilder;
         }
 
@@ -48,7 +60,30 @@ namespace Microsoft.Extensions.Hosting
         /// </summary>
         /// <param name="hostBuilder">泛型主机注入构建器</param>
         /// <returns>IWebHostBuilder</returns>
-        public static IHostBuilder InjectHx(this IHostBuilder hostBuilder)
+        public static IHostBuilder InjectHxWebApp(this IHostBuilder hostBuilder)
+        {
+            hostBuilder.ConfigureWebHostDefaults(webBuilder => 
+            {
+                webBuilder.InjectHxWebApp();
+            });
+
+            if (App.Settings.InjectAutofac == true)
+            {
+                hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+                hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostBuilderContext, containerBuilder) =>
+                {
+                    containerBuilder.AddAutofacDependencyInjection(Hx.Sdk.Core.App.EffectiveTypes);
+                });
+            }
+            return hostBuilder;
+        }
+
+        /// <summary>
+        /// 泛型主机注入Hx.Sdk.Core
+        /// </summary>
+        /// <param name="hostBuilder">泛型主机注入构建器</param>
+        /// <returns>IWebHostBuilder</returns>
+        public static IHostBuilder InjectHxApp(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
@@ -58,11 +93,6 @@ namespace Microsoft.Extensions.Hosting
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
             });
-            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((c,a) => 
-            { 
-                c
-            });
-            hostBuilder.ConfigureWebHostDefaults(())
             // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {

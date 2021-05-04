@@ -40,8 +40,10 @@ namespace Microsoft.Extensions.DependencyInjection
             //}
 
             // 注册全局依赖注入
-            services.AddNativeDependencyInjection(App.EffectiveTypes);
-
+            if (App.Settings.InjectAutofac ?? false)
+            {
+                services.AddNativeDependencyInjection(App.EffectiveTypes);
+            }
             // 自定义服务
             configure?.Invoke(services);
             return services;
