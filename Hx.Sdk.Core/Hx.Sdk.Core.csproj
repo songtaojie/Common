@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hx.Sdk.ConfigureOptions\Hx.Sdk.ConfigureOptions.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.DependencyInjection\Hx.Sdk.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>

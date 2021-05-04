@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Core.Internal;
+﻿using Autofac.Extensions.DependencyInjection;
+using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +39,7 @@ namespace Microsoft.Extensions.Hosting
                 // 初始化应用服务
                 services.AddApp();
             });
-
+            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             return hostBuilder;
         }
 
@@ -57,7 +58,11 @@ namespace Microsoft.Extensions.Hosting
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
             });
-
+            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((c,a) => 
+            { 
+                c
+            });
+            hostBuilder.ConfigureWebHostDefaults(())
             // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {

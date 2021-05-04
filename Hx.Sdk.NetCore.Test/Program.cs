@@ -19,13 +19,16 @@ Pellentesque fermentum vitae lacus non aliquet. Sed nulla ipsum, hendrerit sit a
             //ImageManager.MarkLetterWater("fb.jpg", fontOptions);
             //Console.WriteLine("结束");
 
-            var valueType = typeof(ValueConverter);
-            var stringType = typeof(EnumToStringConverter<Blog_Enum>);
-            ConverterMappingHints mappingHints = null;
-            Type[] types = stringType.GetGenericArguments();
-            //var toIntType = stringType.MakeGenericType(types);
-            object toIntInstance = Activator.CreateInstance(stringType, mappingHints);
-            Console.WriteLine(valueType.IsAssignableFrom(stringType));
+            //var valueType = typeof(ValueConverter);
+            //var stringType = typeof(EnumToStringConverter<Blog_Enum>);
+            //ConverterMappingHints mappingHints = null;
+            //Type[] types = stringType.GetGenericArguments();
+            ////var toIntType = stringType.MakeGenericType(types);
+            //object toIntInstance = Activator.CreateInstance(stringType, mappingHints);
+            //Console.WriteLine(valueType.IsAssignableFrom(stringType));
+            string s = null;
+            var arr = new string[] { };
+            Console.WriteLine(s);
             Console.ReadLine();
         }
 

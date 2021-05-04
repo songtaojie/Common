@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Core.Options;
+﻿using Hx.Sdk.Core;
+using Hx.Sdk.Core.Options;
 using Hx.Sdk.DependencyInjection;
 using System;
 
@@ -39,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //}
 
             // 注册全局依赖注入
-            services.AddDependencyInjection();
+            services.AddNativeDependencyInjection(App.EffectiveTypes);
 
             // 自定义服务
             configure?.Invoke(services);
@@ -63,7 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 注册全局依赖注入
-            services.AddDependencyInjection();
+            services.AddNativeDependencyInjection(App.EffectiveTypes);
 
             // 自定义服务
             configure?.Invoke(services);

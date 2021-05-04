@@ -19,8 +19,4 @@
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="3.1.10" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.Core;
-using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Concurrent;
@@ -10,19 +9,31 @@ using System.Reflection;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// 依赖注入拓展类
+    ///使用.Net Core原生的依赖注入进行 依赖注入的拓展类
     /// </summary>
     [SkipScan]
-    public static class DependencyInjectionServiceCollectionExtensions
+    public static class NativeDependencyInjectionServiceCollectionExtensions
     {
+        ///// <summary>
+        ///// 添加依赖注入接口
+        ///// </summary>
+        ///// <param name="services">服务集合</param>
+        ///// <returns>服务集合</returns>
+        //public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
+        //{
+        //    services.AddScanDependencyInjection(App.EffectiveTypes);
+        //    return services;
+        //}
+
+
         /// <summary>
-        /// 添加依赖注入接口
+        /// 使用.Net Core自带的DI添加依赖注入接口
         /// </summary>
         /// <param name="services">服务集合</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
+        public static IServiceCollection AddNativeDependencyInjection(this IServiceCollection services, IEnumerable<Type> types)
         {
-            services.AddScanDependencyInjection(App.EffectiveTypes);
+            services.AddScanDependencyInjection(types);
             return services;
         }
 
@@ -51,7 +62,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .Where(u => typeof(IPrivateDependency).IsAssignableFrom(u) && u.IsClass && !u.IsInterface && !u.IsAbstract)
                 .OrderBy(u => GetOrder(u));
 
-            var projectAssemblies = App.Assemblies;
+            //var projectAssemblies = App.Assemblies;
 
             // 执行依赖注入
             foreach (var type in injectTypes)
@@ -64,9 +75,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     .Where(u => !injectionAttribute.ExpectInterfaces.Contains(u)
                                 && u != typeof(IPrivateDependency)
                                 && !typeof(IPrivateDependency).IsAssignableFrom(u)
-                                //&& u != typeof(IDynamicApiController)
-                                //&& !typeof(IDynamicApiController).IsAssignableFrom(u)
-                                && projectAssemblies.Contains(u.Assembly)
+                                //&& projectAssemblies.Contains(u.Assembly)
                                 && (
                                     (!type.IsGenericType && !u.IsGenericType)
                                     || (type.IsGenericType && u.IsGenericType && type.GetGenericArguments().Length == u.GetGenericArguments().Length))
@@ -75,17 +84,17 @@ namespace Microsoft.Extensions.DependencyInjection
                 // 注册暂时服务
                 if (typeof(ITransientDependency).IsAssignableFrom(type))
                 {
-                    RegisterService(services, Hx.Sdk.DependencyInjection.RegisterType.Transient, type, injectionAttribute, canInjectInterfaces);
+                    RegisterService(services, DependencyInjectionType.Transient, type, injectionAttribute, canInjectInterfaces);
                 }
                 // 注册作用域服务
                 else if (typeof(IScopedDependency).IsAssignableFrom(type))
                 {
-                    RegisterService(services, Hx.Sdk.DependencyInjection.RegisterType.Scoped, type, injectionAttribute, canInjectInterfaces);
+                    RegisterService(services, DependencyInjectionType.Scoped, type, injectionAttribute, canInjectInterfaces);
                 }
                 // 注册单例服务
                 else if (typeof(ISingletonDependency).IsAssignableFrom(type))
                 {
-                    RegisterService(services, Hx.Sdk.DependencyInjection.RegisterType.Singleton, type, injectionAttribute, canInjectInterfaces);
+                    RegisterService(services, DependencyInjectionType.Singleton, type, injectionAttribute, canInjectInterfaces);
                 }
 
                 // 缓存类型注册
@@ -107,7 +116,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="type">类型</param>
         /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">能被注册的接口</param>
-        private static void RegisterService(IServiceCollection services, RegisterType registerType, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces)
+        private static void RegisterService(IServiceCollection services, DependencyInjectionType registerType, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces)
         {
             // 注册自己
             if (injectionAttribute.Pattern is InjectionPatterns.Self 
@@ -144,15 +153,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="type">类型</param>
         /// <param name="injectionAttribute">注入特性</param>
         /// <param name="inter">接口</param>
-        private static void RegisterType(IServiceCollection services, RegisterType registerType, Type type, InjectionAttribute injectionAttribute, Type inter = null)
+        private static void RegisterType(IServiceCollection services, DependencyInjectionType registerType, Type type, InjectionAttribute injectionAttribute, Type inter = null)
         {
             // 修复泛型注册类型
             var fixedType = FixedGenericType(type);
             var fixedInter = inter == null ? null : FixedGenericType(inter);
 
-            if (registerType == Hx.Sdk.DependencyInjection.RegisterType.Transient) RegisterTransientType(services, fixedType, injectionAttribute, fixedInter);
-            if (registerType == Hx.Sdk.DependencyInjection.RegisterType.Scoped) RegisterScopeType(services, fixedType, injectionAttribute, fixedInter);
-            if (registerType == Hx.Sdk.DependencyInjection.RegisterType.Singleton) RegisterSingletonType(services, fixedType, injectionAttribute, fixedInter);
+            if (registerType == DependencyInjectionType.Transient) RegisterTransientType(services, fixedType, injectionAttribute, fixedInter);
+            if (registerType == DependencyInjectionType.Scoped) RegisterScopeType(services, fixedType, injectionAttribute, fixedInter);
+            if (registerType == DependencyInjectionType.Singleton) RegisterSingletonType(services, fixedType, injectionAttribute, fixedInter);
         }
 
         /// <summary>
@@ -311,7 +320,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 静态构造函数
         /// </summary>
-        static DependencyInjectionServiceCollectionExtensions()
+        static NativeDependencyInjectionServiceCollectionExtensions()
         {
             TypeNamedCollection = new ConcurrentDictionary<string, Type>();
         }

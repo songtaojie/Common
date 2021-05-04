@@ -6,7 +6,7 @@ namespace Hx.Sdk.DependencyInjection
     /// 注册类型
     /// </summary>
     [SkipScan]
-    public enum RegisterType
+    internal enum DependencyInjectionType
     {
         /// <summary>
         /// 瞬时

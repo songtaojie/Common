@@ -15,6 +15,11 @@ namespace Hx.Sdk.Core.Options
         public bool? InjectMiniProfiler { get; set; }
 
         /// <summary>
+        /// 集成 MiniProfiler 组件
+        /// </summary>
+        public bool? InjectAutofac { get; set; }
+
+        /// <summary>
         /// 是否启用规范化文档
         /// </summary>
         public bool? InjectSpecificationDocument { get; set; }
