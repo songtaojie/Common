@@ -5,7 +5,7 @@
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
     <Description>.Net Core核心类</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -30,20 +30,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 添加 HttContext 访问器
             services.AddUserContext();
-            ////// 注册MiniProfiler 组件
-            //if (App.Settings.InjectMiniProfiler == true)
-            //{
-            //    services.AddMiniProfiler(options =>
-            //    {
-            //        options.RouteBasePath = MiniProfilerRouteBasePath;
-            //    }).AddRelationalDiagnosticListener();
-            //}
 
             // 注册全局依赖注入
-            if (App.Settings.InjectAutofac ?? false)
-            {
-                services.AddNativeDependencyInjection(App.EffectiveTypes);
-            }
+            //if (App.Settings.InjectAutofac != true)
+            //{
+            //    services.AddNativeDependencyInjection(App.EffectiveTypes);
+            //}
             // 自定义服务
             configure?.Invoke(services);
             return services;
@@ -66,7 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 注册全局依赖注入
-            services.AddNativeDependencyInjection(App.EffectiveTypes);
+            //services.AddNativeDependencyInjection(App.EffectiveTypes);
 
             // 自定义服务
             configure?.Invoke(services);

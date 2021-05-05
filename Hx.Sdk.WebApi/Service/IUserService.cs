@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hx.Sdk.WebApi.Service
 {
+  
     public interface  IUserService
     {
         /// <summary>

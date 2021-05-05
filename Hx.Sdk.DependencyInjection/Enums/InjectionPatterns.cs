@@ -15,27 +15,15 @@ namespace Hx.Sdk.DependencyInjection
         Self,
 
         /// <summary>
-        /// 第一个接口
+        /// 第一个接口,默认值
         /// </summary>
         [Description("只注册第一个接口")]
         FirstInterface,
-
-        /// <summary>
-        /// 自己和第一个接口，默认值
-        /// </summary>
-        [Description("自己和第一个接口")]
-        SelfWithFirstInterface,
 
         /// <summary>
         /// 所有接口
         /// </summary>
         [Description("所有接口")]
         ImplementedInterfaces,
-
-        /// <summary>
-        /// 注册自己包括所有接口
-        /// </summary>
-        [Description("自己包括所有接口")]
-        All
     }
 }
