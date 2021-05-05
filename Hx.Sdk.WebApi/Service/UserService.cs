@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Hx.Sdk.WebApi.Service
 {
+    [Autofac.Extras.DynamicProxy.Intercept(typeof(Aop.BlogLogAop))]
     public class UserService: BaseService<UserInfo>,IUserService, IScopedDependency
     {
         public UserService(IRepository<UserInfo> userRepository):base(userRepository)

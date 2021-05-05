@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Jay Song</Authors>
+    <Description>依赖注入和AOp（需要使用Autofac）</Description>
   </PropertyGroup>
 
   <ItemGroup>

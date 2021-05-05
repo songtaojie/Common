@@ -13,12 +13,7 @@ namespace Hx.Sdk.Core.Options
         /// 集成 MiniProfiler 组件
         /// </summary>
         public bool? InjectMiniProfiler { get; set; }
-
-        /// <summary>
-        /// 集成 MiniProfiler 组件
-        /// </summary>
-        public bool? InjectAutofac { get; set; }
-
+       
         /// <summary>
         /// 是否启用规范化文档
         /// </summary>
@@ -45,6 +40,16 @@ namespace Hx.Sdk.Core.Options
         public bool? UseIdentityServer4 { get; set; }
 
         /// <summary>
+        /// 集成 Autofac 组件
+        /// </summary>
+        public bool? InjectAutofac { get; set; }
+
+        /// <summary>
+        ///Aop切面type全名
+        /// </summary>
+        public string[] AopTypeFullName { get; set; }
+
+        /// <summary>
         /// 后期配置
         /// </summary>
         /// <param name="options"></param>
@@ -57,6 +62,8 @@ namespace Hx.Sdk.Core.Options
             options.PrintDbConnectionInfo ??= true;
             options.SupportPackageNamePrefixs ??= Array.Empty<string>();
             options.UseIdentityServer4 ??= false;
+            options.InjectAutofac ??= true;
+            options.AopTypeFullName ??= Array.Empty<string>();
         }
     }
 }

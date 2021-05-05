@@ -15,7 +15,7 @@ namespace Hx.Sdk.DependencyInjection
         public InjectionAttribute(params Type[] expectInterfaces)
         {
             Action = InjectionActions.Add;
-            Pattern = InjectionPatterns.SelfWithFirstInterface;
+            Pattern = InjectionPatterns.FirstInterface;
             ExpectInterfaces = expectInterfaces ?? Array.Empty<Type>();
             Order = 0;
         }
@@ -28,7 +28,7 @@ namespace Hx.Sdk.DependencyInjection
         public InjectionAttribute(InjectionActions action, params Type[] expectInterfaces)
         {
             Action = action;
-            Pattern = InjectionPatterns.SelfWithFirstInterface;
+            Pattern = InjectionPatterns.FirstInterface;
             ExpectInterfaces = expectInterfaces ?? Array.Empty<Type>();
             Order = 0;
         }
@@ -39,7 +39,7 @@ namespace Hx.Sdk.DependencyInjection
         public InjectionActions Action { get; set; }
 
         /// <summary>
-        /// 注册选项
+        /// 注册选项，默认为FirstInterface
         /// </summary>
         public InjectionPatterns Pattern { get; set; }
 
@@ -58,10 +58,5 @@ namespace Hx.Sdk.DependencyInjection
         /// 排除接口
         /// </summary>
         public Type[] ExpectInterfaces { get; set; }
-
-        /// <summary>
-        /// 代理类型，必须继承 DispatchProxy、IDispatchProxy
-        /// </summary>
-        public Type Proxy { get; set; }
     }
 }

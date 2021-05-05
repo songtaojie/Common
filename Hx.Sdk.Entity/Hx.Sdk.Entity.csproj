@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>songtaojie</Authors>
     <Description>提供常用的一些类，1.修复字段长度</Description>
-    <Version>1.0.5.1</Version>
+    <Version>1.0.5.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
