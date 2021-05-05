@@ -28,16 +28,19 @@ namespace Microsoft.Extensions.Hosting
         {
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
+                ConsoleHelper.WriteInfoLine("Begin ConfigureAppConfiguration");
                 // 存储环境对象
                 InternalApp.HostEnvironment = InternalApp.WebHostEnvironment = hostingContext.HostingEnvironment;
 
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
+                ConsoleHelper.WriteInfoLine("End ConfigureAppConfiguration");
             });
 
             // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {
+                ConsoleHelper.WriteInfoLine("Begin ConfigureServices");
                 // 添加全局配置和存储服务提供器
                 InternalApp.InternalServices = services;
 
@@ -47,9 +50,11 @@ namespace Microsoft.Extensions.Hosting
                     App.Settings.InjectAutofac = useAutofac;
                     if (!useAutofac)
                     {
+                        ConsoleHelper.WriteSuccessLine("Use native dependency injection");
                         services.AddNativeDependencyInjection(App.EffectiveTypes);
                     }
                 });
+                ConsoleHelper.WriteInfoLine("End ConfigureServices");
             });
             return hostBuilder;
         }
@@ -103,6 +108,7 @@ namespace Microsoft.Extensions.Hosting
                     App.Settings.InjectAutofac = useAutofac;
                     if (!useAutofac)
                     {
+                        ConsoleHelper.WriteSuccessLine("Use native dependency injection");
                         services.AddNativeDependencyInjection(App.EffectiveTypes);
                     }
                 });
@@ -122,9 +128,11 @@ namespace Microsoft.Extensions.Hosting
         /// <returns></returns>
         public static IHostBuilder InjectAutofacBuilder(this IHostBuilder hostBuilder)
         {
+            ConsoleHelper.WriteSuccessLine("Autofac takes over native dependency injection");
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostBuilderContext, containerBuilder) =>
             {
+                ConsoleHelper.WriteInfoLine("Autofac ContainerBuilder Begin");
                 var effectiveTypes = Hx.Sdk.Core.App.EffectiveTypes;
                 var aopTypeNames = App.Settings.AopTypeFullName;
                 IEnumerable<Type> aopTypes = null;
@@ -133,7 +141,9 @@ namespace Microsoft.Extensions.Hosting
                     aopTypeNames = aopTypeNames.Select(t => t.ToLower()).ToArray();
                     aopTypes = effectiveTypes.Where(t => aopTypeNames.Contains(t.FullName.ToLower()));
                 }
+                ConsoleHelper.WriteInfoLine("Add the Autofac Dependency Injection service");
                 containerBuilder.AddAutofacDependencyInjection(effectiveTypes, aopTypes);
+                ConsoleHelper.WriteInfoLine("Autofac ContainerBuilder End");
             });
             return hostBuilder;
         }

@@ -24,11 +24,12 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDistributedMemoryCache();
 
             // 注册全局配置选项
-            
+            ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
             services.AddAppSettings();
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 添加 HttContext 访问器
+            ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
             services.AddUserContext();
 
             // 注册全局依赖注入

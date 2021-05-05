@@ -4,8 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
-    <Description>.Net Core核心类</Description>
-    <Version>1.0.2</Version>
+    <Description>.Net Core核心类
+添加控制台信息输出</Description>
+    <Version>1.0.2.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
