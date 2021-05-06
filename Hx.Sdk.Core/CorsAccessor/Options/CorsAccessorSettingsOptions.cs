@@ -1,5 +1,6 @@
 ﻿using Hx.Sdk.ConfigureOptions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.ComponentModel.DataAnnotations;
 

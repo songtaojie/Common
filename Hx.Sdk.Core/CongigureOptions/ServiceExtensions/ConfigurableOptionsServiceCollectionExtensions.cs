@@ -14,41 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class ConfigurableOptionsServiceCollectionExtensions
     {
-        /// <summary>
-        /// 添加AppSettings,注入为单例模式，
-        /// 可以获取AppSettings.Json中的配置信息
-        /// </summary>
-        /// <param name="services"></param>
-        public static IServiceCollection AddAppSettings(this IServiceCollection services)
-        {
-            if (services == null) throw new ArgumentNullException(nameof(services));
-            //添加AppSettings
-            AppSettings.InternalServices = services;
-            services.AddSingleton<AppSettings>(resolver =>
-            {
-                var configuration = resolver.GetService<IConfiguration>();
-                return new AppSettings(configuration);
-            });
-            // 调用立即生效
-            return services;
-        }
-
-        /// <summary>
-        /// 添加AppSettings,注入为单例模式，
-        /// 可以获取AppSettings.Json中的配置信息
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configuration">配置程序</param>
-        public static IServiceCollection AddAppSettings(this IServiceCollection services, IConfiguration configuration)
-        {
-            if (services == null) throw new ArgumentNullException(nameof(services));
-            //添加AppSettings
-            AppSettings.InternalServices = services;
-            services.AddSingleton<AppSettings>(new AppSettings(configuration));
-            // 调用立即生效
-            return services;
-        }
-
 
         /// <summary>
         /// 添加选项配置，放在AddAppSettings之后

@@ -136,7 +136,7 @@ namespace Microsoft.Extensions.Hosting
                 var effectiveTypes = Hx.Sdk.Core.App.EffectiveTypes;
                 var aopTypeNames = App.Settings.AopTypeFullName;
                 IEnumerable<Type> aopTypes = null;
-                if (aopTypeNames.Length > 0)
+                if (aopTypeNames!=null && aopTypeNames.Length > 0)
                 {
                     aopTypeNames = aopTypeNames.Select(t => t.ToLower()).ToArray();
                     aopTypes = effectiveTypes.Where(t => aopTypeNames.Contains(t.FullName.ToLower()));

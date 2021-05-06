@@ -2,8 +2,6 @@
 using Hx.Sdk.Cache.Internal;
 using Hx.Sdk.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
-using StackExchange.Redis;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -14,14 +12,15 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class CacheServiceCollextionExtensions
     {
         /// <summary>
-        /// 添加内置缓存
+        /// 添加内置缓存MemoryCache
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddMemoryCacheSetup(this IServiceCollection services)
+        public static IServiceCollection AddNativeMemoryCache(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddMemoryCache();
-            services.AddScoped<IMemoryCache, MemoryCache>();
+            // 注册内存和分布式内存
+            services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
+            services.AddDistributedMemoryCache();
             return services;
         }
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Hx.Sdk.Core;
+using Hx.Sdk.Core.Internal;
+using Hx.Sdk.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 
@@ -8,41 +10,18 @@ namespace Hx.Sdk.ConfigureOptions
     /// <summary>
     /// 读取appsettings.json中的配置的类
     /// </summary>
-    //[SkipScan]
-    public sealed class AppSettings
+    [SkipScan]
+    public static class AppSettings
     {
         /// <summary>
         /// 全局配置选项
         /// </summary>
-        public static IConfiguration Configuration { get; set; }
+        public static readonly IConfiguration Configuration;
 
-        /// <summary>
-        /// 应用服务
-        /// </summary>
-        internal static IServiceCollection InternalServices;
-
-        internal static IServiceProvider ServiceProvider => InternalServices.BuildServiceProvider();
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="config">配置</param>
-        internal AppSettings(IConfiguration config)
+        static AppSettings()
         {
-            Configuration = config;
-        }
-
-
-        /// <summary>
-        /// 获取请求生命周期的服务
-        /// </summary>
-        /// <typeparam name="TService"></typeparam>
-        /// <param name="scoped"></param>
-        /// <returns></returns>
-        private static TService GetService<TService>(IServiceProvider scoped = default)
-            where TService : class
-        {
-            return (scoped ?? ServiceProvider).GetService<TService>();
+            // 编译配置
+            Configuration = InternalApp.ConfigurationBuilder.Build();
         }
 
         /// <summary>
@@ -75,7 +54,7 @@ namespace Hx.Sdk.ConfigureOptions
         public static TOptions GetOptions<TOptions>(IServiceProvider scoped = default)
             where TOptions : class, new()
         {
-            return GetService<IOptions<TOptions>>(scoped)?.Value;
+            return App.GetService<IOptions<TOptions>>(scoped)?.Value;
         }
 
         /// <summary>
@@ -87,7 +66,7 @@ namespace Hx.Sdk.ConfigureOptions
         public static TOptions GetOptionsMonitor<TOptions>(IServiceProvider scoped = default)
             where TOptions : class, new()
         {
-            return GetService<IOptionsMonitor<TOptions>>(scoped)?.CurrentValue;
+            return App.GetService<IOptionsMonitor<TOptions>>(scoped)?.CurrentValue;
         }
 
         /// <summary>
@@ -99,7 +78,7 @@ namespace Hx.Sdk.ConfigureOptions
         public static TOptions GetOptionsSnapshot<TOptions>(IServiceProvider scoped = default)
             where TOptions : class, new()
         {
-            return GetService<IOptionsSnapshot<TOptions>>(scoped)?.Value;
+            return App.GetService<IOptionsSnapshot<TOptions>>(scoped)?.Value;
         }
 
         /// <summary>

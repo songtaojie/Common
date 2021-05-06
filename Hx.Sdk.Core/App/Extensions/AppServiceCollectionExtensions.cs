@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.Core;
+using Hx.Sdk.Core.Internal;
 using Hx.Sdk.Core.Options;
 using Hx.Sdk.DependencyInjection;
 using System;
@@ -25,7 +26,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 注册全局配置选项
             ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
-            services.AddAppSettings();
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 添加 HttContext 访问器
@@ -55,7 +55,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDistributedMemoryCache();
 
             // 注册全局配置选项
-            services.AddAppSettings();
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 注册全局依赖注入

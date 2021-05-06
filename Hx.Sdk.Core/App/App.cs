@@ -50,7 +50,6 @@ namespace Hx.Sdk.Core
         /// 服务提供器
         /// </summary>
         public static IServiceProvider ServiceProvider => HttpContext?.RequestServices ?? InternalApp.InternalServices.BuildServiceProvider();
-
         /// <summary>
         /// 获取请求上下文
         /// </summary>
