@@ -21,9 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // 添加跨域配置选项
             services.AddConfigurableOptions<CorsAccessorSettingsOptions>();
             // 获取选项
-            var corsAccessorSettings2 = AppSettings.GetOptions<CorsAccessorSettingsOptions>();
-            var options = Hx.Sdk.Core.App.GetService<Options.IOptions<CorsAccessorSettingsOptions>>();
-            var corsAccessorSettings = options.Value;
+            var corsAccessorSettings = AppSettings.GetOptions<CorsAccessorSettingsOptions>();
             // 添加跨域服务
             services.AddCors(options =>
             {
