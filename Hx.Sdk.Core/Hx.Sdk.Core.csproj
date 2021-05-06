@@ -6,7 +6,7 @@
     <Company>Jay Song</Company>
     <Description>.Net Core核心类
 增加了跨域设置</Description>
-    <Version>1.0.3</Version>
+    <Version>1.0.3.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
