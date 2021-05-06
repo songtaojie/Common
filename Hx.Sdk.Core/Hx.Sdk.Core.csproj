@@ -5,8 +5,8 @@
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
     <Description>.Net Core核心类
-添加时间格式化类</Description>
-    <Version>1.0.2.2</Version>
+增加了跨域设置</Description>
+    <Version>1.0.2.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
