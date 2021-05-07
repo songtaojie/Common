@@ -32,7 +32,7 @@ namespace Hx.Sdk.WebApi
                 options.AddDbPool<DefaultDbContext>();
                 options.AddDbPool<IdsDbContext, IdsDbContextLocator>();
             }, "Hx.Sdk.Test.Entity");
-            services.AddSwaggerSetup();
+            services.AddSpecificationDocuments();
 
             services.AddRedisCache();
         }
@@ -43,11 +43,11 @@ namespace Hx.Sdk.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwaggerSetup();
+                app.UseSwaggerDocuments();
             }
             app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseHxApp();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
