@@ -55,12 +55,12 @@ namespace Hx.Sdk.Swagger
         /// <summary>
         /// 分组信息
         /// </summary>
-        public SpecificationOpenApiInfo[] GroupOpenApiInfos { get; set; }
+        public SwaggerOpenApiInfo[] GroupOpenApiInfos { get; set; }
 
         /// <summary>
         /// 安全定义
         /// </summary>
-        public SpecificationOpenApiSecurityScheme[] SecurityDefinitions { get; set; }
+        public SwaggerOpenApiSecurityScheme[] SecurityDefinitions { get; set; }
 
         /// <summary>
         /// 配置 Servers
@@ -78,11 +78,6 @@ namespace Hx.Sdk.Swagger
         public string RouteTemplate { get; set; }
 
         /// <summary>
-        /// 配置安装第三方包的分组名
-        /// </summary>
-        public string[] PackagesGroups { get; set; }
-
-        /// <summary>
         /// 后期配置
         /// </summary>
         /// <param name="options"></param>
@@ -92,12 +87,12 @@ namespace Hx.Sdk.Swagger
             options.DocumentTitle ??= "Specification Api Document";
             options.DefaultGroupName ??= "Default";
             options.FormatAsV2 ??= false;
-            //options.RoutePrefix ??= "api";
+            options.RoutePrefix ??= "swagger";
             options.DocExpansionState ??= DocExpansion.List;
             XmlComments ??= Core.App.Assemblies.Where(u => !u.GetName().Name.Contains("Hx.Sdk")).Select(t => t.GetName().Name).ToArray();
-            GroupOpenApiInfos ??= new SpecificationOpenApiInfo[]
+            GroupOpenApiInfos ??= new SwaggerOpenApiInfo[]
             {
-                new SpecificationOpenApiInfo()
+                new SwaggerOpenApiInfo()
                 {
                     Group=options.DefaultGroupName
                 }
@@ -106,29 +101,17 @@ namespace Hx.Sdk.Swagger
             EnableAuthorized ??= true;
             if (EnableAuthorized == true)
             {
-                SecurityDefinitions ??= new SpecificationOpenApiSecurityScheme[]
+                SecurityDefinitions ??= new SwaggerOpenApiSecurityScheme[]
                 {
-                    new SpecificationOpenApiSecurityScheme
+                    new SwaggerOpenApiSecurityScheme
                     {
-                        Id="Bearer",
+                        Id="oauth2",
                         Type= SecuritySchemeType.Http,
                         Name="Authorization",
-                        Description="JWT Authorization header using the Bearer scheme.",
+                        Description="JWT Authorization header using the Bearer scheme.Enter Bearer {Token} in box below (note space between two)",
                         BearerFormat="JWT",
-                        Scheme="bearer",
+                        Scheme="Bearer",
                         In= ParameterLocation.Header,
-                        Requirement=new SpecificationOpenApiSecurityRequirementItem
-                        {
-                            Scheme=new OpenApiSecurityScheme
-                            {
-                                Reference=new OpenApiReference
-                                {
-                                    Id="Bearer",
-                                    Type= ReferenceType.SecurityScheme
-                                }
-                            },
-                            Accesses=Array.Empty<string>()
-                        }
                     }
                 };
             }
@@ -136,7 +119,6 @@ namespace Hx.Sdk.Swagger
             Servers ??= Array.Empty<OpenApiServer>();
             HideServers ??= false;
             RouteTemplate ??= "swagger/{documentName}/swagger.json";
-            PackagesGroups ??= Array.Empty<string>();
         }
     }
 }
