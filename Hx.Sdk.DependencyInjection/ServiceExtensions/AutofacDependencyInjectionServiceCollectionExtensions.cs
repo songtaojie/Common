@@ -11,6 +11,9 @@ using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// 使用Autofac进行依赖注入的扩展类
+    /// </summary>
     public static class AutofacDependencyInjectionServiceCollectionExtensions
     {
         #region 使用Aotofac注入

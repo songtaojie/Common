@@ -13,6 +13,11 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class AppServiceCollectionExtensions
     {
         /// <summary>
+        /// MiniProfiler 插件路径
+        /// </summary>
+        private const string MiniProfilerRouteBasePath = "/index-mini-profiler";
+
+        /// <summary>
         /// 添加应用配置
         /// </summary>
         /// <param name="services">服务集合</param>
@@ -20,23 +25,37 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
-            // 注册内存和分布式内存
-            services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
-            services.AddDistributedMemoryCache();
-
             // 注册全局配置选项
             ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
             services.AddConfigurableOptions<AppSettingsOptions>();
+
+            // 注册内存和分布式内存
+            ConsoleHelper.WriteInfoLine("Add the MemoryCache service");
+            services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
+            services.AddDistributedMemoryCache();
 
             // 添加 HttContext 访问器
             ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
             services.AddUserContext();
 
+            // 注册MiniProfiler 组件
+            if (App.Settings.InjectMiniProfiler == true)
+            {
+                ConsoleHelper.WriteInfoLine("Add the MiniProfiler service");
+                services.AddMiniProfiler(options =>
+                {
+                    options.RouteBasePath = MiniProfilerRouteBasePath;
+                }).AddRelationalDiagnosticListener();
+            }
+
+            // 注册swagger
+            services.AddSwaggerDocuments();
+
             // 注册全局依赖注入
-            //if (App.Settings.InjectAutofac != true)
-            //{
-            //    services.AddNativeDependencyInjection(App.EffectiveTypes);
-            //}
+            if (App.Settings.InjectAutofac != true)
+            {
+                services.AddNativeDependencyInjection();
+            }
             // 自定义服务
             configure?.Invoke(services);
             return services;
@@ -50,15 +69,20 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
+            // 注册全局配置选项
+            ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
+            services.AddConfigurableOptions<AppSettingsOptions>();
+
             // 注册内存和分布式内存
+            ConsoleHelper.WriteInfoLine("Add the MemoryCache service");
             services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
             services.AddDistributedMemoryCache();
 
-            // 注册全局配置选项
-            services.AddConfigurableOptions<AppSettingsOptions>();
-
             // 注册全局依赖注入
-            //services.AddNativeDependencyInjection(App.EffectiveTypes);
+            if (App.Settings.InjectAutofac != true)
+            {
+                services.AddNativeDependencyInjection();
+            }
 
             // 自定义服务
             configure?.Invoke(services);

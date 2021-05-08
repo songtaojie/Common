@@ -4,9 +4,6 @@ using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Microsoft.Extensions.Hosting
 {
@@ -28,19 +25,19 @@ namespace Microsoft.Extensions.Hosting
         {
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
-                ConsoleHelper.WriteInfoLine("Begin ConfigureAppConfiguration");
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureAppConfiguration");
                 // 存储环境对象
                 InternalApp.HostEnvironment = InternalApp.WebHostEnvironment = hostingContext.HostingEnvironment;
 
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
-                ConsoleHelper.WriteInfoLine("End ConfigureAppConfiguration");
+                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.Core ConfigureAppConfiguration", true);
             });
 
             // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {
-                ConsoleHelper.WriteInfoLine("Begin ConfigureServices");
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices");
                 // 添加全局配置和存储服务提供器
                 InternalApp.InternalServices = services;
 
@@ -48,13 +45,8 @@ namespace Microsoft.Extensions.Hosting
                 services.AddApp(s =>
                 {
                     App.Settings.InjectAutofac = useAutofac;
-                    if (!useAutofac)
-                    {
-                        ConsoleHelper.WriteSuccessLine("Use native dependency injection");
-                        services.AddNativeDependencyInjection(App.EffectiveTypes);
-                    }
                 });
-                ConsoleHelper.WriteInfoLine("End ConfigureServices");
+                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.Core ConfigureServices", true);
             });
             return hostBuilder;
         }
@@ -89,16 +81,18 @@ namespace Microsoft.Extensions.Hosting
         {
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureAppConfiguration");
                 // 存储环境对象
                 InternalApp.HostEnvironment = hostingContext.HostingEnvironment;
 
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
+                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.Core ConfigureAppConfiguration", true);
             });
             // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {
-
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices");
                 // 添加全局配置和存储服务提供器
                 InternalApp.InternalServices = services;
 
@@ -106,12 +100,8 @@ namespace Microsoft.Extensions.Hosting
                 services.AddHostApp(s => 
                 {
                     App.Settings.InjectAutofac = useAutofac;
-                    if (!useAutofac)
-                    {
-                        ConsoleHelper.WriteSuccessLine("Use native dependency injection");
-                        services.AddNativeDependencyInjection(App.EffectiveTypes);
-                    }
                 });
+                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.Core ConfigureServices",true);
             });
             if (useAutofac)
             {
@@ -128,22 +118,14 @@ namespace Microsoft.Extensions.Hosting
         /// <returns></returns>
         public static IHostBuilder InjectAutofacBuilder(this IHostBuilder hostBuilder)
         {
-            ConsoleHelper.WriteSuccessLine("Autofac takes over native dependency injection");
+            ConsoleHelper.WriteSuccessLine("Use Autofac takes over Native Dependency Injection Service",true);
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostBuilderContext, containerBuilder) =>
             {
-                ConsoleHelper.WriteInfoLine("Autofac ContainerBuilder Begin");
-                var effectiveTypes = Hx.Sdk.Core.App.EffectiveTypes;
-                var aopTypeNames = App.Settings.AopTypeFullName;
-                IEnumerable<Type> aopTypes = null;
-                if (aopTypeNames!=null && aopTypeNames.Length > 0)
-                {
-                    aopTypeNames = aopTypeNames.Select(t => t.ToLower()).ToArray();
-                    aopTypes = effectiveTypes.Where(t => aopTypeNames.Contains(t.FullName.ToLower()));
-                }
-                ConsoleHelper.WriteInfoLine("Add the Autofac Dependency Injection service");
-                containerBuilder.AddAutofacDependencyInjection(effectiveTypes, aopTypes);
-                ConsoleHelper.WriteInfoLine("Autofac ContainerBuilder End");
+                System.Console.WriteLine();
+                ConsoleHelper.WriteSuccessLine("Begin Autofac ContainerBuilder ");
+                containerBuilder.AddAutofacDependencyInjection();
+                ConsoleHelper.WriteSuccessLine("End Autofac ContainerBuilder", true);
             });
             return hostBuilder;
         }

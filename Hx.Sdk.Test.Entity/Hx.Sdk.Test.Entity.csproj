@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.DatabaseAccessor\Hx.Sdk.DatabaseAccessor.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.Core\Hx.Sdk.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

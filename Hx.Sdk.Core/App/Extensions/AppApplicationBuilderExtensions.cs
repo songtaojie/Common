@@ -7,7 +7,7 @@ using System;
 namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
-    /// 应用中间件拓展类（由框架内部调用）
+    /// 应用中间件拓展类
     /// </summary>
     [SkipScan]
     public static class AppApplicationBuilderExtensions
@@ -26,6 +26,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 app.UseMiniProfiler();
             }
+            app.UseSwaggerDocuments();
 
             // 调用自定义服务
             configure?.Invoke(app);

@@ -17,8 +17,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Core\Hx.Sdk.Core.csproj" />
-  </ItemGroup>
-
 </Project>

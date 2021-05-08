@@ -14,7 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Hx.Sdk.Cache\Hx.Sdk.Cache.csproj" />
     <ProjectReference Include="..\Hx.Sdk.Common\Hx.Sdk.Common.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.Swagger\Hx.Sdk.Swagger.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.DependencyInjection\Hx.Sdk.DependencyInjection.csproj" />
     <ProjectReference Include="..\Hx.Sdk.Test.Entity\Hx.Sdk.Test.Entity.csproj" />
   </ItemGroup>
 

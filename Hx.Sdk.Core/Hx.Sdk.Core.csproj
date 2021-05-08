@@ -4,9 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
-    <Description>.Net Core核心类
-增加了跨域设置</Description>
-    <Version>1.0.3.1</Version>
+    <Description>Asp.Net 核心类，统一</Description>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,8 +14,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Swagger\Assets\index-mini-profiler.html" />
+    <None Remove="Swagger\Assets\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Swagger\Assets\index-mini-profiler.html" />
+    <EmbeddedResource Include="Swagger\Assets\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.6" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
   </ItemGroup>
 
   <ItemGroup>

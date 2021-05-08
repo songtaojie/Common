@@ -32,8 +32,6 @@ namespace Hx.Sdk.WebApi
                 options.AddDbPool<DefaultDbContext>();
                 options.AddDbPool<IdsDbContext, IdsDbContextLocator>();
             }, "Hx.Sdk.Test.Entity");
-            services.AddSpecificationDocuments();
-
             services.AddRedisCache();
         }
 
@@ -43,7 +41,6 @@ namespace Hx.Sdk.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwaggerDocuments();
             }
             app.UseStaticFiles();
             app.UseRouting();

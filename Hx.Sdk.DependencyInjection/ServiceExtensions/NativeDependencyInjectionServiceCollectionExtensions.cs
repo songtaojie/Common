@@ -14,18 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
     [SkipScan]
     public static class NativeDependencyInjectionServiceCollectionExtensions
     {
-        ///// <summary>
-        ///// 添加依赖注入接口
-        ///// </summary>
-        ///// <param name="services">服务集合</param>
-        ///// <returns>服务集合</returns>
-        //public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
-        //{
-        //    services.AddScanDependencyInjection(App.EffectiveTypes);
-        //    return services;
-        //}
-
-
         /// <summary>
         /// 使用.Net Core自带的DI添加依赖注入接口
         /// </summary>

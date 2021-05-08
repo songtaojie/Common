@@ -17,7 +17,7 @@ namespace Hx.Sdk.Core.Options
         /// <summary>
         /// 是否启用规范化文档
         /// </summary>
-        public bool? InjectSpecificationDocument { get; set; }
+        public bool? InjectSwaggerDocument { get; set; }
 
         /// <summary>
         /// 是否启用引用程序集扫描
@@ -57,7 +57,7 @@ namespace Hx.Sdk.Core.Options
         public void PostConfigure(AppSettingsOptions options, IConfiguration configuration)
         {
             options.InjectMiniProfiler ??= true;
-            options.InjectSpecificationDocument ??= true;
+            options.InjectSwaggerDocument ??= true;
             options.EnabledReferenceAssemblyScan ??= false;
             options.PrintDbConnectionInfo ??= true;
             options.SupportPackageNamePrefixs ??= Array.Empty<string>();

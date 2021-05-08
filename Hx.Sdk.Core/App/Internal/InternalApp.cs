@@ -82,6 +82,7 @@ namespace Hx.Sdk.Core.Internal
             // 自动加载配置文件
             foreach (var jsonFile in jsonFiles)
             {
+                ConsoleHelper.WriteInfoLine($"Handle custom configuration files [{jsonFile}]");
                 // 处理带环境的配置文件
                 if (Path.GetFileNameWithoutExtension(jsonFile).EndsWith($".{envName}"))
                 {
