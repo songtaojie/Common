@@ -44,7 +44,6 @@ namespace Hx.Sdk.WebApi
             }
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseHxApp();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

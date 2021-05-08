@@ -30,19 +30,9 @@ namespace Hx.Sdk.Core.Options
         public bool? PrintDbConnectionInfo { get; set; }
 
         /// <summary>
-        /// 配置支持的包前缀名
-        /// </summary>
-        public string[] SupportPackageNamePrefixs { get; set; }
-
-        /// <summary>
         /// 是否使用IdentityServer4授权认证，false：使用jwt授权认证
         /// </summary>
         public bool? UseIdentityServer4 { get; set; }
-
-        /// <summary>
-        /// 集成 Autofac 组件
-        /// </summary>
-        public bool? InjectAutofac { get; set; }
 
         /// <summary>
         ///Aop切面type全名
@@ -60,9 +50,7 @@ namespace Hx.Sdk.Core.Options
             options.InjectSwaggerDocument ??= true;
             options.EnabledReferenceAssemblyScan ??= false;
             options.PrintDbConnectionInfo ??= true;
-            options.SupportPackageNamePrefixs ??= Array.Empty<string>();
             options.UseIdentityServer4 ??= false;
-            options.InjectAutofac ??= true;
             options.AopTypeFullName ??= Array.Empty<string>();
         }
     }

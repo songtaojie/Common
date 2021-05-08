@@ -6,7 +6,7 @@ using System.Text;
 namespace Hx.Sdk.Core
 {
     /// <summary>
-    /// 自定义包
+    /// App扩展
     /// </summary>
     [SkipScan]
     internal static class AppExtend

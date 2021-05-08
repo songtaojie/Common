@@ -25,37 +25,25 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
-            // 注册全局配置选项
-            ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
-            services.AddConfigurableOptions<AppSettingsOptions>();
-
-            // 注册内存和分布式内存
-            ConsoleHelper.WriteInfoLine("Add the MemoryCache service");
-            services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
-            services.AddDistributedMemoryCache();
-
-            // 添加 HttContext 访问器
-            ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
-            services.AddUserContext();
-
-            // 注册MiniProfiler 组件
-            if (App.Settings.InjectMiniProfiler == true)
+            services.AddHostApp(s =>
             {
-                ConsoleHelper.WriteInfoLine("Add the MiniProfiler service");
-                services.AddMiniProfiler(options =>
+                // 添加 HttContext 访问器
+                ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
+                services.AddUserContext();
+
+                // 注册MiniProfiler 组件
+                if (App.Settings.InjectMiniProfiler == true)
                 {
-                    options.RouteBasePath = MiniProfilerRouteBasePath;
-                }).AddRelationalDiagnosticListener();
-            }
-
-            // 注册swagger
-            services.AddSwaggerDocuments();
-
-            // 注册全局依赖注入
-            if (App.Settings.InjectAutofac != true)
-            {
-                services.AddNativeDependencyInjection();
-            }
+                    ConsoleHelper.WriteInfoLine("Add the MiniProfiler service");
+                    services.AddMiniProfiler(options =>
+                    {
+                        options.RouteBasePath = MiniProfilerRouteBasePath;
+                    }).AddRelationalDiagnosticListener();
+                }
+                // 注册swagger
+                services.AddSwaggerDocuments();
+            });
+           
             // 自定义服务
             configure?.Invoke(services);
             return services;
@@ -79,7 +67,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDistributedMemoryCache();
 
             // 注册全局依赖注入
-            if (App.Settings.InjectAutofac != true)
+            if (!InternalApp.InjectAutofac)
             {
                 services.AddNativeDependencyInjection();
             }

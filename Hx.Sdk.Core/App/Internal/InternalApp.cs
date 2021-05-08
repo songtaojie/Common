@@ -38,6 +38,11 @@ namespace Hx.Sdk.Core.Internal
         internal static IHostEnvironment HostEnvironment;
 
         /// <summary>
+        /// 是否使用Autofac依赖注入替换原生的依赖注入
+        /// </summary>
+        internal static bool InjectAutofac = true;
+
+        /// <summary>
         /// 添加配置文件
         /// </summary>
         /// <param name="config"></param>
