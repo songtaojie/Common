@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Hx.Sdk.WebApi
@@ -26,6 +27,10 @@ namespace Hx.Sdk.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var assembly =Assembly.Load("Hx.Sdk.Core");
+            var appType = assembly.GetType("Hx.Sdk.Core.App");
+            var member = appType.GetField("EffectiveTypes", BindingFlags.Public | BindingFlags.Static);
+            var value = (IEnumerable<Type>)member.GetValue(appType);
             services.AddControllers();
             services.AddDatabaseAccessor(options =>
             {

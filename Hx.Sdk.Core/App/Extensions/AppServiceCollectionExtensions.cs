@@ -2,6 +2,9 @@
 using Hx.Sdk.Core.Internal;
 using Hx.Sdk.Core.Options;
 using Hx.Sdk.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -57,6 +60,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
+            var provier = services.BuildServiceProvider();
+            var webEnv = provier.GetService<IWebHostEnvironment>();
+            var env = provier.GetService<IHostEnvironment>();
+            var builder = provier.GetService<IConfigurationBuilder>();
+            var configuration = provier.GetService<IConfiguration>();
             // 注册全局配置选项
             ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
             services.AddConfigurableOptions<AppSettingsOptions>();

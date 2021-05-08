@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.Core;
-using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Swagger.Internal;
+﻿using Hx.Sdk.Swagger.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -24,7 +22,6 @@ namespace Hx.Sdk.Swagger
     /// <summary>
     /// 规范化文档构建器
     /// </summary>
-    [SkipScan]
     internal static class SwaggerDocumentBuilder
     {
         /// <summary>

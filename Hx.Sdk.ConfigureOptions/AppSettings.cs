@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
@@ -21,7 +22,7 @@ namespace Hx.Sdk.ConfigureOptions
         /// </summary>
         internal static IServiceCollection InternalServices;
 
-        internal static IServiceProvider ServiceProvider => InternalServices.BuildServiceProvider();
+        internal static IServiceProvider ServiceProvider => HttpContextLocal.Current()?.RequestServices?? InternalServices.BuildServiceProvider();
 
         /// <summary>
         /// 构造函数

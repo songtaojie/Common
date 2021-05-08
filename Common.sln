@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.ConfigureOptions", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.HttpContext", "Hx.Sdk.HttpContext\Hx.Sdk.HttpContext.csproj", "{53BFFC9B-DEE7-47FE-872E-3F6217C6BAAF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Swagger", "Hx.Sdk.Swagger\Hx.Sdk.Swagger.csproj", "{84801B20-AC34-490E-AF4A-6EA12E7EF38A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{53BFFC9B-DEE7-47FE-872E-3F6217C6BAAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53BFFC9B-DEE7-47FE-872E-3F6217C6BAAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53BFFC9B-DEE7-47FE-872E-3F6217C6BAAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84801B20-AC34-490E-AF4A-6EA12E7EF38A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84801B20-AC34-490E-AF4A-6EA12E7EF38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84801B20-AC34-490E-AF4A-6EA12E7EF38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84801B20-AC34-490E-AF4A-6EA12E7EF38A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,6 +157,7 @@ Global
 		{F8D1F241-B7B7-4674-883B-248F80BF4779} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 		{EC6B8520-09C4-4C87-9928-D4F4F541198A} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 		{53BFFC9B-DEE7-47FE-872E-3F6217C6BAAF} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
+		{84801B20-AC34-490E-AF4A-6EA12E7EF38A} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3A06E77-0544-416C-8374-B89A2A7AE3DA}
