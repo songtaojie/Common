@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Swagger.Internal;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Swagger.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;

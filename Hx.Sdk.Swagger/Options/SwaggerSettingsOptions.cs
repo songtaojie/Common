@@ -89,7 +89,7 @@ namespace Hx.Sdk.Swagger
             options.FormatAsV2 ??= false;
             options.RoutePrefix ??= "swagger";
             options.DocExpansionState ??= DocExpansion.List;
-            XmlComments ??= Core.App.Assemblies.Where(u => !u.GetName().Name.Contains("Hx.Sdk")).Select(t => t.GetName().Name).ToArray();
+            XmlComments ??= App.Assemblies.Where(u => !u.GetName().Name.Contains("Hx.Sdk")).Select(t => t.GetName().Name).ToArray();
             GroupOpenApiInfos ??= new SwaggerOpenApiInfo[]
             {
                 new SwaggerOpenApiInfo()

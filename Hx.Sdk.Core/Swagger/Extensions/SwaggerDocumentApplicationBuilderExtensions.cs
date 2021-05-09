@@ -1,9 +1,9 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Swagger;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerUI;
-using System;
+using Hx.Sdk.Extensions;
+using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -17,20 +17,24 @@ namespace Microsoft.AspNetCore.Builder
         /// 添加规范化文档中间件
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="routePrefix"></param>
-        /// <param name="swaggerConfigure"></param>
-        /// <param name="swaggerUIConfigure"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app, string routePrefix = default, Action<SwaggerOptions> swaggerConfigure = null, Action<SwaggerUIOptions> swaggerUIConfigure = null)
+        public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app)
         {
             // 判断是否启用规范化文档
             if (App.Settings.InjectSwaggerDocument != true) return app;
-            // 配置 Swagger 全局参数
-            app.UseSwagger(options => SwaggerDocumentBuilder.Build(options, swaggerConfigure));
 
-            // 配置 Swagger UI 参数
-            app.UseSwaggerUI(options => SwaggerDocumentBuilder.BuildUI(options, routePrefix, swaggerUIConfigure));
-
+            // 判断是否安装了 DependencyInjection 程序集
+            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
+            if (diAssembly != null)
+            {
+                // 加载 SwaggerBuilder 拓展类型和拓展方法
+                var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.AspNetCore.Builder.SwaggerDocumentApplicationBuilderExtensions");
+                var addObjectMapperMethod = swaggerBuilderExtensionsType
+                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .First(u => u.Name == "UseSwaggerDocuments");
+                ConsoleExtensions.WriteInfoLine("Use the SwaggerDocument ApplicationBuilder");
+                return addObjectMapperMethod.Invoke(null, new object[] { app, null,null,null }) as IApplicationBuilder;
+            }
             return app;
         }
     }

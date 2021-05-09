@@ -2,6 +2,7 @@
 using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Extensions;
 using System;
 
 namespace Microsoft.AspNetCore.Builder
@@ -21,9 +22,11 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns>应用构建器</returns>
         internal static IApplicationBuilder UseHxApp(this IApplicationBuilder app, Action<IApplicationBuilder> configure = null)
         {
+            
             // 启用 MiniProfiler组件
             if (App.Settings.InjectMiniProfiler == true)
             {
+                ConsoleExtensions.WriteInfoLine("Use the MiniProfiler ApplicationBuilder");
                 app.UseMiniProfiler();
             }
             app.UseSwaggerDocuments();

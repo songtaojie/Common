@@ -1,8 +1,9 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
+using Hx.Sdk.Extensions;
+using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -16,20 +17,24 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加规范化文档服务
         /// </summary>
         /// <param name="services">服务集合</param>
-        /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services)
         {
             // 判断是否启用规范化文档
             if (App.Settings.InjectSwaggerDocument != true) return services;
 
-            ConsoleHelper.WriteInfoLine("Add the Swagger service");
-            // 添加配置
-            services.AddConfigurableOptions<SwaggerSettingsOptions>();
-
-            // 添加Swagger生成器服务
-            services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
-
+            // 判断是否安装了 DependencyInjection 程序集
+            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
+            if (diAssembly != null)
+            {
+                // 加载 SwaggerBuilder 拓展类型和拓展方法
+                var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.Extensions.DependencyInjection.SwaggerDocumentServiceCollectionExtensions");
+                var addObjectMapperMethod = swaggerBuilderExtensionsType
+                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .First(u => u.Name == "AddSwaggerDocuments" && u.GetParameters().First().ParameterType == typeof(IServiceCollection));
+                ConsoleExtensions.WriteInfoLine("Add the SwaggerDocuments service");
+                return addObjectMapperMethod.Invoke(null, new object[] { services, null}) as IServiceCollection;
+            }
             return services;
         }
 
@@ -37,20 +42,24 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加规范化文档服务
         /// </summary>
         /// <param name="mvcBuilder">Mvc 构建器</param>
-        /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder)
         {
             // 判断是否启用规范化文档
             if (App.Settings.InjectSwaggerDocument != true) return mvcBuilder;
-            var services = mvcBuilder.Services;
 
-            // 添加配置
-            services.AddConfigurableOptions<SwaggerSettingsOptions>();
-
-            // 添加Swagger生成器服务
-            services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
-
+            // 判断是否安装了 Swagger 程序集
+            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
+            if (diAssembly != null)
+            {
+                // 加载 SwaggerBuilder 拓展类型和拓展方法
+                var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.Extensions.DependencyInjection.SwaggerDocumentServiceCollectionExtensions");
+                var addObjectMapperMethod = swaggerBuilderExtensionsType
+                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .First(u => u.Name == "AddSwaggerDocuments" && u.GetParameters().First().ParameterType == typeof(IMvcBuilder));
+                ConsoleExtensions.WriteInfoLine("Add the SwaggerDocuments service");
+                return addObjectMapperMethod.Invoke(null, new object[] { mvcBuilder, null }) as IMvcBuilder;
+            }
             return mvcBuilder;
         }
     }

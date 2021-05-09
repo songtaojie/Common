@@ -1,7 +1,6 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.DatabaseAccessor.Internal;
 using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity;
 using Hx.Sdk.Entity.Internal;
 using Hx.Sdk.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +47,7 @@ namespace Hx.Sdk.DatabaseAccessor
         static AppDbContextBuilder()
         {
             // 判断是否是 Web 环境
-            IsWebEnvironment = App.HttpContext != null;
+            IsWebEnvironment = App.WebHostEnvironment != null;
 
             // 扫描程序集，获取数据库实体相关类型
             EntityCorrelationTypes = App.EffectiveTypes.Where(t => (typeof(IPrivateEntity).IsAssignableFrom(t) || typeof(IPrivateModelBuilder).IsAssignableFrom(t))

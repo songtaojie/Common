@@ -1,3 +1,4 @@
+using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -26,7 +27,7 @@ namespace Hx.Sdk.Swagger
             var type = context.Type;
 
             // 排除其他程序集的枚举
-            if (type.IsEnum && Core.App.Assemblies.Contains(type.Assembly))
+            if (type.IsEnum && App.Assemblies.Contains(type.Assembly))
             {
                 model.Enum.Clear();
                 var stringBuilder = new StringBuilder();

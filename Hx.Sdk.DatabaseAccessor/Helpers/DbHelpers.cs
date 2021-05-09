@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,6 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Hx.Sdk.DatabaseAccessor

@@ -1,7 +1,7 @@
-﻿using Hx.Sdk.Core;
-using Hx.Sdk.Core.Internal;
-using Hx.Sdk.Core.Options;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -16,11 +16,6 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class AppServiceCollectionExtensions
     {
         /// <summary>
-        /// MiniProfiler 插件路径
-        /// </summary>
-        private const string MiniProfilerRouteBasePath = "/index-mini-profiler";
-
-        /// <summary>
         /// 添加应用配置
         /// </summary>
         /// <param name="services">服务集合</param>
@@ -31,18 +26,11 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddHostApp(s =>
             {
                 // 添加 HttContext 访问器
-                ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
+                ConsoleExtensions.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
                 services.AddUserContext();
 
                 // 注册MiniProfiler 组件
-                if (App.Settings.InjectMiniProfiler == true)
-                {
-                    ConsoleHelper.WriteInfoLine("Add the MiniProfiler service");
-                    services.AddMiniProfiler(options =>
-                    {
-                        options.RouteBasePath = MiniProfilerRouteBasePath;
-                    }).AddRelationalDiagnosticListener();
-                }
+                services.AddMiniProfilerService();
                 // 注册swagger
                 services.AddSwaggerDocuments();
             });
@@ -66,16 +54,16 @@ namespace Microsoft.Extensions.DependencyInjection
             var builder = provier.GetService<IConfigurationBuilder>();
             var configuration = provier.GetService<IConfiguration>();
             // 注册全局配置选项
-            ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
+            ConsoleExtensions.WriteInfoLine("Add the AppSetting configuration service");
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 注册内存和分布式内存
-            ConsoleHelper.WriteInfoLine("Add the MemoryCache service");
+            ConsoleExtensions.WriteInfoLine("Add the MemoryCache service");
             services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
             services.AddDistributedMemoryCache();
 
             // 注册全局依赖注入
-            if (!InternalApp.InjectAutofac)
+            if (!AppExtend.InjectAutofac)
             {
                 services.AddNativeDependencyInjection();
             }

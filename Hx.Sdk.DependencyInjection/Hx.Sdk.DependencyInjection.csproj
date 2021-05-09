@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Jay Song</Authors>
     <Description>依赖注入和AOp（需要使用Autofac）</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.ConfigureOptions\Hx.Sdk.ConfigureOptions.csproj" />
   </ItemGroup>
 
 </Project>

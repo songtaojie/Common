@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;

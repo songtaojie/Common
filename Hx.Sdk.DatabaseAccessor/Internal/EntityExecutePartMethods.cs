@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.Core;
+﻿using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Entity.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions.Options;
+﻿using Hx.Sdk.ConfigureOptions.Internal;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,12 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
+using System.Threading;
 
 namespace Hx.Sdk.ConfigureOptions
 {
@@ -45,11 +47,12 @@ namespace Hx.Sdk.ConfigureOptions
         /// <summary>
         /// 服务提供器
         /// </summary>
-        public static IServiceProvider ServiceProvider => HttpContext?.RequestServices ?? InternalApp.InternalServices.BuildServiceProvider();
+        public static IServiceProvider ServiceProvider => InternalApp.ServiceProvider;
+
         /// <summary>
-        /// 获取请求上下文
+        /// 上下文
         /// </summary>
-        public static HttpContext HttpContext => HttpContextLocal.Current();
+        public static HttpContext HttpContext => InternalApp.HttpContext;
 
         /// <summary>
         /// 私有设置，避免重复解析
@@ -155,5 +158,27 @@ namespace Hx.Sdk.ConfigureOptions
 
             return scanAssemblies;
         }
+
+        /// <summary>
+        /// 打印验证信息到 MiniProfiler
+        /// </summary>
+        /// <param name="category">分类</param>
+        /// <param name="state">状态</param>
+        /// <param name="message">消息</param>
+        /// <param name="isError">是否为警告消息</param>
+        public static void PrintToMiniProfiler(string category, string state, string message = null, bool isError = false)
+        {
+            // 判断是否注入 MiniProfiler 组件
+            if (App.Settings.InjectMiniProfiler != true) return;
+
+            // 打印消息
+            string titleCaseategory = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(category);
+            var customTiming = MiniProfiler.Current.CustomTiming(category, string.IsNullOrWhiteSpace(message) ? $"{titleCaseategory} {state}" : message, state);
+            if (customTiming == null) return;
+
+            // 判断是否是警告消息
+            if (isError) customTiming.Errored = true;
+        }
+
     }
 }

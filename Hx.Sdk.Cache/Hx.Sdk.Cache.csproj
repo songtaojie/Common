@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
     <Description>缓存帮助类</Description>
@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Core\Hx.Sdk.Core.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.ConfigureOptions\Hx.Sdk.ConfigureOptions.csproj" />
   </ItemGroup>
 
 </Project>

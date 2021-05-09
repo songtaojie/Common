@@ -69,10 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContainerManager.cs" />
-    <Compile Include="DependencyInjection\IPrivateDependency.cs" />
-    <Compile Include="DependencyInjection\IScopedDependency.cs" />
-    <Compile Include="DependencyInjection\ISingletonDependency.cs" />
-    <Compile Include="DependencyInjection\ITransientDependency.cs" />
     <Compile Include="DependencyInjection\IAutoMapper.cs" />
     <Compile Include="Helper\RuntimeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

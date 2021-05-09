@@ -1,5 +1,7 @@
 ﻿using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,10 +41,13 @@ namespace Hx.Sdk.ConfigureOptions.Internal
         internal static IHostEnvironment HostEnvironment;
 
         /// <summary>
-        /// 是否使用Autofac依赖注入替换原生的依赖注入
+        /// 服务提供器
         /// </summary>
-        internal static bool InjectAutofac = true;
-
+        internal static IServiceProvider ServiceProvider => HttpContext?.RequestServices ?? InternalServices.BuildServiceProvider();
+        /// <summary>
+        /// 获取请求上下文
+        /// </summary>
+        internal static HttpContext HttpContext => HttpContextLocal.Current();
         /// <summary>
         /// 添加配置文件
         /// </summary>
@@ -88,7 +93,7 @@ namespace Hx.Sdk.ConfigureOptions.Internal
             // 自动加载配置文件
             foreach (var jsonFile in jsonFiles)
             {
-                //ConsoleHelper.WriteInfoLine($"Handle custom configuration files [{jsonFile}]");
+                ConsoleExtensions.WriteInfoLine($"Handle custom configuration files [{jsonFile}]");
                 // 处理带环境的配置文件
                 if (Path.GetFileNameWithoutExtension(jsonFile).EndsWith($".{envName}"))
                 {
