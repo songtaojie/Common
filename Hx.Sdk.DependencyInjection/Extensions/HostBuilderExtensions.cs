@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.Hosting
                     aopTypes = effectiveTypes.Where(t => aopTypeNames.Contains(t.FullName.ToLower()));
                 }
                 ConsoleExtensions.WriteInfoLine("Add the Autofac Dependency Injection service");
-                if (aopTypes.Count() > 0)
+                if (aopTypes!=null && aopTypes.Count() > 0)
                 {
                     var apoTypeNames = aopTypes.Select(type => string.Format("[{0}]", type.FullName));
                     ConsoleExtensions.WriteInfoLine($"Add the Aop Types ${string.Join(",", apoTypeNames)}");
