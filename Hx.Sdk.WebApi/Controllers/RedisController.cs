@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hx.Sdk.WebApi.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class RedisController : ControllerBase
+    public class RedisController : BaseApiController
     {
         private readonly IRedisCache _redisCache;
         public RedisController(IRedisCache redisCache)

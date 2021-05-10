@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.WebApi.Service;
+﻿using Hx.Sdk.WebApi.Controllers;
+using Hx.Sdk.WebApi.Service;
 using Hx.Sdk.WebApi.Service.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,11 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.Web.Controllers
+namespace Hx.Sdk.WebApi.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]/[action]")]
-    public class UserController : ControllerBase
+    public class UserController : BaseAdminController
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
