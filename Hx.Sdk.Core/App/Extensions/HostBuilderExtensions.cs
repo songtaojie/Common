@@ -14,11 +14,11 @@ namespace Microsoft.Extensions.Hosting
     {
 
         /// <summary>
-        ///  Web 主机注入Hx.Sdk.Core
+        /// 泛型主机注入，内置注入Web主机相关配置
         /// </summary>
         /// <param name="hostBuilder">泛型主机注入构建器</param>
         /// <param name="injectAutofac">是否使用Autofac依赖注入接管原生的依赖注入，内部已经注入Autofac相关的配置，设置为true不需要做Autofac相关的配置</param>
-        /// <returns>IWebHostBuilder</returns>
+        /// <returns>IHostBuilder</returns>
         public static IHostBuilder InjectHxWebApp(this IHostBuilder hostBuilder, bool injectAutofac = true)
         {
             hostBuilder.ConfigureWebHostDefaults(webBuilder =>

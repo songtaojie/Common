@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.ConfigureOptions.Internal;
+using Hx.Sdk.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
@@ -18,7 +19,8 @@ namespace Hx.Sdk.ConfigureOptions
 
         static AppSettings()
         {
-            Configuration = Internal.InternalApp.ConfigurationBuilder.Build();
+            if (InternalApp.ConfigurationBuilder == null) throw new Exception("Please first configure the HXAppConfiguration on the generic Host[IHostBuilder] Or Web Host[IWebHostBuilder]");
+            Configuration = InternalApp.ConfigurationBuilder.Build();
         }
         
         /// <summary>

@@ -33,7 +33,12 @@ namespace Microsoft.Extensions.Hosting
                 var injectContainerBuilderMethod = hostBuilderExtensionsType
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .First(u => u.Name == "InjectContainerBuilder" && u.GetParameters().First().ParameterType == typeof(IHostBuilder));
-                return injectContainerBuilderMethod.Invoke(null, new object[] { hostBuilder}) as IHostBuilder;
+                return injectContainerBuilderMethod.Invoke(null, new object[] { hostBuilder }) as IHostBuilder;
+            }
+            else
+            {
+                //如果没有安装DependencyInjection程序集
+                AppExtend.InjectAutofac = false;
             }
 
             return hostBuilder;

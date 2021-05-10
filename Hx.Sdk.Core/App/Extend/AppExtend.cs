@@ -14,7 +14,7 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 是否使用Autofac依赖注入接管原生的依赖注入
         /// </summary>
-        internal static bool InjectAutofac = true;
+        internal static bool InjectAutofac = false;
 
         /// <summary>
         /// Hx.Sdk.DependencyInjection依赖注入包

@@ -34,7 +34,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 配置选项（含验证信息）
             var configurationRoot = AppSettings.Configuration;
-            if (configurationRoot == null) throw new Exception("Please call the AddAppSettings method first");
             var optionsConfiguration = configurationRoot.GetSection(jsonKey);
 
             // 配置选项监听
