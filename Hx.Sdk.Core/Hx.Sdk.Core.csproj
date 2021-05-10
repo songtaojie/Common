@@ -4,8 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
-    <Description>Asp.Net 核心类，统一</Description>
-    <Version>1.0.5</Version>
+    <Description>Asp.Net 核心类，如果需要相关组件只需要引入相关类库即可，内部会自动注入
+
+</Description>
+    <Version>1.0.5.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

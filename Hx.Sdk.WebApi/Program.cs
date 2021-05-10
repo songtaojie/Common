@@ -18,9 +18,7 @@ namespace Hx.Sdk.WebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .InjectHxWebApp()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
+                .ConfigureHxWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
                 });
     }

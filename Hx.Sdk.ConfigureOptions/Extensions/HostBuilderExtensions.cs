@@ -32,7 +32,6 @@ namespace Microsoft.Extensions.Hosting
                 configureDelegate?.Invoke(hostingContext, config);
                 ConsoleExtensions.WriteSuccessLine("End Hx.Sdk.ConfigureOptions ConfigureAppConfiguration", true);
             });
-            // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {
                 // 添加全局配置和存储服务提供器
