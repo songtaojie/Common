@@ -1,8 +1,8 @@
-﻿using Furion.UnifyResult;
-using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using System;
 using Hx.Sdk.Extensions;
+using Hx.Sdk.UnifyResult;
 
 namespace Microsoft.AspNetCore.Mvc
 {
@@ -47,9 +47,9 @@ namespace Microsoft.AspNetCore.Mvc
         {
             if (type != null)
             {
-                if (!type.HasImplementedRawGeneric(UnifyContext.RESTfulResultType))
+                if (!type.HasImplementedRawGeneric(UnifyResultContext.RESTfulResultType))
                 {
-                    Type = UnifyContext.RESTfulResultType.MakeGenericType(type);
+                    Type = UnifyResultContext.RESTfulResultType.MakeGenericType(type);
                 }
                 else Type = default;
             }

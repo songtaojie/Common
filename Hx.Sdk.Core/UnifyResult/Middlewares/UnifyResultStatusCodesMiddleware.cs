@@ -1,8 +1,8 @@
-﻿using Furion.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace Furion.UnifyResult
+namespace Hx.Sdk.UnifyResult
 {
     /// <summary>
     /// 状态码中间件
@@ -41,7 +41,7 @@ namespace Furion.UnifyResult
             await _next(context);
 
             // 处理规范化结果
-            if (!UnifyContext.IsSkipUnifyHandlerOnSpecifiedStatusCode(context, out var unifyResult))
+            if (!UnifyResultContext.IsSkipUnifyHandlerOnSpecifiedStatusCode(context, out var unifyResult))
             {
                 await unifyResult.OnResponseStatusCodes(context, context.Response.StatusCode, _options);
             }

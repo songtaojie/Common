@@ -11,7 +11,7 @@ namespace Hx.Sdk.UnifyResult
     /// 规范化结构（请求成功）过滤器
     /// </summary>
     [SkipScan]
-    public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
+    public class UnifyResultFilter : IAsyncActionFilter, IOrderedFilter
     {
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Hx.Sdk.UnifyResult
             var actionExecutedContext = await next();
 
             // 如果没有异常再执行
-            if (actionExecutedContext.Exception == null && !UnifyContext.IsSkipUnifyHandlerOnSucceedReturn(actionDescriptor.MethodInfo, out var unifyResult))
+            if (actionExecutedContext.Exception == null && !UnifyResultContext.IsSkipUnifyHandlerOnSucceedReturn(actionDescriptor.MethodInfo, out var unifyResult))
             {
                 // 处理规范化结果
                 if (unifyResult != null)

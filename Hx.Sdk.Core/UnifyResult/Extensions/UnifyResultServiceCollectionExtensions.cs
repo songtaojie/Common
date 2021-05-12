@@ -1,4 +1,4 @@
-﻿using Furion.UnifyResult;
+﻿using Hx.Sdk.UnifyResult;
 using Hx.Sdk.DependencyInjection;
 using System.Reflection;
 
@@ -44,16 +44,16 @@ namespace Microsoft.Extensions.DependencyInjection
             where TUnifyResultProvider : class, IUnifyResultProvider
         {
             // 是否启用规范化结果
-            UnifyContext.IsEnabledUnifyHandle = true;
+            UnifyResultContext.IsEnabledUnifyHandle = true;
 
             // 获取规范化提供器模型
-            UnifyContext.RESTfulResultType = typeof(TUnifyResultProvider).GetCustomAttribute<UnifyModelAttribute>().ModelType;
+            UnifyResultContext.RESTfulResultType = typeof(TUnifyResultProvider).GetCustomAttribute<UnifyModelAttribute>().ModelType;
 
             // 添加规范化提供器
             mvcBuilder.Services.AddSingleton<IUnifyResultProvider, TUnifyResultProvider>();
 
             // 添加成功规范化结果筛选器
-            mvcBuilder.AddMvcFilter<SucceededUnifyResultFilter>();
+            mvcBuilder.AddMvcFilter<UnifyResultFilter>();
 
             return mvcBuilder;
         }
@@ -68,16 +68,16 @@ namespace Microsoft.Extensions.DependencyInjection
             where TUnifyResultProvider : class, IUnifyResultProvider
         {
             // 是否启用规范化结果
-            UnifyContext.IsEnabledUnifyHandle = true;
+            UnifyResultContext.IsEnabledUnifyHandle = true;
 
             // 获取规范化提供器模型
-            UnifyContext.RESTfulResultType = typeof(TUnifyResultProvider).GetCustomAttribute<UnifyModelAttribute>().ModelType;
+            UnifyResultContext.RESTfulResultType = typeof(TUnifyResultProvider).GetCustomAttribute<UnifyModelAttribute>().ModelType;
 
             // 添加规范化提供器
             services.AddSingleton<IUnifyResultProvider, TUnifyResultProvider>();
 
             // 添加成功规范化结果筛选器
-            services.AddMvcFilter<SucceededUnifyResultFilter>();
+            services.AddMvcFilter<UnifyResultFilter>();
 
             return services;
         }

@@ -4,15 +4,6 @@ namespace Hx.Sdk.UnifyResult
 {
 
     /// <summary>
-    /// RESTful 风格结果集
-    /// </summary>
-    [SkipScan]
-    public class RESTfulResult: RESTfulResult<object>
-    {
-    }
-
-
-    /// <summary>
     /// RESTful 风格结果集,泛型结果集
     /// </summary>
     /// <typeparam name="T"></typeparam>

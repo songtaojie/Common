@@ -1,7 +1,7 @@
 ﻿using Hx.Sdk.DependencyInjection;
 using System;
 
-namespace Furion.UnifyResult
+namespace Hx.Sdk.UnifyResult
 {
     /// <summary>
     /// 规范化模型特性

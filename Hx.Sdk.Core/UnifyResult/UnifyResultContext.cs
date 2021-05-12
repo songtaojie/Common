@@ -1,12 +1,15 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.FriendlyException;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Reflection;
+using Hx.Sdk.Extensions;
 
 namespace Hx.Sdk.UnifyResult
 {
@@ -44,7 +47,7 @@ namespace Hx.Sdk.UnifyResult
         public static (int StatusCode, object ErrorCode, object Errors) GetExceptionMetadata(ExceptionContext context)
         {
             // 获取错误码
-            var errorCode = context.Exception is AppFriendlyException friendlyException ? friendlyException?.ErrorCode : default;
+            var errorCode = context.Exception is UserFriendlyException friendlyException ? friendlyException?.ErrorCode : default;
 
             // 读取规范化状态码信息
             var statusCode = Get(UnifyResultStatusCodeKey) ?? StatusCodes.Status500InternalServerError;
@@ -57,31 +60,14 @@ namespace Hx.Sdk.UnifyResult
             if (errorMessage.StartsWith(validationFlag))
             {
                 // 处理结果
-                errors = JSON.Deserialize<object>(errorMessage[validationFlag.Length..]);
+                errors = JsonConvert.DeserializeObject<object>(errorMessage[validationFlag.Length..]);
 
                 // 设置为400状态码
                 statusCode = StatusCodes.Status400BadRequest;
             }
             else
             {
-                // 判断是否定义了全局类型异常
-                var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-
-                // 查找所有全局定义异常
-                var typeExceptionAttributes = actionDescriptor.MethodInfo
-                            .GetCustomAttributes<IfExceptionAttribute>()
-                            .Where(u => u.ErrorCode == null);
-
-                // 处理全局异常
-                if (typeExceptionAttributes.Any())
-                {
-                    // 首先判断是否有相同类型的异常
-                    var actionIfExceptionAttribute = typeExceptionAttributes.FirstOrDefault(u => u.ExceptionType == context.Exception.GetType())
-                            ?? typeExceptionAttributes.FirstOrDefault(u => u.ExceptionType == null);
-
-                    if (actionIfExceptionAttribute is { ErrorMessage: not null }) errors = actionIfExceptionAttribute.ErrorMessage;
-                }
-                else errors = errorMessage;
+                errors = errorMessage;
             }
 
             return ((int)statusCode, errorCode, errors);
@@ -209,8 +195,7 @@ namespace Hx.Sdk.UnifyResult
         internal static bool IsSkipUnifyHandlerOnSpecifiedStatusCode(HttpContext context, out IUnifyResultProvider unifyResult, bool isWebRequest = true)
         {
             // 判断是否跳过规范化处理
-            var isSkip = !IsEnabledUnifyHandle
-                    || context.GetMetadata<NonUnifyAttribute>() != null;    // 这里留下一个技术问题，如何获取 MethodInfo
+            var isSkip = !IsEnabledUnifyHandle || context.GetMetadata<NonUnifyAttribute>() != null; 
 
             if (!isWebRequest)
             {

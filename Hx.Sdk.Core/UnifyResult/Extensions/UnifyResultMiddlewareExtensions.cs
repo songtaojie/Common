@@ -1,4 +1,4 @@
-﻿using Furion.UnifyResult;
+﻿using Hx.Sdk.UnifyResult;
 using Hx.Sdk.DependencyInjection;
 using System;
 

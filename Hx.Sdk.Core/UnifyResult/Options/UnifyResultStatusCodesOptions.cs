@@ -1,6 +1,6 @@
-﻿using Furion.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
 
-namespace Furion.UnifyResult
+namespace Hx.Sdk.UnifyResult
 {
     /// <summary>
     /// 规范化状态码选项

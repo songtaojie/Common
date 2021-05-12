@@ -1,4 +1,3 @@
-using Furion.DataValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -6,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Furion.UnifyResult
+namespace Hx.Sdk.UnifyResult
 {
     /// <summary>
     /// 规范化结果提供器
@@ -26,16 +25,6 @@ namespace Furion.UnifyResult
         /// <param name="context"></param>
         /// <returns></returns>
         IActionResult OnSucceeded(ActionExecutedContext context);
-
-        /// <summary>
-        /// 验证失败返回值
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="modelStates"></param>
-        /// <param name="validationResults"></param>
-        /// <param name="validateFailedMessage"></param>
-        /// <returns></returns>
-        IActionResult OnValidateFailed(ActionExecutingContext context, ModelStateDictionary modelStates, IEnumerable<ValidateFailedModel> validationResults, string validateFailedMessage);
 
         /// <summary>
         /// 拦截返回状态码
