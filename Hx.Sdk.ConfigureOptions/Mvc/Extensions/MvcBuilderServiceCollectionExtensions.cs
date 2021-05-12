@@ -1,10 +1,10 @@
 ﻿using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Mvc 服务拓展类

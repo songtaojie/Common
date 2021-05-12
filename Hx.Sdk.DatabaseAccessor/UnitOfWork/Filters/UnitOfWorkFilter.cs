@@ -20,14 +20,9 @@ namespace Hx.Sdk.DatabaseAccessor
         private const string MiniProfilerCategory = "unitOfWork";
 
         /// <summary>
-        /// 过滤器排序
-        /// </summary>
-        internal const int FilterOrder = 9999;
-
-        /// <summary>
         /// 排序属性
         /// </summary>
-        public int Order => FilterOrder;
+        public int Order => FilterOrder.UnitOfWorkFilterOrder;
 
         /// <summary>
         /// 数据库上下文池
