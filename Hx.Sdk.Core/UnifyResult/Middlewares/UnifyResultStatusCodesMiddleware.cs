@@ -16,19 +16,12 @@ namespace Hx.Sdk.UnifyResult
         private readonly RequestDelegate _next;
 
         /// <summary>
-        /// 配置选项
-        /// </summary>
-        private readonly UnifyResultStatusCodesOptions _options;
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="next"></param>
-        /// <param name="options"></param>
-        public UnifyResultStatusCodesMiddleware(RequestDelegate next, UnifyResultStatusCodesOptions options)
+        public UnifyResultStatusCodesMiddleware(RequestDelegate next)
         {
             _next = next;
-            _options = options;
         }
 
         /// <summary>
@@ -41,9 +34,9 @@ namespace Hx.Sdk.UnifyResult
             await _next(context);
 
             // 处理规范化结果
-            if (!UnifyResultContext.IsSkipUnifyHandlerOnSpecifiedStatusCode(context, out var unifyResult))
+            if (!UnifyResultContext.IsSkipUnifyHandler(context, out var unifyResult))
             {
-                await unifyResult.OnResponseStatusCodes(context, context.Response.StatusCode, _options);
+                await unifyResult.OnResponseStatusCodes(context, context.Response.StatusCode);
             }
         }
     }

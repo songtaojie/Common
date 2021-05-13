@@ -1,12 +1,15 @@
 ﻿using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Entity;
+using Hx.Sdk.FriendlyException;
+using Hx.Sdk.UnifyResult;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
@@ -14,82 +17,31 @@ namespace Microsoft.AspNetCore.Mvc.Filters
     /// 友好异常拦截器
     /// </summary>
     [SkipScan]
-    public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
+    public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter, IExceptionFilter
     {
         /// <summary>
         /// 服务提供器
         /// </summary>
         private readonly IServiceProvider _serviceProvider;
-        private readonly IHostEnvironment _env;
-        private readonly ILogger<FriendlyExceptionFilter> _logger;
-
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="serviceProvider">服务提供器</param>
-        /// <param name="env">环境</param>
-        /// <param name="logger">日志</param>
-        public FriendlyExceptionFilter(IServiceProvider serviceProvider, IHostEnvironment env, ILogger<FriendlyExceptionFilter> logger)
+        public FriendlyExceptionFilter(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _env = env;
-            _logger = logger;
         }
-
         /// <summary>
-        /// 异步异常的处理
+        /// 异常处理
         /// </summary>
         /// <param name="context"></param>
-        /// <returns></returns>
-        public Task OnExceptionAsync(ExceptionContext context)
+        public void OnException(ExceptionContext context)
         {
-            OnException(context);
-            return Task.CompletedTask;
-        }
-
-       
-        /// <summary>
-        /// 异常拦截
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public async Task OnExceptionAsync(ExceptionContext context)
-        {
-            WriteLog(context);
-            context.ExceptionHandled = true;
-            AjaxResult result = new AjaxResult { Success = false, Message = context.Exception.Message };
-            var response = context.HttpContext.Response;
-            var request = context.HttpContext.Request;
-            if (context.Exception is UserFriendlyException)
-            {
-                result.Code = response.StatusCode = StatusCodes.Status200OK;
-                context.Result = new JsonResult(result);
-            }
-            else if (context.Exception is NoAuthorizeException)
-            {
-                result.Code = response.StatusCode = StatusCodes.Status401Unauthorized;
-                context.Result = new JsonResult(result);
-            }
-            else if (context.Exception is NotFoundException)
-            {
-                result.Code = response.StatusCode = StatusCodes.Status404NotFound;
-                context.Result = new JsonResult(result);
-            }
-            else
-            {
-                result.Code = response.StatusCode = StatusCodes.Status500InternalServerError;
-                if (!_env.IsDevelopment())
-                {
-                    result.Message = "服务器端错误!";
-                }
-                context.Result = new JsonResult(result);
-            }
-
             //解析异常处理服务，实现自定义异常额外操作，如记录日志等
             var globalExceptionHandler = _serviceProvider.GetService<IGlobalExceptionHandler>();
             if (globalExceptionHandler != null)
             {
-                await globalExceptionHandler.OnExceptionAsync(context);
+                globalExceptionHandler.OnException(context);
             }
 
             // 排除 Mvc 控制器处理
@@ -111,17 +63,13 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var errorMessage = isValidationMessage ? exception.Message[validationFlag.Length..] : exception.Message;
 
             // 判断是否跳过规范化结果
-            if (UnifyContext.IsSkipUnifyHandler(actionDescriptor.MethodInfo, out var unifyResult))
+            if (UnifyResultContext.IsSkipUnifyHandler(actionDescriptor.MethodInfo, out var unifyResult))
             {
                 // 解析异常信息
-                var (StatusCode, _, Errors) = UnifyContext.GetExceptionMetadata(context);
-
-                // 解析 JSON 序列化提供器
-                var jsonSerializer = _serviceProvider.GetService<IJsonSerializerProvider>();
-
+                var (StatusCode, _, Message) = UnifyResultContext.GetExceptionMetadata(context);
                 context.Result = new ContentResult
                 {
-                    Content = jsonSerializer.Serialize(Errors),
+                    Content = Message,
                     StatusCode = StatusCode
                 };
             }
@@ -132,21 +80,17 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             {
                 App.PrintToMiniProfiler("validation", "Failed", $"Exception Validation Failed:\r\n{errorMessage}", true);
             }
-            // 打印错误到 MiniProfiler 中
-            else Oops.PrintToMiniProfiler(context.Exception);
         }
-
 
         /// <summary>
-        /// 写入日志
-        /// <param name="context">提供使用</param>
+        /// 异步异常的处理
         /// </summary>
-        private void WriteLog(ExceptionContext context)
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public async Task OnExceptionAsync(ExceptionContext context)
         {
-            if (context == null)
-                return;
-            _logger.LogError(context.Exception, context.Exception.Message);
+            OnException(context);
+            await Task.CompletedTask;
         }
-
     }
 }

@@ -53,7 +53,7 @@ namespace Microsoft.Extensions.DependencyInjection
             mvcBuilder.Services.AddSingleton<IUnifyResultProvider, TUnifyResultProvider>();
 
             // 添加成功规范化结果筛选器
-            mvcBuilder.AddMvcFilter<UnifyResultFilter>();
+            mvcBuilder.AddMvcFilter<SucceedUnifyResultFilter>();
 
             return mvcBuilder;
         }
@@ -77,7 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IUnifyResultProvider, TUnifyResultProvider>();
 
             // 添加成功规范化结果筛选器
-            services.AddMvcFilter<UnifyResultFilter>();
+            services.AddMvcFilter<SucceedUnifyResultFilter>();
 
             return services;
         }

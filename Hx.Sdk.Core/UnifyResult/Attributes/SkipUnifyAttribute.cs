@@ -7,7 +7,7 @@ namespace Microsoft.AspNetCore.Mvc
     /// 禁止规范化处理
     /// </summary>
     [SkipScan, AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
-    public sealed class NonUnifyAttribute : Attribute
+    public sealed class SkipUnifyAttribute : Attribute
     {
     }
 }

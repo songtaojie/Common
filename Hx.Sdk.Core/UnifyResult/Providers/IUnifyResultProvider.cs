@@ -31,8 +31,7 @@ namespace Hx.Sdk.UnifyResult
         /// </summary>
         /// <param name="context"></param>
         /// <param name="statusCode"></param>
-        /// <param name="options"></param>
         /// <returns></returns>
-        Task OnResponseStatusCodes(HttpContext context, int statusCode, UnifyResultStatusCodesOptions options = default);
+        Task OnResponseStatusCodes(HttpContext context, int statusCode);
     }
 }

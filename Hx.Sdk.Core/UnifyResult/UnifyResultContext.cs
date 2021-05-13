@@ -44,11 +44,10 @@ namespace Hx.Sdk.UnifyResult
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static (int StatusCode, object ErrorCode, object Errors) GetExceptionMetadata(ExceptionContext context)
+        public static (int StatusCode, object ErrorCode, string Message) GetExceptionMetadata(ExceptionContext context)
         {
             // 获取错误码
             var errorCode = context.Exception is UserFriendlyException friendlyException ? friendlyException?.ErrorCode : default;
-
             // 读取规范化状态码信息
             var statusCode = Get(UnifyResultStatusCodeKey) ?? StatusCodes.Status500InternalServerError;
 
@@ -56,21 +55,16 @@ namespace Hx.Sdk.UnifyResult
             var validationFlag = "[Validation]";
 
             // 处理验证失败异常
-            object errors = default;
-            if (errorMessage.StartsWith(validationFlag))
+            string message = errorMessage;
+            if (!string.IsNullOrEmpty(errorMessage) && errorMessage.StartsWith(validationFlag))
             {
                 // 处理结果
-                errors = JsonConvert.DeserializeObject<object>(errorMessage[validationFlag.Length..]);
-
+                message = errorMessage[validationFlag.Length..];
                 // 设置为400状态码
                 statusCode = StatusCodes.Status400BadRequest;
             }
-            else
-            {
-                errors = errorMessage;
-            }
 
-            return ((int)statusCode, errorCode, errors);
+            return ((int)statusCode, errorCode, message);
         }
 
         /// <summary>
@@ -92,21 +86,6 @@ namespace Hx.Sdk.UnifyResult
             object extras = null;
             App.HttpContext?.Items?.TryGetValue(UnifyResultExtrasKey, out extras);
             return extras;
-        }
-
-        /// <summary>
-        /// 设置响应状态码
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="statusCode"></param>
-        /// <param name="options"></param>
-        public static void SetResponseStatusCodes(HttpContext context, int statusCode, UnifyResultStatusCodesOptions options)
-        {
-            // 如果为 null，所有状态码设置为 200
-            if (options.Return200StatusCodes == null) context.Response.StatusCode = 200;
-            // 否则只有里面的才设置为 200
-            else if (options.Return200StatusCodes.Contains(statusCode)) context.Response.StatusCode = 200;
-            else { }
         }
 
         /// <summary>
@@ -145,8 +124,8 @@ namespace Hx.Sdk.UnifyResult
             // 判断是否跳过规范化处理
             var isSkip = !IsEnabledUnifyHandle
                   || method.GetRealReturnType().HasImplementedRawGeneric(RESTfulResultType)
-                  || method.CustomAttributes.Any(x => typeof(NonUnifyAttribute).IsAssignableFrom(x.AttributeType) || typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType) || typeof(IApiResponseMetadataProvider).IsAssignableFrom(x.AttributeType))
-                  || method.ReflectedType.IsDefined(typeof(NonUnifyAttribute), true);
+                  || method.CustomAttributes.Any(x => typeof(SkipUnifyAttribute).IsAssignableFrom(x.AttributeType) || typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType) || typeof(IApiResponseMetadataProvider).IsAssignableFrom(x.AttributeType))
+                  || method.ReflectedType.IsDefined(typeof(SkipUnifyAttribute), true);
 
             if (!isWebRequest)
             {
@@ -169,10 +148,10 @@ namespace Hx.Sdk.UnifyResult
         {
             // 判断是否跳过规范化处理
             var isSkip = !IsEnabledUnifyHandle
-                    || method.CustomAttributes.Any(x => typeof(NonUnifyAttribute).IsAssignableFrom(x.AttributeType))
+                    || method.CustomAttributes.Any(x => typeof(SkipUnifyAttribute).IsAssignableFrom(x.AttributeType))
                     || (
-                            !method.CustomAttributes.Any(x => typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType) || typeof(IApiResponseMetadataProvider).IsAssignableFrom(x.AttributeType))
-                            && method.ReflectedType.IsDefined(typeof(NonUnifyAttribute), true)
+                            !method.CustomAttributes.Any(x => typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType))
+                            && method.ReflectedType.IsDefined(typeof(SkipUnifyAttribute), true)
                         );
 
             if (!isWebRequest)
@@ -192,10 +171,10 @@ namespace Hx.Sdk.UnifyResult
         /// <param name="unifyResult"></param>
         /// <param name="isWebRequest"></param>
         /// <returns></returns>
-        internal static bool IsSkipUnifyHandlerOnSpecifiedStatusCode(HttpContext context, out IUnifyResultProvider unifyResult, bool isWebRequest = true)
+        internal static bool IsSkipUnifyHandler(HttpContext context, out IUnifyResultProvider unifyResult, bool isWebRequest = true)
         {
             // 判断是否跳过规范化处理
-            var isSkip = !IsEnabledUnifyHandle || context.GetMetadata<NonUnifyAttribute>() != null; 
+            var isSkip = !IsEnabledUnifyHandle || context.GetMetadata<SkipUnifyAttribute>() != null; 
 
             if (!isWebRequest)
             {

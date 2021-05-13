@@ -1,15 +1,12 @@
 ﻿using Hx.Sdk.ConfigureOptions;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hx.Sdk.FriendlyException
 {
     /// <summary>
     /// 友好异常配置选项
     /// </summary>
-    public sealed class FriendlyExceptionSettingsOptions : IConfigurableOptions<FriendlyExceptionSettingsOptions>
+    public sealed class ExceptionSettingsOptions : IConfigurableOptions<ExceptionSettingsOptions>
     {
         /// <summary>
         /// 隐藏错误码
@@ -31,7 +28,7 @@ namespace Hx.Sdk.FriendlyException
         /// </summary>
         /// <param name="options"></param>
         /// <param name="configuration"></param>
-        public void PostConfigure(FriendlyExceptionSettingsOptions options, IConfiguration configuration)
+        public void PostConfigure(ExceptionSettingsOptions options, IConfiguration configuration)
         {
             options.HideErrorCode ??= false;
             options.DefaultErrorCode ??= string.Empty;
