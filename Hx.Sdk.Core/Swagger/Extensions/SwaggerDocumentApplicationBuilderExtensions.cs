@@ -20,8 +20,6 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app)
         {
-            // 判断是否启用规范化文档
-            if (App.Settings.InjectSwaggerDocument != true) return app;
 
             // 判断是否安装了 DependencyInjection 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));

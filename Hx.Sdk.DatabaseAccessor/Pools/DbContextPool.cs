@@ -27,7 +27,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <summary>
         /// MiniProfiler 组件状态
         /// </summary>
-        private readonly bool InjectMiniProfiler;
+        private readonly bool EnabledMiniProfiler;
 
         /// <summary>
         /// 是否打印数据库连接信息
@@ -39,7 +39,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         public DbContextPool()
         {
-            InjectMiniProfiler = App.Settings.InjectMiniProfiler == true;
+            EnabledMiniProfiler = App.Settings.EnabledMiniProfiler == true;
             IsPrintDbConnectionInfo = App.Settings.PrintDbConnectionInfo == true;
 
             dbContexts = new ConcurrentBag<DbContext>();
@@ -187,7 +187,7 @@ namespace Hx.Sdk.DatabaseAccessor
                 var conn = dbContext.Database.GetDbConnection();
                 if (conn.State == ConnectionState.Open)
                 {
-                    var wrapConn = InjectMiniProfiler ? new ProfiledDbConnection(conn, MiniProfiler.Current) : conn;
+                    var wrapConn = EnabledMiniProfiler ? new ProfiledDbConnection(conn, MiniProfiler.Current) : conn;
                     wrapConn.Close();
                 }
             }

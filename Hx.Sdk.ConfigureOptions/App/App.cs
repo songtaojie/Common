@@ -168,8 +168,8 @@ namespace Hx.Sdk.ConfigureOptions
         /// <param name="isError">是否为警告消息</param>
         public static void PrintToMiniProfiler(string category, string state, string message = null, bool isError = false)
         {
-            // 判断是否注入 MiniProfiler 组件
-            if (App.Settings.InjectMiniProfiler != true) return;
+            // 判断是否启用了 MiniProfiler 组件
+            if (App.Settings.EnabledMiniProfiler != true) return;
 
             // 打印消息
             string titleCaseategory = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(category);

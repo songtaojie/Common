@@ -22,7 +22,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddMiniProfilerService(this IServiceCollection services)
         {
-            if (App.Settings.InjectMiniProfiler != true) return services;
             ConsoleExtensions.WriteInfoLine("Add the MiniProfiler service");
             // 注册MiniProfiler 组件
             var miniProfilerBuilder = services.AddMiniProfiler(options =>

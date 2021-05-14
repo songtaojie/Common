@@ -11,12 +11,12 @@ namespace Hx.Sdk.ConfigureOptions
         /// <summary>
         /// 集成 MiniProfiler 组件
         /// </summary>
-        public bool? InjectMiniProfiler { get; set; }
+        public bool? EnabledMiniProfiler { get; set; }
 
         /// <summary>
-        /// 是否启用规范化文档
+        /// 是否启用规范化文档Swagger
         /// </summary>
-        public bool? InjectSwaggerDocument { get; set; }
+        public bool? EnabledSwagger { get; set; }
 
         /// <summary>
         /// 是否启用引用程序集扫描
@@ -39,18 +39,24 @@ namespace Hx.Sdk.ConfigureOptions
         public string[] AopTypeFullName { get; set; }
 
         /// <summary>
+        /// 是否启用规范化结果
+        /// </summary>
+        public bool? EnabledUnifyResult { get; set; }
+
+        /// <summary>
         /// 后期配置
         /// </summary>
         /// <param name="options"></param>
         /// <param name="configuration"></param>
         public void PostConfigure(AppSettingsOptions options, IConfiguration configuration)
         {
-            options.InjectMiniProfiler ??= true;
-            options.InjectSwaggerDocument ??= true;
+            options.EnabledMiniProfiler ??= true;
+            options.EnabledSwagger ??= true;
             options.EnabledReferenceAssemblyScan ??= false;
             options.PrintDbConnectionInfo ??= true;
             options.UseIdentityServer4 ??= false;
             options.AopTypeFullName ??= Array.Empty<string>();
+            options.EnabledUnifyResult ??= true;
         }
     }
 }

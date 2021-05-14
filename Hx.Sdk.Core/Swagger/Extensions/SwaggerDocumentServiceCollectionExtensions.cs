@@ -20,9 +20,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services)
         {
-            // 判断是否启用规范化文档
-            if (App.Settings.InjectSwaggerDocument != true) return services;
-
             // 判断是否安装了 DependencyInjection 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
             if (diAssembly != null)
@@ -45,9 +42,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder)
         {
-            // 判断是否启用规范化文档
-            if (App.Settings.InjectSwaggerDocument != true) return mvcBuilder;
-
             // 判断是否安装了 Swagger 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
             if (diAssembly != null)

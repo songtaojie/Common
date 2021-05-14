@@ -32,7 +32,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <summary>
         /// MiniProfiler 组件状态
         /// </summary>
-        private static readonly bool InjectMiniProfiler;
+        private static readonly bool EnabledMiniProfiler;
 
         /// <summary>
         /// 是否打印数据库连接信息到 MiniProfiler 中
@@ -47,7 +47,7 @@ namespace Hx.Sdk.DatabaseAccessor
             IsDevelopment = App.HostEnvironment.IsDevelopment();
 
             var appsettings = App.Settings;
-            InjectMiniProfiler = appsettings.InjectMiniProfiler.Value;
+            EnabledMiniProfiler = appsettings.EnabledMiniProfiler.Value;
             IsPrintDbConnectionInfo = appsettings.PrintDbConnectionInfo.Value;
         }
 
@@ -236,7 +236,7 @@ namespace Hx.Sdk.DatabaseAccessor
             DbProvider.CheckStoredProcedureSupported(databaseFacade.ProviderName, commandType);
 
             // 判断是否启用 MiniProfiler 组件，如果有，则包装链接
-            var dbConnection = InjectMiniProfiler ? new ProfiledDbConnection(databaseFacade.GetDbConnection(), MiniProfiler.Current) : databaseFacade.GetDbConnection();
+            var dbConnection = EnabledMiniProfiler ? new ProfiledDbConnection(databaseFacade.GetDbConnection(), MiniProfiler.Current) : databaseFacade.GetDbConnection();
 
             // 创建数据库命令对象
             var dbCommand = dbConnection.CreateCommand();
@@ -269,7 +269,7 @@ namespace Hx.Sdk.DatabaseAccessor
             var dbProviderFactory = DbProviderFactories.GetFactory(dbConnection);
 
             // 判断是否启用 MiniProfiler 组件，如果有，则包装链接和数据库提供器工厂
-            var profiledDbProviderFactory = InjectMiniProfiler ? new ProfiledDbProviderFactory(dbProviderFactory, true) : dbProviderFactory;
+            var profiledDbProviderFactory = EnabledMiniProfiler ? new ProfiledDbProviderFactory(dbProviderFactory, true) : dbProviderFactory;
 
             // 创建数据库连接对象及数据库命令对象
             var (_dbConnection, dbCommand) = databaseFacade.CreateDbCommand(sql, commandType);

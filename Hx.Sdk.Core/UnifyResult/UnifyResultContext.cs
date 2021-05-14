@@ -116,25 +116,25 @@ namespace Hx.Sdk.UnifyResult
         /// 是否跳过成功返回结果规范处理（状态码 200~209 ）
         /// </summary>
         /// <param name="method"></param>
-        /// <param name="unifyResult"></param>
+        /// <param name="unifyResultProvider"></param>
         /// <param name="isWebRequest"></param>
         /// <returns></returns>
-        internal static bool IsSkipUnifyHandlerOnSucceedReturn(MethodInfo method, out IUnifyResultProvider unifyResult, bool isWebRequest = true)
+        internal static bool IsSkipUnifyHandlerOnSucceedReturn(MethodInfo method, out IUnifyResultProvider unifyResultProvider, bool isWebRequest = true)
         {
             // 判断是否跳过规范化处理
             var isSkip = !IsEnabledUnifyHandle
                   || method.GetRealReturnType().HasImplementedRawGeneric(RESTfulResultType)
-                  || method.CustomAttributes.Any(x => typeof(SkipUnifyAttribute).IsAssignableFrom(x.AttributeType) || typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType) || typeof(IApiResponseMetadataProvider).IsAssignableFrom(x.AttributeType))
+                  || method.CustomAttributes.Any(x => typeof(SkipUnifyAttribute).IsAssignableFrom(x.AttributeType) || typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType))
                   || method.ReflectedType.IsDefined(typeof(SkipUnifyAttribute), true);
 
             if (!isWebRequest)
             {
-                unifyResult = null;
+                unifyResultProvider = null;
                 return isSkip;
             }
 
-            unifyResult = isSkip ? null : App.GetService<IUnifyResultProvider>();
-            return unifyResult == null || isSkip;
+            unifyResultProvider = isSkip ? null : App.GetService<IUnifyResultProvider>();
+            return unifyResultProvider == null || isSkip;
         }
 
         /// <summary>

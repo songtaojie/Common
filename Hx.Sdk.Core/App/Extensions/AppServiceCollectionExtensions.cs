@@ -30,9 +30,21 @@ namespace Microsoft.Extensions.DependencyInjection
                 services.AddUserContext();
 
                 // 注册MiniProfiler 组件
-                services.AddMiniProfilerService();
+                if (App.Settings.EnabledMiniProfiler == true)
+                {
+                    services.AddMiniProfilerService();
+                }
                 // 注册swagger
-                services.AddSwaggerDocuments();
+                // 判断是否启用规范化文档
+                if (App.Settings.EnabledSwagger == true)
+                {
+                    services.AddSwaggerDocuments();
+                }
+                // 判断是否启用规范化文档
+                if (App.Settings.EnabledUnifyResult == true)
+                {
+                    services.AddUnifyResult();
+                }
             });
            
             // 自定义服务
@@ -48,11 +60,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
-            var provier = services.BuildServiceProvider();
-            var webEnv = provier.GetService<IWebHostEnvironment>();
-            var env = provier.GetService<IHostEnvironment>();
-            var builder = provier.GetService<IConfigurationBuilder>();
-            var configuration = provier.GetService<IConfiguration>();
             // 注册全局配置选项
             ConsoleExtensions.WriteInfoLine("Add the AppSetting configuration service");
             services.AddConfigurableOptions<AppSettingsOptions>();

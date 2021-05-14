@@ -24,7 +24,7 @@ namespace Hx.Sdk.UnifyResult
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        IActionResult OnSucceeded(ActionExecutedContext context);
+        IActionResult OnSucceeded(ResultExecutingContext context);
 
         /// <summary>
         /// 拦截返回状态码

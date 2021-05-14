@@ -316,7 +316,7 @@ namespace Hx.Sdk.Swagger
             // 自定义 Swagger 首页
             swaggerUIOptions.IndexStream = () => 
             {
-                var stream = thisAssembly.GetManifestResourceStream($"{thisType.Namespace}.Assets.{(App.Settings.InjectMiniProfiler != true ? "index" : "index-mini-profiler")}.html");
+                var stream = thisAssembly.GetManifestResourceStream($"{thisType.Namespace}.Assets.{(App.Settings.EnabledMiniProfiler != true ? "index" : "index-mini-profiler")}.html");
                 return stream;
             };
         }

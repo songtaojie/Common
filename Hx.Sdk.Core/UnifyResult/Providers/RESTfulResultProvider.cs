@@ -12,7 +12,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// RESTful 风格返回值
     /// </summary>
-    [SkipScan, UnifyModel(typeof(RESTfulResult<>))]
+    [SkipScan, UnifyResultModel(typeof(RESTfulResult<>))]
     public class RESTfulResultProvider : IUnifyResultProvider
     {
         /// <summary>
@@ -41,7 +41,7 @@ namespace Hx.Sdk.UnifyResult
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public IActionResult OnSucceeded(ActionExecutedContext context)
+        public IActionResult OnSucceeded(ResultExecutingContext context)
         {
             object data;
             // 处理内容结果
@@ -61,8 +61,9 @@ namespace Hx.Sdk.UnifyResult
             });
         }
 
+
         /// <summary>
-        /// 处理输出状态码
+        /// 拦截返回状态码
         /// </summary>
         /// <param name="context"></param>
         /// <param name="statusCode"></param>
