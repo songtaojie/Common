@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Hx.Sdk.FriendlyException
 {
     /// <summary>
-    /// 全局异常处理
+    /// 全局异常处理接口
     /// </summary>
     public interface IGlobalExceptionHandler
     {

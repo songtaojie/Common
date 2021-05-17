@@ -28,14 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             // 设置迁移类库名称
             if (!string.IsNullOrWhiteSpace(migrationAssemblyName)) Db.MigrationAssemblyName = migrationAssemblyName;
-            //// 注册MiniProfiler 组件
-            if (App.Settings!=null && App.Settings.EnabledMiniProfiler == true)
-            {
-                services.AddMiniProfiler(options =>
-                {
-                    options.RouteBasePath = MiniProfilerRouteBasePath;
-                }).AddRelationalDiagnosticListener();
-            }
+           
             // 配置数据库上下文
             configure?.Invoke(services);
 

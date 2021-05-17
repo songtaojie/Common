@@ -45,6 +45,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     services.AddUnifyResult();
                 }
+                //判断是否启用全局异常处理
+                if (App.Settings.EnabledExceptionFilter == true)
+                {
+                    services.AddFriendlyException();
+                }
             });
            
             // 自定义服务

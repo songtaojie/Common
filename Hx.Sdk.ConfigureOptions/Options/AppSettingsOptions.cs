@@ -44,6 +44,11 @@ namespace Hx.Sdk.ConfigureOptions
         public bool? EnabledUnifyResult { get; set; }
 
         /// <summary>
+        /// 是否开启全局异常过滤器
+        /// </summary>
+        public bool? EnabledExceptionFilter { get; set; }
+
+        /// <summary>
         /// 后期配置
         /// </summary>
         /// <param name="options"></param>
@@ -57,6 +62,7 @@ namespace Hx.Sdk.ConfigureOptions
             options.UseIdentityServer4 ??= false;
             options.AopTypeFullName ??= Array.Empty<string>();
             options.EnabledUnifyResult ??= true;
+            options.EnabledExceptionFilter ??= true;
         }
     }
 }
