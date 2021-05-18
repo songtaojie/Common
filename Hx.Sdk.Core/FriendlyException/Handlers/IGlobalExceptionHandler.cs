@@ -13,6 +13,6 @@ namespace Hx.Sdk.FriendlyException
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        Task OnException(ExceptionContext context);
+        Task OnExceptionAsync(ExceptionContext context);
     }
 }

@@ -22,11 +22,11 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var services = mvcBuilder.Services;
 
-            // 添加全局异常过滤器
-            mvcBuilder.AddFriendlyException(enabledGlobalExceptionFilter);
-
             // 单例注册异常状态码提供器
             services.AddSingleton<IGlobalExceptionHandler, TGlobalExceptionHandler>();
+            // 添加全局异常过滤器
+            if (enabledGlobalExceptionFilter)
+                mvcBuilder.AddMvcFilter<FriendlyExceptionFilter>();
 
             return mvcBuilder;
         }
@@ -40,13 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IMvcBuilder AddFriendlyException(this IMvcBuilder mvcBuilder, bool enabledGlobalExceptionFilter = true)
         {
-            // 添加友好异常配置文件支持
-            mvcBuilder.Services.AddConfigurableOptions<ExceptionSettingsOptions>();
-
-            // 添加全局异常过滤器
-            if (enabledGlobalExceptionFilter)
-                mvcBuilder.AddMvcFilter<FriendlyExceptionFilter>();
-
+            mvcBuilder.AddFriendlyException<DefaultGlobalExceptionHandler>(enabledGlobalExceptionFilter);
             return mvcBuilder;
         }
 
@@ -60,12 +54,11 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddFriendlyException<TGlobalExceptionHandler>(this IServiceCollection services, bool enabledGlobalExceptionFilter = true)
             where TGlobalExceptionHandler : class, IGlobalExceptionHandler
         {
-            // 添加全局异常过滤器
-            services.AddFriendlyException(enabledGlobalExceptionFilter);
-
             // 单例注册异常状态码提供器
             services.AddSingleton<IGlobalExceptionHandler, TGlobalExceptionHandler>();
-
+            // 添加全局异常过滤器
+            if (enabledGlobalExceptionFilter)
+                services.AddMvcFilter<FriendlyExceptionFilter>();
             return services;
         }
 
@@ -78,13 +71,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddFriendlyException(this IServiceCollection services, bool enabledGlobalExceptionFilter = true)
         {
-            // 添加友好异常配置文件支持
-            services.AddConfigurableOptions<ExceptionSettingsOptions>();
-
-            // 添加全局异常过滤器
-            if (enabledGlobalExceptionFilter)
-                services.AddMvcFilter<FriendlyExceptionFilter>();
-
+            services.AddFriendlyException<DefaultGlobalExceptionHandler>(enabledGlobalExceptionFilter);
             return services;
         }
     }

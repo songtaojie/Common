@@ -41,7 +41,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             var globalExceptionHandler = _serviceProvider.GetService<IGlobalExceptionHandler>();
             if (globalExceptionHandler != null)
             {
-                globalExceptionHandler.OnException(context);
+                globalExceptionHandler.OnExceptionAsync(context).Wait();
             }
 
             // 排除 Mvc 控制器处理
