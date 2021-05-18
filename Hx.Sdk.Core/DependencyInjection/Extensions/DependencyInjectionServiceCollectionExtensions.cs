@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var addObjectMapperMethod = diServiceCollectionExtensionsType
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .First(u => u.Name == "AddNativeDependencyInjection");
-                ConsoleExtensions.WriteInfoLine("Add the Native Dependency Injection service");
+                ConsoleHelper.WriteInfoLine("Add the Native Dependency Injection service");
                 return addObjectMapperMethod.Invoke(null, new object[] { services, App.EffectiveTypes }) as IServiceCollection;
             }
 

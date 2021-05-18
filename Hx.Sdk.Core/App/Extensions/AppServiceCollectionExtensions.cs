@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddHostApp(s =>
             {
                 // 添加 HttContext 访问器
-                ConsoleExtensions.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
+                ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
                 services.AddUserContext();
 
                 // 注册MiniProfiler 组件
@@ -66,11 +66,11 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
             // 注册全局配置选项
-            ConsoleExtensions.WriteInfoLine("Add the AppSetting configuration service");
+            ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
             services.AddConfigurableOptions<AppSettingsOptions>();
 
             // 注册内存和分布式内存
-            ConsoleExtensions.WriteInfoLine("Add the MemoryCache service");
+            ConsoleHelper.WriteInfoLine("Add the MemoryCache service");
             services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
             services.AddDistributedMemoryCache();
 

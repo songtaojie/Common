@@ -4,6 +4,7 @@ using Hx.Sdk.Entity.Page;
 using Hx.Sdk.Test.Entity;
 using Hx.Sdk.Test.Entity.DbContexts;
 using Hx.Sdk.Test.Entity.Entities;
+using Hx.Sdk.UnifyResult;
 using Hx.Sdk.WebApi.Service.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -74,7 +75,9 @@ namespace Hx.Sdk.WebApi.Service
         /// <param name="id"></param>
         public async Task<UserDto> Find(string id)
         {
+            UnifyResultContext.Fill("附加值");
             var person = await Repository.FindAsync(id);
+            if (person != null) throw new Exception("[Validation]测试").SetUnifyResultStatusCode(404);
             return new UserDto
             {
                 Id = person.Id,

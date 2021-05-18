@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Builder
             // 启用 MiniProfiler组件
             if (App.Settings.EnabledMiniProfiler == true)
             {
-                ConsoleExtensions.WriteInfoLine("Use the MiniProfiler ApplicationBuilder");
+                ConsoleHelper.WriteInfoLine("Use the MiniProfiler ApplicationBuilder");
                 app.UseMiniProfiler();
             }
             // 判断是否启用规范化文档

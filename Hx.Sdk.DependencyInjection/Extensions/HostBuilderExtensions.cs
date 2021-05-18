@@ -1,5 +1,6 @@
 ﻿using Autofac.Extensions.DependencyInjection;
 using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Core;
 using Hx.Sdk.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,11 +19,11 @@ namespace Microsoft.Extensions.Hosting
         /// <returns></returns>
         public static IHostBuilder InjectContainerBuilder(this IHostBuilder hostBuilder)
         {
-            ConsoleExtensions.WriteSuccessLine("Use Autofac takes over Native Dependency Injection Service",true);
+            ConsoleHelper.WriteWarningLine("Use Autofac takes over Native Dependency Injection Service",true);
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostBuilderContext, containerBuilder) =>
             {
-                ConsoleExtensions.WriteSuccessLine("Begin Autofac ContainerBuilder ");
+                ConsoleHelper.WriteSuccessLine("Begin Autofac ContainerBuilder ");
                 var effectiveTypes = App.EffectiveTypes;
                 var aopTypeNames = App.Settings.AopTypeFullName;
                 IEnumerable<Type> aopTypes = null;
@@ -31,14 +32,14 @@ namespace Microsoft.Extensions.Hosting
                     aopTypeNames = aopTypeNames.Select(t => t.ToLower()).ToArray();
                     aopTypes = effectiveTypes.Where(t => aopTypeNames.Contains(t.FullName.ToLower()));
                 }
-                ConsoleExtensions.WriteInfoLine("Add the Autofac Dependency Injection service");
+                ConsoleHelper.WriteInfoLine("Add the Autofac Dependency Injection service");
                 if (aopTypes!=null && aopTypes.Count() > 0)
                 {
                     var apoTypeNames = aopTypes.Select(type => string.Format("[{0}]", type.FullName));
-                    ConsoleExtensions.WriteInfoLine($"Add the Aop Types ${string.Join(",", apoTypeNames)}");
+                    ConsoleHelper.WriteInfoLine($"Add the Aop Types {string.Join(",", apoTypeNames)}");
                 }
                 containerBuilder.AddAutofacDependencyInjection(effectiveTypes, aopTypes);
-                ConsoleExtensions.WriteSuccessLine("End Autofac ContainerBuilder", true);
+                ConsoleHelper.WriteSuccessLine("End Autofac ContainerBuilder", true);
             });
             return hostBuilder;
         }

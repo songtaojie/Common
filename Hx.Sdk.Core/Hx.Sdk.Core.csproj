@@ -4,10 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
-    <Description>Asp.Net 核心类，如果需要相关组件只需要引入相关类库即可，内部会自动注入
+    <Description>添加全局异常处理和全局结果处理
+
 
 </Description>
-    <Version>1.0.5.1</Version>
+    <Version>1.0.5.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -3,9 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Jay Song</Authors>
-    <Description>依赖注入和AOp（需要使用Autofac）
-修复注入bug</Description>
-    <Version>1.0.1.1</Version>
+    <Description>添加控制台输出</Description>
+    <Version>1.0.1.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -29,7 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var addObjectMapperMethod = swaggerBuilderExtensionsType
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .First(u => u.Name == "AddSwaggerDocuments" && u.GetParameters().First().ParameterType == typeof(IServiceCollection));
-                ConsoleExtensions.WriteInfoLine("Add the SwaggerDocuments service");
+                ConsoleHelper.WriteInfoLine("Add the SwaggerDocuments service");
                 return addObjectMapperMethod.Invoke(null, new object[] { services, null}) as IServiceCollection;
             }
             return services;
@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var addObjectMapperMethod = swaggerBuilderExtensionsType
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .First(u => u.Name == "AddSwaggerDocuments" && u.GetParameters().First().ParameterType == typeof(IMvcBuilder));
-                ConsoleExtensions.WriteInfoLine("Add the SwaggerDocuments service");
+                ConsoleHelper.WriteInfoLine("Add the SwaggerDocuments service");
                 return addObjectMapperMethod.Invoke(null, new object[] { mvcBuilder, null }) as IMvcBuilder;
             }
             return mvcBuilder;

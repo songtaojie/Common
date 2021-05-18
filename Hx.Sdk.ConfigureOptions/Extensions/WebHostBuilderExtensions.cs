@@ -1,5 +1,6 @@
 ﻿using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.ConfigureOptions.Internal;
+using Hx.Sdk.Core;
 using Hx.Sdk.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,21 +24,21 @@ namespace Microsoft.AspNetCore.Hosting
             // 自动装载配置
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
-                ConsoleExtensions.WriteSuccessLine("Begin Hx.Sdk.ConfigureOptions ConfigureAppConfiguration");
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.ConfigureOptions ConfigureAppConfiguration");
                 // 存储环境对象
                 InternalApp.HostEnvironment = InternalApp.WebHostEnvironment = hostingContext.HostingEnvironment;
 
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
                 configureDelegate?.Invoke(hostingContext, config);
-                ConsoleExtensions.WriteSuccessLine("End Hx.Sdk.ConfigureOptions ConfigureAppConfiguration", true);
+                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.ConfigureOptions ConfigureAppConfiguration", true);
             });
             // 自动注入 AddConfigurableOptions() 服务
             hostBuilder.ConfigureServices(services =>
             {
                 // 添加全局配置和存储服务提供器
                 InternalApp.InternalServices = services;
-                ConsoleExtensions.WriteInfoLine("Add the AppSettingsOptions configuration object");
+                ConsoleHelper.WriteInfoLine("Add the AppSettingsOptions configuration object");
                 services.AddConfigurableOptions<AppSettingsOptions>();
             });
 

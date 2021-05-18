@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddMiniProfilerService(this IServiceCollection services)
         {
-            ConsoleExtensions.WriteInfoLine("Add the MiniProfiler service");
+            ConsoleHelper.WriteInfoLine("Add the MiniProfiler service");
             // 注册MiniProfiler 组件
             var miniProfilerBuilder = services.AddMiniProfiler(options =>
             {
@@ -38,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var addObjectMapperMethod = miniProfilerServiceCollectionExtensionsType
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .First(u => u.Name == "AddRelationalDiagnosticListener");
-                ConsoleExtensions.WriteInfoLine("Add RelationalDiagnosticListener service");
+                ConsoleHelper.WriteInfoLine("Add RelationalDiagnosticListener service");
                 _ = addObjectMapperMethod.Invoke(null, new object[] { miniProfilerBuilder }) as IMiniProfilerBuilder;
             }
             return services;

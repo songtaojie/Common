@@ -57,10 +57,10 @@ namespace Microsoft.Extensions.Hosting
             // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {
-                ConsoleExtensions.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices");
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices");
                 // 初始化应用服务
                 services.AddHostApp();
-                ConsoleExtensions.WriteSuccessLine("End Hx.Sdk.Core ConfigureServices", true);
+                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.Core ConfigureServices", true);
             });
             if (AppExtend.InjectAutofac)
             {

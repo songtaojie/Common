@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Builder
                 var addObjectMapperMethod = swaggerBuilderExtensionsType
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .First(u => u.Name == "UseSwaggerDocuments");
-                ConsoleExtensions.WriteInfoLine("Use the SwaggerDocument ApplicationBuilder");
+                ConsoleHelper.WriteInfoLine("Use the SwaggerDocument ApplicationBuilder");
                 return addObjectMapperMethod.Invoke(null, new object[] { app, null,null,null }) as IApplicationBuilder;
             }
             return app;

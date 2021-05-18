@@ -29,7 +29,7 @@ namespace Hx.Sdk.Core
         {
             return app =>
             {
-                ConsoleExtensions.WriteSuccessLine("Begin Hx.Sdk.Core Startup Configure");
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core Startup Configure");
                 // 设置响应报文头信息，标记框架类型
                 app.Use(async (context, next) =>
                 {
@@ -39,7 +39,7 @@ namespace Hx.Sdk.Core
                 });
                 // 调用默认中间件
                 app.UseHxApp();
-                ConsoleExtensions.WriteSuccessLine("End Hx.Sdk.Core Startup Configure",true);
+                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.Core Startup Configure",true);
                 next(app);
             };
         }

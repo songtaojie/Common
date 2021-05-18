@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Builder
         {
             // 提供配置
             builder.UseMiddleware<UnifyResultStatusCodesMiddleware>();
-            Hx.Sdk.Extensions.ConsoleExtensions.WriteInfoLine("Use the UnifyResultStatusCodes ApplicationBuilder");
+            Hx.Sdk.Core.ConsoleHelper.WriteInfoLine("Use the UnifyResultStatusCodes ApplicationBuilder");
             return builder;
         }
     }

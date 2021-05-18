@@ -25,12 +25,12 @@ namespace Hx.Sdk.Core
             // 自动注入 AddApp() 服务
             builder.ConfigureServices(services =>
             {
-                ConsoleExtensions.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices");
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices");
                 // 注册 Startup 过滤器
                 services.AddTransient<IStartupFilter, StartupFilter>();
                 // 初始化应用服务
                 services.AddApp();
-                ConsoleExtensions.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices", true);
+                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices", true);
             });
         }
     }

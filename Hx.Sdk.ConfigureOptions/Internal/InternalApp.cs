@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.Core;
+using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -93,7 +94,7 @@ namespace Hx.Sdk.ConfigureOptions.Internal
             // 自动加载配置文件
             foreach (var jsonFile in jsonFiles)
             {
-                ConsoleExtensions.WriteInfoLine($"Handle custom configuration files [{jsonFile}]");
+                ConsoleHelper.WriteInfoLine($"Handle custom configuration files [{jsonFile}]");
                 // 处理带环境的配置文件
                 if (Path.GetFileNameWithoutExtension(jsonFile).EndsWith($".{envName}"))
                 {
