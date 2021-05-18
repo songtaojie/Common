@@ -14,10 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class DatabaseAccessorServiceCollectionExtensions
     {
         /// <summary>
-        /// MiniProfiler 插件路径
-        /// </summary>
-        private const string MiniProfilerRouteBasePath = "/index-mini-profiler";
-        /// <summary>
         /// 添加数据库上下文
         /// </summary>
         /// <param name="services">服务集合</param>
