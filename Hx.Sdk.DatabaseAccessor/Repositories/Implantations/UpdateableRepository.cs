@@ -21,14 +21,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 更新一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> Update(TEntity entity, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> Update(TEntity entity)
         {
             var entityEntry = Entities.Update(entity);
-
-            // 忽略空值
-            IgnoreNullValues(ref entity, ignoreNullValues);
 
             return entityEntry;
         }
@@ -46,11 +42,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 更新一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual Task<EntityEntry<TEntity>> UpdateAsync(TEntity entity, bool? ignoreNullValues = null)
+        public virtual Task<EntityEntry<TEntity>> UpdateAsync(TEntity entity)
         {
-            return Task.FromResult(Update(entity, ignoreNullValues));
+            return Task.FromResult(Update(entity));
         }
 
         /// <summary>
@@ -68,11 +63,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 更新一条记录并立即提交
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateNow(TEntity entity, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateNow(TEntity entity)
         {
-            var entityEntry = Update(entity, ignoreNullValues);
+            var entityEntry = Update(entity);
             SaveNow();
             return entityEntry;
         }
@@ -92,11 +86,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">取消异步令牌</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateNowAsync(TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateNowAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateAsync(entity, ignoreNullValues);
+            var entityEntry = await UpdateAsync(entity);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -119,15 +112,14 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateInclude(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateInclude(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
             // 判断是非参数只有一个，且是一个匿名类型
             if (propertyPredicates?.Count() == 1 && propertyPredicates.ElementAt(0).Body is NewExpression newExpression)
             {
                 var propertyNames = newExpression.Members.Select(u => u.Name);
-                return UpdateInclude(entity, propertyNames, ignoreNullValues);
+                return UpdateInclude(entity, propertyNames);
             }
             else
             {
@@ -137,9 +129,6 @@ namespace Hx.Sdk.DatabaseAccessor
                     EntityPropertyEntry(entity, propertyPredicate).IsModified = true;
                 }
 
-                // 忽略空值
-                IgnoreNullValues(ref entity, ignoreNullValues);
-
                 return entityEntry;
             }
         }
@@ -149,18 +138,14 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateInclude(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateInclude(TEntity entity, IEnumerable<string> propertyNames)
         {
             var entityEntry = ChangeEntityState(entity, EntityState.Detached);
             foreach (var propertyName in propertyNames)
             {
                 EntityPropertyEntry(entity, propertyName).IsModified = true;
             }
-
-            // 忽略空值
-            IgnoreNullValues(ref entity, ignoreNullValues);
 
             return entityEntry;
         }
@@ -170,11 +155,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual Task<EntityEntry<TEntity>> UpdateIncludeAsync(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual Task<EntityEntry<TEntity>> UpdateIncludeAsync(TEntity entity, IEnumerable<string> propertyNames)
         {
-            return Task.FromResult(UpdateInclude(entity, propertyNames, ignoreNullValues));
+            return Task.FromResult(UpdateInclude(entity, propertyNames));
         }
 
         /// <summary>
@@ -182,11 +166,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual Task<EntityEntry<TEntity>> UpdateIncludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual Task<EntityEntry<TEntity>> UpdateIncludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return Task.FromResult(UpdateInclude(entity, propertyPredicates, ignoreNullValues));
+            return Task.FromResult(UpdateInclude(entity, propertyPredicates));
         }
      
         /// <summary>
@@ -194,11 +177,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateIncludeNow(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateIncludeNow(TEntity entity, IEnumerable<string> propertyNames)
         {
-            var entityEntry = UpdateInclude(entity, propertyNames, ignoreNullValues);
+            var entityEntry = UpdateInclude(entity, propertyNames);
             SaveNow();
             return entityEntry;
         }
@@ -208,11 +190,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateIncludeNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateIncludeNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            var entityEntry = UpdateInclude(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = UpdateInclude(entity, propertyPredicates);
             SaveNow();
             return entityEntry;
         }
@@ -222,12 +203,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<string> propertyNames,  CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateIncludeAsync(entity, propertyNames, ignoreNullValues);
+            var entityEntry = await UpdateIncludeAsync(entity, propertyNames);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -237,12 +217,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateIncludeAsync(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = await UpdateIncludeAsync(entity, propertyPredicates);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -252,18 +231,14 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExclude(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExclude(TEntity entity, IEnumerable<string> propertyNames)
         {
             var entityEntry = ChangeEntityState(entity, EntityState.Modified);
             foreach (var propertyName in propertyNames)
             {
                 EntityPropertyEntry(entity, propertyName).IsModified = false;
             }
-
-            // 忽略空值
-            IgnoreNullValues(ref entity, ignoreNullValues);
 
             return entityEntry;
         }
@@ -273,15 +248,14 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExclude(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExclude(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
             // 判断是非参数只有一个，且是一个匿名类型
             if (propertyPredicates?.Count() == 1 && propertyPredicates.ElementAt(0).Body is NewExpression newExpression)
             {
                 var propertyNames = newExpression.Members.Select(u => u.Name);
-                return UpdateExclude(entity, propertyNames, ignoreNullValues);
+                return UpdateExclude(entity, propertyNames);
             }
             else
             {
@@ -291,9 +265,6 @@ namespace Hx.Sdk.DatabaseAccessor
                     EntityPropertyEntry(entity, propertyPredicate).IsModified = false;
                 }
 
-                // 忽略空值
-                IgnoreNullValues(ref entity, ignoreNullValues);
-
                 return entityEntry;
             }
         }
@@ -303,11 +274,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual Task<EntityEntry<TEntity>> UpdateExcludeAsync(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual Task<EntityEntry<TEntity>> UpdateExcludeAsync(TEntity entity, IEnumerable<string> propertyNames)
         {
-            return Task.FromResult(UpdateExclude(entity, propertyNames, ignoreNullValues));
+            return Task.FromResult(UpdateExclude(entity, propertyNames));
         }
 
         /// <summary>
@@ -315,11 +285,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual Task<EntityEntry<TEntity>> UpdateExcludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual Task<EntityEntry<TEntity>> UpdateExcludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return Task.FromResult(UpdateExclude(entity, propertyPredicates, ignoreNullValues));
+            return Task.FromResult(UpdateExclude(entity, propertyPredicates));
         }
 
 
@@ -328,11 +297,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExcludeNow(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExcludeNow(TEntity entity, IEnumerable<string> propertyNames)
         {
-            var entityEntry = UpdateExclude(entity, propertyNames, ignoreNullValues);
+            var entityEntry = UpdateExclude(entity, propertyNames);
             SaveNow();
             return entityEntry;
         }
@@ -342,11 +310,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExcludeNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExcludeNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            var entityEntry = UpdateExclude(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = UpdateExclude(entity, propertyPredicates);
             SaveNow();
             return entityEntry;
         }
@@ -356,12 +323,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateExcludeAsync(entity, propertyNames, ignoreNullValues);
+            var entityEntry = await UpdateExcludeAsync(entity, propertyNames);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -372,12 +338,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateExcludeAsync(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = await UpdateExcludeAsync(entity, propertyPredicates);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -387,39 +352,36 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 更新一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExists(TEntity entity, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExists(TEntity entity)
         {
             // 检查实体是否有效
             CheckEntityEffective(entity);
 
-            return Update(entity, ignoreNullValues);
+            return Update(entity);
         }
 
         /// <summary>
         /// 更新一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExistsAsync(TEntity entity, bool? ignoreNullValues = null)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExistsAsync(TEntity entity)
         {
             // 检查实体是否有效
             await CheckEntityEffectiveAsync(entity);
 
-            return await UpdateAsync(entity, ignoreNullValues);
+            return await UpdateAsync(entity);
         }
 
         /// <summary>
         /// 更新一条记录并立即提交
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExistsNow(TEntity entity, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExistsNow(TEntity entity)
         {
-            var entityEntry = UpdateExists(entity, ignoreNullValues);
+            var entityEntry = UpdateExists(entity);
             SaveNow();
             return entityEntry;
         }
@@ -429,11 +391,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">异步取消令牌</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExistsNowAsync(TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExistsNowAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateExistsAsync(entity, ignoreNullValues);
+            var entityEntry = await UpdateExistsAsync(entity);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -443,14 +404,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateIncludeExists(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateIncludeExists(TEntity entity, IEnumerable<string> propertyNames)
         {
             // 检查实体是否有效
             CheckEntityEffective(entity);
 
-            return UpdateInclude(entity, propertyNames, ignoreNullValues);
+            return UpdateInclude(entity, propertyNames);
         }
 
         /// <summary>
@@ -458,14 +418,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateIncludeExists(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateIncludeExists(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
             // 检查实体是否有效
             CheckEntityEffective(entity);
 
-            return UpdateInclude(entity, propertyPredicates, ignoreNullValues);
+            return UpdateInclude(entity, propertyPredicates);
         }
 
         /// <summary>
@@ -473,14 +432,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeExistsAsync(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeExistsAsync(TEntity entity, IEnumerable<string> propertyNames)
         {
             // 检查实体是否有效
             await CheckEntityEffectiveAsync(entity);
 
-            return await UpdateIncludeAsync(entity, propertyNames, ignoreNullValues);
+            return await UpdateIncludeAsync(entity, propertyNames);
         }
 
         /// <summary>
@@ -488,14 +446,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeExistsAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeExistsAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
             // 检查实体是否有效
             await CheckEntityEffectiveAsync(entity);
 
-            return await UpdateIncludeAsync(entity, propertyPredicates, ignoreNullValues);
+            return await UpdateIncludeAsync(entity, propertyPredicates);
         }
        
         /// <summary>
@@ -503,11 +460,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateIncludeExistsNow(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateIncludeExistsNow(TEntity entity, IEnumerable<string> propertyNames)
         {
-            var entityEntry = UpdateIncludeExists(entity, propertyNames, ignoreNullValues);
+            var entityEntry = UpdateIncludeExists(entity, propertyNames);
             SaveNow();
             return entityEntry;
         }
@@ -517,11 +473,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateIncludeExistsNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateIncludeExistsNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            var entityEntry = UpdateIncludeExists(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = UpdateIncludeExists(entity, propertyPredicates);
             SaveNow();
             return entityEntry;
         }
@@ -546,12 +501,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateIncludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateIncludeExistsAsync(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = await UpdateIncludeExistsAsync(entity, propertyPredicates);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -561,14 +515,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExcludeExists(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExcludeExists(TEntity entity, IEnumerable<string> propertyNames)
         {
             // 检查实体是否有效
             CheckEntityEffective(entity);
 
-            return UpdateExclude(entity, propertyNames, ignoreNullValues);
+            return UpdateExclude(entity, propertyNames);
         }
 
         /// <summary>
@@ -576,14 +529,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExcludeExists(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExcludeExists(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
             // 检查实体是否有效
             CheckEntityEffective(entity);
 
-            return UpdateExclude(entity, propertyPredicates, ignoreNullValues);
+            return UpdateExclude(entity, propertyPredicates);
         }
 
         /// <summary>
@@ -591,14 +543,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsAsync(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsAsync(TEntity entity, IEnumerable<string> propertyNames)
         {
             // 检查实体是否有效
             await CheckEntityEffectiveAsync(entity);
 
-            return await UpdateExcludeAsync(entity, propertyNames, ignoreNullValues);
+            return await UpdateExcludeAsync(entity, propertyNames);
         }
 
         /// <summary>
@@ -606,14 +557,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
             // 检查实体是否有效
             await CheckEntityEffectiveAsync(entity);
 
-            return await UpdateExcludeAsync(entity, propertyPredicates, ignoreNullValues);
+            return await UpdateExcludeAsync(entity, propertyPredicates);
         }
 
         /// <summary>
@@ -621,11 +571,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExcludeExistsNow(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExcludeExistsNow(TEntity entity, IEnumerable<string> propertyNames)
         {
-            var entityEntry = UpdateExcludeExists(entity, propertyNames, ignoreNullValues);
+            var entityEntry = UpdateExcludeExists(entity, propertyNames);
             SaveNow();
             return entityEntry;
         }
@@ -635,11 +584,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> UpdateExcludeExistsNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> UpdateExcludeExistsNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            var entityEntry = UpdateExcludeExists(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = UpdateExcludeExists(entity, propertyPredicates);
             SaveNow();
             return entityEntry;
         }
@@ -649,12 +597,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsNowAsync(TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsNowAsync(TEntity entity, IEnumerable<string> propertyNames,CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateExcludeExistsAsync(entity, propertyNames, ignoreNullValues);
+            var entityEntry = await UpdateExcludeExistsAsync(entity, propertyNames);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }
@@ -664,12 +611,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> UpdateExcludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await UpdateExcludeExistsAsync(entity, propertyPredicates, ignoreNullValues);
+            var entityEntry = await UpdateExcludeExistsAsync(entity, propertyPredicates);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }

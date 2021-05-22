@@ -2,6 +2,7 @@ using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -35,13 +36,31 @@ namespace Hx.Sdk.DatabaseAccessor
         where TDbContextLocator : class, IDbContextLocator
     {
         /// <summary>
+        /// 日志工厂
+        /// </summary>
+        protected ILoggerFactory LoggerFactory;
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="options"></param>
         public AppDbContext(DbContextOptions<TDbContext> options) : base(options)
         {
-            ChangeTrackerEntities ??= new Dictionary<EntityEntry, PropertyValues>();
         }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="options">DbContext配置</param>
+        /// <param name="loggerFactory">日志</param>
+        public AppDbContext(DbContextOptions<TDbContext> options, ILoggerFactory loggerFactory) : base(options)
+        {
+            LoggerFactory = loggerFactory;
+        }
+
+        /// <summary>
+        /// 启用实体跟踪（默认值）
+        /// </summary>
+        public virtual bool EnabledEntityStateTracked { get; protected set; } = true;
 
         /// <summary>
         /// 数据库上下文初始化调用方法
@@ -59,39 +78,8 @@ namespace Hx.Sdk.DatabaseAccessor
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             // 配置数据库上下文实体
             AppDbContextBuilder.ConfigureDbContextEntity(modelBuilder, this, typeof(TDbContextLocator));
         }
-
-        /// <summary>
-        /// 构建假删除查询过滤器表达式
-        /// </summary>
-        /// <param name="entityBuilder">实体类型构建器</param>
-        /// <param name="dbContext">数据库上下文</param>
-        /// <param name="isDeletedKey">删除的属性名</param>
-        /// <returns>表达式</returns>
-        protected virtual LambdaExpression FakeDeleteQueryFilterExpression(EntityTypeBuilder entityBuilder, DbContext dbContext, string isDeletedKey = default)
-        {
-            isDeletedKey ??= nameof(StatusEntityBase.Deleted);
-
-            // 获取实体构建器元数据
-            var metadata = entityBuilder.Metadata;
-            var prop = metadata.FindProperty(isDeletedKey);
-            if (prop == null) return default;
-            // 创建表达式元素
-            var parameter = Expression.Parameter(metadata.ClrType, "u");
-            var properyName = Expression.Constant(isDeletedKey);
-            var propertyValue = Expression.Constant(false);
-
-            var expressionBody = Expression.Equal(Expression.Call(typeof(EF), nameof(EF.Property), new[] { typeof(bool) }, parameter, properyName), propertyValue);
-            var expression = Expression.Lambda(expressionBody, parameter);
-            return expression;
-        }
-
-        /// <summary>
-        /// 正在更改并跟踪的数据
-        /// </summary>
-        private Dictionary<EntityEntry, PropertyValues> ChangeTrackerEntities { get; set; }
     }
 }

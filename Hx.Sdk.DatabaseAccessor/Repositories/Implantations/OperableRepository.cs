@@ -21,50 +21,46 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增或更新一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>代理中的实体</returns>
-        public virtual EntityEntry<TEntity> InsertOrUpdate(TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public virtual EntityEntry<TEntity> InsertOrUpdate(TEntity entity, Expression<Func<TEntity, object>> checkProperty = null)
         {
-            return IsPropertyValueSet(entity, checkProperty) ? Update(entity, ignoreNullValues) : Insert(entity, ignoreNullValues);
+            return IsPropertyValueSet(entity, checkProperty) ? Update(entity) : Insert(entity);
         }
 
         /// <summary>
         /// 新增或更新一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>代理中的实体</returns>
-        public virtual Task<EntityEntry<TEntity>> InsertOrUpdateAsync(TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public virtual Task<EntityEntry<TEntity>> InsertOrUpdateAsync(TEntity entity, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
         {
-            return IsPropertyValueSet(entity, checkProperty) ? UpdateAsync(entity, ignoreNullValues) : InsertAsync(entity, ignoreNullValues, cancellationToken);
+            return IsPropertyValueSet(entity, checkProperty) ? UpdateAsync(entity) : InsertAsync(entity, cancellationToken);
         }
 
         /// <summary>
         /// 新增或更新一条记录并立即执行
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> InsertOrUpdateNow(TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public virtual EntityEntry<TEntity> InsertOrUpdateNow(TEntity entity,  Expression<Func<TEntity, object>> checkProperty = null)
         {
-            return IsPropertyValueSet(entity, checkProperty) ? UpdateNow(entity, ignoreNullValues) : InsertNow(entity, ignoreNullValues);
+            return IsPropertyValueSet(entity, checkProperty) ? UpdateNow(entity) : InsertNow(entity);
         }
 
         /// <summary>
         /// 新增或更新一条记录并立即执行
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public virtual Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync(TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public virtual Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync(TEntity entity, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
         {
-            return IsPropertyValueSet(entity, checkProperty) ? UpdateNowAsync(entity, ignoreNullValues, cancellationToken) : InsertNowAsync(entity, ignoreNullValues, cancellationToken);
+            return IsPropertyValueSet(entity, checkProperty) ? UpdateNowAsync(entity, cancellationToken) : InsertNowAsync(entity, cancellationToken);
         }
 
         /// <summary>
@@ -121,7 +117,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateIncludeAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateIncludeAsync(entity, propertyNames) : InsertAsync(entity, null, cancellationToken);
+            return IsKeySet(entity) ? UpdateIncludeAsync(entity, propertyNames) : InsertAsync(entity, cancellationToken);
         }
 
         /// <summary>
@@ -133,7 +129,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateIncludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateIncludeAsync(entity, propertyPredicates) : InsertAsync(entity, null, cancellationToken);
+            return IsKeySet(entity) ? UpdateIncludeAsync(entity, propertyPredicates) : InsertAsync(entity, cancellationToken);
         }
 
         /// <summary>
@@ -201,7 +197,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync(TEntity entity, params string[] propertyNames)
         {
-            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyNames, null) : InsertNowAsync(entity);
+            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyNames) : InsertNowAsync(entity);
         }
 
 
@@ -213,7 +209,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPredicates)
         {
-            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyPredicates, null) : InsertNowAsync(entity);
+            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyPredicates) : InsertNowAsync(entity);
         }
 
         /// <summary>
@@ -225,7 +221,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyNames, null, cancellationToken) : InsertNowAsync(entity, null, cancellationToken);
+            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyNames, cancellationToken) : InsertNowAsync(entity, cancellationToken);
         }
 
         /// <summary>
@@ -237,7 +233,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateIncludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyPredicates, null, cancellationToken) : InsertNowAsync(entity, null, cancellationToken);
+            return IsKeySet(entity) ? UpdateIncludeNowAsync(entity, propertyPredicates, cancellationToken) : InsertNowAsync(entity, cancellationToken);
         }
 
         /// <summary>
@@ -316,7 +312,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateExcludeAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateExcludeAsync(entity, propertyNames) : InsertAsync(entity, null, cancellationToken);
+            return IsKeySet(entity) ? UpdateExcludeAsync(entity, propertyNames) : InsertAsync(entity, cancellationToken);
         }
 
         /// <summary>
@@ -328,7 +324,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateExcludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateExcludeAsync(entity, propertyPredicates) : InsertAsync(entity, null, cancellationToken);
+            return IsKeySet(entity) ? UpdateExcludeAsync(entity, propertyPredicates) : InsertAsync(entity,cancellationToken);
         }
 
 
@@ -384,7 +380,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync(TEntity entity, params string[] propertyNames)
         {
-            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyNames, null) : InsertNowAsync(entity);
+            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyNames) : InsertNowAsync(entity);
         }
 
         /// <summary>
@@ -395,7 +391,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPredicates)
         {
-            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyPredicates, null) : InsertNowAsync(entity);
+            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyPredicates) : InsertNowAsync(entity);
         }
 
         /// <summary>
@@ -407,7 +403,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyNames, null, cancellationToken) : InsertNowAsync(entity, null, cancellationToken);
+            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyNames, cancellationToken) : InsertNowAsync(entity, cancellationToken);
         }
 
         /// <summary>
@@ -419,40 +415,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateExcludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyPredicates, null, cancellationToken) : InsertNowAsync(entity, null, cancellationToken);
-        }
-
-        /// <summary>
-        /// 忽略空值属性
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="ignoreNullValues"></param>
-        private void IgnoreNullValues(ref TEntity entity, bool? ignoreNullValues = null)
-        {
-            var isIgnore = ignoreNullValues ?? DynamicContext.InsertOrUpdateIgnoreNullValues;
-            if (isIgnore == false) return;
-
-            // 获取所有的属性
-            var properties = EntityType?.GetProperties();
-            if (properties == null) return;
-
-            foreach (var propety in properties)
-            {
-                var entityProperty = EntityPropertyEntry(entity, propety.Name);
-                var propertyValue = entityProperty?.CurrentValue;
-                var propertyType = entityProperty?.Metadata?.PropertyInfo?.PropertyType;
-
-                // 判断是否是无效的值，比如为 null，默认时间，以及空 Guid 值
-                var isInvalid = propertyValue == null
-                                || (propertyType == typeof(DateTime) && propertyValue?.ToString() == new DateTime().ToString())
-                                || (propertyType == typeof(DateTimeOffset) && propertyValue?.ToString() == new DateTimeOffset().ToString())
-                                || (propertyType == typeof(Guid) && propertyValue?.ToString() == Guid.Empty.ToString());
-
-                if (isInvalid && entityProperty != null)
-                {
-                    entityProperty.IsModified = false;
-                }
-            }
+            return IsKeySet(entity) ? UpdateExcludeNowAsync(entity, propertyPredicates, cancellationToken) : InsertNowAsync(entity, cancellationToken);
         }
 
         /// <summary>

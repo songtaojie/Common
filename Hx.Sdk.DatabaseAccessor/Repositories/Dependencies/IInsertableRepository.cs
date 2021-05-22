@@ -38,9 +38,8 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理的实体</returns>
-        EntityEntry<TEntity> Insert(TEntity entity, bool? ignoreNullValues = null);
+        EntityEntry<TEntity> Insert(TEntity entity);
 
         /// <summary>
         /// 新增多条记录
@@ -52,10 +51,9 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>代理的实体</returns>
-        Task<EntityEntry<TEntity>> InsertAsync(TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 新增多条记录
@@ -69,9 +67,8 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增一条记录并立即提交
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中返回的实体</returns>
-        EntityEntry<TEntity> InsertNow(TEntity entity, bool? ignoreNullValues = null);
+        EntityEntry<TEntity> InsertNow(TEntity entity);
 
         /// <summary>
         /// 新增多条记录
@@ -84,9 +81,8 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">取消异步令牌</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中返回的实体</returns>
-        Task<EntityEntry<TEntity>> InsertNowAsync(TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> InsertNowAsync(TEntity entity, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 新增多条记录并立即提交

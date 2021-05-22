@@ -28,174 +28,158 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <summary>
         /// 新增一条记录
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理的实体</returns>
-        public EntityEntry<TEntity> Insert(bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> Insert()
         {
-            return GetRepository().Insert(Entity, ignoreNullValues);
+            return GetRepository().Insert(Entity);
         }
 
         /// <summary>
         /// 新增一条记录
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns>代理的实体</returns>
-        public Task<EntityEntry<TEntity>> InsertAsync(bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> InsertAsync( CancellationToken cancellationToken = default)
         {
-            return GetRepository().InsertAsync(Entity, ignoreNullValues, cancellationToken);
+            return GetRepository().InsertAsync(Entity, cancellationToken);
         }
 
         /// <summary>
         /// 新增一条记录并立即提交
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public EntityEntry<TEntity> InsertNow(bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> InsertNow()
         {
-            return GetRepository().InsertNow(Entity, ignoreNullValues);
+            return GetRepository().InsertNow(Entity);
         }
 
         /// <summary>
         /// 新增一条记录并立即提交
         /// </summary>
         /// <param name="cancellationToken">异步取消令牌</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public Task<EntityEntry<TEntity>> InsertNowAsync(bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> InsertNowAsync(CancellationToken cancellationToken = default)
         {
-            return GetRepository().InsertNowAsync(Entity, ignoreNullValues, cancellationToken);
+            return GetRepository().InsertNowAsync(Entity,cancellationToken);
         }
 
         /// <summary>
         /// 更新一条记录
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public EntityEntry<TEntity> Update(bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> Update()
         {
-            return GetRepository().Update(Entity, ignoreNullValues);
+            return GetRepository().Update(Entity);
         }
 
         /// <summary>
         /// 更新一条记录
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateAsync(bool? ignoreNullValues = null)
+        public Task<EntityEntry<TEntity>> UpdateAsync()
         {
-            return GetRepository().UpdateAsync(Entity, ignoreNullValues);
+            return GetRepository().UpdateAsync(Entity);
         }
 
         /// <summary>
         /// 更新一条记录并立即提交
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public EntityEntry<TEntity> UpdateNow(bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateNow()
         {
-            return GetRepository().UpdateNow(Entity, ignoreNullValues);
+            return GetRepository().UpdateNow(Entity);
         }
 
         /// <summary>
         /// 更新一条记录并立即提交
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateNowAsync(bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> UpdateNowAsync(CancellationToken cancellationToken = default)
         {
-            return GetRepository().UpdateNowAsync(Entity, ignoreNullValues, cancellationToken);
+            return GetRepository().UpdateNowAsync(Entity, cancellationToken);
         }
 
         /// <summary>
         /// 更新一条记录中特定属性
         /// </summary>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public EntityEntry<TEntity> UpdateInclude(IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateInclude(IEnumerable<string> propertyNames)
         {
-            return GetRepository().UpdateInclude(Entity, propertyNames, ignoreNullValues);
+            return GetRepository().UpdateInclude(Entity, propertyNames);
         }
 
         /// <summary>
         /// 更新一条记录中特定属性
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public EntityEntry<TEntity> UpdateInclude(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateInclude(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return GetRepository().UpdateInclude(Entity, propertyPredicates, ignoreNullValues);
+            return GetRepository().UpdateInclude(Entity, propertyPredicates);
         }
 
         /// <summary>
         /// 更新一条记录中的特定属性
         /// </summary>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateIncludeAsync(IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public Task<EntityEntry<TEntity>> UpdateIncludeAsync(IEnumerable<string> propertyNames)
         {
-            return GetRepository().UpdateIncludeAsync(Entity, propertyNames, ignoreNullValues);
+            return GetRepository().UpdateIncludeAsync(Entity, propertyNames);
         }
 
         /// <summary>
         /// 更新一条记录中的特定属性
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateIncludeAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public Task<EntityEntry<TEntity>> UpdateIncludeAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return GetRepository().UpdateIncludeAsync(Entity, propertyPredicates, ignoreNullValues);
+            return GetRepository().UpdateIncludeAsync(Entity, propertyPredicates);
         }
 
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public EntityEntry<TEntity> UpdateIncludeNow(IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateIncludeNow(IEnumerable<string> propertyNames)
         {
-            return GetRepository().UpdateIncludeNow(Entity, propertyNames, ignoreNullValues);
+            return GetRepository().UpdateIncludeNow(Entity, propertyNames);
         }
 
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public EntityEntry<TEntity> UpdateIncludeNow(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateIncludeNow(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return GetRepository().UpdateIncludeNow(Entity, propertyPredicates, ignoreNullValues);
+            return GetRepository().UpdateIncludeNow(Entity, propertyPredicates);
         }
 
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(IEnumerable<string> propertyNames,CancellationToken cancellationToken = default)
         {
-            return GetRepository().UpdateIncludeNowAsync(Entity, propertyNames, ignoreNullValues, cancellationToken);
+            return GetRepository().UpdateIncludeNowAsync(Entity, propertyNames, cancellationToken);
         }
 
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default)
         {
-            return GetRepository().UpdateIncludeNowAsync(Entity, propertyPredicates, ignoreNullValues, cancellationToken);
+            return GetRepository().UpdateIncludeNowAsync(Entity, propertyPredicates, cancellationToken);
         }
 
       
@@ -203,90 +187,82 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 更新一条记录中特定属性
         /// </summary>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public EntityEntry<TEntity> UpdateExclude(IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateExclude(IEnumerable<string> propertyNames)
         {
-            return GetRepository().UpdateExclude(Entity, propertyNames, ignoreNullValues);
+            return GetRepository().UpdateExclude(Entity, propertyNames);
         }
 
         /// <summary>
         /// 更新一条记录中特定属性
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public EntityEntry<TEntity> UpdateExclude(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateExclude(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return GetRepository().UpdateExclude(Entity, propertyPredicates, ignoreNullValues);
+            return GetRepository().UpdateExclude(Entity, propertyPredicates);
         }
 
         /// <summary>
         /// 更新一条记录并排除属性
         /// </summary>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateExcludeAsync(IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public Task<EntityEntry<TEntity>> UpdateExcludeAsync(IEnumerable<string> propertyNames)
         {
-            return GetRepository().UpdateExcludeAsync(Entity, propertyNames, ignoreNullValues);
+            return GetRepository().UpdateExcludeAsync(Entity, propertyNames);
         }
 
         /// <summary>
         /// 更新一条记录并排除属性
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateExcludeAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public Task<EntityEntry<TEntity>> UpdateExcludeAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return GetRepository().UpdateExcludeAsync(Entity, propertyPredicates, ignoreNullValues);
+            return GetRepository().UpdateExcludeAsync(Entity, propertyPredicates);
         }
 
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
         /// </summary>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public EntityEntry<TEntity> UpdateExcludeNow(IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateExcludeNow(IEnumerable<string> propertyNames)
         {
-            return GetRepository().UpdateExcludeNow(Entity, propertyNames, ignoreNullValues);
+            return GetRepository().UpdateExcludeNow(Entity, propertyNames);
         }
 
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public EntityEntry<TEntity> UpdateExcludeNow(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public EntityEntry<TEntity> UpdateExcludeNow(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
-            return GetRepository().UpdateExcludeNow(Entity, propertyPredicates, ignoreNullValues);
+            return GetRepository().UpdateExcludeNow(Entity, propertyPredicates);
         }
 
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
         /// </summary>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(IEnumerable<string> propertyNames,CancellationToken cancellationToken = default)
         {
-            return GetRepository().UpdateExcludeNowAsync(Entity, propertyNames, ignoreNullValues, cancellationToken);
+            return GetRepository().UpdateExcludeNowAsync(Entity, propertyNames, cancellationToken);
         }
 
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
         /// </summary>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            return GetRepository().UpdateExcludeNowAsync(Entity, propertyPredicates, ignoreNullValues, cancellationToken);
+            return GetRepository().UpdateExcludeNowAsync(Entity, propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -329,47 +305,43 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <summary>
         /// 新增或更新一条记录
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>代理中的实体</returns>
-        public EntityEntry<TEntity> InsertOrUpdate(bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public EntityEntry<TEntity> InsertOrUpdate(Expression<Func<TEntity, object>> checkProperty = null)
         {
-            return GetRepository().InsertOrUpdate(Entity, ignoreNullValues, checkProperty);
+            return GetRepository().InsertOrUpdate(Entity, checkProperty);
         }
 
         /// <summary>
         /// 新增或更新一条记录
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>代理中的实体</returns>
-        public Task<EntityEntry<TEntity>> InsertOrUpdateAsync(bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> InsertOrUpdateAsync(Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
         {
-            return GetRepository().InsertOrUpdateAsync(Entity, ignoreNullValues, checkProperty, cancellationToken);
+            return GetRepository().InsertOrUpdateAsync(Entity, checkProperty, cancellationToken);
         }
 
         /// <summary>
         /// 新增或更新一条记录并立即执行
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>数据库中的实体</returns>
-        public EntityEntry<TEntity> InsertOrUpdateNow(bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public EntityEntry<TEntity> InsertOrUpdateNow(Expression<Func<TEntity, object>> checkProperty = null)
         {
-            return GetRepository().InsertOrUpdateNow(Entity, ignoreNullValues, checkProperty);
+            return GetRepository().InsertOrUpdateNow(Entity, checkProperty);
         }
 
         /// <summary>
         /// 新增或更新一条记录并立即执行
         /// </summary>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync(bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync(Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
         {
-            return GetRepository().InsertOrUpdateNowAsync(Entity, ignoreNullValues, checkProperty, cancellationToken);
+            return GetRepository().InsertOrUpdateNowAsync(Entity, checkProperty, cancellationToken);
         }
 
         /// <summary>

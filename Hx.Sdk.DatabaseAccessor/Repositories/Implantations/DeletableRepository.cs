@@ -245,7 +245,7 @@ namespace Hx.Sdk.DatabaseAccessor
         public virtual Task<EntityEntry<TEntity>> FakeDeleteNowAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             var fakeDeleteProperty = SetFakePropertyValue(entity);
-            return UpdateIncludeNowAsync(entity, new[] { fakeDeleteProperty.Name }, null, cancellationToken);
+            return UpdateIncludeNowAsync(entity, new[] { fakeDeleteProperty.Name }, cancellationToken);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Hx.Sdk.DatabaseAccessor
             if (deletedEntity == null) return default;
 
             var fakeDeleteProperty = SetFakePropertyValue(deletedEntity);
-            return UpdateIncludeNowAsync(deletedEntity, new[] { fakeDeleteProperty.Name }, null, cancellationToken);
+            return UpdateIncludeNowAsync(deletedEntity, new[] { fakeDeleteProperty.Name },cancellationToken);
         }
 
         /// <summary>

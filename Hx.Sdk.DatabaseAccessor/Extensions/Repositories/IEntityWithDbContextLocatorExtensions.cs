@@ -37,13 +37,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理的实体</returns>
-        public static EntityEntry<TEntity> Insert<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> Insert<TEntity, TDbContextLocator>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().Insert(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().Insert();
         }
 
         /// <summary>
@@ -52,14 +51,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns>代理的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertAsync<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertAsync<TEntity, TDbContextLocator>(this TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertAsync(ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertAsync(cancellationToken);
         }
 
         /// <summary>
@@ -68,13 +66,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertNow<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> InsertNow<TEntity, TDbContextLocator>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertNow(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertNow();
         }
 
         /// <summary>
@@ -83,14 +80,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertNowAsync<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertNowAsync<TEntity, TDbContextLocator>(this TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertNowAsync(ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertNowAsync(cancellationToken);
         }
 
         /// <summary>
@@ -99,13 +95,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> Update<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> Update<TEntity, TDbContextLocator>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().Update(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().Update();
         }
 
         /// <summary>
@@ -114,13 +109,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateAsync<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateAsync<TEntity, TDbContextLocator>(this TEntity entity)
              where TEntity : class, IPrivateEntity, new()
              where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateAsync(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateAsync();
         }
 
         /// <summary>
@@ -129,13 +123,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateNow<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateNow<TEntity, TDbContextLocator>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateNow(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateNow();
         }
 
         /// <summary>
@@ -144,14 +137,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateNowAsync<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateNowAsync<TEntity, TDbContextLocator>(this TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateNowAsync(ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateNowAsync(cancellationToken);
         }
 
 
@@ -162,13 +154,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyNames);
         }
 
         /// <summary>
@@ -178,13 +169,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyPredicates);
         }
 
         /// <summary>
@@ -194,13 +184,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyNames);
         }
 
         /// <summary>
@@ -210,13 +199,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateInclude(propertyPredicates);
         }
 
         /// <summary>
@@ -226,13 +214,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -242,13 +229,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -258,13 +244,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -274,13 +259,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -290,13 +274,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyNames);
         }
 
         /// <summary>
@@ -306,13 +289,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyPredicates);
         }
 
         /// <summary>
@@ -322,13 +304,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyNames);
         }
 
         /// <summary>
@@ -338,13 +319,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNow(propertyPredicates);
         }
 
         /// <summary>
@@ -354,13 +334,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyNames);
         }
 
         /// <summary>
@@ -371,13 +350,12 @@ namespace Hx.Sdk.Extensions
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
         /// <param name="cancellationToken">取消异步令牌</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -387,13 +365,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -404,13 +381,12 @@ namespace Hx.Sdk.Extensions
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -420,14 +396,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -437,14 +412,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateIncludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -454,13 +428,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyNames);
         }
 
         /// <summary>
@@ -470,13 +443,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyPredicates);
         }
 
         /// <summary>
@@ -486,13 +458,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyNames);
         }
 
         /// <summary>
@@ -502,13 +473,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExclude(propertyPredicates);
         }
 
         /// <summary>
@@ -518,13 +488,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -534,13 +503,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -550,13 +518,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -566,13 +533,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -582,13 +548,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyNames);
         }
 
         /// <summary>
@@ -598,13 +563,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyPredicates);
         }
 
         /// <summary>
@@ -614,13 +578,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyNames);
         }
 
         /// <summary>
@@ -630,13 +593,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNow(propertyPredicates);
         }
 
         /// <summary>
@@ -646,13 +608,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyNames);
         }
 
         /// <summary>
@@ -662,14 +623,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -679,13 +639,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -695,14 +654,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -712,14 +670,14 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
+        
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -729,14 +687,14 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
+        
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().UpdateExcludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -802,14 +760,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdate<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public static EntityEntry<TEntity> InsertOrUpdate<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdate(ignoreNullValues, checkProperty);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdate(checkProperty);
         }
 
         /// <summary>
@@ -818,15 +775,14 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateAsync<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertOrUpdateAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdateAsync(ignoreNullValues, checkProperty, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdateAsync(checkProperty, cancellationToken);
         }
 
         /// <summary>
@@ -835,14 +791,13 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateNow<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public static EntityEntry<TEntity> InsertOrUpdateNow<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdateNow(ignoreNullValues, checkProperty);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdateNow(checkProperty);
         }
 
         /// <summary>
@@ -851,15 +806,14 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync<TEntity, TDbContextLocator>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync<TEntity, TDbContextLocator>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdateNowAsync(ignoreNullValues, checkProperty, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdateNowAsync(checkProperty, cancellationToken);
         }
 
         /// <summary>

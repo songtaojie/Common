@@ -17,14 +17,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理的实体</returns>
-        public virtual EntityEntry<TEntity> Insert(TEntity entity, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> Insert(TEntity entity)
         {
             var entryEntity = Entities.Add(entity);
-
-            // 忽略空值
-            IgnoreNullValues(ref entity, ignoreNullValues);
 
             return entryEntity;
         }
@@ -42,16 +38,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增一条记录
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>代理的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> InsertAsync(TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             var entityEntry = await Entities.AddAsync(entity, cancellationToken);
-
-            // 忽略空值
-            IgnoreNullValues(ref entity, ignoreNullValues);
-
             return entityEntry;
         }
 
@@ -70,11 +61,10 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增一条记录并立即提交
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中返回的实体</returns>
-        public virtual EntityEntry<TEntity> InsertNow(TEntity entity, bool? ignoreNullValues = null)
+        public virtual EntityEntry<TEntity> InsertNow(TEntity entity)
         {
-            var entityEntry = Insert(entity, ignoreNullValues);
+            var entityEntry = Insert(entity);
             SaveNow();
             return entityEntry;
         }
@@ -93,12 +83,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// 新增一条记录并立即提交
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中返回的实体</returns>
-        public virtual async Task<EntityEntry<TEntity>> InsertNowAsync(TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public virtual async Task<EntityEntry<TEntity>> InsertNowAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await InsertAsync(entity, ignoreNullValues, cancellationToken);
+            var entityEntry = await InsertAsync(entity, cancellationToken);
             await SaveNowAsync(cancellationToken);
             return entityEntry;
         }

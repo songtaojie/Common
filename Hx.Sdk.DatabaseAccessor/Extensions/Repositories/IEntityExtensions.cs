@@ -86,12 +86,11 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理的实体</returns>
-        public static EntityEntry<TEntity> Insert<TEntity>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> Insert<TEntity>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Insert(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Insert();
         }
 
         /// <summary>
@@ -99,13 +98,12 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns>代理的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertAsync<TEntity>(this TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertAsync<TEntity>(this TEntity entity,  CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertAsync(ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertAsync(cancellationToken);
         }
 
         /// <summary>
@@ -113,12 +111,11 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertNow<TEntity>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> InsertNow<TEntity>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNow(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNow();
         }
 
 
@@ -128,12 +125,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">异步取消令牌</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertNowAsync<TEntity>(this TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertNowAsync<TEntity>(this TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNowAsync(ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertNowAsync(cancellationToken);
         }
 
 
@@ -142,12 +138,11 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> Update<TEntity>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> Update<TEntity>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).Update(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).Update();
         }
 
         /// <summary>
@@ -155,12 +150,11 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateAsync<TEntity>(this TEntity entity, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateAsync<TEntity>(this TEntity entity)
              where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateAsync(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateAsync();
         }
 
         /// <summary>
@@ -168,12 +162,11 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateNow<TEntity>(this TEntity entity, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateNow<TEntity>(this TEntity entity)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNow(ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNow();
         }
 
         /// <summary>
@@ -181,13 +174,12 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateNowAsync<TEntity>(this TEntity entity, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateNowAsync<TEntity>(this TEntity entity,CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNowAsync(ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNowAsync(cancellationToken);
         }
 
         /// <summary>
@@ -196,12 +188,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyNames);
         }
 
         /// <summary>
@@ -210,12 +201,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyPredicates);
         }
 
         /// <summary>
@@ -224,12 +214,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyNames);
         }
 
         /// <summary>
@@ -238,12 +227,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateInclude<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateInclude(propertyPredicates);
         }
 
         /// <summary>
@@ -252,12 +240,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -266,12 +253,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -280,12 +266,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -294,12 +279,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -308,12 +292,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyNames);
         }
 
         /// <summary>
@@ -322,12 +305,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates);
         }
 
         /// <summary>
@@ -336,12 +318,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyNames);
         }
 
         /// <summary>
@@ -350,12 +331,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateIncludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNow(propertyPredicates);
         }
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
@@ -363,12 +343,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames);
         }
 
         /// <summary>
@@ -377,13 +356,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -392,12 +370,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -406,13 +383,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -421,13 +397,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames,CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -436,13 +411,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates,cancellationToken);
         }
 
         /// <summary>
@@ -451,12 +425,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyNames);
         }
 
         /// <summary>
@@ -465,12 +438,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyPredicates);
         }
 
         /// <summary>
@@ -479,12 +451,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyNames);
         }
 
         /// <summary>
@@ -493,12 +464,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExclude<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExclude(propertyPredicates);
         }
 
         /// <summary>
@@ -507,12 +477,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -521,12 +490,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -535,12 +503,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyNames);
         }
 
         /// <summary>
@@ -549,12 +516,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -563,12 +529,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyNames);
         }
 
         /// <summary>
@@ -577,12 +542,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates);
         }
 
         /// <summary>
@@ -591,12 +555,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<string> propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyNames);
         }
 
         /// <summary>
@@ -605,12 +568,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null)
+        public static EntityEntry<TEntity> UpdateExcludeNow<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNow(propertyPredicates);
         }
 
         /// <summary>
@@ -619,12 +581,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames);
         }
 
         /// <summary>
@@ -633,13 +594,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, string[] propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -648,12 +608,11 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, ignoreNullValues);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates);
         }
 
         /// <summary>
@@ -662,13 +621,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates,CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -677,13 +635,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames,cancellationToken);
         }
 
         /// <summary>
@@ -692,13 +649,12 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, bool? ignoreNullValues = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, ignoreNullValues, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -754,13 +710,12 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdate<TEntity>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public static EntityEntry<TEntity> InsertOrUpdate<TEntity>(this TEntity entity,  Expression<Func<TEntity, object>> checkProperty = null)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdate(ignoreNullValues, checkProperty);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdate(checkProperty);
         }
 
         /// <summary>
@@ -768,14 +723,13 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>代理中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateAsync<TEntity>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertOrUpdateAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateAsync(ignoreNullValues, checkProperty, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateAsync(checkProperty, cancellationToken);
         }
 
         /// <summary>
@@ -783,13 +737,12 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <returns>数据库中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdateNow<TEntity>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null)
+        public static EntityEntry<TEntity> InsertOrUpdateNow<TEntity>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNow(ignoreNullValues, checkProperty);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNow(checkProperty);
         }
 
         /// <summary>
@@ -797,14 +750,13 @@ namespace Hx.Sdk.Extensions
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <param name="entity">实体</param>
-        /// <param name="ignoreNullValues"></param>
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync<TEntity>(this TEntity entity, bool? ignoreNullValues = null, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync<TEntity>(this TEntity entity,Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNowAsync(ignoreNullValues, checkProperty, cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNowAsync(checkProperty, cancellationToken);
         }
 
        
