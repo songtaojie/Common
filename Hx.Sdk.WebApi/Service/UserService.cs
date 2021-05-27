@@ -77,7 +77,6 @@ namespace Hx.Sdk.WebApi.Service
         {
             UnifyResultContext.Fill("附加值");
             var person = await Repository.FindAsync(id);
-            if (person != null) throw new Exception("[Validation]测试").SetUnifyResultStatusCode(404);
             return new UserDto
             {
                 Id = person.Id,

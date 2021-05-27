@@ -28,9 +28,13 @@ namespace Hx.Sdk.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            var fac = services.BuildServiceProvider().GetService<ILoggerFactory>();
             services.AddDatabaseAccessor(options =>
             {
-                options.AddDbPool<DefaultDbContext>();
+                options.AddDbPool<DefaultDbContext>(null,optionBuilder=> 
+                {
+                    optionBuilder.UseLoggerFactory(fac);
+                });
                 options.AddDbPool<IdsDbContext, IdsDbContextLocator>();
             }, "Hx.Sdk.Test.Entity");
             services.AddRedisCache();
