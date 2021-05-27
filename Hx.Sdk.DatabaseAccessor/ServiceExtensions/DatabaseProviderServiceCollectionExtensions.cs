@@ -77,6 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 配置数据库上下文
             var connStr = DbProvider.GetConnectionString<TDbContext>(connectionString);
+
             services.AddDbContextPool<TDbContext>(Penetrates.ConfigureDbContext(options =>
             {
                 var _options = ConfigureDatabase<TDbContext>(providerName, connStr, options);

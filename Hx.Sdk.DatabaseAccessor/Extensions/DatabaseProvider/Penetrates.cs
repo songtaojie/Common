@@ -3,6 +3,7 @@ using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 
@@ -45,7 +46,10 @@ namespace Hx.Sdk.DatabaseAccessor
             {
                 if (App.HostEnvironment.IsDevelopment())
                 {
+                    ILoggerFactory loggerFactory = scoped.GetService(typeof(ILoggerFactory)) as ILoggerFactory;
+                    //ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
                     options/*.UseLazyLoadingProxies()*/
+                                .UseLoggerFactory(loggerFactory)
                                 .EnableDetailedErrors()
                                 .EnableSensitiveDataLogging();
                 }

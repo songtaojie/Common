@@ -14,14 +14,15 @@ namespace Hx.Sdk.WebApi
     {
         public static void Main(string[] args)
         {
+            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseNLog()
                 .ConfigureHxWebHostDefaults(webBuilder => {
-                    webBuilder.UseStartup<Startup>()
-                        .UseNLog();
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }
