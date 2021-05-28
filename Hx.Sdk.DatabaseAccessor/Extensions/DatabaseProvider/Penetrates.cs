@@ -44,9 +44,12 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             return (scoped, options) =>
             {
+                ILoggerFactory loggerFactory = scoped.GetService(typeof(ILoggerFactory)) as ILoggerFactory;
                 if (App.HostEnvironment.IsDevelopment())
                 {
-                    ILoggerFactory loggerFactory = scoped.GetService(typeof(ILoggerFactory)) as ILoggerFactory;
+                    
+                    var log = loggerFactory.CreateLogger("Penetrates");
+                    log.LogInformation("测试");
                     //ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
                     options/*.UseLazyLoadingProxies()*/
                                 .UseLoggerFactory(loggerFactory)
@@ -55,7 +58,7 @@ namespace Hx.Sdk.DatabaseAccessor
                 }
 
                 optionBuilder.Invoke(options);
-
+                options.AddInterceptors(new SqlCommandProfilerInterceptor(loggerFactory));
                 // 添加拦截器
                 AddInterceptors(interceptors, options);
 
@@ -75,7 +78,6 @@ namespace Hx.Sdk.DatabaseAccessor
 
             // 添加拦截器
             var interceptorList = DbProvider.GetDefaultInterceptors();
-
             if (interceptors != null || interceptors.Length > 0)
             {
                 interceptorList.AddRange(interceptors);

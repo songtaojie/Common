@@ -36,6 +36,7 @@ namespace Hx.Sdk.WebApi
                 options.AddDbPool<IdsDbContext, IdsDbContextLocator>();
             }, "Hx.Sdk.Test.Entity");
             services.AddRedisCache();
+            services.AddDbContext<DefaultDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
