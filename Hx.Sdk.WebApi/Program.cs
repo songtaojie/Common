@@ -21,11 +21,7 @@ namespace Hx.Sdk.WebApi
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureHxWebHostDefaults(webBuilder => {
-                    webBuilder.UseStartup<Startup>()
-                    .ConfigureLogging(logging =>
-                    {
-                        logging.ClearProviders();
-                    }).UseNLog();
+                    webBuilder.UseNLog().UseStartup<Startup>();
                 });
     }
 }

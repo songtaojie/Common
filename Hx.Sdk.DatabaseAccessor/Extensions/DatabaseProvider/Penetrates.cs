@@ -44,21 +44,16 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             return (scoped, options) =>
             {
-                ILoggerFactory loggerFactory = scoped.GetService(typeof(ILoggerFactory)) as ILoggerFactory;
-                if (App.HostEnvironment.IsDevelopment())
+                
+                if (App.Settings.EnabledSqlLog == true)
                 {
-                    
-                    var log = loggerFactory.CreateLogger("Penetrates");
-                    log.LogInformation("测试");
-                    //ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-                    options/*.UseLazyLoadingProxies()*/
-                                .UseLoggerFactory(loggerFactory)
+                    ILoggerFactory loggerFactory = scoped.GetService(typeof(ILoggerFactory)) as ILoggerFactory;
+                    options.UseLoggerFactory(loggerFactory)
                                 .EnableDetailedErrors()
                                 .EnableSensitiveDataLogging();
                 }
 
                 optionBuilder.Invoke(options);
-                options.AddInterceptors(new SqlCommandProfilerInterceptor(loggerFactory));
                 // 添加拦截器
                 AddInterceptors(interceptors, options);
 
@@ -74,10 +69,13 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <param name="options"></param>
         private static void AddInterceptors(IInterceptor[] interceptors, DbContextOptionsBuilder options)
         {
-            if (App.Settings.EnabledMiniProfiler != true) return;
-
             // 添加拦截器
             var interceptorList = DbProvider.GetDefaultInterceptors();
+
+            if (App.Settings.EnabledMiniProfiler == true)
+            {
+                interceptorList.Add(new SqlConnectionProfilerInterceptor());
+            }
             if (interceptors != null || interceptors.Length > 0)
             {
                 interceptorList.AddRange(interceptors);

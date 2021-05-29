@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
-    <Description>修改DbContext的bug</Description>
-    <Version>1.0.4.2</Version>
+    <Description>添加sql日志记录</Description>
+    <Version>1.0.4.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

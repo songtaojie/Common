@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.0.3.2</Version>
+    <Version>1.0.3.3</Version>
     <Authors>Jay Song</Authors>
-    <Description>配置和选项帮助类
-添加控制台输出</Description>
+    <Description>添加sql日志记录</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

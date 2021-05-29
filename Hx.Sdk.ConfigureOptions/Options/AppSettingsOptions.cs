@@ -49,6 +49,11 @@ namespace Hx.Sdk.ConfigureOptions
         public bool? EnabledExceptionFilter { get; set; }
 
         /// <summary>
+        /// 是否开启sql日志记录
+        /// </summary>
+        public bool? EnabledSqlLog { get; set; }
+
+        /// <summary>
         /// 后期配置
         /// </summary>
         /// <param name="options"></param>
@@ -63,6 +68,7 @@ namespace Hx.Sdk.ConfigureOptions
             options.AopTypeFullName ??= Array.Empty<string>();
             options.EnabledUnifyResult ??= true;
             options.EnabledExceptionFilter ??= true;
+            options.EnabledSqlLog ??= true;
         }
     }
 }

@@ -180,8 +180,8 @@ namespace Hx.Sdk.DatabaseAccessor
         {
             return new List<IInterceptor>
             {
-                new SqlConnectionProfilerInterceptor(),
-                //new SqlCommandProfilerInterceptor(),
+               
+                new SqlCommandProfilerInterceptor(),
             };
         }
 
