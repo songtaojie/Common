@@ -8,4 +8,5 @@ namespace Hx.Sdk.WebApi.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
+
 }

@@ -46,7 +46,7 @@ namespace Hx.Sdk.DatabaseAccessor
             {
                 
                 if (App.Settings.EnabledSqlLog == true)
-                {
+                { 
                     ILoggerFactory loggerFactory = scoped.GetService(typeof(ILoggerFactory)) as ILoggerFactory;
                     options.UseLoggerFactory(loggerFactory)
                                 .EnableDetailedErrors()
