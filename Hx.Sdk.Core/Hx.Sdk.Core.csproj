@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <TargetFramework>net5.0</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
     <Description>修改异常处理，添加默认的异常处理类
-
-
-</Description>
-    <Version>1.0.5.3</Version>
+    </Description>
+    <Version>5.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -186,9 +186,9 @@ namespace Hx.Sdk.ImageSharp
         /// <param name="width">宽(当水印类型为文字时,传过来的就是字体的大小)</param>
         /// <param name="height">高(当水印类型为文字时,传过来的就是字符的长度)</param>
         /// <returns>返回的是水印的位置</returns>
-        private static (TextGraphicsOptions, PointF) GetLocation(FontOptions fontOptions, Size imgSize, float width, float height)
+        private static (DrawingOptions, PointF) GetLocation(FontOptions fontOptions, Size imgSize, float width, float height)
         {
-            var textGraphicOptions = new TextGraphicsOptions()
+            var textGraphicOptions = new DrawingOptions()
             {
                 TextOptions = {
                     HorizontalAlignment = HorizontalAlignment.Center,

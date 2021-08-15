@@ -35,11 +35,11 @@ namespace Hx.Sdk.Cache.Internal
 		/// </summary>
 		private int _dbNum;
 
-        private readonly RedisCacheOptions _options;
+        private readonly RedisSettingsOptions _options;
         private readonly string _instance;
 
         private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
-        public RedisCache(IOptions<RedisCacheOptions> optionsAccessor)
+        public RedisCache(IOptions<RedisSettingsOptions> optionsAccessor)
         {
             if (optionsAccessor == null)throw new ArgumentNullException(nameof(optionsAccessor));
             _options = optionsAccessor.Value;

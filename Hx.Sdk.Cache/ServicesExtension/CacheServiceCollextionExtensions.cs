@@ -2,6 +2,7 @@
 using Hx.Sdk.Cache.Internal;
 using Hx.Sdk.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -32,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddRedisCache(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddConfigurableOptions<RedisCacheOptions>();
+            ConfigureRedisSettings(services);
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
             //services.AddSingleton<ConnectionMultiplexer>(resolver =>
             //{
@@ -52,14 +53,36 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="setupAction">redis配置</param>
-        public static void AddRedisCache(this IServiceCollection services, Action<RedisCacheOptions> setupAction)
+        public static void AddRedisCache(this IServiceCollection services, Action<RedisSettingsOptions> setupAction)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddOptions();
-            services.Configure(setupAction);
+            services.AddOptions<RedisSettingsOptions>().Configure(setupAction);
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
             services.AddSingleton<IDistributedCache, RedisCache>();
             services.AddTransient<IRedisCache, RedisCache>();
+        }
+
+
+        /// <summary>
+        /// 添加 JWT 授权
+        /// </summary>
+        /// <param name="services"></param>
+        private static void ConfigureRedisSettings(IServiceCollection services)
+        {
+            using var serviceProvider = services.BuildServiceProvider();
+
+            // 获取配置节点
+            var jwtSettingsConfiguration = serviceProvider.GetService<IConfiguration>().GetSection("RedisSettings");
+            // 配置验证
+            services.AddOptions<RedisSettingsOptions>()
+                        .Bind(jwtSettingsConfiguration)
+                        .ValidateDataAnnotations();
+
+            // 选项后期配置
+            services.PostConfigure<RedisSettingsOptions>(options =>
+            {
+                _ = options.SetDefaultRedisSettings(options);
+            });
         }
     }
 }
