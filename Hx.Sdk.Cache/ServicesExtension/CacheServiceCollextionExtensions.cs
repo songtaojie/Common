@@ -64,7 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
 
         /// <summary>
-        /// 添加 JWT 授权
+        /// 添加 Redis 配置
         /// </summary>
         /// <param name="services"></param>
         private static void ConfigureRedisSettings(IServiceCollection services)
