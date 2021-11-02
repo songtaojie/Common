@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 
@@ -8,7 +7,6 @@ namespace Hx.Sdk.Swagger
     /// <summary>
     /// 标签文档排序拦截器
     /// </summary>
-    [SkipScan]
     public class TagsOrderDocumentFilter : IDocumentFilter
     {
         /// <summary>

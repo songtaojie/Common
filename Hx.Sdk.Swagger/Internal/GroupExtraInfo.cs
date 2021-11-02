@@ -1,11 +1,8 @@
-﻿using Hx.Sdk.DependencyInjection;
-
-namespace Hx.Sdk.Swagger
+﻿namespace Hx.Sdk.Swagger
 {
     /// <summary>
     /// 分组附加信息
     /// </summary>
-    [SkipScan]
     internal sealed class GroupExtraInfo
     {
         /// <summary>

@@ -1,4 +1,4 @@
-using Hx.Sdk.ConfigureOptions;
+using Hx.Sdk.Swagger.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -10,8 +10,12 @@ namespace Hx.Sdk.Swagger
     /// <summary>
     /// 规范化文档Swagger配置选项
     /// </summary>
-    public sealed class SwaggerSettingsOptions : IConfigurableOptions<SwaggerSettingsOptions>
+    public sealed class SwaggerSettingsOptions
     {
+        /// <summary>
+        /// 是否允许启用MiniProfiler
+        /// </summary>
+        public bool? EnabledMiniProfiler { get; set; }
         /// <summary>
         /// 文档标题
         /// </summary>
@@ -78,19 +82,19 @@ namespace Hx.Sdk.Swagger
         public string RouteTemplate { get; set; }
 
         /// <summary>
-        /// 后期配置
+        /// 设置默认值
         /// </summary>
         /// <param name="options"></param>
-        /// <param name="configuration"></param>
-        public void PostConfigure(SwaggerSettingsOptions options, IConfiguration configuration)
+        public static SwaggerSettingsOptions SetDefaultSwaggerSettings(SwaggerSettingsOptions options)
         {
+            options.EnabledMiniProfiler = true;
             options.DocumentTitle ??= "Specification Api Document";
             options.DefaultGroupName ??= "Default";
             options.FormatAsV2 ??= false;
             options.RoutePrefix ??= "swagger";
             options.DocExpansionState ??= DocExpansion.List;
-            XmlComments ??= App.Assemblies.Where(u => !u.GetName().Name.Contains("Hx.Sdk")).Select(t => t.GetName().Name).ToArray();
-            GroupOpenApiInfos ??= new SwaggerOpenApiInfo[]
+            options.XmlComments ??= Penetrates.Assemblies.Where(u => !u.GetName().Name.Contains("Hx.Sdk")).Select(t => t.GetName().Name).ToArray();
+            options.GroupOpenApiInfos ??= new SwaggerOpenApiInfo[]
             {
                 new SwaggerOpenApiInfo()
                 {
@@ -98,10 +102,10 @@ namespace Hx.Sdk.Swagger
                 }
             };
 
-            EnableAuthorized ??= true;
-            if (EnableAuthorized == true)
+            options.EnableAuthorized ??= true;
+            if (options.EnableAuthorized == true)
             {
-                SecurityDefinitions ??= new SwaggerOpenApiSecurityScheme[]
+                options.SecurityDefinitions ??= new SwaggerOpenApiSecurityScheme[]
                 {
                     new SwaggerOpenApiSecurityScheme
                     {
@@ -116,9 +120,10 @@ namespace Hx.Sdk.Swagger
                 };
             }
 
-            Servers ??= Array.Empty<OpenApiServer>();
-            HideServers ??= false;
-            RouteTemplate ??= "swagger/{documentName}/swagger.json";
+            options.Servers ??= Array.Empty<OpenApiServer>();
+            options.HideServers ??= false;
+            options.RouteTemplate ??= "swagger/{documentName}/swagger.json";
+            return options;
         }
     }
 }

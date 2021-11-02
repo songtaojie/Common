@@ -1,10 +1,12 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 
 namespace Hx.Sdk.Swagger.Internal
@@ -12,7 +14,6 @@ namespace Hx.Sdk.Swagger.Internal
     /// <summary>
     /// 常量、公共方法配置类
     /// </summary>
-    [SkipScan]
     internal static class Penetrates
     {
         /// <summary>
@@ -24,7 +25,25 @@ namespace Hx.Sdk.Swagger.Internal
         /// 控制器排序集合
         /// </summary>
         internal static Dictionary<string, int> ControllerOrderCollection { get; set; }
+        /// <summary>
+        /// 应用有效程序集
+        /// </summary>
+        internal static readonly IEnumerable<Assembly> Assemblies;
 
+        /// <summary>
+        /// 有效程序集类型
+        /// </summary>
+        internal static readonly IEnumerable<Type> EffectiveTypes;
+
+        /// <summary>
+        /// 应用服务
+        /// </summary>
+        internal static IServiceCollection InternalServices;
+
+        /// <summary>
+        /// 服务提供器
+        /// </summary>
+        internal static IServiceProvider ServiceProvider => HttpContextLocal.Current()?.RequestServices ?? InternalServices.BuildServiceProvider();
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -33,6 +52,11 @@ namespace Hx.Sdk.Swagger.Internal
             ControllerOrderCollection = new Dictionary<string, int>();
 
             IsApiControllerCached = new ConcurrentDictionary<Type, bool>();
+
+            Assemblies = GetAssemblies();
+
+            EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()
+                .Where(u => u.IsPublic));
         }
 
         /// <summary>
@@ -130,6 +154,41 @@ namespace Hx.Sdk.Swagger.Internal
         internal static string GetCamelCaseFirstWord(string str)
         {
             return SplitCamelCase(str).First();
+        }
+
+        /// <summary>
+        /// 获取应用有效程序集
+        /// </summary>
+        /// <returns>IEnumerable</returns>
+        private static IEnumerable<Assembly> GetAssemblies()
+        {
+            // 需排除的程序集后缀
+            var excludeAssemblyNames = new string[] {
+                "Database.Migrations"
+            };
+
+            // 读取应用配置
+            var dependencyContext = DependencyContext.Default;
+
+            // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
+            var scanAssemblies = dependencyContext.CompileLibraries
+                .Where(u =>
+                       (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
+                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk"))
+                       || (u.Type == "reference" || u.Type == "referenceassembly"))    // 判断是否启用引用程序集扫描
+                .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
+                .ToList();
+
+            return scanAssemblies;
+        }
+
+        /// <summary>
+        /// 获取 Swagger 配置
+        /// </summary>
+        /// <returns></returns>
+        public static SwaggerSettingsOptions GetSwaggerSettings()
+        {
+            return ServiceProvider.GetService<SwaggerSettingsOptions>()?? SwaggerSettingsOptions.SetDefaultSwaggerSettings(new SwaggerSettingsOptions());
         }
     }
 }

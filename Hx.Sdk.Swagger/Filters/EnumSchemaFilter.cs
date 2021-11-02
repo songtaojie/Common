@@ -1,20 +1,18 @@
-using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Swagger.Internal;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 
 namespace Hx.Sdk.Swagger
 {
     /// <summary>
     /// 修正 规范化文档 Enum 提示
     /// </summary>
-    [SkipScan]
     public class EnumSchemaFilter : ISchemaFilter
     {
         /// <summary>
@@ -27,7 +25,7 @@ namespace Hx.Sdk.Swagger
             var type = context.Type;
 
             // 排除其他程序集的枚举
-            if (type.IsEnum && App.Assemblies.Contains(type.Assembly))
+            if (type.IsEnum && Penetrates.Assemblies.Contains(type.Assembly))
             {
                 model.Enum.Clear();
                 var stringBuilder = new StringBuilder();
@@ -39,7 +37,7 @@ namespace Hx.Sdk.Swagger
                     // 获取枚举成员特性
                     var fieldinfo = type.GetField(Enum.GetName(type, value));
                     var descriptionAttribute = fieldinfo.GetCustomAttribute<DescriptionAttribute>(true);
-                    model.Enum.Add(OpenApiAnyFactory.CreateFromJson(JsonConvert.SerializeObject(value)));
+                    model.Enum.Add(OpenApiAnyFactory.CreateFromJson(JsonSerializer.Serialize(value)));
 
                     stringBuilder.Append($"&nbsp;{descriptionAttribute?.Description} {value} = {value}<br />");
                 }

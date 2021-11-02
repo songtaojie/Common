@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Swagger.Internal;
+﻿using Hx.Sdk.Swagger.Internal;
 using System;
 
 namespace Microsoft.AspNetCore.Mvc
@@ -7,7 +6,7 @@ namespace Microsoft.AspNetCore.Mvc
     /// <summary>
     /// 接口描述设置
     /// </summary>
-    [SkipScan, AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class ApiDescriptionSettingsAttribute : ApiExplorerSettingsAttribute
     {
         /// <summary>

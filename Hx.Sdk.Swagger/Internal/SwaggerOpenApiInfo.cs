@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Swagger.Internal;
+﻿using Hx.Sdk.Swagger.Internal;
 using Microsoft.OpenApi.Models;
 
 namespace Hx.Sdk.Swagger
@@ -7,7 +6,6 @@ namespace Hx.Sdk.Swagger
     /// <summary>
     /// 规范化文档开放接口信息
     /// </summary>
-    [SkipScan]
     public sealed class SwaggerOpenApiInfo : OpenApiInfo
     {
         /// <summary>

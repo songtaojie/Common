@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.Swagger.Internal;
+﻿using Hx.Sdk.Swagger.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -50,9 +49,8 @@ namespace Hx.Sdk.Swagger
         /// </summary>
         static SwaggerDocumentBuilder()
         {
-            // 载入配置
-            _swaggerSettingsOptions = ConfigureOptions.AppSettings.GetOptions<SwaggerSettingsOptions>();
-
+            //// 载入配置
+            _swaggerSettingsOptions = Penetrates.GetSwaggerSettings();
             // 初始化常量
             _groupOrderRegex = new Regex(@"@(?<order>[0-9]+$)");
             GetActionGroupsCached = new ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>>();
@@ -316,7 +314,7 @@ namespace Hx.Sdk.Swagger
             // 自定义 Swagger 首页
             swaggerUIOptions.IndexStream = () => 
             {
-                var stream = thisAssembly.GetManifestResourceStream($"{thisType.Namespace}.Assets.{(App.Settings.EnabledMiniProfiler != true ? "index" : "index-mini-profiler")}.html");
+                var stream = thisAssembly.GetManifestResourceStream($"{thisType.Namespace}.Assets.{(_swaggerSettingsOptions.EnabledMiniProfiler != true ? "index" : "index-mini-profiler")}.html");
                 return stream;
             };
         }
@@ -349,7 +347,7 @@ namespace Hx.Sdk.Swagger
         private static IEnumerable<string> ReadGroups()
         {
             // 获取所有的控制器和动作方法
-            var controllers = App.EffectiveTypes.Where(u => Penetrates.IsApiController(u));
+            var controllers = Penetrates.EffectiveTypes.Where(u => Penetrates.IsApiController(u));
             if (!controllers.Any()) return new[] { _swaggerSettingsOptions.DefaultGroupName };
 
             var actions = controllers.SelectMany(c => c.GetMethods().Where(u => IsApiAction(u, c)));
