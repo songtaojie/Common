@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Hx.Sdk.Cache\Hx.Sdk.Cache.csproj" />
     <ProjectReference Include="..\Hx.Sdk.Common\Hx.Sdk.Common.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.EventBus\Hx.Sdk.EventBus.csproj" />
     <ProjectReference Include="..\Hx.Sdk.Test.Entity\Hx.Sdk.Test.Entity.csproj" />
   </ItemGroup>
 

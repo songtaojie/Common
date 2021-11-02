@@ -69,14 +69,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services"></param>
         private static void ConfigureRedisSettings(IServiceCollection services)
         {
-            using var serviceProvider = services.BuildServiceProvider();
-
             // 获取配置节点
-            var jwtSettingsConfiguration = serviceProvider.GetService<IConfiguration>().GetSection("RedisSettings");
             // 配置验证
             services.AddOptions<RedisSettingsOptions>()
-                        .Bind(jwtSettingsConfiguration)
-                        .ValidateDataAnnotations();
+                    .BindConfiguration("RedisSettings")
+                    .ValidateDataAnnotations();
 
             // 选项后期配置
             services.PostConfigure<RedisSettingsOptions>(options =>

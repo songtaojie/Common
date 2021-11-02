@@ -38,6 +38,7 @@ namespace Hx.Sdk.WebApi
             }, "Hx.Sdk.Test.Entity");
             services.AddRedisCache();
             services.AddDbContext<DefaultDbContext>();
+            services.AddCapRabbitMQ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
