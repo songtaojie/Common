@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.DatabaseAccessor;
-using Hx.Sdk.DependencyInjection;
 using StackExchange.Profiling.Internal;
 using System;
 
@@ -8,7 +7,6 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// MiniProfiler 服务拓展类
     /// </summary>
-    [SkipScan]
     public static class MiniProfilerServiceCollectionExtensions
     {
         /// <summary>

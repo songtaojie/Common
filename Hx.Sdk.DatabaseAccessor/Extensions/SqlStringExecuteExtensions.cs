@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.DatabaseAccessor;
-using Hx.Sdk.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +11,6 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// Sql 字符串执行拓展类
     /// </summary>
-    [SkipScan]
     public static class SqlStringExecuteExtensions
     {
         /// <summary>

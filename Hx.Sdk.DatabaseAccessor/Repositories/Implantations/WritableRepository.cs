@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.Entity;
-using Hx.Sdk.Entity.Internal;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
 using System.Threading;
 using System.Threading.Tasks;
 

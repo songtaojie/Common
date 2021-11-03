@@ -1,7 +1,5 @@
-﻿using Hx.Sdk.ConfigureOptions;
+﻿using Hx.Sdk.DatabaseAccessor.Extensions;
 using Hx.Sdk.DatabaseAccessor.Internal;
-using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity.Internal;
 using Hx.Sdk.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,7 +16,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 数据库上下文构建器
     /// </summary>
-    [SkipScan]
     internal static class AppDbContextBuilder
     {
         /// <summary>

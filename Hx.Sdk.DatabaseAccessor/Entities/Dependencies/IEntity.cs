@@ -12,7 +12,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 数据库实体依赖基接口
     /// </summary>
     /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
-    public interface IEntity<TDbContextLocator1> : Hx.Sdk.Entity.IEntity
+    public interface IEntity<TDbContextLocator1> : Internal.IPrivateEntity
         where TDbContextLocator1 : class, IDbContextLocator
     {
     }
@@ -22,7 +22,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// </summary>
     /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
     /// <typeparam name="TDbContextLocator2">数据库上下文定位器</typeparam>
-    public interface IEntity<TDbContextLocator1, TDbContextLocator2> : Hx.Sdk.Entity.IEntity
+    public interface IEntity<TDbContextLocator1, TDbContextLocator2> : Internal.IPrivateEntity
         where TDbContextLocator1 : class, IDbContextLocator
         where TDbContextLocator2 : class, IDbContextLocator
     {

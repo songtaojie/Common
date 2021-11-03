@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Internal;
@@ -13,7 +12,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 监听 EFCore 操作进程
     /// </summary>
-    [SkipScan]
     public class RelationalDiagnosticListener : IMiniProfilerDiagnosticListener
     {
         /// <summary>

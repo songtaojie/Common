@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity;
-using Hx.Sdk.Entity.Internal;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
@@ -9,7 +7,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// </summary>
     /// <typeparam name="TMasterDbContextLocator">主库</typeparam>
     /// <typeparam name="TSlaveDbContextLocator1">从库</typeparam>
-    [SkipScan]
     public partial class MSRepository<TMasterDbContextLocator, TSlaveDbContextLocator1> : IMSRepository<TMasterDbContextLocator, TSlaveDbContextLocator1>
         where TMasterDbContextLocator : class, IDbContextLocator
         where TSlaveDbContextLocator1 : class, IDbContextLocator
@@ -57,7 +54,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <typeparam name="TMasterDbContextLocator">主库</typeparam>
     /// <typeparam name="TSlaveDbContextLocator1">从库</typeparam>
     /// <typeparam name="TSlaveDbContextLocator2">从库</typeparam>
-    [SkipScan]
     public partial class MSRepository<TMasterDbContextLocator, TSlaveDbContextLocator1, TSlaveDbContextLocator2>
         : MSRepository<TMasterDbContextLocator, TSlaveDbContextLocator1>
         , IMSRepository<TMasterDbContextLocator, TSlaveDbContextLocator1, TSlaveDbContextLocator2>

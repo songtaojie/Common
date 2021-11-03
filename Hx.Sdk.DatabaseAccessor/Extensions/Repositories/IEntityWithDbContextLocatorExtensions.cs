@@ -1,7 +1,4 @@
-﻿using Hx.Sdk.DatabaseAccessor;
-using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity;
-using Hx.Sdk.Entity.Internal;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -10,12 +7,11 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.Extensions
+namespace Hx.Sdk.DatabaseAccessor.Extensions
 {
     /// <summary>
     /// 实体多数据库上下文拓展类
     /// </summary>
-    [SkipScan]
     public static class IEntityWithDbContextLocatorExtensions
     {
         /// <summary>

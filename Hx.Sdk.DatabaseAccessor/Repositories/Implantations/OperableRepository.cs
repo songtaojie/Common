@@ -1,10 +1,7 @@
-using Hx.Sdk.Entity;
-using Hx.Sdk.Entity.Internal;
-using Hx.Sdk.Extensions.LinqBuilder;
+using Hx.Sdk.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;

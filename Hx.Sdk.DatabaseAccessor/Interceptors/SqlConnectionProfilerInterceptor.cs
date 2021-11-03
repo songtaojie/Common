@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +8,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 数据库连接拦截分析器
     /// </summary>
-    [SkipScan]
     internal sealed class SqlConnectionProfilerInterceptor : DbConnectionInterceptor
     {
         /// <summary>

@@ -1,9 +1,5 @@
-﻿using Hx.Sdk.Entity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hx.Sdk.DatabaseAccessor.EntityConfiguration
 {
@@ -13,7 +9,7 @@ namespace Hx.Sdk.DatabaseAccessor.EntityConfiguration
     /// <typeparam name="T">实体类型</typeparam>
     /// <typeparam name="TKeyType">主键类型</typeparam>
     public class StatusEntityBaseTypeConfiguration<T,TKeyType>: EntityBaseTypeConfiguration<T, TKeyType>
-         where T : Hx.Sdk.Entity.StatusEntityBase<TKeyType>
+         where T : Internal.PrivateStatusEntityBase<TKeyType>
     {
         /// <summary>
         /// 应用配置

@@ -1,12 +1,10 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System.Data;
+﻿using System.Data;
 
 namespace Hx.Sdk.DatabaseAccessor.Models
 {
     /// <summary>
     /// Sql 模板参数
     /// </summary>
-    [SkipScan]
     internal class SqlTemplateParameter
     {
         /// <summary>

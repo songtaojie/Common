@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.Entity;
-using Hx.Sdk.Entity.Internal;
-using System;
+﻿using System;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
@@ -8,7 +6,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 实体执行部件
     /// </summary>
     public sealed partial class EntityExecutePart<TEntity>
-        where TEntity : class, IPrivateEntity, new()
+        where TEntity : class, Internal.IPrivateEntity, new()
     {
         /// <summary>
         /// 设置实体

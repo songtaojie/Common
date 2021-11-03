@@ -1,16 +1,14 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Hx.Sdk.Extensions
+namespace Hx.Sdk.DatabaseAccessor.Extensions
 {
     /// <summary>
     /// 时态查询拓展
     /// </summary>
-    [SkipScan]
     public static class TemporalExtensions
     {
         /// <summary>

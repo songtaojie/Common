@@ -1,12 +1,9 @@
 ﻿using Hx.Sdk.DatabaseAccessor.Models;
-using Hx.Sdk.DependencyInjection;
-
 namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// Sql 模板
     /// </summary>
-    [SkipScan]
     internal sealed class SqlTemplate
     {
         /// <summary>

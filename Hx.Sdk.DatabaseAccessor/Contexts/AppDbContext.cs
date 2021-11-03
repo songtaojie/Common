@@ -1,4 +1,3 @@
-using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,7 +11,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 默认应用数据库上下文
     /// </summary>
     /// <typeparam name="TDbContext">数据库上下文</typeparam>
-    [SkipScan]
     public abstract class AppDbContext<TDbContext> : AppDbContext<TDbContext, MasterDbContextLocator>
         where TDbContext : DbContext
     {
@@ -30,7 +28,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// </summary>
     /// <typeparam name="TDbContext">数据库上下文</typeparam>
     /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
-    [SkipScan]
     public abstract class AppDbContext<TDbContext, TDbContextLocator> : DbContext
         where TDbContext : DbContext
         where TDbContextLocator : class, IDbContextLocator

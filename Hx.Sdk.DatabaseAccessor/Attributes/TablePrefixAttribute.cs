@@ -1,11 +1,9 @@
-﻿using Hx.Sdk.DependencyInjection;
-
-namespace System.ComponentModel.DataAnnotations.Schema
+﻿namespace System.ComponentModel.DataAnnotations.Schema
 {
     /// <summary>
     /// 配置表名称前缀
     /// </summary>
-    [SkipScan, AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class TablePrefixAttribute : Attribute
     {
         /// <summary>

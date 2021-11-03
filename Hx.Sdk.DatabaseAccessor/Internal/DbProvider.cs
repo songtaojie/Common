@@ -1,5 +1,3 @@
-using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +13,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 数据库提供器选项
     /// </summary>
-    [SkipScan]
     public static class DbProvider
     {
         /// <summary>

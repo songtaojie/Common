@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,7 +9,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// Sql 操作仓储实现
     /// </summary>
-    [SkipScan]
     public partial class SqlRepository : SqlRepository<MasterDbContextLocator>, ISqlRepository
     {
         /// <summary>
@@ -25,7 +23,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// Sql 操作仓储实现
     /// </summary>
-    [SkipScan]
     public partial class SqlRepository<TDbContextLocator> : PrivateSqlRepository, ISqlRepository<TDbContextLocator>
         where TDbContextLocator : class, IDbContextLocator
     {

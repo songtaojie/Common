@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.Entity.Internal;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;

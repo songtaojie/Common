@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -10,7 +8,6 @@ using System.Text.RegularExpressions;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
-    [SkipScan]
     internal static class DbHelpers
     {
         /// <summary>

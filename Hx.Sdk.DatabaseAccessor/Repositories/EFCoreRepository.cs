@@ -1,6 +1,4 @@
-using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity;
-using Hx.Sdk.Entity.Internal;
+using Hx.Sdk.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -21,7 +19,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 非泛型EF Core仓储实现
     /// </summary>
-    [SkipScan]
     public partial class EFCoreRepository : IRepository
     {
         /// <summary>
@@ -132,7 +129,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// EF Core仓储实现
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    [SkipScan]
     public partial class EFCoreRepository<TEntity> : EFCoreRepository<TEntity, MasterDbContextLocator>
         , IRepository<TEntity>
         where TEntity : class, IPrivateEntity, new()
@@ -149,7 +145,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 多数据库上下文仓储
     /// </summary>
-    [SkipScan]
     public partial class EFCoreRepository<TEntity, TDbContextLocator> : PrivateRepository<TEntity>
         , IRepository<TEntity, TDbContextLocator>
         where TEntity : class, IPrivateEntity, new()

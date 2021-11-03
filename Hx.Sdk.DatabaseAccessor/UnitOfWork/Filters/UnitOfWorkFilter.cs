@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
-using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq;
@@ -11,7 +9,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 工作单元拦截器
     /// </summary>
-    [SkipScan]
     internal sealed class UnitOfWorkFilter : IAsyncActionFilter, IOrderedFilter
     {
         /// <summary>
@@ -22,7 +19,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <summary>
         /// 排序属性
         /// </summary>
-        public int Order => FilterOrder.UnitOfWorkFilterOrder;
+        public int Order => 9999;
 
         /// <summary>
         /// 数据库上下文池

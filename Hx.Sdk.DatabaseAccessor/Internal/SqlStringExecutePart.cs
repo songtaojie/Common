@@ -1,12 +1,10 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 构建 Sql 字符串执行部件
     /// </summary>
-    [SkipScan]
     public sealed partial class SqlStringExecutePart
     {
         /// <summary>

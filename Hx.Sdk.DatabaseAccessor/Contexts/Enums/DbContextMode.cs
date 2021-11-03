@@ -1,12 +1,10 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 数据库上下文模式
     /// </summary>
-    [SkipScan]
     public enum DbContextMode
     {
         /// <summary>

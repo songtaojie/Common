@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.DatabaseAccessor;
-using Hx.Sdk.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -13,7 +12,6 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     ///  数据库服务拓展
     /// </summary>
-    [SkipScan]
     public static class DatabaseProviderServiceCollectionExtensions
     {
         /// <summary>

@@ -1,10 +1,4 @@
 ﻿using Hx.Sdk.DatabaseAccessor.Internal;
-using Hx.Sdk.Entity;
-using Hx.Sdk.Entity.Internal;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-
 namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>

@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading;
 
@@ -9,7 +8,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 动态模型缓存工厂
     /// </summary>
     /// <remarks>主要用来实现数据库分表分库</remarks>
-    [SkipScan]
     public class DynamicModelCacheKeyFactory : IModelCacheKeyFactory
     {
         /// <summary>

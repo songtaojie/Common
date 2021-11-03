@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.DatabaseAccessor.Internal;
-using Hx.Sdk.Entity.Internal;
 
 namespace Hx.Sdk.DatabaseAccessor
 {

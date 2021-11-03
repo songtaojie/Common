@@ -8,7 +8,9 @@
     </Description>
     <Version>5.0</Version>
   </PropertyGroup>
-
+    <ItemGroup>
+	    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>bin\Debug\Hx.Sdk.Core.xml</DocumentationFile>
@@ -17,11 +19,11 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.ConfigureOptions\Hx.Sdk.ConfigureOptions.csproj" />
+    <Folder Include="App\Internal\" />
+    <Folder Include="Options\" />
   </ItemGroup>
 
 </Project>

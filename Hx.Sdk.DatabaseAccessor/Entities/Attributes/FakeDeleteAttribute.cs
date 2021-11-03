@@ -1,12 +1,11 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 
 namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 假删除/软删除
     /// </summary>
-    [SkipScan, AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class FakeDeleteAttribute : Attribute
     {
         /// <summary>

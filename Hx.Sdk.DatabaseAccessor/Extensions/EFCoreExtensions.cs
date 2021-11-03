@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,6 @@ namespace Microsoft.EntityFrameworkCore
     /// <summary>
     /// EntityFramework Core 拓展
     /// </summary>
-    [SkipScan]
     public static class EFCoreExtensions
     {
         /// <summary>

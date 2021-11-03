@@ -1,10 +1,8 @@
-﻿using Hx.Sdk.DependencyInjection;
-namespace Hx.Sdk.DatabaseAccessor
+﻿namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 数据库实体依赖基类（使用默认的数据库上下文定位器）
     /// </summary>
-    [SkipScan]
     public abstract class StatusEntityBase : StatusEntityBase<string>
     {
     }
@@ -13,7 +11,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 数据库实体依赖基类（使用默认的数据库上下文定位器）
     /// </summary>
     /// <typeparam name="TKeyType">主键类型</typeparam>
-    [SkipScan]
     public abstract class StatusEntityBase<TKeyType> : StatusEntityBase<TKeyType, MasterDbContextLocator>
     {
     }
@@ -23,8 +20,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// </summary>
     /// <typeparam name="TKeyType">主键类型</typeparam>
     /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
-    [SkipScan]
-    public abstract class StatusEntityBase<TKeyType, TDbContextLocator1> : Hx.Sdk.Entity.StatusEntityBase<TKeyType>
+    public abstract class StatusEntityBase<TKeyType, TDbContextLocator1> : Internal.PrivateStatusEntityBase<TKeyType>
         where TDbContextLocator1 : class, IDbContextLocator
     {
     }
@@ -35,12 +31,24 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <typeparam name="TKeyType">主键类型</typeparam>
     /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
     /// <typeparam name="TDbContextLocator2">数据库上下文定位器</typeparam>
-    [SkipScan]
-    public abstract class StatusEntityBase<TKeyType, TDbContextLocator1, TDbContextLocator2> : Hx.Sdk.Entity.StatusEntityBase<TKeyType>
+    public abstract class StatusEntityBase<TKeyType, TDbContextLocator1, TDbContextLocator2> : Internal.PrivateStatusEntityBase<TKeyType>
         where TDbContextLocator1 : class, IDbContextLocator
         where TDbContextLocator2 : class, IDbContextLocator
     {
     }
+    /// <summary>
+    /// 状态枚举
+    /// </summary>
+    public enum StatusEntityEnum
+    {
+        /// <summary>
+        /// 是
+        /// </summary>
+        Yes,
+        /// <summary>
+        /// 否
+        /// </summary>
+        No
+    }
 
-   
 }

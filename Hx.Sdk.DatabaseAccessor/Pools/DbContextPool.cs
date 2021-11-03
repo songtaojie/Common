@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
 using System;
@@ -16,7 +14,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 数据库上下文池
     /// </summary>
-    [SkipScan]
     public class DbContextPool : IDbContextPool
     {
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.DatabaseAccessor.Internal;
-using Hx.Sdk.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,7 +8,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 数据库上下文关联类型
     /// </summary>
-    [SkipScan]
     internal sealed class DbContextCorrelationType
     {
         /// <summary>

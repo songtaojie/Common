@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Extensions;
+﻿using Hx.Sdk.DatabaseAccessor.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,7 +12,6 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// 数据库数据转换拓展
     /// </summary>
-    [SkipScan]
     public static class DbDataConvertExtensions
     {
         /// <summary>

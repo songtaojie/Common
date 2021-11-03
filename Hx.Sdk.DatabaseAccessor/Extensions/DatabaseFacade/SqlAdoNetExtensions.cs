@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Data;
 using System.Data.Common;
@@ -11,7 +10,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// ADONET 拓展类
     /// </summary>
-    [SkipScan]
     public static class SqlAdoNetExtensions
     {
         /// <summary>

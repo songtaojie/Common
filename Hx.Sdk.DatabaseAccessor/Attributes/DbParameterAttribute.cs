@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 using System.Data;
 
 namespace Hx.Sdk.DatabaseAccessor
@@ -7,7 +6,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// DbParameter 配置特性
     /// </summary>
-    [SkipScan, AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property)]
     public sealed class DbParameterAttribute : Attribute
     {
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 using System.Transactions;
 
 namespace Hx.Sdk.DatabaseAccessor
@@ -7,7 +6,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 工作单元配置特性
     /// </summary>
-    [SkipScan, AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method)]
     public sealed class UnitOfWorkAttribute : Attribute
     {
         /// <summary>

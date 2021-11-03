@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,7 +10,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// 常量、公共方法配置类
     /// </summary>
-    [SkipScan]
     internal static class Penetrates
     {
 

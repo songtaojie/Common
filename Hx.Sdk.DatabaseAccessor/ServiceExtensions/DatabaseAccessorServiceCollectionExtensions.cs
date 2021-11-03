@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DatabaseAccessor;
-using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DatabaseAccessor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -10,7 +8,6 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// 数据库访问器服务拓展类
     /// </summary>
-    [SkipScan]
     public static class DatabaseAccessorServiceCollectionExtensions
     {
         /// <summary>
@@ -64,7 +61,11 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             // 注册全局工作单元过滤器
-            services.AddMvcFilter<UnitOfWorkFilter>();
+            //services.AddMvcFilter<UnitOfWorkFilter>();
+            services.Configure<AspNetCore.Mvc.MvcOptions>(options =>
+            {
+                options.Filters.Add<UnitOfWorkFilter>();
+            });
 
             return services;
         }

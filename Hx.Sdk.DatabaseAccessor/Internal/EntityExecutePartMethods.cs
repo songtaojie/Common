@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.Entity.Internal;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,7 @@ namespace Hx.Sdk.DatabaseAccessor
     /// 实体执行组件
     /// </summary>
     public sealed partial class EntityExecutePart<TEntity>
-        where TEntity : class, IPrivateEntity, new()
+        where TEntity : class, Internal.IPrivateEntity, new()
     {
         /// <summary>
         /// 获取实体同类（族群）

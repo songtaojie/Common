@@ -1,6 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Hosting;
@@ -16,7 +14,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// <summary>
     /// DatabaseFacade 拓展类
     /// </summary>
-    [SkipScan]
     public static class DbObjectExtensions
     {
         /// <summary>
