@@ -16,11 +16,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">服务集合</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
         {
             Penetrates.InternalServices = services;
             // 添加配置
-            ConfigureJWTOptions(services);
+            ConfigureJWTOptions(services, swaggerSettings);
             // 添加Swagger生成器服务
             services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
 
@@ -33,12 +33,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="mvcBuilder">Mvc 构建器</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
         {
             var services = mvcBuilder.Services;
             Penetrates.InternalServices = services;
             // 添加配置
-            ConfigureJWTOptions(services);
+            ConfigureJWTOptions(services, swaggerSettings);
             // 添加Swagger生成器服务
             services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
 
@@ -49,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加 JWT 授权
         /// </summary>
         /// <param name="services"></param>
-        private static void ConfigureJWTOptions(IServiceCollection services)
+        private static void ConfigureJWTOptions(IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings)
         {
             // 配置验证
             services.AddOptions<SwaggerSettingsOptions>()
@@ -58,6 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     .PostConfigure(options =>
                     {
                         _ = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
+                        swaggerSettings?.Invoke(options);
                     });
         }
     }

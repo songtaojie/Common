@@ -13,7 +13,7 @@ namespace Hx.Sdk.Swagger
     public sealed class SwaggerSettingsOptions
     {
         /// <summary>
-        /// 是否允许启用MiniProfiler
+        /// 是否允许启用MiniProfiler，默认为true
         /// </summary>
         public bool? EnabledMiniProfiler { get; set; }
         /// <summary>
@@ -22,12 +22,12 @@ namespace Hx.Sdk.Swagger
         public string DocumentTitle { get; set; }
 
         /// <summary>
-        /// 默认分组名
+        /// 默认分组名，默认为Default
         /// </summary>
         public string DefaultGroupName { get; set; }
 
         /// <summary>
-        /// 启用授权支持
+        /// 启用授权支持，默认为true
         /// </summary>
         public bool? EnableAuthorized { get; set; }
 
@@ -87,7 +87,7 @@ namespace Hx.Sdk.Swagger
         /// <param name="options"></param>
         public static SwaggerSettingsOptions SetDefaultSwaggerSettings(SwaggerSettingsOptions options)
         {
-            options.EnabledMiniProfiler = true;
+            options.EnabledMiniProfiler ??= true;
             options.DocumentTitle ??= "Specification Api Document";
             options.DefaultGroupName ??= "Default";
             options.FormatAsV2 ??= false;

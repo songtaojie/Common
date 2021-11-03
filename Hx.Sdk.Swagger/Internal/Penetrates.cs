@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -41,9 +42,23 @@ namespace Hx.Sdk.Swagger.Internal
         internal static IServiceCollection InternalServices;
 
         /// <summary>
+        /// 有效程序集类型
+        /// </summary>
+        private static IServiceProvider _serviceProvider;
+        /// <summary>
         /// 服务提供器
         /// </summary>
-        internal static IServiceProvider ServiceProvider => HttpContextLocal.Current()?.RequestServices ?? InternalServices.BuildServiceProvider();
+        internal static IServiceProvider ServiceProvider
+        {
+            get
+            { 
+                return _serviceProvider ?? InternalServices.BuildServiceProvider();
+            }
+            set
+            {
+                _serviceProvider = value;
+            }
+        }
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -174,8 +189,7 @@ namespace Hx.Sdk.Swagger.Internal
             var scanAssemblies = dependencyContext.CompileLibraries
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk"))
-                       || (u.Type == "reference" || u.Type == "referenceassembly"))    // 判断是否启用引用程序集扫描
+                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk")))    // 判断是否启用引用程序集扫描
                 .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
                 .ToList();
 
@@ -188,7 +202,8 @@ namespace Hx.Sdk.Swagger.Internal
         /// <returns></returns>
         public static SwaggerSettingsOptions GetSwaggerSettings()
         {
-            return ServiceProvider.GetService<SwaggerSettingsOptions>()?? SwaggerSettingsOptions.SetDefaultSwaggerSettings(new SwaggerSettingsOptions());
+            var options = ServiceProvider.GetService<IOptions<SwaggerSettingsOptions>>();
+            return options?.Value?? SwaggerSettingsOptions.SetDefaultSwaggerSettings(new SwaggerSettingsOptions());
         }
     }
 }
