@@ -88,7 +88,9 @@ namespace Hx.Sdk.DatabaseAccessor
                 // 创建临时数据库上下文
                 else
                 {
-                    var newDbContext = Db.GetDbContext(Penetrates.DbContextWithLocatorCached.Keys.First());
+                    var defaultDbContextLocator = Penetrates.DbContextDescriptors.LastOrDefault();
+
+                    var newDbContext = Db.GetDbContext(defaultDbContextLocator.Key);
 
                     // 开启事务
                     dbContextTransaction = newDbContext.Database.BeginTransaction();

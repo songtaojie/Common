@@ -103,10 +103,11 @@ namespace Hx.Sdk.DatabaseAccessor
         public static DbContext GetDbContext(Type dbContextLocator, IServiceProvider scoped = default)
         {
             // 判断是否注册了数据库上下文
-            if (!Penetrates.DbContextWithLocatorCached.ContainsKey(dbContextLocator)) return default;
+            // 判断数据库上下文定位器是否绑定
+            Penetrates.CheckDbContextLocator(dbContextLocator, out _);
 
-            var dbContextResolve = App.GetService<Func<Type, IScopedDependency, DbContext>>(scoped);
-            return dbContextResolve(dbContextLocator, default);
+            var dbContextResolve = App.GetService<Func<Type, DbContext>>(scoped);
+            return dbContextResolve(dbContextLocator);
         }
 
         /// <summary>
@@ -140,10 +141,11 @@ namespace Hx.Sdk.DatabaseAccessor
         public static DbContext GetNewDbContext(Type dbContextLocator, IServiceProvider scoped = default)
         {
             // 判断是否注册了数据库上下文
-            if (!Penetrates.DbContextWithLocatorCached.ContainsKey(dbContextLocator)) return default;
+            // 判断数据库上下文定位器是否绑定
+            Penetrates.CheckDbContextLocator(dbContextLocator, out _);
 
-            var dbContextResolve = App.GetService<Func<Type, ITransientDependency, DbContext>>(scoped);
-            return dbContextResolve(dbContextLocator, default);
+            var dbContextResolve = App.GetService<Func<Type, DbContext>>(scoped);
+            return dbContextResolve(dbContextLocator);
         }
 
         /// <summary>

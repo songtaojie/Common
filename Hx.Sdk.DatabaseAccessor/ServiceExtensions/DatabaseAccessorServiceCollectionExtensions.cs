@@ -54,67 +54,47 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped(typeof(IDbRepository<>), typeof(DbRepository<>));
 
             // 解析数据库上下文
-            services.AddTransient(provider =>
-            {
-                DbContext dbContextResolve(Type locator, ITransientDependency transient)
-                {
-                    // 判断定位器是否绑定了数据库上下文
-                    var isRegistered = Penetrates.DbContextWithLocatorCached.TryGetValue(locator, out var dbContextType);
-                    if (!isRegistered) throw new InvalidOperationException($"The DbContext for locator  `{locator.FullName}` binding was not found.");
-
-                    // 动态解析数据库上下文，创建新的对象
-                    var dbContext = provider.GetService(dbContextType) as DbContext;
-
-                    // 实现动态数据库上下文功能，刷新 OnModelCreating
-                    var dbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContextType);
-                    if (dbContextAttribute?.Mode == DbContextMode.Dynamic)
-                    {
-                        DynamicModelCacheKeyFactory.RebuildModels();
-                    }
-
-                    // 添加数据库上下文到池中
-                    var httpContext = App.HttpContext;
-                    var dbContextPool = (httpContext != null ? httpContext.RequestServices : provider).GetService<IDbContextPool>();
-                    dbContextPool?.AddToPool(dbContext);
-
-                    return dbContext;
-                }
-                return (Func<Type, ITransientDependency, DbContext>)dbContextResolve;
-            });
-
             services.AddScoped(provider =>
             {
-                DbContext dbContextResolve(Type locator, IScopedDependency scoped)
+                DbContext dbContextResolve(Type locator)
                 {
-                    // 判断定位器是否绑定了数据库上下文
-                    var isRegistered = Penetrates.DbContextWithLocatorCached.TryGetValue(locator, out var dbContextType);
-                    if (!isRegistered) throw new InvalidOperationException($"The DbContext for locator `{locator.FullName}` binding was not found.");
-
-                    // 动态解析数据库上下文
-                    var dbContext = provider.GetService(dbContextType) as DbContext;
-
-                    // 实现动态数据库上下文功能，刷新 OnModelCreating
-                    var dbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContextType);
-                    if (dbContextAttribute?.Mode == DbContextMode.Dynamic)
-                    {
-                        DynamicModelCacheKeyFactory.RebuildModels();
-                    }
-
-                    // 添加数据库上下文到池中
-                    var httpContext = App.HttpContext;
-                    var dbContextPool = (httpContext != null ? httpContext.RequestServices : provider).GetService<IDbContextPool>();
-                    dbContextPool?.AddToPool(dbContext);
-
-                    return dbContext;
+                    return ResolveDbContext(provider, locator);
                 }
-                return (Func<Type, IScopedDependency, DbContext>)dbContextResolve;
+                return (Func<Type, DbContext>)dbContextResolve;
             });
-
 
             // 注册全局工作单元过滤器
             services.AddMvcFilter<UnitOfWorkFilter>();
 
             return services;
+        }
+
+        /// <summary>
+        /// 通过定位器解析上下文
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="dbContextLocator"></param>
+        /// <returns></returns>
+        private static DbContext ResolveDbContext(IServiceProvider provider, Type dbContextLocator)
+        {
+            // 判断定位器是否绑定了数据库上下文
+            Penetrates.CheckDbContextLocator(dbContextLocator, out var dbContextType);
+
+            // 动态解析数据库上下文
+            var dbContext = provider.GetService(dbContextType) as DbContext;
+
+            // 实现动态数据库上下文功能，刷新 OnModelCreating
+            var dbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContextType);
+            if (dbContextAttribute?.Mode == DbContextMode.Dynamic)
+            {
+                DynamicModelCacheKeyFactory.RebuildModels();
+            }
+
+            // 添加数据库上下文到池中
+            var dbContextPool = provider.GetService<IDbContextPool>();
+            dbContextPool?.AddToPool(dbContext);
+
+            return dbContext;
         }
 
         /// <summary>
@@ -138,14 +118,8 @@ namespace Microsoft.Extensions.DependencyInjection
             where TDbContext : DbContext
             where TDbContextLocator : class, IDbContextLocator
         {
-            var dbContextLocatorType = (typeof(TDbContextLocator));
-
-            // 将数据库上下文和定位器一一保存起来
-            var isSuccess = Penetrates.DbContextWithLocatorCached.TryAdd(dbContextLocatorType, typeof(TDbContext));
-            Penetrates.DbContextLocatorTypeCached.TryAdd(dbContextLocatorType.FullName, dbContextLocatorType);
-
-            if (!isSuccess) throw new InvalidOperationException($"The locator `{dbContextLocatorType.FullName}` is bound to another DbContext.");
-
+            // 存储数据库上下文和定位器关系
+            Penetrates.DbContextDescriptors.AddOrUpdate(typeof(TDbContextLocator), typeof(TDbContext), (key, value) => typeof(TDbContext));
             // 注册数据库上下文
             services.TryAddScoped<TDbContext>();
 

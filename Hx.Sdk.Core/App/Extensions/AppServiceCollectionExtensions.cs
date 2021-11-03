@@ -77,7 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册全局依赖注入
             if (!AppExtend.InjectAutofac)
             {
-                services.AddNativeDependencyInjection();
+                services.AddNativeDependencyInjection(App.EffectiveTypes);
             }
 
             // 自定义服务

@@ -1,9 +1,9 @@
 ﻿namespace Hx.Sdk.DependencyInjection
 {
     /// <summary>
-    /// 依赖空接口（禁止外部继承）
+    /// 每个请求一个实例
     /// </summary>
-    public interface IPrivateDependency
+    public interface IScopedDependency
     {
     }
 }

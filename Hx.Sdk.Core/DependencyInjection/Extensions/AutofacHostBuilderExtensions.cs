@@ -1,6 +1,8 @@
-﻿using Hx.Sdk.ConfigureOptions;
+﻿using Autofac.Extensions.DependencyInjection;
+using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.Core;
 using Hx.Sdk.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Collections.Generic;
@@ -24,23 +26,28 @@ namespace Microsoft.Extensions.Hosting
         /// <returns></returns>
         public static IHostBuilder InjectContainerBuilder(this IHostBuilder hostBuilder)
         {
-            // 判断是否安装了 DependencyInjection 程序集
-            var diAssembly = AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(AppExtend.DependencyInjection));
-            if (diAssembly != null)
+            ConsoleHelper.WriteWarningLine("Use Autofac takes over Native Dependency Injection Service", true);
+            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostBuilderContext, containerBuilder) =>
             {
-                // 加载 Autofac ContainerBuilder 拓展类型和拓展方法
-                var hostBuilderExtensionsType = diAssembly.GetType($"Microsoft.Extensions.Hosting.HostBuilderExtensions");
-                var injectContainerBuilderMethod = hostBuilderExtensionsType
-                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    .First(u => u.Name == "InjectContainerBuilder" && u.GetParameters().First().ParameterType == typeof(IHostBuilder));
-                return injectContainerBuilderMethod.Invoke(null, new object[] { hostBuilder }) as IHostBuilder;
-            }
-            else
-            {
-                //如果没有安装DependencyInjection程序集
-                AppExtend.InjectAutofac = false;
-            }
-
+                ConsoleHelper.WriteSuccessLine("Begin Autofac ContainerBuilder ");
+                var effectiveTypes = App.EffectiveTypes;
+                var aopTypeNames = App.Settings.AopTypeFullName;
+                IEnumerable<Type> aopTypes = null;
+                if (aopTypeNames != null && aopTypeNames.Length > 0)
+                {
+                    aopTypeNames = aopTypeNames.Select(t => t.ToLower()).ToArray();
+                    aopTypes = effectiveTypes.Where(t => aopTypeNames.Contains(t.FullName.ToLower()));
+                }
+                ConsoleHelper.WriteInfoLine("Add the Autofac Dependency Injection service");
+                if (aopTypes != null && aopTypes.Any())
+                {
+                    var apoTypeNames = aopTypes.Select(type => string.Format("[{0}]", type.FullName));
+                    ConsoleHelper.WriteInfoLine($"Add the Aop Types {string.Join(",", apoTypeNames)}");
+                }
+                containerBuilder.AddAutofacDependencyInjection(effectiveTypes, aopTypes);
+                ConsoleHelper.WriteSuccessLine("End Autofac ContainerBuilder", true);
+            });
             return hostBuilder;
         }
     }

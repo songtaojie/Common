@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.DependencyInjection.Internal;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Concurrent;
@@ -17,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 使用.Net Core自带的DI添加依赖注入接口
         /// </summary>
         /// <param name="services">服务集合</param>
+        /// <param name="types">依赖注入的类型集合</param>
         /// <returns>服务集合</returns>
         public static IServiceCollection AddNativeDependencyInjection(this IServiceCollection services, IEnumerable<Type> types)
         {

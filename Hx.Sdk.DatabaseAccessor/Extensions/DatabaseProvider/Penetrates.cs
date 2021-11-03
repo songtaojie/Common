@@ -15,23 +15,18 @@ namespace Hx.Sdk.DatabaseAccessor
     [SkipScan]
     internal static class Penetrates
     {
-        /// <summary>
-        /// 数据库上下文和定位器缓存
-        /// </summary>
-        internal static readonly ConcurrentDictionary<Type, Type> DbContextWithLocatorCached;
 
         /// <summary>
-        /// 数据库上下文定位器缓存
+        /// 数据库上下文描述器
         /// </summary>
-        internal static readonly ConcurrentDictionary<string, Type> DbContextLocatorTypeCached;
+        internal static readonly ConcurrentDictionary<Type, Type> DbContextDescriptors;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         static Penetrates()
         {
-            DbContextWithLocatorCached = new ConcurrentDictionary<Type, Type>();
-            DbContextLocatorTypeCached = new ConcurrentDictionary<string, Type>();
+            DbContextDescriptors = new ConcurrentDictionary<Type, Type>();
         }
 
         /// <summary>
@@ -81,6 +76,17 @@ namespace Hx.Sdk.DatabaseAccessor
                 interceptorList.AddRange(interceptors);
             }
             options.AddInterceptors(interceptorList.ToArray());
+        }
+
+        /// <summary>
+        /// 检查数据库上下文是否绑定
+        /// </summary>
+        /// <param name="dbContextLocatorType"></param>
+        /// <param name="dbContextType"></param>
+        /// <returns></returns>
+        internal static void CheckDbContextLocator(Type dbContextLocatorType, out Type dbContextType)
+        {
+            if (!DbContextDescriptors.TryGetValue(dbContextLocatorType, out dbContextType)) throw new InvalidCastException($" The dbcontext locator `{dbContextLocatorType.Name}` is not bind.");
         }
     }
 }

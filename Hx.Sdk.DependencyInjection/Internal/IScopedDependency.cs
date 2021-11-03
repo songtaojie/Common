@@ -3,7 +3,7 @@
     /// <summary>
     /// 每个请求一个实例
     /// </summary>
-    public interface IScopedDependency : IPrivateDependency
+    public interface IScopedDependency : Internal.IPrivateDependency
     {
     }
 }
