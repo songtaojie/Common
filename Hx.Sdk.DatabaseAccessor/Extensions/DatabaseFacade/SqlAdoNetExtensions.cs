@@ -23,9 +23,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>DataTable</returns>
         public static DataTable ExecuteReader(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
+          
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = databaseFacade.PrepareDbCommand(sql, parameters, commandType);
 
@@ -53,8 +51,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(DataTable dataTable, DbParameter[] dbParameters)</returns>
         public static (DataTable dataTable, DbParameter[] dbParameters) ExecuteReader(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
 
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand, dbParameters) = databaseFacade.PrepareDbCommand(sql, model, commandType);
@@ -84,9 +80,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>DataTable</returns>
         public static async Task<DataTable> ExecuteReaderAsync(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
+          
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = await databaseFacade.PrepareDbCommandAsync(sql, parameters, commandType, cancellationToken);
 
@@ -115,9 +109,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(DataTable dataTable, DbParameter[] dbParameters)</returns>
         public static async Task<(DataTable dataTable, DbParameter[] dbParameters)> ExecuteReaderAsync(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand, dbParameters) = await databaseFacade.PrepareDbCommandAsync(sql, model, commandType, cancellationToken);
 
@@ -144,9 +135,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>受影响行数</returns>
         public static int ExecuteNonQuery(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = databaseFacade.PrepareDbCommand(sql, parameters, commandType);
 
@@ -169,9 +157,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(int rowEffects, DbParameter[] dbParameters)</returns>
         public static (int rowEffects, DbParameter[] dbParameters) ExecuteNonQuery(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand, dbParameters) = databaseFacade.PrepareDbCommand(sql, model, commandType);
 
@@ -195,9 +180,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>受影响行数</returns>
         public static async Task<int> ExecuteNonQueryAsync(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = await databaseFacade.PrepareDbCommandAsync(sql, parameters, commandType, cancellationToken);
 
@@ -221,9 +203,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(int rowEffects, DbParameter[] dbParameters)</returns>
         public static async Task<(int rowEffects, DbParameter[] dbParameters)> ExecuteNonQueryAsync(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand, dbParameters) = await databaseFacade.PrepareDbCommandAsync(sql, model, commandType, cancellationToken);
 
@@ -246,8 +225,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>单行单列的值</returns>
         public static object ExecuteScalar(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
 
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = databaseFacade.PrepareDbCommand(sql, parameters, commandType);
@@ -271,9 +248,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(object result, DbParameter[] dbParameters)</returns>
         public static (object result, DbParameter[] dbParameters) ExecuteScalar(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand, dbParameters) = databaseFacade.PrepareDbCommand(sql, model, commandType);
 
@@ -297,9 +271,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>单行单列的值</returns>
         public static async Task<object> ExecuteScalarAsync(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = await databaseFacade.PrepareDbCommandAsync(sql, parameters, commandType, cancellationToken);
 
@@ -323,9 +294,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(object result, DbParameter[] dbParameters)</returns>
         public static async Task<(object result, DbParameter[] dbParameters)> ExecuteScalarAsync(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand, dbParameters) = await databaseFacade.PrepareDbCommandAsync(sql, model, commandType, cancellationToken);
 
@@ -353,9 +321,6 @@ namespace Hx.Sdk.DatabaseAccessor
             {
                 return SqliteDataSetFill(databaseFacade, sql, parameters, commandType);
             }
-
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
 
             // 初始化数据库连接对象、数据库命令对象和数据库适配器对象
             var (_, dbCommand, dbDataAdapter) = databaseFacade.PrepareDbDataAdapter(sql, parameters, commandType);
@@ -385,9 +350,6 @@ namespace Hx.Sdk.DatabaseAccessor
             {
                 return SqliteDataSetFill(databaseFacade, sql, model, commandType);
             }
-
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
 
             // 初始化数据库连接对象、数据库命令对象和数据库适配器对象
             var (_, dbCommand, dbDataAdapter, dbParameters) = databaseFacade.PrepareDbDataAdapter(sql, model, commandType);
@@ -419,9 +381,6 @@ namespace Hx.Sdk.DatabaseAccessor
                 return await SqliteDataSetFillAsync(databaseFacade, sql, parameters, commandType, cancellationToken: cancellationToken);
             }
 
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象、数据库命令对象和数据库适配器对象
             var (_, dbCommand, dbDataAdapter) = await databaseFacade.PrepareDbDataAdapterAsync(sql, parameters, commandType, cancellationToken);
 
@@ -452,9 +411,6 @@ namespace Hx.Sdk.DatabaseAccessor
                 return await SqliteDataSetFillAsync(databaseFacade, sql, model, commandType, cancellationToken: cancellationToken);
             }
 
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             // 初始化数据库连接对象、数据库命令对象和数据库适配器对象
             var (_, dbCommand, dbDataAdapter, dbParameters) = await databaseFacade.PrepareDbDataAdapterAsync(sql, model, commandType, cancellationToken);
 
@@ -479,9 +435,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>DataTable</returns>
         private static DataSet SqliteDataSetFill(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             var sqls = sql.Split(";", StringSplitOptions.RemoveEmptyEntries);
 
             // 初始化数据库连接对象和数据库命令对象
@@ -504,9 +457,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(DataTable dataTable, DbParameter[] dbParameters)</returns>
         private static (DataSet dataSet, DbParameter[] dbParameters) SqliteDataSetFill(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             var sqls = sql.Split(";", StringSplitOptions.RemoveEmptyEntries);
 
             // 初始化数据库连接对象和数据库命令对象
@@ -530,9 +480,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>DataTable</returns>
         private static async Task<DataSet> SqliteDataSetFillAsync(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             var sqls = sql.Split(";", StringSplitOptions.RemoveEmptyEntries);
 
             // 初始化数据库连接对象和数据库命令对象
@@ -556,8 +503,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>(DataTable dataTable, DbParameter[] dbParameters)</returns>
         private static async Task<(DataSet dataSet, DbParameter[] dbParameters)> SqliteDataSetFillAsync(this DatabaseFacade databaseFacade, string sql, object model, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, CancellationToken cancellationToken = default)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
 
             var sqls = sql.Split(";", StringSplitOptions.RemoveEmptyEntries);
 

@@ -1,4 +1,3 @@
-using Hx.Sdk.ConfigureOptions;
 using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

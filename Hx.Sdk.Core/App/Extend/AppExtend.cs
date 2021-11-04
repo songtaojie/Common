@@ -12,11 +12,6 @@ namespace Hx.Sdk.Core
     internal static class AppExtend
     {
         /// <summary>
-        /// 是否使用Autofac依赖注入接管原生的依赖注入
-        /// </summary>
-        internal static bool InjectAutofac = false;
-
-        /// <summary>
         /// Hx.Sdk.DependencyInjection依赖注入包
         /// </summary>
         internal const string DependencyInjection = "Hx.Sdk.DependencyInjection";

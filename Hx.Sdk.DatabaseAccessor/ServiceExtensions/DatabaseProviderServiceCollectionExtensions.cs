@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.DatabaseAccessor;
+using Hx.Sdk.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -242,7 +243,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                         // 处理迁移程序集
                         optionsType.GetMethod("MigrationsAssembly")
-                                   .Invoke(options, new[] { Db.MigrationAssemblyName });
+                                   .Invoke(options, new[] { Penetrates.DbSettings.MigrationAssemblyName });
                     };
 
                     dbContextOptionsBuilder = UseMethod
@@ -280,7 +281,7 @@ namespace Microsoft.Extensions.DependencyInjection
             DatabaseProviderUseMethodCollection = new ConcurrentDictionary<string, (MethodInfo, object)>();
             MigrationsAssemblyAction = options => options.GetType()
                 .GetMethod("MigrationsAssembly")
-                .Invoke(options, new[] { Db.MigrationAssemblyName });
+                .Invoke(options, new[] { Penetrates.DbSettings.MigrationAssemblyName });
         }
 
         /// <summary>

@@ -113,35 +113,6 @@ namespace Hx.Sdk.DatabaseAccessor
         }
 
         /// <summary>
-        /// 解析 Sql 配置信息
-        /// </summary>
-        /// <param name="sqlTemplate">sql或sql模板</param>
-        /// <returns></returns>
-        internal static string ResolveSqlConfiguration(string sqlTemplate)
-        {
-            var matches = SqlTemplateRegex.Matches(sqlTemplate);
-            if (!matches.Any()) return sqlTemplate;
-
-            foreach (Match match in matches)
-            {
-                // 获取路径
-                var path = match.Groups["path"].Value;
-
-                // 读取配置
-                var realSql = AppSettings.Configuration[path];
-                if (string.IsNullOrWhiteSpace(realSql))
-                {
-                    var sqlConfiguration = AppSettings.GetConfig<SqlTemplate>(path) ?? throw new InvalidOperationException($"Not found {path} configuration information.");
-                    realSql = sqlConfiguration.Sql;
-                }
-
-                sqlTemplate = sqlTemplate.Replace($"#({path})", realSql);
-            }
-
-            return sqlTemplate;
-        }
-
-        /// <summary>
         /// 数据没找到异常
         /// </summary>
         /// <returns></returns>

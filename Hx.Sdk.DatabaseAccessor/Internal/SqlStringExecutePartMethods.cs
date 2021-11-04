@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
@@ -345,7 +346,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns></returns>
         private IPrivateSqlRepository GetSqlRepository()
         {
-            return App.GetService(typeof(ISqlRepository<>).MakeGenericType(DbContextLocator), ContextScoped) as IPrivateSqlRepository;
+            return Penetrates.GetService(typeof(ISqlRepository<>).MakeGenericType(DbContextLocator), ContextScoped) as IPrivateSqlRepository;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Hx.Sdk.Core;
+using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -31,13 +33,13 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>IHostBuilder</returns>
         public static IHostBuilder ConfigureHxWebHostDefaults(this IHostBuilder hostBuilder, Action<IWebHostBuilder> configure,bool injectAutofac = true)
         {
-            AppExtend.InjectAutofac = injectAutofac;
+            InternalApp.InjectAutofac = injectAutofac;
             hostBuilder.ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.ConfigureHxWebApp(injectAutofac);
                 configure(webBuilder);
             });
-            if (AppExtend.InjectAutofac)
+            if (InternalApp.InjectAutofac)
             {
                 hostBuilder.InjectContainerBuilder();
             }
@@ -52,20 +54,47 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>IHostBuilder</returns>
         public static IHostBuilder ConfigureHxApp(this IHostBuilder hostBuilder, bool injectAutofac = true)
         {
-            AppExtend.InjectAutofac = injectAutofac;
+            InternalApp.InjectAutofac = injectAutofac;
             hostBuilder.ConfigureHxAppConfiguration();
             // 自动注入 AddApp() 服务
             hostBuilder.ConfigureServices(services =>
             {
-                ConsoleHelper.WriteSuccessLine("Begin Hx.Sdk.Core ConfigureServices");
                 // 初始化应用服务
                 services.AddHostApp();
-                ConsoleHelper.WriteSuccessLine("End Hx.Sdk.Core ConfigureServices", true);
+                ConsoleHelper.WriteSuccessLine("The hx.sdk. Core ConfigureServices registration is complete", true);
             });
-            if (AppExtend.InjectAutofac)
+            if (InternalApp.InjectAutofac)
             {
                 hostBuilder.InjectContainerBuilder();
             }
+            return hostBuilder;
+        }
+
+        /// <summary>
+        /// 泛型主机配置Configuration
+        /// </summary>
+        /// <param name="hostBuilder">泛型主机注入构建器</param>
+        /// <param name="configureDelegate">配置对象</param>
+        /// <returns>IHostBuilder</returns>
+        public static IHostBuilder ConfigureHxAppConfiguration(this IHostBuilder hostBuilder, Action<HostBuilderContext, IConfigurationBuilder> configureDelegate = null)
+        {
+            hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                // 存储环境对象
+                InternalApp.HostEnvironment = hostingContext.HostingEnvironment;
+
+                // 加载配置
+                InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
+                configureDelegate?.Invoke(hostingContext, config);
+                ConsoleHelper.WriteSuccessLine("Complete the Hx. Internal ConfigureAppConfiguration Sdk registration", true);
+            });
+            hostBuilder.ConfigureServices(services =>
+            {
+                // 添加全局配置和存储服务提供器
+                InternalApp.InternalServices = services;
+                ConsoleHelper.WriteInfoLine("Add the AppSettingsOptions configuration object");
+                services.AddConfigurableOptions<AppSettingsOptions>();
+            });
             return hostBuilder;
         }
     }

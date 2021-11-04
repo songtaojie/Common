@@ -1,4 +1,6 @@
 ﻿using Hx.Sdk.DatabaseAccessor;
+using Hx.Sdk.DatabaseAccessor.Internal;
+using Hx.Sdk.DatabaseAccessor.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -15,12 +17,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">服务集合</param>
         /// <param name="configure">配置</param>
-        /// <param name="migrationAssemblyName">迁移类库名称</param>
+        /// <param name="dbSettings">配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddDatabaseAccessor(this IServiceCollection services, Action<IServiceCollection> configure = null, string migrationAssemblyName = default)
+        public static IServiceCollection AddDatabaseAccessor(this IServiceCollection services, Action<IServiceCollection> configure = null, Action<DbSettingsOptions> dbSettings = null)
         {
-            // 设置迁移类库名称
-            if (!string.IsNullOrWhiteSpace(migrationAssemblyName)) Db.MigrationAssemblyName = migrationAssemblyName;
+            Penetrates.InternalServices = services;
+            ConfigureDbOptions(services, dbSettings);
            
             // 配置数据库上下文
             configure?.Invoke(services);
@@ -61,12 +63,14 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             // 注册全局工作单元过滤器
-            //services.AddMvcFilter<UnitOfWorkFilter>();
             services.Configure<AspNetCore.Mvc.MvcOptions>(options =>
             {
                 options.Filters.Add<UnitOfWorkFilter>();
             });
-
+            if (Penetrates.DbSettings.EnabledMiniProfiler == true)
+            {
+                services.AddMiniProfilerService();
+            }
             return services;
         }
 
@@ -125,6 +129,22 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<TDbContext>();
 
             return services;
+        }
+
+        /// <summary>
+        /// 添加 Swagger配置
+        /// </summary>
+        /// <param name="services"></param>
+        private static void ConfigureDbOptions(IServiceCollection services, Action<DbSettingsOptions> dbSettings)
+        {
+            // 配置验证
+            services.AddOptions<DbSettingsOptions>()
+                    .BindConfiguration("DbSettings")
+                    .ValidateDataAnnotations()
+                    .PostConfigure(options =>
+                    {
+                        dbSettings?.Invoke(options);
+                    });
         }
     }
 }

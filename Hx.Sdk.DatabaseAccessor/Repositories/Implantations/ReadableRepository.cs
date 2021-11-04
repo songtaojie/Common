@@ -743,9 +743,6 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>IQueryable</returns>
         public virtual IQueryable<TEntity> FromSqlRaw(string sql, params object[] parameters)
         {
-            // 获取真实运行 Sql
-            sql = DbHelpers.ResolveSqlConfiguration(sql);
-
             return Entities.FromSqlRaw(sql, parameters);
         }
 

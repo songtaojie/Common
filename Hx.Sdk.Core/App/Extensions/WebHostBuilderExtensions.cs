@@ -1,7 +1,10 @@
 ﻿using Hx.Sdk.Core;
+using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Microsoft.AspNetCore.Hosting
 {
@@ -23,7 +26,38 @@ namespace Microsoft.AspNetCore.Hosting
         public static IWebHostBuilder ConfigureHxWebApp(this IWebHostBuilder hostBuilder, bool injectAutofac = false)
         {
             hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Hx.Sdk.Core");
-            AppExtend.InjectAutofac = injectAutofac;
+            InternalApp.InjectAutofac = injectAutofac;
+            return hostBuilder;
+        }
+
+        /// <summary>
+        /// Web主机配置Configuration
+        /// </summary>
+        /// <param name="hostBuilder">泛型主机注入构建器</param>
+        /// <param name="configureDelegate">配置对象</param>
+        /// <returns>IHostBuilder</returns>
+        public static IWebHostBuilder ConfigureHxAppConfiguration(this IWebHostBuilder hostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate = null)
+        {
+            // 自动装载配置
+            hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                // 存储环境对象
+                InternalApp.HostEnvironment = InternalApp.WebHostEnvironment = hostingContext.HostingEnvironment;
+
+                // 加载配置
+                InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
+                configureDelegate?.Invoke(hostingContext, config);
+                ConsoleHelper.WriteSuccessLine("complete Hx.Sdk.ConfigureOptions ConfigureAppConfiguration", true);
+            });
+            // 自动注入 AddConfigurableOptions() 服务
+            hostBuilder.ConfigureServices(services =>
+            {
+                // 添加全局配置和存储服务提供器
+                InternalApp.InternalServices = services;
+                ConsoleHelper.WriteInfoLine("Add the AppSettingsOptions configuration object");
+                services.AddConfigurableOptions<AppSettingsOptions>();
+            });
+
             return hostBuilder;
         }
     }

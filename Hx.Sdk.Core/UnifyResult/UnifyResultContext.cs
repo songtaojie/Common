@@ -1,14 +1,12 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.FriendlyException;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Reflection;
+using Hx.Sdk.Core;
 using Hx.Sdk.Extensions;
 
 namespace Hx.Sdk.UnifyResult
@@ -184,6 +182,18 @@ namespace Hx.Sdk.UnifyResult
 
             unifyResult = isSkip ? null : App.GetService<IUnifyResultProvider>();
             return unifyResult == null || isSkip;
+        }
+
+        /// <summary>
+        /// 获取 Action 特性
+        /// </summary>
+        /// <typeparam name="TAttribute"></typeparam>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
+        internal static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext)
+            where TAttribute : class
+        {
+            return httpContext.GetEndpoint()?.Metadata?.GetMetadata<TAttribute>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
 using System;
@@ -16,10 +17,6 @@ namespace Hx.Sdk.DatabaseAccessor
     /// </summary>
     public class DbContextPool : IDbContextPool
     {
-        /// <summary>
-        /// MiniProfiler 分类名
-        /// </summary>
-        private const string MiniProfilerCategory = "transaction";
 
         /// <summary>
         /// MiniProfiler 组件状态
@@ -27,17 +24,11 @@ namespace Hx.Sdk.DatabaseAccessor
         private readonly bool EnabledMiniProfiler;
 
         /// <summary>
-        /// 是否打印数据库连接信息
-        /// </summary>
-        private readonly bool IsPrintDbConnectionInfo;
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         public DbContextPool()
         {
-            EnabledMiniProfiler = App.Settings.EnabledMiniProfiler == true;
-            IsPrintDbConnectionInfo = App.Settings.PrintDbConnectionInfo == true;
+            EnabledMiniProfiler = Penetrates.DbSettings.EnabledMiniProfiler == true;
 
             dbContexts = new ConcurrentBag<DbContext>();
             failedDbContexts = new ConcurrentBag<DbContext>();
@@ -72,31 +63,6 @@ namespace Hx.Sdk.DatabaseAccessor
             if (!dbContexts.Contains(dbContext))
             {
                 dbContexts.Add(dbContext);
-
-                //// 订阅数据库上下文操作失败事件
-                //dbContext.SaveChangesFailed += (s, e) =>
-                //{
-                //    if (!failedDbContexts.Contains(dbContext))
-                //    {
-                //        var context = s as DbContext;
-
-                //        // 当前事务
-                //        var database = context.Database;
-                //        var currentTransaction = database.CurrentTransaction;
-                //        if (currentTransaction != null)
-                //        {
-                //            // 获取数据库连接信息
-                //            var connection = database.GetDbConnection();
-                //            // 回滚事务
-                //            currentTransaction.Rollback();
-                //            // 打印事务回滚消息
-                //            App.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", $"[Connection Id: {context.ContextId}] / [Database: {connection.Database}]{(IsPrintDbConnectionInfo ? $" / [Connection String: {connection.ConnectionString}]" : string.Empty)}", isError: true);
-                //        }
-
-                //        // 记录错误上下文
-                //        failedDbContexts.Add(context);
-                //    }
-                //};
             }
         }
 

@@ -2,7 +2,6 @@
 using Hx.Sdk.DependencyInjection;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Hx.Sdk.ConfigureOptions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

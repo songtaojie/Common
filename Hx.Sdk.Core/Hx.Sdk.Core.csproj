@@ -19,11 +19,12 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="App\Internal\" />
-    <Folder Include="Options\" />
+    <ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
   </ItemGroup>
 
 </Project>

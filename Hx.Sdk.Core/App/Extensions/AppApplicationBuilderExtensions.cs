@@ -1,8 +1,5 @@
-﻿using Hx.Sdk;
-using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.Core;
+﻿using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Extensions;
 using System;
 
 namespace Microsoft.AspNetCore.Builder
@@ -24,11 +21,11 @@ namespace Microsoft.AspNetCore.Builder
         {
             
             // 启用 MiniProfiler组件
-            if (App.Settings.EnabledMiniProfiler == true)
-            {
-                ConsoleHelper.WriteInfoLine("Use the MiniProfiler ApplicationBuilder");
-                app.UseMiniProfiler();
-            }
+            //if (App.Settings.EnabledMiniProfiler == true)
+            //{
+            //    ConsoleHelper.WriteInfoLine("Use the MiniProfiler ApplicationBuilder");
+            //    app.UseMiniProfiler();
+            //}
             // 判断是否启用规范化文档
             if (App.Settings.EnabledSwagger == true)
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         public SqlConnectionProfilerInterceptor()
         {
-            IsPrintDbConnectionInfo = App.Settings.PrintDbConnectionInfo.Value;
+            IsPrintDbConnectionInfo = Penetrates.DbSettings.PrintDbConnectionInfo == true;
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace Hx.Sdk.DatabaseAccessor
         private void PrintConnectionToMiniProfiler(DbConnection connection, ConnectionEventData eventData)
         {
             // 打印连接信息消息
-            App.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {eventData.ConnectionId}] / [Database: {connection.Database}]{(IsPrintDbConnectionInfo ? $" / [Connection String: {connection.ConnectionString}]" : string.Empty)}");
+            Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {eventData.ConnectionId}] / [Database: {connection.Database}]{(IsPrintDbConnectionInfo ? $" / [Connection String: {connection.ConnectionString}]" : string.Empty)}");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +8,7 @@ namespace Hx.Sdk.CorsAccessor
     /// <summary>
     /// 跨域配置选项
     /// </summary>
-    public sealed class CorsAccessorSettingsOptions : IConfigurableOptions<CorsAccessorSettingsOptions>
+    public sealed class CorsAccessorSettingsOptions : IPostConfigureOptions<CorsAccessorSettingsOptions>
     {
         /// <summary>
         /// 策略名称
@@ -50,9 +49,9 @@ namespace Hx.Sdk.CorsAccessor
         /// <summary>
         /// 后期配置
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="options"></param>
-        /// <param name="configuration"></param>
-        public void PostConfigure(CorsAccessorSettingsOptions options, IConfiguration configuration)
+        public void PostConfigure(string name, CorsAccessorSettingsOptions options)
         {
             PolicyName ??= "HxCorsAccessor";
             WithOrigins ??= Array.Empty<string>();

@@ -35,7 +35,10 @@ namespace Hx.Sdk.WebApi
             {
                 options.AddDbPool<DefaultDbContext>();
                 options.AddDbPool<IdsDbContext, IdsDbContextLocator>();
-            }, "Hx.Sdk.Test.Entity");
+            }, db=> 
+            { 
+                db.MigrationAssemblyName = "Hx.Sdk.Test.Entity";
+            });
             services.AddRedisCache();
             services.AddDbContext<DefaultDbContext>();
             //services.AddCapRabbitMQ();

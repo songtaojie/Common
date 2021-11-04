@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             Penetrates.InternalServices = services;
             // 添加配置
-            ConfigureJWTOptions(services, swaggerSettings);
+            ConfigureSwaggerOptions(services, swaggerSettings);
             // 添加Swagger生成器服务
             services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
 
@@ -38,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var services = mvcBuilder.Services;
             Penetrates.InternalServices = services;
             // 添加配置
-            ConfigureJWTOptions(services, swaggerSettings);
+            ConfigureSwaggerOptions(services, swaggerSettings);
             // 添加Swagger生成器服务
             services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
 
@@ -46,10 +46,10 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// 添加 JWT 授权
+        /// 添加 Swagger配置
         /// </summary>
         /// <param name="services"></param>
-        private static void ConfigureJWTOptions(IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings)
+        private static void ConfigureSwaggerOptions(IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings)
         {
             // 配置验证
             services.AddOptions<SwaggerSettingsOptions>()

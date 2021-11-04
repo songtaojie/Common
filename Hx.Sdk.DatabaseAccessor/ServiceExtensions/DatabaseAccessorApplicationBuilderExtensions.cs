@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -11,5 +7,20 @@ namespace Microsoft.AspNetCore.Builder
     /// </summary>
     public static class DatabaseAccessorApplicationBuilderExtensions
     {
+        /// <summary>
+        /// 添加数据库访问中间件
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseDatabaseAccessor(this IApplicationBuilder app)
+        {
+            Penetrates.ServiceProvider = app.ApplicationServices;
+
+            if (Penetrates.DbSettings.EnabledMiniProfiler == true)
+            {
+                app.UseMiniProfiler();
+            }
+            return app;
+        }
     }
 }

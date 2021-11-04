@@ -1,12 +1,7 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity;
+﻿using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.FriendlyException;
 using Hx.Sdk.UnifyResult;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -74,12 +69,6 @@ namespace Microsoft.AspNetCore.Mvc.Filters
                 };
             }
             else context.Result = unifyResult.OnException(context);
-
-            // 处理验证异常，打印验证失败信息
-            if (isValidationMessage)
-            {
-                App.PrintToMiniProfiler("validation", "Failed", $"Exception Validation Failed:\r\n{errorMessage}", true);
-            }
         }
 
         /// <summary>

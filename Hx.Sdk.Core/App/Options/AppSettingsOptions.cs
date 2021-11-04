@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Hx.Sdk.Core
@@ -6,7 +7,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 应用全局配置
     /// </summary>
-    public sealed class AppSettingsOptions : IConfigurableOptions<AppSettingsOptions>
+    public sealed class AppSettingsOptions : IPostConfigureOptions<AppSettingsOptions>
     {
         /// <summary>
         /// 集成 MiniProfiler 组件
@@ -56,9 +57,9 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 后期配置
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="options"></param>
-        /// <param name="configuration"></param>
-        public void PostConfigure(AppSettingsOptions options, IConfiguration configuration)
+        public void PostConfigure(string name, AppSettingsOptions options)
         {
             options.EnabledMiniProfiler ??= true;
             options.EnabledSwagger ??= true;
@@ -70,5 +71,6 @@ namespace Hx.Sdk.Core
             options.EnabledExceptionFilter ??= true;
             options.EnabledSqlLog ??= true;
         }
+
     }
 }

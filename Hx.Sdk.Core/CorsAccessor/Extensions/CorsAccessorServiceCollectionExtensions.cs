@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
+﻿using Hx.Sdk.Core;
 using Hx.Sdk.CorsAccessor;
 using Hx.Sdk.DependencyInjection;
 using System;

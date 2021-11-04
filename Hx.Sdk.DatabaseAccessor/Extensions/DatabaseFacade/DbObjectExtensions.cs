@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Hosting;
@@ -22,11 +23,6 @@ namespace Hx.Sdk.DatabaseAccessor
         private const string MiniProfilerCategory = "connection";
 
         /// <summary>
-        /// 是否是开发环境
-        /// </summary>
-        private static readonly bool IsDevelopment;
-
-        /// <summary>
         /// MiniProfiler 组件状态
         /// </summary>
         private static readonly bool EnabledMiniProfiler;
@@ -41,11 +37,9 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         static DbObjectExtensions()
         {
-            IsDevelopment = App.HostEnvironment.IsDevelopment();
-
-            var appsettings = App.Settings;
-            EnabledMiniProfiler = appsettings.EnabledMiniProfiler.Value;
-            IsPrintDbConnectionInfo = appsettings.PrintDbConnectionInfo.Value;
+            var dbSettings = Penetrates.DbSettings;
+            EnabledMiniProfiler = dbSettings.EnabledMiniProfiler == true;
+            IsPrintDbConnectionInfo = dbSettings.PrintDbConnectionInfo == true;
         }
 
         /// <summary>
@@ -358,11 +352,11 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <param name="dbConnection">数据库连接对象</param>
         private static void PrintConnectionToMiniProfiler(DatabaseFacade databaseFacade, DbConnection dbConnection)
         {
-            if (IsDevelopment && IsPrintDbConnectionInfo)
+            if (IsPrintDbConnectionInfo)
             {
                 var connectionId = databaseFacade.GetService<IRelationalConnection>()?.ConnectionId;
                 // 打印连接信息消息
-                App.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {connectionId}] / [Database: {dbConnection.Database}] / [Connection String: {dbConnection.ConnectionString}]");
+                Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {connectionId}] / [Database: {dbConnection.Database}] / [Connection String: {dbConnection.ConnectionString}]");
             }
         }
     }

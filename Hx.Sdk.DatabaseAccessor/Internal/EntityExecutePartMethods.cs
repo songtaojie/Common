@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -695,7 +696,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns></returns>
         private IPrivateRepository<TEntity> GetRepository()
         {
-            return App.GetService(typeof(IRepository<,>).MakeGenericType(typeof(TEntity), DbContextLocator), ContextScoped) as IPrivateRepository<TEntity>;
+            return Penetrates.GetService(typeof(IRepository<,>).MakeGenericType(typeof(TEntity), DbContextLocator), ContextScoped) as IPrivateRepository<TEntity>;
         }
     }
 }

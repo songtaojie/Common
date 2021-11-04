@@ -1,3 +1,4 @@
+using Hx.Sdk.DatabaseAccessor.Extensions.LinqBuilder;
 using Hx.Sdk.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;

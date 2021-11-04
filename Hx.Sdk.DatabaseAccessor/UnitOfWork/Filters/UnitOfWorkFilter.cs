@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using Hx.Sdk.DatabaseAccessor.Internal;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace Hx.Sdk.DatabaseAccessor
             else
             {
                 // 打印事务开始消息
-                App.PrintToMiniProfiler(MiniProfilerCategory, "Beginning");
+                Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Beginning");
 
                 var dbContexts = _dbContextPool.GetDbContexts();
                 IDbContextTransaction dbContextTransaction;
@@ -110,7 +111,7 @@ namespace Hx.Sdk.DatabaseAccessor
                         dbContextTransaction?.Commit();
 
                         // 打印事务提交消息
-                        App.PrintToMiniProfiler(MiniProfilerCategory, "Completed", $"Transaction Completed! Has {hasChangesCount} DbContext Changes.");
+                        Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Completed", $"Transaction Completed! Has {hasChangesCount} DbContext Changes.");
                     }
                     catch
                     {
@@ -118,7 +119,7 @@ namespace Hx.Sdk.DatabaseAccessor
                         if (dbContextTransaction.GetDbTransaction().Connection != null) dbContextTransaction?.Rollback();
 
                         // 打印事务回滚消息
-                        App.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
+                        Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
 
                         throw;
                     }
@@ -134,7 +135,7 @@ namespace Hx.Sdk.DatabaseAccessor
                     dbContextTransaction?.Dispose();
 
                     // 打印事务回滚消息
-                    App.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
+                    Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
                 }
             }
 

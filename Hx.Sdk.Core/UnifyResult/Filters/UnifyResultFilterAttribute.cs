@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -63,8 +62,6 @@ namespace Microsoft.AspNetCore.Mvc.Filters
                     }
                     // 解析验证消息
                     context.Result = new JsonResult(result);
-                    // 打印验证失败信息
-                    App.PrintToMiniProfiler("validation", "Failed", $"Validation Failed:\r\n{result.Message}", true);
                 }
                 else
                 {

@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Extensions;
+﻿using Hx.Sdk.DatabaseAccessor.Extensions;
+using Hx.Sdk.Extensions;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;

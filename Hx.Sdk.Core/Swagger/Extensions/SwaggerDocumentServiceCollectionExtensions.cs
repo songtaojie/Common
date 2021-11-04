@@ -1,7 +1,5 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.Core;
+﻿using Hx.Sdk.Core;
 using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Extensions;
 using System.Linq;
 using System.Reflection;
 

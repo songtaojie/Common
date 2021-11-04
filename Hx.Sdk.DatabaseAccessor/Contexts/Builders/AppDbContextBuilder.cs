@@ -1,6 +1,6 @@
 ﻿using Hx.Sdk.DatabaseAccessor.Extensions;
 using Hx.Sdk.DatabaseAccessor.Internal;
-using Hx.Sdk.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -34,20 +34,13 @@ namespace Hx.Sdk.DatabaseAccessor
         private static readonly MethodInfo ModelBuildEntityMethod;
 
         /// <summary>
-        /// 判断是否是 Web 环境
-        /// </summary>
-        private static readonly bool IsWebEnvironment;
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         static AppDbContextBuilder()
         {
-            // 判断是否是 Web 环境
-            IsWebEnvironment = App.WebHostEnvironment != null;
 
             // 扫描程序集，获取数据库实体相关类型
-            EntityCorrelationTypes = App.EffectiveTypes.Where(t => (typeof(IPrivateEntity).IsAssignableFrom(t) || typeof(IPrivateModelBuilder).IsAssignableFrom(t))
+            EntityCorrelationTypes = Penetrates.EffectiveTypes.Where(t => (typeof(IPrivateEntity).IsAssignableFrom(t) || typeof(IPrivateModelBuilder).IsAssignableFrom(t))
                 && t.IsClass && !t.IsAbstract && !t.IsGenericType && !t.IsInterface && !t.IsDefined(typeof(NonAutomaticAttribute), true))
                 .ToList();
 
@@ -60,9 +53,9 @@ namespace Hx.Sdk.DatabaseAccessor
             }
 
             // 查找所有数据库函数，必须是公开静态方法，且所在父类也必须是公开静态方法
-            DbFunctionMethods = App.EffectiveTypes
+            DbFunctionMethods = Penetrates.EffectiveTypes
                 .Where(t => t.IsAbstract && t.IsSealed && t.IsClass && !t.IsDefined(typeof(NonAutomaticAttribute), true))
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m => !m.IsDefined(typeof(SkipScanAttribute), false) && m.IsDefined(typeof(QueryableFunctionAttribute), true))).ToList();
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m =>m.IsDefined(typeof(QueryableFunctionAttribute), true))).ToList();
         }
 
         /// <summary>
@@ -96,12 +89,8 @@ namespace Hx.Sdk.DatabaseAccessor
                 // 配置数据库实体类型构建器
                 ConfigureEntityTypeBuilder(entityType, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType);
 
-                // 跳过运行时执行种子数据检查
-                if (!IsWebEnvironment)
-                {
-                    // 配置数据库实体种子数据
-                    ConfigureEntitySeedData(entityType, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType);
-                }
+                // 配置数据库实体种子数据
+                ConfigureEntitySeedData(entityType, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType);
 
                 // 实体完成配置注入拦截
                 LoadModelBuilderOnCreated(modelBuilder, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType.ModelBuilderFilterInstances);
@@ -449,14 +438,10 @@ namespace Hx.Sdk.DatabaseAccessor
                             else result.ModelBuilderFilterInstances.Add(Activator.CreateInstance(entityCorrelationType) as IPrivateModelBuilderFilter);
                         }
 
-                        // 只有非 Web 环境才添加种子数据
-                        if (!IsWebEnvironment)
+                        // 添加种子数据
+                        if (entityCorrelationType.HasImplementedRawGeneric(typeof(IPrivateEntitySeedData<>)))
                         {
-                            // 添加种子数据
-                            if (entityCorrelationType.HasImplementedRawGeneric(typeof(IPrivateEntitySeedData<>)))
-                            {
-                                result.EntitySeedDataTypes.Add(entityCorrelationType);
-                            }
+                            result.EntitySeedDataTypes.Add(entityCorrelationType);
                         }
 
                         // 添加动态表类型

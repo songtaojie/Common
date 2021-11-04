@@ -1,10 +1,6 @@
-﻿using Hx.Sdk.ConfigureOptions;
-using Hx.Sdk.Core;
+﻿using Hx.Sdk.Core;
+using Hx.Sdk.Core.Internal;
 using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Extensions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -29,11 +25,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
                 services.AddUserContext();
 
-                // 注册MiniProfiler 组件
-                if (App.Settings.EnabledMiniProfiler == true)
-                {
-                    services.AddMiniProfilerService();
-                }
+                //// 注册MiniProfiler 组件
+                //if (App.Settings.EnabledMiniProfiler == true)
+                //{
+                //    services.AddMiniProfilerService();
+                //}
+
                 // 注册swagger
                 // 判断是否启用规范化文档
                 if (App.Settings.EnabledSwagger == true)
@@ -75,7 +72,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDistributedMemoryCache();
 
             // 注册全局依赖注入
-            if (!AppExtend.InjectAutofac)
+            if (!InternalApp.InjectAutofac)
             {
                 services.AddNativeDependencyInjection(App.EffectiveTypes);
             }

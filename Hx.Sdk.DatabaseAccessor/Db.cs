@@ -10,11 +10,6 @@ namespace Hx.Sdk.DatabaseAccessor
     public static class Db
     {
         /// <summary>
-        /// 迁移类库名称
-        /// </summary>
-        internal static string MigrationAssemblyName = "Hx.Sdk.Database.Migrations";
-
-        /// <summary>
         /// 未找到服务错误消息
         /// </summary>
         private const string NotFoundServiceErrorMessage = "{0} Service not registered or uninstalled.";
@@ -26,7 +21,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns></returns>
         public static IRepository GetRepository(IServiceProvider scoped = default)
         {
-            return App.GetService<IRepository>(scoped)
+            return Penetrates.GetService<IRepository>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(IRepository)));
         }
 
@@ -39,7 +34,7 @@ namespace Hx.Sdk.DatabaseAccessor
         public static IRepository<TEntity> GetRepository<TEntity>(IServiceProvider scoped = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return App.GetService<IRepository<TEntity>>(scoped)
+            return Penetrates.GetService<IRepository<TEntity>>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(IRepository<TEntity>)));
         }
 
@@ -54,7 +49,7 @@ namespace Hx.Sdk.DatabaseAccessor
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return App.GetService<IRepository<TEntity, TDbContextLocator>>(scoped)
+            return Penetrates.GetService<IRepository<TEntity, TDbContextLocator>>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(IRepository<TEntity, TDbContextLocator>)));
         }
 
@@ -65,7 +60,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// <returns>ISqlRepository</returns>
         public static ISqlRepository GetSqlRepository(IServiceProvider scoped = default)
         {
-            return App.GetService<ISqlRepository>(scoped)
+            return Penetrates.GetService<ISqlRepository>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(ISqlRepository)));
         }
 
@@ -78,7 +73,7 @@ namespace Hx.Sdk.DatabaseAccessor
         public static ISqlRepository<TDbContextLocator> GetSqlRepository<TDbContextLocator>(IServiceProvider scoped = default)
             where TDbContextLocator : class, IDbContextLocator
         {
-            return App.GetService<ISqlRepository<TDbContextLocator>>(scoped)
+            return Penetrates.GetService<ISqlRepository<TDbContextLocator>>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(ISqlRepository<TDbContextLocator>)));
         }
 
@@ -104,7 +99,7 @@ namespace Hx.Sdk.DatabaseAccessor
             // 判断数据库上下文定位器是否绑定
             Penetrates.CheckDbContextLocator(dbContextLocator, out _);
 
-            var dbContextResolve = App.GetService<Func<Type, DbContext>>(scoped);
+            var dbContextResolve = Penetrates.GetService<Func<Type, DbContext>>(scoped);
             return dbContextResolve(dbContextLocator);
         }
 
@@ -142,7 +137,7 @@ namespace Hx.Sdk.DatabaseAccessor
             // 判断数据库上下文定位器是否绑定
             Penetrates.CheckDbContextLocator(dbContextLocator, out _);
 
-            var dbContextResolve = App.GetService<Func<Type, DbContext>>(scoped);
+            var dbContextResolve = Penetrates.GetService<Func<Type, DbContext>>(scoped);
             return dbContextResolve(dbContextLocator);
         }
 
