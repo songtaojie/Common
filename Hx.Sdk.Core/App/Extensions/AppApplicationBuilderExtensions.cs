@@ -20,22 +20,10 @@ namespace Microsoft.AspNetCore.Builder
         internal static IApplicationBuilder UseHxApp(this IApplicationBuilder app, Action<IApplicationBuilder> configure = null)
         {
             
-            // 启用 MiniProfiler组件
-            //if (App.Settings.EnabledMiniProfiler == true)
-            //{
-            //    ConsoleHelper.WriteInfoLine("Use the MiniProfiler ApplicationBuilder");
-            //    app.UseMiniProfiler();
-            //}
             // 判断是否启用规范化文档
-            if (App.Settings.EnabledSwagger == true)
-            {
-                app.UseSwaggerDocuments();
-            }
+            if (App.Settings.EnabledSwagger == true) app.UseSwaggerDocuments();
 
-            if (App.Settings.EnabledUnifyResult == true)
-            {
-                app.UseUnifyResultStatusCodes();
-            }
+            if (App.Settings.EnabledUnifyResult == true) app.UseUnifyResultStatusCodes();
             // 调用自定义服务
             configure?.Invoke(app);
             return app;

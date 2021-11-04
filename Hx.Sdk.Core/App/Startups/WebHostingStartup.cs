@@ -21,20 +21,6 @@ namespace Hx.Sdk.Core
         /// <param name="builder"></param>
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((hostContext,services) =>
-            {
-                // 存储服务提供器
-                InternalApp.InternalServices = services;
-                // 存储配置对象
-                InternalApp.Configuration = hostContext.Configuration;
-                // 注册 Startup 过滤器
-                services.AddTransient<IStartupFilter, StartupFilter>();
-                // 存储服务提供器
-                services.AddHostedService<GenericHostLifetimeEventsHostedService>();
-                // 初始化应用服务
-                services.AddApp();
-                ConsoleHelper.WriteSuccessLine("complete Hx.Sdk.Core ConfigureServices", true);
-            });
             // 自动装载配置
             builder.ConfigureHxAppConfiguration();
         }

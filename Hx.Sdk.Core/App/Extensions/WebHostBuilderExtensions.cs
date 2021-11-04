@@ -4,6 +4,7 @@ using Hx.Sdk.DependencyInjection;
 using Hx.Sdk.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace Microsoft.AspNetCore.Hosting
@@ -47,6 +48,19 @@ namespace Microsoft.AspNetCore.Hosting
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
                 configureDelegate?.Invoke(hostingContext, config);
+            });
+
+            hostBuilder.ConfigureServices((hostContext, services) =>
+            {
+                // 存储服务提供器
+                InternalApp.InternalServices = services;
+                // 存储配置对象
+                InternalApp.Configuration = hostContext.Configuration;
+                // 注册 Startup 过滤器
+                services.AddTransient<IStartupFilter, StartupFilter>();
+                // 初始化应用服务
+                services.AddApp();
+                ConsoleHelper.WriteSuccessLine("complete Hx.Sdk.Core ConfigureServices", true);
             });
             return hostBuilder;
         }

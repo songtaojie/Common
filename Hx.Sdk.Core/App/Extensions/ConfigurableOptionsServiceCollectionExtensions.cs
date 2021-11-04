@@ -28,7 +28,6 @@ namespace Microsoft.Extensions.DependencyInjection
             where TOptions : class
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            if (InternalApp.InternalServices == null) InternalApp.InternalServices = services;
             var optionsType = typeof(TOptions);
             var optionsSettings = optionsType.GetCustomAttribute<OptionsSettingsAttribute>(false);
 
