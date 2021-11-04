@@ -135,6 +135,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加 Swagger配置
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="dbSettings">配置</param>
         private static void ConfigureDbOptions(IServiceCollection services, Action<DbSettingsOptions> dbSettings)
         {
             // 配置验证

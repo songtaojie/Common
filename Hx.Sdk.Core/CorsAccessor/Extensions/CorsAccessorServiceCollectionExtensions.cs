@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddCorsAccessor(this IServiceCollection services)
         {
             // 添加跨域配置选项
-            services.AddConfigurableOptions<CorsAccessorSettingsOptions>();
+            services.AddConfigureOptions<CorsAccessorSettingsOptions>();
             // 获取选项
             var corsAccessorSettings = AppSettings.GetOptions<CorsAccessorSettingsOptions>();
             // 添加跨域服务

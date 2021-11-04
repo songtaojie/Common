@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Hx.Sdk.Core\Hx.Sdk.Core.csproj" />
     <ProjectReference Include="..\Hx.Sdk.DatabaseAccessor\Hx.Sdk.DatabaseAccessor.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.DependencyInjection\Hx.Sdk.DependencyInjection.csproj" />
     <ProjectReference Include="..\Hx.Sdk.Swagger\Hx.Sdk.Swagger.csproj" />
   </ItemGroup>
 

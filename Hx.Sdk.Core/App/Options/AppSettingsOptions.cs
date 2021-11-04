@@ -10,11 +10,6 @@ namespace Hx.Sdk.Core
     public sealed class AppSettingsOptions : IPostConfigureOptions<AppSettingsOptions>
     {
         /// <summary>
-        /// 集成 MiniProfiler 组件
-        /// </summary>
-        public bool? EnabledMiniProfiler { get; set; }
-
-        /// <summary>
         /// 是否启用规范化文档Swagger
         /// </summary>
         public bool? EnabledSwagger { get; set; }
@@ -59,9 +54,8 @@ namespace Hx.Sdk.Core
         /// </summary>
         /// <param name="name"></param>
         /// <param name="options"></param>
-        public void PostConfigure(string name, AppSettingsOptions options)
+        public void PostConfigure(string name,AppSettingsOptions options)
         {
-            options.EnabledMiniProfiler ??= true;
             options.EnabledSwagger ??= true;
             options.EnabledReferenceAssemblyScan ??= false;
             options.PrintDbConnectionInfo ??= true;

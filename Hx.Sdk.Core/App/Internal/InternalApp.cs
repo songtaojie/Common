@@ -30,9 +30,9 @@ namespace Hx.Sdk.Core.Internal
         internal static IServiceCollection InternalServices;
 
         /// <summary>
-        /// 全局配置构建器
+        /// 配置对象
         /// </summary>
-        internal static IConfigurationBuilder ConfigurationBuilder;
+        internal static IConfiguration Configuration;
 
         /// <summary>
         /// 获取Web主机环境
@@ -47,19 +47,8 @@ namespace Hx.Sdk.Core.Internal
         /// <summary>
         /// 服务提供器
         /// </summary>
-        private static IServiceProvider _serviceProvider;
-        /// <summary>
-        /// 服务提供器
-        /// </summary>
-        internal static IServiceProvider ServiceProvider
-        {
-            get => _serviceProvider ?? HttpContext?.RequestServices ?? InternalServices.BuildServiceProvider();
-            set=> _serviceProvider = value;
-        }
-        /// <summary>
-        /// 获取请求上下文
-        /// </summary>
-        internal static HttpContext HttpContext => HttpContextLocal.Current();
+        internal static IServiceProvider ServiceProvider;
+
         /// <summary>
         /// 添加配置文件
         /// </summary>
@@ -76,9 +65,6 @@ namespace Hx.Sdk.Core.Internal
 
             // 加载配置
             AutoAddJsonFiles(config, env, ignoreConfigurationFiles);
-
-            // 存储配置
-            ConfigurationBuilder = config;
         }
 
         /// <summary>

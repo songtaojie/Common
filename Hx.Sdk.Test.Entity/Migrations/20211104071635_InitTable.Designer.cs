@@ -9,58 +9,58 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hx.Sdk.Test.Entity.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20210425085908_InitContext")]
-    partial class InitContext
+    [Migration("20211104071635_InitTable")]
+    partial class InitTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.9");
 
             modelBuilder.Entity("Hx.Sdk.Test.Entity.UserInfo", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Creater")
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("CreaterId")
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("LastModifier")
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("LastModifierId")
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime?>("LastModifyTime")
                         .HasColumnType("datetime");
 
                     b.Property<string>("NickName")
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("PassWord")
                         .IsRequired()
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("varchar(36)")
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -69,8 +69,8 @@ namespace Hx.Sdk.Test.Entity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f1f69f0d-c546-470a-ba52-8a35b306626e",
-                            CreateTime = new DateTime(2021, 4, 25, 16, 59, 8, 313, DateTimeKind.Local).AddTicks(8455),
+                            Id = "a04ba75c-eb2e-4ae3-84b8-14704d9d2935",
+                            CreateTime = new DateTime(2021, 11, 4, 15, 16, 35, 552, DateTimeKind.Local).AddTicks(735),
                             Creater = "SuperAdmin",
                             CreaterId = "SuperAdmin",
                             LastModifier = "",

@@ -44,12 +44,12 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 服务提供器
         /// </summary>
-        public static IServiceProvider ServiceProvider => InternalApp.ServiceProvider;
+        public static IServiceProvider ServiceProvider => InternalApp.ServiceProvider?? InternalApp.InternalServices.BuildServiceProvider();
 
         /// <summary>
         /// 上下文
         /// </summary>
-        public static HttpContext HttpContext => InternalApp.HttpContext;
+        public static HttpContext HttpContext => ServiceProvider?.GetService<IHttpContextAccessor>().HttpContext;
 
         /// <summary>
         /// 私有设置，避免重复解析
@@ -65,8 +65,8 @@ namespace Hx.Sdk.Core
             {
                 if (_settings == null)
                 {
-                    var options = GetService<IOptions<AppSettingsOptions>>();
-                    _settings = options == null ? new AppSettingsOptions() : options.Value;
+                    var options = GetService<IOptionsMonitor<AppSettingsOptions>>();
+                    _settings = options == null ? new AppSettingsOptions() : options.CurrentValue;
                 }
                 return _settings;
             }

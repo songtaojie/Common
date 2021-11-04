@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="TOptions">选项类型</typeparam>
         /// <param name="services">服务集合</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddConfigurableOptions<TOptions>(this IServiceCollection services)
+        public static IServiceCollection AddConfigureOptions<TOptions>(this IServiceCollection services)
             where TOptions : class
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
@@ -34,34 +34,31 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 获取键名
             var jsonKey = GetOptionsJsonKey(optionsSettings, optionsType);
-
-            // 配置选项（含验证信息）
-            var configurationRoot = AppSettings.Configuration;
-            var optionsConfiguration = configurationRoot.GetSection(jsonKey);
-
-            // 配置选项监听
-            if (typeof(IListenerOptions<TOptions>).IsAssignableFrom(optionsType))
-            {
-                var onListenerMethod = optionsType.GetMethod(nameof(IListenerOptions<TOptions>.OnListener));
-                if (onListenerMethod != null)
-                {
-                    ChangeToken.OnChange(() => configurationRoot.GetReloadToken(), () =>
-                    {
-                        var options = optionsConfiguration.Get<TOptions>();
-                        onListenerMethod.Invoke(options, new object[] { nameof(TOptions), options });
-                    });
-                }
-            }
             var optionsBuilder = services.AddOptions<TOptions>()
-                //.BindConfiguration(jsonKey, options =>
-                //{
-                //    options.BindNonPublicProperties = true; // 绑定私有变量
-                //})
-                .Bind(optionsConfiguration, options =>
+                .BindConfiguration(jsonKey, options =>
                 {
                     options.BindNonPublicProperties = true; // 绑定私有变量
                 })
                 .ValidateDataAnnotations();
+            // 配置后期配置
+            if (typeof(IPostConfigureOptions<TOptions>).IsAssignableFrom(optionsType))
+            {
+                var postConfigureMethod = optionsType.GetMethod(nameof(IPostConfigureOptions<TOptions>.PostConfigure));
+                if (postConfigureMethod != null)
+                {
+                    if (optionsSettings?.PostConfigureAll != true)
+                        optionsBuilder.PostConfigure(options => postConfigureMethod.Invoke(options, new object[] { optionsType.Name, options}));
+                    else
+                        services.PostConfigureAll<TOptions>(options => postConfigureMethod.Invoke(options, new object[] { optionsType.Name, options}));
+                }
+                //services.AddSingleton(typeof(IPostConfigureOptions<TOptions>), optionsType);
+            }
+            // 配置后期配置
+            if (typeof(IConfigureOptions<TOptions>).IsAssignableFrom(optionsType))
+            {
+                services.AddSingleton(typeof(IConfigureOptions<TOptions>), optionsType);
+            }
+            
             return services;
         }
 

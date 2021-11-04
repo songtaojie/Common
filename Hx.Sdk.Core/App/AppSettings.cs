@@ -15,13 +15,7 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 全局配置选项
         /// </summary>
-        public static IConfiguration Configuration { get; set; }
-
-        static AppSettings()
-        {
-            if (InternalApp.ConfigurationBuilder == null) throw new Exception("Please first configure the HXAppConfiguration on the generic Host[IHostBuilder] Or Web Host[IWebHostBuilder]");
-            Configuration = InternalApp.ConfigurationBuilder.Build();
-        }
+        public static IConfiguration Configuration => InternalApp.Configuration;
         
         /// <summary>
         /// 获取连接字符串

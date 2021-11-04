@@ -25,28 +25,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
                 services.AddUserContext();
 
-                //// 注册MiniProfiler 组件
-                //if (App.Settings.EnabledMiniProfiler == true)
-                //{
-                //    services.AddMiniProfilerService();
-                //}
-
-                // 注册swagger
-                // 判断是否启用规范化文档
-                if (App.Settings.EnabledSwagger == true)
-                {
-                    services.AddSwaggerDocuments();
-                }
-                // 判断是否启用规范化文档
-                if (App.Settings.EnabledUnifyResult == true)
-                {
-                    services.AddUnifyResult();
-                }
-                //判断是否启用全局异常处理
-                if (App.Settings.EnabledExceptionFilter == true)
-                {
-                    services.AddFriendlyException();
-                }
+                //// 注册swagger
+                //// 判断是否启用规范化文档
+                //if (App.Settings.EnabledSwagger == true) services.AddSwaggerDocuments();
+               
+                //// 判断是否启用规范化文档
+                //if (App.Settings.EnabledUnifyResult == true) services.AddUnifyResult();
+               
+                ////判断是否启用全局异常处理
+                //if (App.Settings.EnabledExceptionFilter == true) services.AddFriendlyException();
             });
            
             // 自定义服务
@@ -63,11 +50,9 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
         {
             // 注册全局配置选项
-            ConsoleHelper.WriteInfoLine("Add the AppSetting configuration service");
-            services.AddConfigurableOptions<AppSettingsOptions>();
+            services.AddConfigureOptions<AppSettingsOptions>();
 
             // 注册内存和分布式内存
-            ConsoleHelper.WriteInfoLine("Add the MemoryCache service");
             services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
             services.AddDistributedMemoryCache();
 

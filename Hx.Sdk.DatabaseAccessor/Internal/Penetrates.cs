@@ -40,7 +40,8 @@ namespace Hx.Sdk.DatabaseAccessor.Internal
         {
             get
             {
-                return _serviceProvider ?? InternalServices.BuildServiceProvider();
+                if (_serviceProvider == null) _serviceProvider = InternalServices.BuildServiceProvider();
+                return _serviceProvider;
             }
             set
             {

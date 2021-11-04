@@ -39,7 +39,7 @@ namespace Microsoft.Extensions.Hosting
                 webBuilder.ConfigureHxWebApp(injectAutofac);
                 configure(webBuilder);
             });
-            if (InternalApp.InjectAutofac)
+            if (injectAutofac)
             {
                 hostBuilder.InjectContainerBuilder();
             }
@@ -56,14 +56,7 @@ namespace Microsoft.Extensions.Hosting
         {
             InternalApp.InjectAutofac = injectAutofac;
             hostBuilder.ConfigureHxAppConfiguration();
-            // 自动注入 AddApp() 服务
-            hostBuilder.ConfigureServices(services =>
-            {
-                // 初始化应用服务
-                services.AddHostApp();
-                ConsoleHelper.WriteSuccessLine("The hx.sdk. Core ConfigureServices registration is complete", true);
-            });
-            if (InternalApp.InjectAutofac)
+            if (injectAutofac)
             {
                 hostBuilder.InjectContainerBuilder();
             }
@@ -86,14 +79,17 @@ namespace Microsoft.Extensions.Hosting
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
                 configureDelegate?.Invoke(hostingContext, config);
-                ConsoleHelper.WriteSuccessLine("Complete the Hx. Internal ConfigureAppConfiguration Sdk registration", true);
             });
-            hostBuilder.ConfigureServices(services =>
+            hostBuilder.ConfigureServices((hostContext, services) =>
             {
-                // 添加全局配置和存储服务提供器
+                // 存储服务提供器
                 InternalApp.InternalServices = services;
-                ConsoleHelper.WriteInfoLine("Add the AppSettingsOptions configuration object");
-                services.AddConfigurableOptions<AppSettingsOptions>();
+                // 存储配置对象
+                InternalApp.Configuration = hostContext.Configuration;
+                // 存储服务提供器
+                services.AddHostedService<GenericHostLifetimeEventsHostedService>();
+                // 初始化应用服务
+                services.AddHostApp();
             });
             return hostBuilder;
         }

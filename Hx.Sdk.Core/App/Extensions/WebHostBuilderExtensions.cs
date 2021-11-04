@@ -47,17 +47,7 @@ namespace Microsoft.AspNetCore.Hosting
                 // 加载配置
                 InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
                 configureDelegate?.Invoke(hostingContext, config);
-                ConsoleHelper.WriteSuccessLine("complete Hx.Sdk.ConfigureOptions ConfigureAppConfiguration", true);
             });
-            // 自动注入 AddConfigurableOptions() 服务
-            hostBuilder.ConfigureServices(services =>
-            {
-                // 添加全局配置和存储服务提供器
-                InternalApp.InternalServices = services;
-                ConsoleHelper.WriteInfoLine("Add the AppSettingsOptions configuration object");
-                services.AddConfigurableOptions<AppSettingsOptions>();
-            });
-
             return hostBuilder;
         }
     }
