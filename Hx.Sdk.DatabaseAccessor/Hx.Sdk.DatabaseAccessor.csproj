@@ -5,7 +5,7 @@
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
     <Description>添加sql日志记录</Description>
-    <Version>5.1</Version>
+    <Version>5.1.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

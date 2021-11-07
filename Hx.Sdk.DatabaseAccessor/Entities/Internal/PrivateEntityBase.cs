@@ -9,7 +9,7 @@ namespace Hx.Sdk.DatabaseAccessor.Internal
     /// 数据库实体依赖基类（禁止外部继承）
     /// </summary>
     /// <typeparam name="TKeyType">主键类型</typeparam>
-    public abstract class PrivateEntityBase<TKeyType> : EntityPropertyBase, IEntity
+    public abstract class PrivateEntityBase<TKeyType> : EntityPropertyBase, Internal.IPrivateEntity
     {
         /// <summary>
         /// 主键
