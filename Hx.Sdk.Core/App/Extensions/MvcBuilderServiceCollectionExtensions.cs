@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.Core;
-using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -9,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// Mvc 服务拓展类
     /// </summary>
-    [SkipScan]
+    [Hx.Sdk.Attributes.SkipScan]
     public static class MvcBuilderServiceCollectionExtensions
     {
         /// <summary>

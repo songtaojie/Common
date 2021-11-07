@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Hx.Sdk.Extensions.LinqBuilder
@@ -7,7 +6,7 @@ namespace Hx.Sdk.Extensions.LinqBuilder
     /// <summary>
     /// 处理 Lambda 参数不一致问题
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     internal sealed class ParameterReplaceExpressionVisitor : ExpressionVisitor
     {
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Extensions.LinqBuilder;
+﻿using Hx.Sdk.Extensions.LinqBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// IEnumerable 拓展
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class IEnumerableExtensions
     {
         /// <summary>

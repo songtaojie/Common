@@ -1,6 +1,6 @@
 ﻿using Hx.Sdk.Core;
 using Hx.Sdk.CorsAccessor;
-using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Attributes;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -20,11 +20,11 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             // 添加跨域配置选项
             services.AddConfigureOptions<CorsAccessorSettingsOptions>();
-            // 获取选项
-            var corsAccessorSettings = AppSettings.GetOptions<CorsAccessorSettingsOptions>();
             // 添加跨域服务
             services.AddCors(options =>
             {
+                // 获取选项
+                var corsAccessorSettings = AppSettings.GetOptions<CorsAccessorSettingsOptions>();
                 // 添加策略跨域
                 options.AddPolicy(name: corsAccessorSettings.PolicyName, builder =>
                 {

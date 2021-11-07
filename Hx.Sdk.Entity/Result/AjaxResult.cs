@@ -1,31 +1,39 @@
-﻿using Hx.Sdk.DependencyInjection;
-
-namespace Hx.Sdk.Entity
+﻿namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// ajax返回结果统一封装
     /// </summary>
-    [SkipScan]
-    public class AjaxResult
+    [Attributes.SkipScan]
+    public class AjaxResult<T>
     {
         /// <summary>
-        /// 是否成功
+        /// 状态码
         /// </summary>
-        public bool Success { get; set; } = true;//默认是成功
+        public int? StatusCode { get; set; }
 
         /// <summary>
-        /// 信息描述
+        /// 数据
+        /// </summary>
+        public T Data { get; set; }
+
+        /// <summary>
+        /// 执行成功
+        /// </summary>
+        public bool Succeeded { get; set; }
+
+        /// <summary>
+        /// 错误信息
         /// </summary>
         public string Message { get; set; }
 
         /// <summary>
-        /// 获取 Ajax操作结果编码
+        /// 附加数据
         /// </summary>
-        public int Code { get; set; }
+        public object Extras { get; set; }
 
         /// <summary>
-        /// 获取 返回数据
+        /// 时间戳
         /// </summary>
-        public object Data { get; set; }
+        public long Timestamp { get; set; }
     }
 }

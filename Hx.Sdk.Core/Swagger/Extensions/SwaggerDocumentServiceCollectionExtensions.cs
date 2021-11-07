@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.Core;
-using Hx.Sdk.DependencyInjection;
 using System.Linq;
 using System.Reflection;
 
@@ -8,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// 规范化接口服务拓展类
     /// </summary>
-    [SkipScan]
+    [Hx.Sdk.Attributes.SkipScan]
     internal static class SwaggerDocumentServiceCollectionExtensions
     {
         /// <summary>

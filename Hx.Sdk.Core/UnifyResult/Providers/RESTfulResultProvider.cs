@@ -1,4 +1,3 @@
-using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,7 +10,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// RESTful 风格返回值
     /// </summary>
-    [SkipScan, UnifyResultModel(typeof(RESTfulResult<>))]
+    [Attributes.SkipScan, UnifyResultModel(typeof(RESTfulResult<>))]
     public class RESTfulResultProvider : IUnifyResultProvider
     {
         /// <summary>

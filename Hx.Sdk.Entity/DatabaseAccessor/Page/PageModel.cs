@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

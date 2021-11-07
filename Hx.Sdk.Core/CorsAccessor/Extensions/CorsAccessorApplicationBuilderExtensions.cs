@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.CorsAccessor;
-using Hx.Sdk.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -8,7 +7,7 @@ namespace Microsoft.AspNetCore.Builder
     /// <summary>
     /// 跨域中间件拓展
     /// </summary>
-    [SkipScan]
+    [Hx.Sdk.Attributes.SkipScan]
     public static class CorsAccessorApplicationBuilderExtensions
     {
         /// <summary>

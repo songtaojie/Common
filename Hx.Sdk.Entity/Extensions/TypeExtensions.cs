@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +9,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// 类型扩展类
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class TypeExtensions
     {
         /// <summary>
@@ -335,5 +334,16 @@ namespace Hx.Sdk.Extensions
             // 判断逻辑
             bool IsTheRawGenericType(Type t) => generic == (t.IsGenericType ? t.GetGenericTypeDefinition() : t);
         }
+
+        /// <summary>
+        /// 获取程序集名称
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetAssemblyName(this Type type)
+        {
+            return type.GetTypeInfo().Assembly.GetName().Name;
+        }
+
     }
 }

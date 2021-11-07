@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -8,7 +7,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// 枚举扩展
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class EnumExtension
     {
         /// <summary>

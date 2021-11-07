@@ -1,6 +1,6 @@
 ﻿using Hx.Sdk.Core;
 using Hx.Sdk.Core.Internal;
-using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Attributes;
 using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

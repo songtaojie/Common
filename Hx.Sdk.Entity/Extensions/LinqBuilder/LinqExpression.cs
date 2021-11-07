@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 
 namespace Hx.Sdk.Extensions.LinqBuilder
@@ -7,7 +6,7 @@ namespace Hx.Sdk.Extensions.LinqBuilder
     /// <summary>
     /// EF Core Linq 拓展
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class LinqExpression
     {
         /// <summary>

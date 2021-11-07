@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
@@ -11,7 +10,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// Object扩展类
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class ObjectExtensions
     {
 

@@ -1,11 +1,12 @@
 ﻿using Hx.Sdk.Core;
 using Hx.Sdk.Core.Internal;
-using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Attributes;
 using Hx.Sdk.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Reflection;
 
 namespace Microsoft.AspNetCore.Hosting
 {
@@ -26,7 +27,8 @@ namespace Microsoft.AspNetCore.Hosting
         /// <returns>IWebHostBuilder</returns>
         public static IWebHostBuilder ConfigureHxWebApp(this IWebHostBuilder hostBuilder, bool injectAutofac = false)
         {
-            hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Hx.Sdk.Core");
+            var assembly = typeof(HostBuilderExtensions).GetAssemblyName();
+            hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, assembly);
             InternalApp.InjectAutofac = injectAutofac;
             return hostBuilder;
         }

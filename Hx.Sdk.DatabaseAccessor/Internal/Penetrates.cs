@@ -163,7 +163,7 @@ namespace Hx.Sdk.DatabaseAccessor.Internal
         /// <typeparam name="TService"></typeparam>
         /// <param name="scoped"></param>
         /// <returns></returns>
-        public static TService GetService<TService>(IServiceProvider scoped = default)
+        internal static TService GetService<TService>(IServiceProvider scoped = default)
             where TService : class
         {
             return GetService(typeof(TService), scoped) as TService;
@@ -175,7 +175,7 @@ namespace Hx.Sdk.DatabaseAccessor.Internal
         /// <param name="type"></param>
         /// <param name="scoped"></param>
         /// <returns></returns>
-        public static object GetService(Type type, IServiceProvider scoped = default)
+        internal static object GetService(Type type, IServiceProvider scoped = default)
         {
             return (scoped ?? ServiceProvider).GetService(type);
         }

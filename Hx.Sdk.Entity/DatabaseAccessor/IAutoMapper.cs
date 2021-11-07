@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.Entity.Dependency
+namespace Hx.Sdk.DatabaseAccessor
 {
     /// <summary>
     /// 自动映射接口，只要实体类继承该接口，即可使用Mapper进行映射属性

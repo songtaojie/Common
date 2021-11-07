@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.Core;
-using Hx.Sdk.DependencyInjection;
 using System.Linq;
 using System.Reflection;
 
@@ -8,7 +7,7 @@ namespace Microsoft.AspNetCore.Builder
     /// <summary>
     /// 规范化文档swagger中间件拓展
     /// </summary>
-    [SkipScan]
+    [Hx.Sdk.Attributes.SkipScan]
     internal static class SwaggerDocumentApplicationBuilderExtensions
     {
         /// <summary>

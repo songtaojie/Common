@@ -1,14 +1,9 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hx.Sdk.Core
+﻿namespace Hx.Sdk.Core
 {
     /// <summary>
     /// App扩展
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     internal static class AppExtend
     {
         /// <summary>

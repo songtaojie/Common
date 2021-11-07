@@ -1,12 +1,11 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System.Threading;
+﻿using System.Threading;
 
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// string类型扩展
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class StringExtensions
     {
         /// <summary>

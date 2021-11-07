@@ -1,14 +1,11 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 字典类型扩展
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class DictionaryExtensions
     {
         /// <summary>

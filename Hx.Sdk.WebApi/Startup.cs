@@ -40,6 +40,7 @@ namespace Hx.Sdk.WebApi
                 db.MigrationAssemblyName = "Hx.Sdk.Test.Entity";
             });
             services.AddRedisCache();
+            services.AddCorsAccessor();
             //services.AddDbContext<DefaultDbContext>();
             //services.AddCapRabbitMQ();
         }
@@ -55,6 +56,7 @@ namespace Hx.Sdk.WebApi
             app.UseRouting();
             app.UseAuthorization();
             app.UseDatabaseAccessor();
+            app.UseCorsAccessor();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

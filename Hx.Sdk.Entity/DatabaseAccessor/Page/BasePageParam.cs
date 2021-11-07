@@ -1,7 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Hx.Sdk.Attributes;
 
 namespace Hx.Sdk.Entity.Page
 {

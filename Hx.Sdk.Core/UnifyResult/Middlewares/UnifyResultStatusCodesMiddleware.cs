@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace Hx.Sdk.UnifyResult
@@ -7,7 +6,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// 状态码中间件
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public class UnifyResultStatusCodesMiddleware
     {
         /// <summary>

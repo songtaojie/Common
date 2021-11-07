@@ -1,12 +1,11 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 
 namespace Hx.Sdk.UnifyResult
 {
     /// <summary>
     /// 规范化模型特性
     /// </summary>
-    [SkipScan, AttributeUsage(AttributeTargets.Class)]
+    [Attributes.SkipScan, AttributeUsage(AttributeTargets.Class)]
     public class UnifyResultModelAttribute : Attribute
     {
         /// <summary>

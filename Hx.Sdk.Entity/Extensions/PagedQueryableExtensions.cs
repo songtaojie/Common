@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.Entity.Page;
+﻿using Hx.Sdk.Entity.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace Hx.Sdk.Extensions
 	/// <summary>
 	/// IQueryable扩展类
 	/// </summary>
-	[SkipScan]
+	[Attributes.SkipScan]
 	public static class PagedQueryableExtensions
 	{
 		/// <summary>

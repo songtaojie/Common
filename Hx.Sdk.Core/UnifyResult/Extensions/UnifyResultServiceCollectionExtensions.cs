@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.UnifyResult;
-using Hx.Sdk.DependencyInjection;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -8,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// 规范化结果服务拓展
     /// </summary>
-    [SkipScan]
+    [Hx.Sdk.Attributes.SkipScan]
     public static class UnifyResultServiceCollectionExtensions
     {
         /// <summary>

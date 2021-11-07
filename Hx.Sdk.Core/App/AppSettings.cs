@@ -1,5 +1,4 @@
 ﻿using Hx.Sdk.Core.Internal;
-using Hx.Sdk.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
@@ -9,7 +8,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 读取appsettings.json中的配置的类
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class AppSettings
     {
         /// <summary>

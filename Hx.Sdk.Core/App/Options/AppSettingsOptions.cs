@@ -15,11 +15,6 @@ namespace Hx.Sdk.Core
         public bool? EnabledSwagger { get; set; }
 
         /// <summary>
-        /// 是否启用引用程序集扫描
-        /// </summary>
-        public bool? EnabledReferenceAssemblyScan { get; set; }
-
-        /// <summary>
         /// 是否打印数据库连接信息到 MiniProfiler 中
         /// </summary>
         public bool? PrintDbConnectionInfo { get; set; }
@@ -57,7 +52,6 @@ namespace Hx.Sdk.Core
         public void PostConfigure(string name,AppSettingsOptions options)
         {
             options.EnabledSwagger ??= true;
-            options.EnabledReferenceAssemblyScan ??= false;
             options.PrintDbConnectionInfo ??= true;
             options.UseIdentityServer4 ??= false;
             options.AopTypeFullName ??= Array.Empty<string>();

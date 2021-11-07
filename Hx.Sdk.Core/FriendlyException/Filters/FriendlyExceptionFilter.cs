@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
+﻿using Hx.Sdk.Attributes;
 using Hx.Sdk.FriendlyException;
 using Hx.Sdk.UnifyResult;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -45,9 +45,6 @@ namespace Microsoft.AspNetCore.Mvc.Filters
 
             // 如果异常在其他地方被标记了处理，那么这里不再处理
             if (context.ExceptionHandled) return;
-
-            // 标识异常已经被处理（改代码已取消，导致其他自定义异常过滤器无法拦截）
-            // context.ExceptionHandled = true;
 
             // 设置异常结果
             var exception = context.Exception;

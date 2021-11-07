@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.FriendlyException;
+﻿using Hx.Sdk.FriendlyException;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,7 +13,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// 规范化结果上下文
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static class UnifyResultContext
     {
         /// <summary>

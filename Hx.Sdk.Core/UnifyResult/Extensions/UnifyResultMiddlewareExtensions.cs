@@ -1,13 +1,11 @@
 ﻿using Hx.Sdk.UnifyResult;
-using Hx.Sdk.DependencyInjection;
-using System;
 
 namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
     /// 状态码中间件拓展
     /// </summary>
-    [SkipScan]
+    [Hx.Sdk.Attributes.SkipScan]
     public static class UnifyResultMiddlewareExtensions
     {
         /// <summary>

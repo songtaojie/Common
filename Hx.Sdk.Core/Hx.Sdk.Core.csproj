@@ -6,7 +6,7 @@
     <Company>Jay Song</Company>
     <Description>修改异常处理，添加默认的异常处理类
     </Description>
-    <Version>5.0</Version>
+    <Version>5.1</Version>
   </PropertyGroup>
     <ItemGroup>
 	    <FrameworkReference Include="Microsoft.AspNetCore.App" />

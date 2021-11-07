@@ -1,11 +1,9 @@
 ﻿using Hx.Sdk.Core.Internal;
-using Hx.Sdk.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +15,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 全局应用类
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public static partial class App
     {
 
@@ -44,7 +42,7 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 服务提供器
         /// </summary>
-        public static IServiceProvider ServiceProvider => InternalApp.ServiceProvider?? InternalApp.InternalServices.BuildServiceProvider();
+        public static IServiceProvider ServiceProvider => InternalApp.ServiceProvider;
 
         /// <summary>
         /// 上下文
@@ -65,8 +63,8 @@ namespace Hx.Sdk.Core
             {
                 if (_settings == null)
                 {
-                    var options = GetService<IOptionsMonitor<AppSettingsOptions>>();
-                    _settings = options == null ? new AppSettingsOptions() : options.CurrentValue;
+                    _settings = AppSettings.GetConfig<AppSettingsOptions>("AppSettings") ?? new AppSettingsOptions();
+                    _settings.PostConfigure("", _settings);
                 }
                 return _settings;
             }
@@ -126,7 +124,7 @@ namespace Hx.Sdk.Core
         {
             Assemblies = GetAssemblies();
             EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()
-                .Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false)));
+                .Where(u => u.IsPublic && !u.IsDefined(typeof(Attributes.SkipScanAttribute), false)));
         }
 
         /// <summary>
@@ -140,41 +138,17 @@ namespace Hx.Sdk.Core
                 "Database.Migrations"
             };
 
-            // 读取应用配置
-            var settings = AppSettings.GetConfig<AppSettingsOptions>("AppSettings") ?? new AppSettingsOptions { };
             var dependencyContext = DependencyContext.Default;
 
             // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
             var scanAssemblies = dependencyContext.CompileLibraries
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk"))
-                       || (settings.EnabledReferenceAssemblyScan == true && (u.Type == "reference" || u.Type == "referenceassembly")))    // 判断是否启用引用程序集扫描
+                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk")))   
                 .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
                 .ToList();
 
             return scanAssemblies;
         }
-
-        ///// <summary>
-        ///// 打印验证信息到 MiniProfiler
-        ///// </summary>
-        ///// <param name="category">分类</param>
-        ///// <param name="state">状态</param>
-        ///// <param name="message">消息</param>
-        ///// <param name="isError">是否为警告消息</param>
-        //public static void PrintToMiniProfiler(string category, string state, string message = null, bool isError = false)
-        //{
-        //    // 判断是否启用了 MiniProfiler 组件
-        //    if (App.Settings.EnabledMiniProfiler != true) return;
-
-        //    // 打印消息
-        //    string titleCaseategory = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(category);
-        //    var customTiming = MiniProfiler.Current.CustomTiming(category, string.IsNullOrWhiteSpace(message) ? $"{titleCaseategory} {state}" : message, state);
-        //    if (customTiming == null) return;
-
-        //    // 判断是否是警告消息
-        //    if (isError) customTiming.Errored = true;
-        //}
     }
 }

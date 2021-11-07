@@ -5,7 +5,7 @@ namespace Hx.Sdk.DependencyInjection
     /// <summary>
     /// 注册范围
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public enum InjectionPatterns
     {
         /// <summary>

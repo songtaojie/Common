@@ -1,18 +1,16 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.UnifyResult;
+﻿using Hx.Sdk.UnifyResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Mvc.Filters
 {
     /// <summary>
     /// 规范化结构（请求成功）过滤器
     /// </summary>
-    [SkipScan]
+    [Hx.Sdk.Attributes.SkipScan]
     public class UnifyResultFilterAttribute : ResultFilterAttribute
     {
         /// <summary>

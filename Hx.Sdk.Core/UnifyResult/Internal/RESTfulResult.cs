@@ -1,13 +1,11 @@
-﻿using Hx.Sdk.DependencyInjection;
-
-namespace Hx.Sdk.UnifyResult
+﻿namespace Hx.Sdk.UnifyResult
 {
 
     /// <summary>
     /// RESTful 风格结果集,泛型结果集
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [SkipScan]
+    [Attributes.SkipScan]
     public class RESTfulResult<T>
     {
         /// <summary>

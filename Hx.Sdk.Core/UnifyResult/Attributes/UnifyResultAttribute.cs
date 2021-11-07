@@ -1,5 +1,4 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using Hx.Sdk.Extensions;
 using Hx.Sdk.UnifyResult;
@@ -9,7 +8,7 @@ namespace Microsoft.AspNetCore.Mvc
     /// <summary>
     /// 规范化结果配置
     /// </summary>
-    [SkipScan, AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    [Hx.Sdk.Attributes.SkipScan, AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class UnifyResultAttribute : ProducesResponseTypeAttribute
     {
         /// <summary>

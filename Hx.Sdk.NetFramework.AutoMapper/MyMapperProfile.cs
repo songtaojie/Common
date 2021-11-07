@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using Hx.Sdk.Entity.Dependency;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hx.Sdk.NetFramework.AutoMapper
 {

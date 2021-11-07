@@ -1,12 +1,11 @@
-﻿using Hx.Sdk.DependencyInjection;
-using System;
+﻿using System;
 
 namespace Hx.Sdk.FriendlyException
 {
     /// <summary>
     /// 用户友好的异常提示
     /// </summary>
-    [SkipScan]
+    [Attributes.SkipScan]
     public class UserFriendlyException : Exception
     {
         /// <summary>

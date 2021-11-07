@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Hx.Sdk.Attributes
 {
     /// <summary>
     /// 每个请求一个实例

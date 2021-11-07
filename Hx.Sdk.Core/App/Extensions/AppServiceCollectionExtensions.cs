@@ -1,6 +1,6 @@
 ﻿using Hx.Sdk.Core;
 using Hx.Sdk.Core.Internal;
-using Hx.Sdk.DependencyInjection;
+using Hx.Sdk.Attributes;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -25,15 +25,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
                 services.AddUserContext();
 
-                //// 注册swagger
-                //// 判断是否启用规范化文档
-                //if (App.Settings.EnabledSwagger == true) services.AddSwaggerDocuments();
-               
-                //// 判断是否启用规范化文档
-                //if (App.Settings.EnabledUnifyResult == true) services.AddUnifyResult();
-               
-                ////判断是否启用全局异常处理
-                //if (App.Settings.EnabledExceptionFilter == true) services.AddFriendlyException();
+                // 注册swagger
+                // 判断是否启用规范化文档
+                if (App.Settings.EnabledSwagger == true) services.AddSwaggerDocuments();
+
+                // 判断是否启用规范化文档
+                if (App.Settings.EnabledUnifyResult == true) services.AddUnifyResult();
+
+                //判断是否启用全局异常处理
+                if (App.Settings.EnabledExceptionFilter == true) services.AddFriendlyException();
             });
            
             // 自定义服务
