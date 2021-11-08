@@ -97,21 +97,19 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.DefaultGroupName = config["CapRabbitMQSettings:Cap:DefaultGroupName"];
                 options.FailedRetryCount = failedRetryCount;
                 options.UseMySql(config["CapRabbitMQSettings:ConnectionString"]);
-                if (mqOption == null)
-                {
-                    options.UseRabbitMQ(mqOption =>
-                    {
-                        _ = int.TryParse(config["CapRabbitMQSettings:RabbitMQ:HostName"], out int port);
-                        mqOption.HostName = config["CapRabbitMQSettings:RabbitMQ:HostName"];
-                        mqOption.VirtualHost = config["CapRabbitMQSettings:RabbitMQ:VirtualHost"];
-                        mqOption.UserName = config["CapRabbitMQSettings:RabbitMQ:UserName"];
-                        mqOption.Password = config["CapRabbitMQSettings:RabbitMQ:Password"];
-                        mqOption.Port = port;
-                    });
-                }
-
                 capOptions?.Invoke(options);
-                if (mqOption != null) options.UseRabbitMQ(mqOption);
+                options.UseRabbitMQ(options =>
+                {
+                    var portStr = config["CapRabbitMQSettings:RabbitMQ:Port"];
+                    int port = 5672;
+                    if(!string.IsNullOrEmpty(portStr)) _ = int.TryParse(portStr, out port);
+                    options.HostName = config["CapRabbitMQSettings:RabbitMQ:HostName"];
+                    options.VirtualHost = config["CapRabbitMQSettings:RabbitMQ:VirtualHost"];
+                    options.UserName = config["CapRabbitMQSettings:RabbitMQ:UserName"];
+                    options.Password = config["CapRabbitMQSettings:RabbitMQ:Password"];
+                    options.Port = port;
+                    mqOption?.Invoke(options);
+                });
             });
 
             services.AddTransient<IEventBus, EventBusCapRabbitMQ>();
