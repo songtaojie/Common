@@ -1,6 +1,5 @@
 ﻿using Hx.Sdk.EventBus.RabbitMq;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hx.Sdk.EventBus.Internal
@@ -96,8 +96,8 @@ namespace Hx.Sdk.EventBus.Internal
                     });
 
             using var channel = _persistentConnection.CreateModel();
-
-            var message = JsonConvert.SerializeObject(@event);
+            
+            var message = JsonSerializer.Serialize<T>(@event);
             var body = Encoding.UTF8.GetBytes(message);
 
             policy.Execute(() =>
@@ -196,7 +196,7 @@ namespace Hx.Sdk.EventBus.Internal
                 consumer.Received += async (model, ea) =>
                 {
                     var message = Encoding.UTF8.GetString(ea.Body.ToArray());
-                    var mesObj = JsonConvert.DeserializeObject<TH>(message);
+                    var mesObj = JsonSerializer.Deserialize<TH>(message);
                     await handler.Handle(mesObj);
 
                     _consumerChannel.BasicAck(ea.DeliveryTag, multiple: false);

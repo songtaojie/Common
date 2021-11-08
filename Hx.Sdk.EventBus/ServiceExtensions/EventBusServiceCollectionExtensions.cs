@@ -9,7 +9,7 @@ using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class RabbitMQServiceCollectionExtensions
+    public static class EventBusServiceCollectionExtensions
     {
         /// <summary>
         /// 添加RabbitMq
@@ -20,6 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddRabbitMQ(this IServiceCollection services, Func<RabbitMQOptions> mqOption, int retryCount = 5)
         {
             if (mqOption == null) throw new ArgumentNullException(nameof(mqOption), "no configuration information passed in");
+            Penetrates.InternalServices = services;
             var option = mqOption.Invoke();
             if (string.IsNullOrEmpty(option.HostName)) throw new ArgumentNullException("HostName is missing");
             //注册IRabbitMQPersistentConnection服务用于设置RabbitMQ连接
@@ -44,27 +45,28 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// 添加rabbitmq，配置文件中需要配置RabbitMqSettings节点
+        /// 添加rabbitmq，配置文件中需要配置RabbitMQSettings节点
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection AddRabbitMQ(this IServiceCollection services, int retryCount = 5)
         {
+            Penetrates.InternalServices = services;
             //注册IRabbitMQPersistentConnection服务用于设置RabbitMQ连接
             services.AddSingleton<IRabbitMQPersistentConnection>(resolver =>
             {
                 var logger = resolver.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
                 var configuration = resolver.GetRequiredService<IConfiguration>();
-                var hostName = configuration["RabbitMqSettings:HostName"];
-                if (string.IsNullOrEmpty(hostName)) throw new MissingMemberException("RabbitMqSettings:HostName is missing from the Appsettings.js file");
-                _ = int.TryParse(configuration["RabbitMqSettings:Port"], out int port);
+                var hostName = configuration["RabbitMQSettings:HostName"];
+                if (string.IsNullOrEmpty(hostName)) throw new MissingMemberException("RabbitMQSettings:HostName is missing from the Appsettings.js file");
+                _ = int.TryParse(configuration["RabbitMQSettings:Port"], out int port);
                 var factory = new ConnectionFactory()
                 {
                     HostName = hostName,
                     DispatchConsumersAsync = true,
-                    VirtualHost = configuration["RabbitMqSettings:VirtualHost"],
-                    UserName = configuration["RabbitMqSettings:UserName"],
-                    Password = configuration["RabbitMqSettings:Password"],
+                    VirtualHost = configuration["RabbitMQSettings:VirtualHost"],
+                    UserName = configuration["RabbitMQSettings:UserName"],
+                    Password = configuration["RabbitMQSettings:Password"],
                     Port = port,
                 };
                 return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
@@ -85,30 +87,29 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddCapRabbitMQ(this IServiceCollection services, Action<CapOptions> capOptions = null,
            Action<RabbitMQOptions> mqOption = null)
         {
-            services.BuildServiceProvider();
-            services.AddOptions<CapOptions>()
-               //.BindConfiguration("CapOptions")
-               .Configure<IConfiguration>((options, config) =>
-               {
-                   _ = int.TryParse(config["CapRabbitMQSettings:Cap:FailedRetryCount"], out int failedRetryCount);
-                   options.DefaultGroupName = config["CapRabbitMQSettings:Cap:DefaultGroupName"];
-                   options.FailedRetryCount = failedRetryCount;
-                   options.UseMySql(config["CapRabbitMQSettings:ConnectionString"]);
-                   if (mqOption == null)
-                   {
-                       options.UseRabbitMQ(mqOption =>
-                       {
-                           _ = int.TryParse(config["CapRabbitMQSettings:RabbitMQ:HostName"], out int port);
-                           mqOption.HostName = config["CapRabbitMQSettings:RabbitMQ:HostName"];
-                           mqOption.VirtualHost = config["CapRabbitMQSettings:RabbitMQ:VirtualHost"];
-                           mqOption.UserName = config["CapRabbitMQSettings:RabbitMQ:UserName"];
-                           mqOption.Password = config["CapRabbitMQSettings:RabbitMQ:Password"];
-                           mqOption.Port = port;
-                       });
-                   }
-               });
+            Penetrates.InternalServices = services;
             services.AddCap(options =>
             {
+                var config = Penetrates.ServiceProvider.GetRequiredService<IConfiguration>();
+                int failedRetryCount = 5;
+                var failedRetryCountStr = config["CapRabbitMQSettings:Cap:FailedRetryCount"];
+                if (!string.IsNullOrEmpty(failedRetryCountStr)) _ = int.TryParse(failedRetryCountStr, out failedRetryCount);
+                options.DefaultGroupName = config["CapRabbitMQSettings:Cap:DefaultGroupName"];
+                options.FailedRetryCount = failedRetryCount;
+                options.UseMySql(config["CapRabbitMQSettings:ConnectionString"]);
+                if (mqOption == null)
+                {
+                    options.UseRabbitMQ(mqOption =>
+                    {
+                        _ = int.TryParse(config["CapRabbitMQSettings:RabbitMQ:HostName"], out int port);
+                        mqOption.HostName = config["CapRabbitMQSettings:RabbitMQ:HostName"];
+                        mqOption.VirtualHost = config["CapRabbitMQSettings:RabbitMQ:VirtualHost"];
+                        mqOption.UserName = config["CapRabbitMQSettings:RabbitMQ:UserName"];
+                        mqOption.Password = config["CapRabbitMQSettings:RabbitMQ:Password"];
+                        mqOption.Port = port;
+                    });
+                }
+
                 capOptions?.Invoke(options);
                 if (mqOption != null) options.UseRabbitMQ(mqOption);
             });

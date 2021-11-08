@@ -16,7 +16,7 @@ namespace Hx.Sdk.NetFramework.AutoMapper
             List<Assembly> allAssembly = RuntimeHelper.GetAllAssembly();
             if (allAssembly != null && allAssembly.Count > 0)
             {
-                Type baseType = typeof(IAutoMapper<>);
+                Type baseType = typeof(DatabaseAccessor.IAutoMapper<>);
                 foreach (Assembly ass in allAssembly)
                 {
                     try
