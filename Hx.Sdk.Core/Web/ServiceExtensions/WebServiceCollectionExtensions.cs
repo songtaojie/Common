@@ -2,6 +2,7 @@
 using Hx.Sdk.Core.Internal;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -34,6 +35,21 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddSingleton<IWebManager, WebManager>();
+            return services;
+        }
+
+
+
+        /// <summary>
+        /// 添加HttpClient，进行远程请求
+        /// </summary>
+        /// <param name="services"></param>
+        public static IServiceCollection AddHxHttpClient(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            var exist = services.Any(x => x.ServiceType == typeof(IHxHttpClient));
+            if (exist) return services;
+            services.AddHttpClient<IHxHttpClient, HxHttpClient>();
             return services;
         }
     }

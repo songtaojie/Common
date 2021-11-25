@@ -4,9 +4,9 @@
 	  <TargetFramework>net5.0</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
-    <Description>修改异常处理，添加默认的异常处理类
-    </Description>
-    <Version>5.1</Version>
+    <Description>添加HttpClient帮助类，用于进行远程请求
+</Description>
+    <Version>5.1.1</Version>
   </PropertyGroup>
     <ItemGroup>
 	    <FrameworkReference Include="Microsoft.AspNetCore.App" />
