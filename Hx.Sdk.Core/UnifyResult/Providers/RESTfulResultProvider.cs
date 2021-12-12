@@ -68,6 +68,10 @@ namespace Hx.Sdk.UnifyResult
         /// <returns></returns>
         public async Task OnResponseStatusCodes(HttpContext context, int statusCode)
         {
+            JsonSerializerSettings setting = new JsonSerializerSettings()
+            {
+                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+            };
             switch (statusCode)
             {
                 // 处理 401 状态码
@@ -83,7 +87,7 @@ namespace Hx.Sdk.UnifyResult
                         Message = "401 Unauthorized",
                         Extras = UnifyResultContext.Take(),
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                    }));
+                    }, setting));
                     break;
                 // 处理 403 状态码
                 case StatusCodes.Status403Forbidden:
@@ -98,7 +102,7 @@ namespace Hx.Sdk.UnifyResult
                         Message = "403 Forbidden",
                         Extras = UnifyResultContext.Take(),
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                    }));
+                    }, setting));
                     break;
 
                 default:
