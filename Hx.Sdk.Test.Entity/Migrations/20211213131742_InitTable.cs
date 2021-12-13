@@ -30,7 +30,7 @@ namespace Hx.Sdk.Test.Entity.Migrations
             migrationBuilder.InsertData(
                 table: "UserInfo",
                 columns: new[] { "Id", "CreateTime", "Creater", "CreaterId", "LastModifier", "LastModifierId", "LastModifyTime", "NickName", "PassWord", "UserName" },
-                values: new object[] { "a04ba75c-eb2e-4ae3-84b8-14704d9d2935", new DateTime(2021, 11, 4, 15, 16, 35, 552, DateTimeKind.Local).AddTicks(735), "SuperAdmin", "SuperAdmin", "", "", null, "宋", "123456", "songtaojie" });
+                values: new object[] { "66227dc2-17fc-421a-9002-8f31d9431661", new DateTime(2021, 12, 13, 21, 17, 41, 701, DateTimeKind.Local).AddTicks(4279), "SuperAdmin", "SuperAdmin", "", "", null, "宋", "123456", "songtaojie" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

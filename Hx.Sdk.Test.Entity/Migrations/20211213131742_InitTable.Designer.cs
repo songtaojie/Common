@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hx.Sdk.Test.Entity.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20211104071635_InitTable")]
+    [Migration("20211213131742_InitTable")]
     partial class InitTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,8 +69,8 @@ namespace Hx.Sdk.Test.Entity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a04ba75c-eb2e-4ae3-84b8-14704d9d2935",
-                            CreateTime = new DateTime(2021, 11, 4, 15, 16, 35, 552, DateTimeKind.Local).AddTicks(735),
+                            Id = "66227dc2-17fc-421a-9002-8f31d9431661",
+                            CreateTime = new DateTime(2021, 12, 13, 21, 17, 41, 701, DateTimeKind.Local).AddTicks(4279),
                             Creater = "SuperAdmin",
                             CreaterId = "SuperAdmin",
                             LastModifier = "",
