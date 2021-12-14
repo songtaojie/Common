@@ -88,17 +88,18 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     registerBuilder = RegisterService(builder, DependencyInjectionType.Singleton, type, injectionAttribute, canInjectInterfaces);
                 }
+                if (injectionAttribute.Pattern == InjectionPatterns.Self)
+                {
+                    registerBuilder.EnableClassInterceptors();
+                }
+                else
+                {
+                    registerBuilder.EnableInterfaceInterceptors();
+                }
                 //AOp
                 if (aopTypes != null && aopTypes.Count() > 0)
                 {
-                    if (injectionAttribute.Pattern == InjectionPatterns.Self)
-                    {
-                        registerBuilder.EnableClassInterceptors();
-                    }
-                    else
-                    {
-                        registerBuilder.EnableInterfaceInterceptors();
-                    }
+                    registerBuilder.InterceptedBy(aopTypes.ToArray());
                 }
                 //缓存类型注册
                 var typeNamed = injectionAttribute.Named ?? type.Name;
