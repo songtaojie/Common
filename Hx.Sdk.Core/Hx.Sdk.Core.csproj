@@ -6,7 +6,7 @@
     <Company>Jay Song</Company>
     <Description>添加HttpClient帮助类，用于进行远程请求
 </Description>
-    <Version>5.1.1</Version>
+    <Version>5.1.2</Version>
   </PropertyGroup>
     <ItemGroup>
 	    <FrameworkReference Include="Microsoft.AspNetCore.App" />

@@ -14,29 +14,10 @@ namespace Hx.Sdk.DependencyInjection
         /// <param name="expectInterfaces"></param>
         public InjectionAttribute(params Type[] expectInterfaces)
         {
-            Action = InjectionActions.Add;
             Pattern = InjectionPatterns.FirstInterface;
             ExpectInterfaces = expectInterfaces ?? Array.Empty<Type>();
             Order = 0;
         }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="expectInterfaces"></param>
-        public InjectionAttribute(InjectionActions action, params Type[] expectInterfaces)
-        {
-            Action = action;
-            Pattern = InjectionPatterns.FirstInterface;
-            ExpectInterfaces = expectInterfaces ?? Array.Empty<Type>();
-            Order = 0;
-        }
-
-        /// <summary>
-        /// 添加服务方式，存在不添加，或继续添加
-        /// </summary>
-        public InjectionActions Action { get; set; }
 
         /// <summary>
         /// 注册选项，默认为FirstInterface

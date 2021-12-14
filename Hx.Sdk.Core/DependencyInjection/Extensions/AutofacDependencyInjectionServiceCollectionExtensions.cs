@@ -75,8 +75,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 //AOp
                 if (aopTypes != null && aopTypes.Any())
                 {
-                    registerBuilder.EnableClassInterceptors()
-                        .InterceptedBy(aopTypes.ToArray());
+                    if (injectionAttribute.Pattern == InjectionPatterns.Self)
+                    {
+                        registerBuilder.EnableClassInterceptors();
+                    }
+                    else
+                    {
+                        registerBuilder.EnableInterfaceInterceptors();
+                    }
+                    registerBuilder.InterceptedBy(aopTypes.ToArray());
                 }
                 //缓存类型注册
                 var typeNamed = injectionAttribute.Named ?? type.Name;
@@ -107,19 +114,19 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册自己
             if (injectionAttribute.Pattern is InjectionPatterns.Self)
             {
-                registerBuilder = RegisterType(builder, registerType, type, injectionAttribute);
+                registerBuilder = RegisterType(builder, registerType, type);
             }
             if (!canInjectInterfaces.Any()) return registerBuilder;
             // 只注册第一个接口
             if (injectionAttribute.Pattern is InjectionPatterns.FirstInterface)
             {
                 var first = canInjectInterfaces.First();
-                registerBuilder = RegisterType(builder, registerType, type, injectionAttribute, new List<Type> { first });
+                registerBuilder = RegisterType(builder, registerType, type, new List<Type> { first });
             }
             // 注册多个接口
             else if (injectionAttribute.Pattern is InjectionPatterns.ImplementedInterfaces)
             {
-                registerBuilder = RegisterType(builder, registerType, type, injectionAttribute, canInjectInterfaces);
+                registerBuilder = RegisterType(builder, registerType, type,  canInjectInterfaces);
             }
             return registerBuilder;
         }
@@ -130,18 +137,17 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="builder">服务</param>
         /// <param name="registerType">注册类型</param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">接口</param>
         private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterType(ContainerBuilder builder,
-            DependencyInjectionType registerType, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces = null)
+            DependencyInjectionType registerType, Type type, IEnumerable<Type> canInjectInterfaces = null)
         {
             var fixedType = FixedGenericType(type);
             if (registerType == DependencyInjectionType.Transient)
-                return RegisterTransientType(builder, fixedType, injectionAttribute, canInjectInterfaces);
+                return RegisterTransientType(builder, fixedType, canInjectInterfaces);
             if (registerType == DependencyInjectionType.Scoped)
-                return RegisterScopeType(builder, fixedType, injectionAttribute, canInjectInterfaces);
+                return RegisterScopeType(builder, fixedType, canInjectInterfaces);
             if (registerType == DependencyInjectionType.Singleton)
-                return RegisterSingletonType(builder, fixedType, injectionAttribute, canInjectInterfaces);
+                return RegisterSingletonType(builder, fixedType, canInjectInterfaces);
             throw new Exception("The unknown registerType");
         }
 
@@ -150,38 +156,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">接口</param>
-        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterTransientType(ContainerBuilder builder, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces = null)
+        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterTransientType(ContainerBuilder builder, Type type, IEnumerable<Type> canInjectInterfaces = null)
         {
-            switch (injectionAttribute.Action)
+            if (canInjectInterfaces == null || !canInjectInterfaces.Any())
             {
-                case InjectionActions.Add:
-                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
-                    {
-                        return builder.RegisterType(type)
-                            .AsSelf()
-                            .InstancePerDependency();
-                    }
-                    return builder.RegisterType(type)
-                        .As(canInjectInterfaces.ToArray())
-                        .InstancePerDependency();
-
-                case InjectionActions.TryAdd:
-                    if (canInjectInterfaces == null)
-                    {
-                        return builder.RegisterType(type)
-                                .AsSelf()
-                                .InstancePerDependency()
-                                .PreserveExistingDefaults();
-                    }
-                        
-                    return builder.RegisterType(type)
-                             .As(canInjectInterfaces.ToArray())
-                             .InstancePerDependency()
-                             .PreserveExistingDefaults();
-                default: throw new Exception("The unknown InjectionActions");
+                return builder.RegisterType(type)
+                    .AsSelf()
+                    .InstancePerDependency();
             }
+            return builder.RegisterType(type)
+                .As(canInjectInterfaces.ToArray())
+                .InstancePerDependency();
         }
 
         /// <summary>
@@ -189,34 +175,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">服务</param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">接口</param>
-        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterScopeType(ContainerBuilder builder, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces = null)
+        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterScopeType(ContainerBuilder builder, Type type, IEnumerable<Type> canInjectInterfaces = null)
         {
-            switch (injectionAttribute.Action)
+            if (canInjectInterfaces == null || !canInjectInterfaces.Any())
             {
-                case InjectionActions.Add:
-                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
-                    {
-                        return builder.RegisterType(type).AsSelf().InstancePerLifetimeScope();
-                    }
-                    return builder.RegisterType(type)
-                        .As(canInjectInterfaces.ToArray())
-                        .InstancePerLifetimeScope();
-                case InjectionActions.TryAdd:
-                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
-                    {
-                        return builder.RegisterType(type)
-                                .InstancePerLifetimeScope()
-                                .PreserveExistingDefaults();
-                    }
-                    return builder.RegisterType(type)
-                                   .As(canInjectInterfaces.ToArray())
-                                   .InstancePerLifetimeScope()
-                                   .PreserveExistingDefaults()
-                                   .EnableInterfaceInterceptors();
-                default: throw new Exception("The unknown InjectionActions");
+                return builder.RegisterType(type).AsSelf().InstancePerLifetimeScope();
             }
+            return builder.RegisterType(type)
+                .As(canInjectInterfaces.ToArray())
+                .InstancePerLifetimeScope();
         }
 
         /// <summary>
@@ -224,36 +192,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">服务</param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">接口</param>
-        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterSingletonType(ContainerBuilder builder, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces = null)
+        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterSingletonType(ContainerBuilder builder, Type type, IEnumerable<Type> canInjectInterfaces = null)
         {
-            switch (injectionAttribute.Action)
+            if (canInjectInterfaces == null || !canInjectInterfaces.Any())
             {
-                case InjectionActions.Add:
-                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
-                    {
-                        return builder.RegisterType(type)
-                           .AsSelf()
-                           .SingleInstance();
-                    }
-                    return builder.RegisterType(type)
-                            .As(canInjectInterfaces.ToArray())
-                            .SingleInstance();
-                case InjectionActions.TryAdd:
-                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
-                    {
-                        return builder.RegisterType(type)
-                            .AsSelf()
-                            .SingleInstance()
-                            .PreserveExistingDefaults();
-                    }
-                    return builder.RegisterType(type)
-                        .As(canInjectInterfaces.ToArray())
-                        .SingleInstance()
-                        .PreserveExistingDefaults();
-                default: throw new Exception("The unknown InjectionActions");
+                return builder.RegisterType(type)
+                   .AsSelf()
+                   .SingleInstance();
             }
+            return builder.RegisterType(type)
+                    .As(canInjectInterfaces.ToArray())
+                    .SingleInstance();
         }
 
         /// <summary>

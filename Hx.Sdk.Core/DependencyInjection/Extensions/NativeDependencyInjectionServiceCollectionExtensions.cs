@@ -97,7 +97,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册自己
             if (injectionAttribute.Pattern is InjectionPatterns.Self)
             {
-                RegisterType(services, registerType, type, injectionAttribute);
+                RegisterType(services, registerType, type);
             }
 
             if (!canInjectInterfaces.Any()) return;
@@ -105,14 +105,14 @@ namespace Microsoft.Extensions.DependencyInjection
             // 只注册第一个接口
             if (injectionAttribute.Pattern is InjectionPatterns.FirstInterface)
             {
-                RegisterType(services, registerType, type, injectionAttribute, canInjectInterfaces.First());
+                RegisterType(services, registerType, type, canInjectInterfaces.First());
             }
             // 注册多个接口
             else if (injectionAttribute.Pattern is InjectionPatterns.ImplementedInterfaces)
             {
                 foreach (var inter in canInjectInterfaces)
                 {
-                    RegisterType(services, registerType, type, injectionAttribute, inter);
+                    RegisterType(services, registerType, type,inter);
                 }
             }
         }
@@ -123,17 +123,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">服务</param>
         /// <param name="registerType">注册类型</param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="inter">接口</param>
-        private static void RegisterType(IServiceCollection services, DependencyInjectionType registerType, Type type, InjectionAttribute injectionAttribute, Type inter = null)
+        private static void RegisterType(IServiceCollection services, DependencyInjectionType registerType, Type type, Type inter = null)
         {
             // 修复泛型注册类型
             var fixedType = FixedGenericType(type);
             var fixedInter = inter == null ? null : FixedGenericType(inter);
 
-            if (registerType == DependencyInjectionType.Transient) RegisterTransientType(services, fixedType, injectionAttribute, fixedInter);
-            if (registerType == DependencyInjectionType.Scoped) RegisterScopeType(services, fixedType, injectionAttribute, fixedInter);
-            if (registerType == DependencyInjectionType.Singleton) RegisterSingletonType(services, fixedType, injectionAttribute, fixedInter);
+            if (registerType == DependencyInjectionType.Transient) RegisterTransientType(services, fixedType, fixedInter);
+            if (registerType == DependencyInjectionType.Scoped) RegisterScopeType(services, fixedType, fixedInter);
+            if (registerType == DependencyInjectionType.Singleton) RegisterSingletonType(services, fixedType, fixedInter);
         }
 
         /// <summary>
@@ -141,26 +140,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">服务</param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="inter">接口</param>
-        private static void RegisterTransientType(IServiceCollection services, Type type, InjectionAttribute injectionAttribute, Type inter = null)
+        private static void RegisterTransientType(IServiceCollection services, Type type, Type inter = null)
         {
-            switch (injectionAttribute.Action)
+            if (inter == null) services.AddTransient(type);
+            else
             {
-                case InjectionActions.Add:
-                    if (inter == null) services.AddTransient(type);
-                    else
-                    {
-                        services.AddTransient(inter, type);
-                    }
-                    break;
-
-                case InjectionActions.TryAdd:
-                    if (inter == null) services.TryAddTransient(type);
-                    else services.TryAddTransient(inter, type);
-                    break;
-
-                default: break;
+                services.AddTransient(inter, type);
             }
         }
 
@@ -169,26 +155,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">服务</param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="inter">接口</param>
-        private static void RegisterScopeType(IServiceCollection services, Type type, InjectionAttribute injectionAttribute, Type inter = null)
+        private static void RegisterScopeType(IServiceCollection services, Type type,Type inter = null)
         {
-            switch (injectionAttribute.Action)
+            if (inter == null) services.AddScoped(type);
+            else
             {
-                case InjectionActions.Add:
-                    if (inter == null) services.AddScoped(type);
-                    else
-                    {
-                        services.AddScoped(inter, type);
-                    }
-                    break;
-
-                case InjectionActions.TryAdd:
-                    if (inter == null) services.TryAddScoped(type);
-                    else services.TryAddScoped(inter, type);
-                    break;
-
-                default: break;
+                services.AddScoped(inter, type);
             }
         }
 
@@ -197,26 +170,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">服务</param>
         /// <param name="type">类型</param>
-        /// <param name="injectionAttribute">注入特性</param>
         /// <param name="inter">接口</param>
-        private static void RegisterSingletonType(IServiceCollection services, Type type, InjectionAttribute injectionAttribute, Type inter = null)
+        private static void RegisterSingletonType(IServiceCollection services, Type type, Type inter = null)
         {
-            switch (injectionAttribute.Action)
+            if (inter == null) services.AddSingleton(type);
+            else
             {
-                case InjectionActions.Add:
-                    if (inter == null) services.AddSingleton(type);
-                    else
-                    {
-                        services.AddSingleton(inter, type);
-                    }
-                    break;
-
-                case InjectionActions.TryAdd:
-                    if (inter == null) services.TryAddSingleton(type);
-                    else services.TryAddSingleton(inter, type);
-                    break;
-
-                default: break;
+                services.AddSingleton(inter, type);
             }
         }
 
