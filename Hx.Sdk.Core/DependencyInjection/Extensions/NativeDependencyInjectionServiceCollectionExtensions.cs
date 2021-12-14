@@ -64,28 +64,12 @@ namespace Microsoft.Extensions.DependencyInjection
                     .Where(u => !injectionAttribute.ExpectInterfaces.Contains(u)
                                 && u != typeof(IPrivateDependency)
                                 && !typeof(IPrivateDependency).IsAssignableFrom(u)
-                                //&& projectAssemblies.Contains(u.Assembly)
                                 && (
                                     (!type.IsGenericType && !u.IsGenericType)
                                     || (type.IsGenericType && u.IsGenericType && type.GetGenericArguments().Length == u.GetGenericArguments().Length))
                                 );
-
-                // 注册暂时服务
-                if (typeof(ITransientDependency).IsAssignableFrom(type))
-                {
-                    RegisterService(services, DependencyInjectionType.Transient, type, injectionAttribute, canInjectInterfaces);
-                }
-                // 注册作用域服务
-                else if (typeof(IScopedDependency).IsAssignableFrom(type))
-                {
-                    RegisterService(services, DependencyInjectionType.Scoped, type, injectionAttribute, canInjectInterfaces);
-                }
-                // 注册单例服务
-                else if (typeof(ISingletonDependency).IsAssignableFrom(type))
-                {
-                    RegisterService(services, DependencyInjectionType.Singleton, type, injectionAttribute, canInjectInterfaces);
-                }
-
+                // 注册服务
+                RegisterService(services,type, injectionAttribute, canInjectInterfaces);
                 // 缓存类型注册
                 var typeNamed = injectionAttribute.Named ?? type.Name;
                 TypeNamedCollection.TryAdd(typeNamed, type);
@@ -101,12 +85,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 注册服务
         /// </summary>
         /// <param name="services">服务集合</param>
-        /// <param name="registerType">类型作用域</param>
         /// <param name="type">类型</param>
         /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">能被注册的接口</param>
-        private static void RegisterService(IServiceCollection services, DependencyInjectionType registerType, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces)
+        private static void RegisterService(IServiceCollection services, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces)
         {
+            // 获取注册服务的类型
+            DependencyInjectionType registerType = typeof(ITransientDependency).IsAssignableFrom(type)
+                ? DependencyInjectionType.Transient
+                : (typeof(IScopedDependency).IsAssignableFrom(type) ? DependencyInjectionType.Scoped : DependencyInjectionType.Singleton);
             // 注册自己
             if (injectionAttribute.Pattern is InjectionPatterns.Self)
             {

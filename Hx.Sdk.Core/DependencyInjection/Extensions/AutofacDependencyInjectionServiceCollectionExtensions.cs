@@ -52,7 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .Where(u => typeof(IPrivateDependency).IsAssignableFrom(u) && u.IsClass && !u.IsInterface && !u.IsAbstract)
                 .OrderBy(u => GetOrder(u));
             // 注册aop服务
-            if (aopTypes != null && aopTypes.Count() > 0)
+            if (aopTypes != null && aopTypes.Any())
             {
                 builder.RegisterTypes(aopTypes.ToArray());
             }
@@ -67,39 +67,16 @@ namespace Microsoft.Extensions.DependencyInjection
                     .Where(u => !injectionAttribute.ExpectInterfaces.Contains(u)
                                 && u != typeof(IPrivateDependency)
                                 && !typeof(IPrivateDependency).IsAssignableFrom(u)
-                                //&& projectAssemblies.Contains(u.Assembly)
                                 && (
                                     (!type.IsGenericType && !u.IsGenericType)
                                     || (type.IsGenericType && u.IsGenericType && type.GetGenericArguments().Length == u.GetGenericArguments().Length))
                                 );
-                IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registerBuilder = null;
-                // 注册暂时服务
-                if (typeof(ITransientDependency).IsAssignableFrom(type))
-                {
-                    registerBuilder = RegisterService(builder, DependencyInjectionType.Transient, type, injectionAttribute, canInjectInterfaces);
-                }
-                // 注册作用域服务
-                else if (typeof(IScopedDependency).IsAssignableFrom(type))
-                {
-                    registerBuilder = RegisterService(builder, DependencyInjectionType.Scoped, type, injectionAttribute, canInjectInterfaces);
-                }
-                // 注册单例服务
-                else if (typeof(ISingletonDependency).IsAssignableFrom(type))
-                {
-                    registerBuilder = RegisterService(builder, DependencyInjectionType.Singleton, type, injectionAttribute, canInjectInterfaces);
-                }
-                if (injectionAttribute.Pattern == InjectionPatterns.Self)
-                {
-                    registerBuilder.EnableClassInterceptors();
-                }
-                else
-                {
-                    registerBuilder.EnableInterfaceInterceptors();
-                }
+                var registerBuilder = RegisterService(builder,type, injectionAttribute, canInjectInterfaces);
                 //AOp
-                if (aopTypes != null && aopTypes.Count() > 0)
+                if (aopTypes != null && aopTypes.Any())
                 {
-                    registerBuilder.InterceptedBy(aopTypes.ToArray());
+                    registerBuilder.EnableClassInterceptors()
+                        .InterceptedBy(aopTypes.ToArray());
                 }
                 //缓存类型注册
                 var typeNamed = injectionAttribute.Named ?? type.Name;
@@ -117,13 +94,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 注册服务
         /// </summary>
         /// <param name="builder"></param>
-        /// <param name="registerType">类型作用域</param>
         /// <param name="type">类型</param>
         /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">能被注册的接口</param>
-        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterService(ContainerBuilder builder, DependencyInjectionType registerType, Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces)
+        private static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterService(ContainerBuilder builder,Type type, InjectionAttribute injectionAttribute, IEnumerable<Type> canInjectInterfaces)
         {
             IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registerBuilder = null;
+            // 获取注册服务的类型
+            DependencyInjectionType registerType = typeof(ITransientDependency).IsAssignableFrom(type)
+                ? DependencyInjectionType.Transient
+                : (typeof(IScopedDependency).IsAssignableFrom(type) ? DependencyInjectionType.Scoped: DependencyInjectionType.Singleton);
             // 注册自己
             if (injectionAttribute.Pattern is InjectionPatterns.Self)
             {
@@ -177,7 +157,7 @@ namespace Microsoft.Extensions.DependencyInjection
             switch (injectionAttribute.Action)
             {
                 case InjectionActions.Add:
-                    if (canInjectInterfaces == null || canInjectInterfaces.Count() == 0)
+                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
                     {
                         return builder.RegisterType(type)
                             .AsSelf()
@@ -216,7 +196,7 @@ namespace Microsoft.Extensions.DependencyInjection
             switch (injectionAttribute.Action)
             {
                 case InjectionActions.Add:
-                    if (canInjectInterfaces == null || canInjectInterfaces.Count() == 0)
+                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
                     {
                         return builder.RegisterType(type).AsSelf().InstancePerLifetimeScope();
                     }
@@ -224,7 +204,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         .As(canInjectInterfaces.ToArray())
                         .InstancePerLifetimeScope();
                 case InjectionActions.TryAdd:
-                    if (canInjectInterfaces == null || canInjectInterfaces.Count() == 0)
+                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
                     {
                         return builder.RegisterType(type)
                                 .InstancePerLifetimeScope()
@@ -251,7 +231,7 @@ namespace Microsoft.Extensions.DependencyInjection
             switch (injectionAttribute.Action)
             {
                 case InjectionActions.Add:
-                    if (canInjectInterfaces == null || canInjectInterfaces.Count() == 0)
+                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
                     {
                         return builder.RegisterType(type)
                            .AsSelf()
@@ -261,7 +241,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             .As(canInjectInterfaces.ToArray())
                             .SingleInstance();
                 case InjectionActions.TryAdd:
-                    if (canInjectInterfaces == null || canInjectInterfaces.Count() == 0)
+                    if (canInjectInterfaces == null || !canInjectInterfaces.Any())
                     {
                         return builder.RegisterType(type)
                             .AsSelf()
