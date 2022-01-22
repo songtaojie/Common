@@ -137,6 +137,7 @@ namespace Hx.Sdk.UnifyResult
         /// <summary>
         /// 是否跳过规范化处理（包括任意状态：成功，失败或其他状态码）
         /// </summary>
+        /// 
         /// <param name="method"></param>
         /// <param name="unifyResult"></param>
         /// <param name="isWebRequest"></param>

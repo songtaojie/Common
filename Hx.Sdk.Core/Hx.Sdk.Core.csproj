@@ -4,9 +4,9 @@
 	  <TargetFramework>net5.0</TargetFramework>
     <Authors>Jay Song</Authors>
     <Company>Jay Song</Company>
-    <Description>添加HttpClient帮助类，用于进行远程请求
+    <Description>修改依赖注入，以及aop的bug
 </Description>
-    <Version>5.1.2</Version>
+    <Version>5.1.2.1</Version>
   </PropertyGroup>
     <ItemGroup>
 	    <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -20,7 +20,6 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hx.Sdk.UnifyResult
@@ -42,11 +42,18 @@ namespace Hx.Sdk.UnifyResult
         public IActionResult OnSucceeded(ResultExecutingContext context)
         {
             object data;
+            if(context.Result is EmptyResult) data = null;
             // 处理内容结果
-            if (context.Result is ContentResult contentResult) data = contentResult.Content;
+            else if (context.Result is ContentResult contentResult) data = contentResult.Content;
             // 处理对象结果
-            else if (context.Result is ObjectResult objectResult) data = objectResult.Value;
-            else if (context.Result is EmptyResult) data = null;
+            else if (context.Result is ObjectResult objectResult)
+            {
+                data = objectResult.Value;
+                if (objectResult.DeclaredType == typeof(RESTfulResult<>))
+                {
+                    return context.Result;
+                }
+            }
             else return null;
 
             return new JsonResult(new RESTfulResult<object>
@@ -68,10 +75,6 @@ namespace Hx.Sdk.UnifyResult
         /// <returns></returns>
         public async Task OnResponseStatusCodes(HttpContext context, int statusCode)
         {
-            JsonSerializerSettings setting = new JsonSerializerSettings()
-            {
-                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
-            };
             switch (statusCode)
             {
                 // 处理 401 状态码
@@ -79,7 +82,7 @@ namespace Hx.Sdk.UnifyResult
                     context.Response.ContentType = "application/json";
                     //context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.StatusCode = StatusCodes.Status200OK;
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(new RESTfulResult<object>
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(new RESTfulResult<object>
                     {
                         StatusCode = StatusCodes.Status401Unauthorized,
                         Succeeded = false,
@@ -87,14 +90,14 @@ namespace Hx.Sdk.UnifyResult
                         Message = "401 Unauthorized",
                         Extras = UnifyResultContext.Take(),
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                    }, setting));
+                    }));
                     break;
                 // 处理 403 状态码
                 case StatusCodes.Status403Forbidden:
                     context.Response.ContentType = "application/json";
                     //context.Response.StatusCode = StatusCodes.Status403Forbidden;
                     context.Response.StatusCode = StatusCodes.Status200OK;
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(new RESTfulResult<object>
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(new RESTfulResult<object>
                     {
                         StatusCode = StatusCodes.Status403Forbidden,
                         Succeeded = false,
@@ -102,7 +105,7 @@ namespace Hx.Sdk.UnifyResult
                         Message = "403 Forbidden",
                         Extras = UnifyResultContext.Take(),
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                    }, setting));
+                    }));
                     break;
 
                 default:

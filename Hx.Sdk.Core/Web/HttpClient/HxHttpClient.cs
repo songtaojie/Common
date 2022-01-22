@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Hx.Sdk.Core
 {
@@ -55,7 +55,7 @@ namespace Hx.Sdk.Core
                 }
                 else
                 {
-                    var jsonData = JsonConvert.SerializeObject(data);
+                    var jsonData = JsonSerializer.Serialize(data);
                     content = new StringContent(jsonData, Encoding.UTF8, "application/json");
                 }
 
@@ -98,7 +98,7 @@ namespace Hx.Sdk.Core
             var result = await response.Content.ReadAsStringAsync();
             try
             {
-                return resultFunc != null ? resultFunc(result) : JsonConvert.DeserializeObject<TResult>(result);
+                return resultFunc != null ? resultFunc(result) : JsonSerializer.Deserialize<TResult>(result);
             }
             catch (Exception ex)
             {

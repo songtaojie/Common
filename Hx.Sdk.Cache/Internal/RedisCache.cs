@@ -1,9 +1,9 @@
 ﻿using Hx.Sdk.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -336,7 +336,7 @@ namespace Hx.Sdk.Cache.Internal
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             var value = StringGet(key);
             if (string.IsNullOrEmpty(value)) return default;
-            return JsonConvert.DeserializeObject<T>(value);
+            return JsonSerializer.Deserialize<T>(value);
         }
 
         public bool Set<T>(string key, T value, TimeSpan? expiry = null)
@@ -344,7 +344,7 @@ namespace Hx.Sdk.Cache.Internal
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             if (value == null) throw new ArgumentNullException(nameof(value));
             key = this.GetFullKey(key);
-            string json = JsonConvert.SerializeObject(value);
+            string json = JsonSerializer.Serialize(value);
             Connect();
             return this.Do<bool>((IDatabase db) => db.StringSet(key, json, expiry, When.Always, CommandFlags.None));
         }
@@ -384,7 +384,7 @@ namespace Hx.Sdk.Cache.Internal
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             var value = await StringGetAsync(key);
             if (string.IsNullOrEmpty(value)) return default;
-			return JsonConvert.DeserializeObject<T>(value);
+			return JsonSerializer.Deserialize<T>(value);
         }
 
 
@@ -411,7 +411,7 @@ namespace Hx.Sdk.Cache.Internal
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             if (value == null) throw new ArgumentNullException(nameof(value));
             key = this.GetFullKey(key);
-            string json = JsonConvert.SerializeObject(value);
+            string json = JsonSerializer.Serialize(value);
             await ConnectAsync();
             return await this.Do((IDatabase db) => db.StringSetAsync(key, json, expiry, When.Always, CommandFlags.None));
         }
@@ -471,7 +471,6 @@ namespace Hx.Sdk.Cache.Internal
             return true;
         }
         #endregion 
-
 
         #region 私有方法
 
