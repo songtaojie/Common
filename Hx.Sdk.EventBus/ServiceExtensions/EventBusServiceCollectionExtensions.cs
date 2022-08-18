@@ -1,9 +1,11 @@
 ﻿using DotNetCore.CAP;
 using Hx.Sdk.EventBus;
 using Hx.Sdk.EventBus.Internal;
+using Hx.Sdk.EventBus.Options;
 using Hx.Sdk.EventBus.RabbitMq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 
@@ -84,36 +86,66 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="capOptions">cap配置，如果没设置，需要配置CapRabbitMQSettings:Cap</param>
         /// <param name="mqOption">RabbitMQ配置，如果没设置，需要配置CapRabbitMQSettings:RabbitMQ</param>
         /// <returns></returns>
-        public static IServiceCollection AddCapRabbitMQ(this IServiceCollection services, Action<CapOptions> capOptions = null,
-           Action<RabbitMQOptions> mqOption = null)
+        public static IServiceCollection AddCapRabbitMQForMySql(this IServiceCollection services, Action<CapOptions, IConfiguration> capOptions = null)
+        {
+            services.AddCapRabbitMQ((capOptions,config) => 
+            {
+                capOptions.UseMySql(config["CapSettings:ConnectionString"]);
+            });
+            return services;
+        }
+
+        /// <summary>
+        /// 添加cap RabbitMq
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="capOptions">cap配置，如果没设置，需要配置CapSettings:Cap</param>
+        /// <returns></returns>
+        public static IServiceCollection AddCapRabbitMQ(this IServiceCollection services, Action<CapOptions, IConfiguration> capOptions = null)
         {
             Penetrates.InternalServices = services;
+            ConfigureCapSettings(services);
             services.AddCap(options =>
             {
                 var config = Penetrates.ServiceProvider.GetRequiredService<IConfiguration>();
-                int failedRetryCount = 5;
-                var failedRetryCountStr = config["CapRabbitMQSettings:Cap:FailedRetryCount"];
-                if (!string.IsNullOrEmpty(failedRetryCountStr)) _ = int.TryParse(failedRetryCountStr, out failedRetryCount);
-                options.DefaultGroupName = config["CapRabbitMQSettings:Cap:DefaultGroupName"];
-                options.FailedRetryCount = failedRetryCount;
-                options.UseMySql(config["CapRabbitMQSettings:ConnectionString"]);
-                capOptions?.Invoke(options);
+                var capSettingsOptions = Penetrates.ServiceProvider.GetRequiredService<IOptions<CapSettingsOptions>>();
+                var capSettings = capSettingsOptions.Value;
+                options.DefaultGroupName = capSettings.Cap.DefaultGroupName;
+                options.FailedRetryCount = capSettings.Cap.FailedRetryCount;
+                options.FailedRetryInterval = capSettings.Cap.FailedRetryInterval;
+                //options.UseMySql(config["CapSettings:ConnectionString"]);
                 options.UseRabbitMQ(options =>
                 {
-                    var portStr = config["CapRabbitMQSettings:RabbitMQ:Port"];
-                    int port = 5672;
-                    if(!string.IsNullOrEmpty(portStr)) _ = int.TryParse(portStr, out port);
-                    options.HostName = config["CapRabbitMQSettings:RabbitMQ:HostName"];
-                    options.VirtualHost = config["CapRabbitMQSettings:RabbitMQ:VirtualHost"];
-                    options.UserName = config["CapRabbitMQSettings:RabbitMQ:UserName"];
-                    options.Password = config["CapRabbitMQSettings:RabbitMQ:Password"];
-                    options.Port = port;
-                    mqOption?.Invoke(options);
+                    options.HostName = capSettings.RabbitMQ.HostName;
+                    options.VirtualHost = capSettings.RabbitMQ.VirtualHost;
+                    options.UserName = capSettings.RabbitMQ.UserName;
+                    options.Password = capSettings.RabbitMQ.Password;
+                    options.Port = capSettings.RabbitMQ.Port;
                 });
+                capOptions?.Invoke(options, config);
             });
 
             services.AddTransient<IEventBus, EventBusCapRabbitMQ>();
             return services;
+        }
+
+        /// <summary>
+        /// 添加 capsetting 配置
+        /// </summary>
+        /// <param name="services"></param>
+        private static void ConfigureCapSettings(IServiceCollection services)
+        {
+            // 获取配置节点
+            // 配置验证
+            services.AddOptions<CapSettingsOptions>()
+                    .BindConfiguration("CapSettings")
+                    .ValidateDataAnnotations();
+
+            // 选项后期配置
+            services.PostConfigure<CapSettingsOptions>(options =>
+            {
+                _ = options.SetDefaultRedisSettings(options);
+            });
         }
     }
 }

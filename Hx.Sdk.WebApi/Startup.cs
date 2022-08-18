@@ -42,7 +42,7 @@ namespace Hx.Sdk.WebApi
             services.AddRedisCache();
             services.AddCorsAccessor();
             //services.AddDbContext<DefaultDbContext>();
-            //services.AddCapRabbitMQ();
+            services.AddCapRabbitMQ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
