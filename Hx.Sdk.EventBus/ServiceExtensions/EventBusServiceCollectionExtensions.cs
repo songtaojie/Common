@@ -22,7 +22,6 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddRabbitMQ(this IServiceCollection services, Func<RabbitMQOptions> mqOption, int retryCount = 5)
         {
             if (mqOption == null) throw new ArgumentNullException(nameof(mqOption), "no configuration information passed in");
-            Penetrates.InternalServices = services;
             var option = mqOption.Invoke();
             if (string.IsNullOrEmpty(option.HostName)) throw new ArgumentNullException("HostName is missing");
             //注册IRabbitMQPersistentConnection服务用于设置RabbitMQ连接
@@ -53,7 +52,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddRabbitMQ(this IServiceCollection services, int retryCount = 5)
         {
-            Penetrates.InternalServices = services;
             //注册IRabbitMQPersistentConnection服务用于设置RabbitMQ连接
             services.AddSingleton<IRabbitMQPersistentConnection>(resolver =>
             {
@@ -126,6 +124,17 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             services.AddTransient<IEventBus, EventBusCapRabbitMQ>();
+            return services;
+        }
+
+        /// <summary>
+        /// 添加默认实现
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddEmptyEventBus(this IServiceCollection services)
+        {
+            services.AddTransient<IEventBus, EmptyEventBus>();
             return services;
         }
 
