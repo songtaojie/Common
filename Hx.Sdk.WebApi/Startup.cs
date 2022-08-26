@@ -1,3 +1,4 @@
+using CSRedis;
 using Hx.Sdk.Test.Entity;
 using Hx.Sdk.Test.Entity.DbContexts;
 using Microsoft.AspNetCore.Builder;
@@ -39,11 +40,13 @@ namespace Hx.Sdk.WebApi
             { 
                 db.MigrationAssemblyName = "Hx.Sdk.Test.Entity";
             });
-            services.AddRedisCache();
+            services.AddRedisCache(Configuration);
             services.AddCorsAccessor();
             //services.AddDbContext<DefaultDbContext>();
             services.AddCapRabbitMQ(Configuration);
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,6 +65,23 @@ namespace Hx.Sdk.WebApi
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public static class Cusstom
+    {
+        /// <summary>
+        /// Ìí¼Óredis·þÎñ
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddRedisCache(this IServiceCollection services, IConfiguration configuration)
+        {
+            var redisDB = new CSRedisClient(configuration["RedisSettings"]);
+            RedisHelper.Initialization(redisDB);
+            services.AddSingleton(redisDB);
+            return services;
         }
     }
 }

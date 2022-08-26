@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">服务集合</param>
         /// <param name="config"></param>
+        /// <param name="swaggerSettings">swagger配置</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
         public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services,IConfiguration config, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
@@ -33,6 +34,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加规范化文档服务
         /// </summary>
         /// <param name="mvcBuilder">Mvc 构建器</param>
+        /// <param name="config">配置对象</param>
+        /// <param name="swaggerSettings">swagger配置</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
         public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder,IConfiguration config, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)

@@ -87,6 +87,16 @@ namespace Hx.Sdk.Swagger
         public string RouteTemplate { get; set; }
 
         /// <summary>
+        /// 启用枚举 Schema 筛选器
+        /// </summary>
+        public bool? EnableEnumSchemaFilter { get; set; }
+
+        /// <summary>
+        /// 启用标签排序筛选器
+        /// </summary>
+        public bool? EnableTagsOrderDocumentFilter { get; set; }
+
+        /// <summary>
         /// 设置默认值
         /// </summary>
         /// <param name="options"></param>
@@ -128,6 +138,8 @@ namespace Hx.Sdk.Swagger
             options.Servers ??= Array.Empty<OpenApiServer>();
             options.HideServers ??= false;
             options.RouteTemplate ??= "swagger/{documentName}/swagger.json";
+            options.EnableEnumSchemaFilter ??= true;
+            options.EnableTagsOrderDocumentFilter ??= true;
             return options;
         }
     }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net5.0;net6.0;</TargetFrameworks>
+		<TargetFramework>net5.0</TargetFramework>
 		<Authors>Jay Song</Authors>
 		<Description>添加控制台输出</Description>
 		<Version>5.2.0</Version>
@@ -10,6 +10,7 @@
 		<PackageId>Hx.Sdk.Swagger</PackageId>
 		<Product>Swagger for ASP.NET Core</Product>
 		<Copyright>2020 Hx.Sdk.Swagger</Copyright>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

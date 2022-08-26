@@ -57,5 +57,10 @@ namespace Microsoft.AspNetCore.Mvc
         /// 排序
         /// </summary>
         public int Order { get; set; }
+
+        /// <summary>
+        /// 额外描述，支持 HTML
+        /// </summary>
+        public string Description { get; set; }
     }
 }
