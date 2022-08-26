@@ -1,29 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Authors>Jay Song</Authors>
-    <Description>添加控制台输出</Description>
-    <Version>5.1</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;</TargetFrameworks>
+		<Authors>Jay Song</Authors>
+		<Description>添加控制台输出</Description>
+		<Version>5.2.0</Version>
+		<PackageTags>ASP.NET Core, Swagger</PackageTags>
+		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
+		<PackageId>Hx.Sdk.Swagger</PackageId>
+		<Product>Swagger for ASP.NET Core</Product>
+		<Copyright>2020 Hx.Sdk.Swagger</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Assets\index-mini-profiler.html" />
-    <None Remove="Assets\index.html" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Assets\index-mini-profiler.html" />
+		<None Remove="Assets\index.html" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\index-mini-profiler.html">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\index.html">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Assets\index-mini-profiler.html">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Assets\index.html">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
+	</ItemGroup>
 </Project>

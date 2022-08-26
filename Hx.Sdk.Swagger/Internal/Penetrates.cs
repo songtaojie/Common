@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Options;
@@ -35,31 +36,6 @@ namespace Hx.Sdk.Swagger.Internal
         /// 有效程序集类型
         /// </summary>
         internal static readonly IEnumerable<Type> EffectiveTypes;
-
-        /// <summary>
-        /// 应用服务
-        /// </summary>
-        internal static IServiceCollection InternalServices;
-
-        /// <summary>
-        /// 有效程序集类型
-        /// </summary>
-        private static IServiceProvider _serviceProvider;
-        /// <summary>
-        /// 服务提供器
-        /// </summary>
-        internal static IServiceProvider ServiceProvider
-        {
-            get
-            {
-                if (_serviceProvider == null) _serviceProvider = InternalServices.BuildServiceProvider();
-                return _serviceProvider;
-            }
-            set
-            {
-                _serviceProvider = value;
-            }
-        }
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -201,10 +177,11 @@ namespace Hx.Sdk.Swagger.Internal
         /// 获取 Swagger 配置
         /// </summary>
         /// <returns></returns>
-        public static SwaggerSettingsOptions GetSwaggerSettings()
+        public static SwaggerSettingsOptions GetSwaggerSettings(IConfiguration config)
         {
-            var options = ServiceProvider.GetService<IOptions<SwaggerSettingsOptions>>();
-            return options?.Value?? SwaggerSettingsOptions.SetDefaultSwaggerSettings(new SwaggerSettingsOptions());
+            var options = config.GetSection("SwaggerSettings").Get<SwaggerSettingsOptions>();
+            options = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
+            return options;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Hx.Sdk.Swagger;
 using Hx.Sdk.Swagger.Internal;
+using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 
@@ -14,16 +15,17 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加规范化文档服务
         /// </summary>
         /// <param name="services">服务集合</param>
+        /// <param name="config"></param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services,IConfiguration config, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
         {
-            Penetrates.InternalServices = services;
-            // 添加配置
-            ConfigureSwaggerOptions(services, swaggerSettings);
             // 添加Swagger生成器服务
-            services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
-
+            services.AddSwaggerGen(options =>
+            {
+                SwaggerDocumentBuilder.Init(config);
+                SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure);
+            });
             return services;
         }
 
@@ -33,33 +35,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="mvcBuilder">Mvc 构建器</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder,IConfiguration config, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
         {
             var services = mvcBuilder.Services;
-            Penetrates.InternalServices = services;
-            // 添加配置
-            ConfigureSwaggerOptions(services, swaggerSettings);
-            // 添加Swagger生成器服务
-            services.AddSwaggerGen(options => SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure));
-
+            services.AddSwaggerDocuments(config, swaggerSettings, swaggerGenConfigure);
             return mvcBuilder;
-        }
-
-        /// <summary>
-        /// 添加 Swagger配置
-        /// </summary>
-        /// <param name="services"></param>
-        private static void ConfigureSwaggerOptions(IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings)
-        {
-            // 配置验证
-            services.AddOptions<SwaggerSettingsOptions>()
-                    .BindConfiguration("SwaggerSettings")
-                    .ValidateDataAnnotations()
-                    .PostConfigure(options =>
-                    {
-                        _ = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
-                        swaggerSettings?.Invoke(options);
-                    });
         }
     }
 }

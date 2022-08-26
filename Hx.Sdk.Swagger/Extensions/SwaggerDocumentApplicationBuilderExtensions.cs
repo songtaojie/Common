@@ -1,5 +1,7 @@
 ﻿using Hx.Sdk.Swagger;
 using Hx.Sdk.Swagger.Internal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
@@ -21,7 +23,8 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app, string routePrefix = default, Action<SwaggerOptions> swaggerConfigure = null, Action<SwaggerUIOptions> swaggerUIConfigure = null)
         {
-            Penetrates.ServiceProvider = app.ApplicationServices;
+            var config = app.ApplicationServices.GetService<IConfiguration>();
+            SwaggerDocumentBuilder.Init(config);
             // 配置 Swagger 全局参数
             app.UseSwagger(options => SwaggerDocumentBuilder.Build(options, swaggerConfigure));
 

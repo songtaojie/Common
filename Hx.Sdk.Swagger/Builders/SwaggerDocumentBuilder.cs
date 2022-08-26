@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -25,32 +26,36 @@ namespace Hx.Sdk.Swagger
     internal static class SwaggerDocumentBuilder
     {
         /// <summary>
+        /// 所有分组默认的组名 Key
+        /// </summary>
+        private const string AllGroupsKey = "All Groups";
+
+        private static bool _isInit;
+        /// <summary>
         /// 规范化文档配置
         /// </summary>
-        private static readonly SwaggerSettingsOptions _swaggerSettingsOptions;
+        private static  SwaggerSettingsOptions _swaggerSettings;
 
         /// <summary>
         /// 分组信息
         /// </summary>
-        private static readonly IEnumerable<GroupExtraInfo> _groupExtraInfos;
+        private static IEnumerable<GroupExtraInfo> _groupExtraInfos;
 
         /// <summary>
         /// 文档分组列表
         /// </summary>
-        private static readonly IEnumerable<string> _groups;
+        private static  IEnumerable<string> _documentGroups;
 
         /// <summary>
         /// 带排序的分组名
         /// </summary>
-        private static readonly Regex _groupOrderRegex;
+        private static Regex _groupOrderRegex;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         static SwaggerDocumentBuilder()
         {
-            //// 载入配置
-            _swaggerSettingsOptions = Penetrates.GetSwaggerSettings();
             // 初始化常量
             _groupOrderRegex = new Regex(@"@(?<order>[0-9]+$)");
             GetActionGroupsCached = new ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>>();
@@ -58,12 +63,20 @@ namespace Hx.Sdk.Swagger
             GetGroupOpenApiInfoCached = new ConcurrentDictionary<string, SwaggerOpenApiInfo>();
             GetControllerTagCached = new ConcurrentDictionary<ControllerActionDescriptor, string>();
             GetActionTagCached = new ConcurrentDictionary<ApiDescription, string>();
+        }
 
+        internal static void Init(IConfiguration config)
+        {
+            if (_isInit) return;
+            //// 载入配置
+            _swaggerSettings = Penetrates.GetSwaggerSettings(config);
+           
             // 默认分组，支持多个逗号分割
-            _groupExtraInfos = new List<GroupExtraInfo> { ResolveGroupExtraInfo(_swaggerSettingsOptions.DefaultGroupName) };
+            _groupExtraInfos = new List<GroupExtraInfo> { ResolveGroupExtraInfo(_swaggerSettings.DefaultGroupName) };
 
             // 加载所有分组
-            _groups = ReadGroups();
+            _documentGroups = ReadGroups();
+            _isInit = true;
         }
 
         /// <summary>
@@ -74,26 +87,26 @@ namespace Hx.Sdk.Swagger
         internal static void Build(SwaggerOptions swaggerOptions, Action<SwaggerOptions> configure = null)
         {
             // 生成V2版本
-            swaggerOptions.SerializeAsV2 = _swaggerSettingsOptions.FormatAsV2 == true;
+            swaggerOptions.SerializeAsV2 = _swaggerSettings.FormatAsV2 == true;
 
             // 判断是否启用 Server
-            if (_swaggerSettingsOptions.HideServers != true)
+            if (_swaggerSettings.HideServers != true)
             {
                 // 启动服务器 Servers
                 swaggerOptions.PreSerializeFilters.Add((swagger, request) =>
                 {
                     // 默认 Server
                     var servers = new List<OpenApiServer> {
-                        new OpenApiServer { Url = $"{request.Scheme}://{request.Host.Value}{_swaggerSettingsOptions.VirtualPath}",Description="Default" }
+                        new OpenApiServer { Url = $"{request.Scheme}://{request.Host.Value}{_swaggerSettings.VirtualPath}",Description="Default" }
                     };
-                    servers.AddRange(_swaggerSettingsOptions.Servers);
+                    servers.AddRange(_swaggerSettings.Servers);
 
                     swagger.Servers = servers;
                 });
             }
 
             // 配置路由模板
-            swaggerOptions.RouteTemplate = _swaggerSettingsOptions.RouteTemplate;
+            swaggerOptions.RouteTemplate = _swaggerSettings.RouteTemplate;
 
             // 自定义配置
             configure?.Invoke(swaggerOptions);
@@ -149,13 +162,13 @@ namespace Hx.Sdk.Swagger
             CreateGroupEndpoint(swaggerUIOptions);
 
             // 配置文档标题
-            swaggerUIOptions.DocumentTitle = _swaggerSettingsOptions.DocumentTitle;
+            swaggerUIOptions.DocumentTitle = _swaggerSettings.DocumentTitle;
 
             //// 配置UI地址
-            swaggerUIOptions.RoutePrefix = _swaggerSettingsOptions.RoutePrefix ?? routePrefix ?? "swagger";
+            swaggerUIOptions.RoutePrefix = _swaggerSettings.RoutePrefix ?? routePrefix ?? "swagger";
 
             // 文档展开设置
-            swaggerUIOptions.DocExpansion(_swaggerSettingsOptions.DocExpansionState.Value);
+            swaggerUIOptions.DocExpansion(_swaggerSettings.DocExpansionState.Value);
 
             // 注入 MiniProfiler 组件
             InjectMiniProfilerPlugin(swaggerUIOptions);
@@ -170,7 +183,7 @@ namespace Hx.Sdk.Swagger
         /// <param name="swaggerGenOptions">Swagger生成器对象</param>
         private static void CreateSwaggerDocs(SwaggerGenOptions swaggerGenOptions)
         {
-            foreach (var group in _groups)
+            foreach (var group in _documentGroups)
             {
                 var groupOpenApiInfo = GetGroupOpenApiInfo(group) as OpenApiInfo;
                 swaggerGenOptions.SwaggerDoc(group, groupOpenApiInfo);
@@ -183,12 +196,31 @@ namespace Hx.Sdk.Swagger
         /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
         private static void LoadGroupControllerWithActions(SwaggerGenOptions swaggerGenOptions)
         {
-            swaggerGenOptions.DocInclusionPredicate((currentGroup, apiDescription) =>
-            {
-                if (!apiDescription.TryGetMethodInfo(out var method) || typeof(Controller).IsAssignableFrom(method.ReflectedType)) return false;
+            swaggerGenOptions.DocInclusionPredicate(CheckApiDescriptionInCurrentGroup);
+        }
 
-                return GetActionGroups(method).Any(u => u.Group == currentGroup);
-            });
+        /// <summary>
+        /// 检查方法是否在分组中
+        /// </summary>
+        /// <param name="currentGroup"></param>
+        /// <param name="apiDescription"></param>
+        /// <returns></returns>
+        public static bool CheckApiDescriptionInCurrentGroup(string currentGroup, ApiDescription apiDescription)
+        {
+            if (!apiDescription.TryGetMethodInfo(out var method)) return false;
+
+            // 处理 Mvc 和 WebAPI 混合项目路由问题
+            if (typeof(Controller).IsAssignableFrom(method.DeclaringType) && apiDescription.ActionDescriptor.ActionConstraints == null)
+            {
+                return false;
+            }
+
+            if (currentGroup == AllGroupsKey)
+            {
+                return true;
+            }
+
+            return GetActionGroups(method).Any(u => u.Group == currentGroup);
         }
 
         /// <summary>
@@ -229,14 +261,19 @@ namespace Hx.Sdk.Swagger
             // 本地函数
             static string DefaultSchemaIdSelector(Type modelType)
             {
-                if (!modelType.IsConstructedGenericType) return modelType.FullName;
+                var modelName = modelType.FullName;
 
-                var prefix = modelType.GetGenericArguments()
-                    .Select(genericArg => DefaultSchemaIdSelector(genericArg))
-                    .Aggregate((previous, current) => previous + current);
+                // 处理泛型类型问题
+                if (modelType.IsConstructedGenericType)
+                {
+                    var prefix = modelType.GetGenericArguments()
+                        .Select(genericArg => DefaultSchemaIdSelector(genericArg))
+                        .Aggregate((previous, current) => previous + current);
 
-                // 通过 Of 拼接多个泛型
-                return modelType.FullName.Split('`').First() + "Of" + prefix;
+                    // 通过 _ 拼接多个泛型
+                    modelName = modelName.Split('`').First() + "_" + prefix;
+                }
+                return modelName;
             }
 
             // 调用本地函数
@@ -249,7 +286,7 @@ namespace Hx.Sdk.Swagger
         /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
         private static void LoadXmlComments(SwaggerGenOptions swaggerGenOptions)
         {
-            var xmlComments = _swaggerSettingsOptions.XmlComments;
+            var xmlComments = _swaggerSettings.XmlComments;
             foreach (var xmlComment in xmlComments)
             {
                 var assemblyXmlName = xmlComment.EndsWith(".xml") ? xmlComment : $"{xmlComment}.xml";
@@ -268,7 +305,7 @@ namespace Hx.Sdk.Swagger
         private static void ConfigureSecurities(SwaggerGenOptions swaggerGenOptions)
         {
             // 判断是否启用了授权
-            if (_swaggerSettingsOptions.EnableAuthorized != true || _swaggerSettingsOptions.SecurityDefinitions.Length == 0) return;
+            if (_swaggerSettings.EnableAuthorized != true || _swaggerSettings.SecurityDefinitions.Length == 0) return;
 
             //开启加权小锁
             swaggerGenOptions.OperationFilter<AddResponseHeadersFilter>();
@@ -277,7 +314,7 @@ namespace Hx.Sdk.Swagger
             // 在header中添加token，传递到后台
             swaggerGenOptions.OperationFilter<SecurityRequirementsOperationFilter>();
             ////生成安全定义
-            foreach (var securityDefinition in _swaggerSettingsOptions.SecurityDefinitions)
+            foreach (var securityDefinition in _swaggerSettings.SecurityDefinitions)
             {
                 // Id 必须定义
                 if (string.IsNullOrWhiteSpace(securityDefinition.Id)) continue;
@@ -291,13 +328,13 @@ namespace Hx.Sdk.Swagger
         /// <param name="swaggerUIOptions"></param>
         private static void CreateGroupEndpoint(SwaggerUIOptions swaggerUIOptions)
         {
-            foreach (var group in _groups)
+            foreach (var group in _documentGroups)
             {
                 var groupOpenApiInfo = GetGroupOpenApiInfo(group);
 
                 // 替换路由模板
-                var routeTemplate = _swaggerSettingsOptions.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
-                swaggerUIOptions.SwaggerEndpoint($"{_swaggerSettingsOptions.VirtualPath}/{routeTemplate}", groupOpenApiInfo?.Title ?? group);
+                var routeTemplate = _swaggerSettings.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
+                swaggerUIOptions.SwaggerEndpoint($"{_swaggerSettings.VirtualPath}/{routeTemplate}", groupOpenApiInfo?.Title ?? group);
             }
         }
 
@@ -314,7 +351,7 @@ namespace Hx.Sdk.Swagger
             // 自定义 Swagger 首页
             swaggerUIOptions.IndexStream = () => 
             {
-                var stream = thisAssembly.GetManifestResourceStream($"{thisType.Namespace}.Assets.{(_swaggerSettingsOptions.EnabledMiniProfiler != true ? "index" : "index-mini-profiler")}.html");
+                var stream = thisAssembly.GetManifestResourceStream($"{thisType.Namespace}.Assets.{(_swaggerSettings.EnabledMiniProfiler != true ? "index" : "index-mini-profiler")}.html");
                 return stream;
             };
         }
@@ -322,7 +359,7 @@ namespace Hx.Sdk.Swagger
         /// <summary>
         /// 获取分组信息缓存集合
         /// </summary>
-        private static readonly ConcurrentDictionary<string, SwaggerOpenApiInfo> GetGroupOpenApiInfoCached;
+        private static ConcurrentDictionary<string, SwaggerOpenApiInfo> GetGroupOpenApiInfoCached;
 
         /// <summary>
         /// 获取分组配置信息
@@ -336,7 +373,27 @@ namespace Hx.Sdk.Swagger
             // 本地函数
             static SwaggerOpenApiInfo Function(string group)
             {
-                return _swaggerSettingsOptions.GroupOpenApiInfos.FirstOrDefault(u => u.Group == group) ?? new SwaggerOpenApiInfo { Group = group };
+                // 替换路由模板
+                var routeTemplate = _swaggerSettings.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
+                if (!string.IsNullOrWhiteSpace(_swaggerSettings.ServerDir))
+                {
+                    routeTemplate = _swaggerSettings.ServerDir + "/" + routeTemplate;
+                }
+
+                // 处理虚拟目录问题
+                var template = $"{_swaggerSettings.VirtualPath}/{routeTemplate}";
+
+                var groupInfo = _swaggerSettings.GroupOpenApiInfos.FirstOrDefault(u => u.Group == group);
+                if (groupInfo != null)
+                {
+                    groupInfo.RouteTemplate = template;
+                    groupInfo.Title ??= group;
+                }
+                else
+                {
+                    groupInfo = new SwaggerOpenApiInfo { Group = group, RouteTemplate = template };
+                }
+                return groupInfo;
             }
         }
 
@@ -348,7 +405,7 @@ namespace Hx.Sdk.Swagger
         {
             // 获取所有的控制器和动作方法
             var controllers = Penetrates.EffectiveTypes.Where(u => Penetrates.IsApiController(u));
-            if (!controllers.Any()) return new[] { _swaggerSettingsOptions.DefaultGroupName };
+            if (!controllers.Any()) return new[] { _swaggerSettings.DefaultGroupName };
 
             var actions = controllers.SelectMany(c => c.GetMethods().Where(u => IsApiAction(u, c)));
 
@@ -377,7 +434,7 @@ namespace Hx.Sdk.Swagger
         /// <summary>
         /// 获取控制器组缓存集合
         /// </summary>
-        private static readonly ConcurrentDictionary<Type, IEnumerable<GroupExtraInfo>> GetControllerGroupsCached;
+        private static ConcurrentDictionary<Type, IEnumerable<GroupExtraInfo>> GetControllerGroupsCached;
 
         /// <summary>
         /// 获取控制器分组列表
@@ -412,7 +469,7 @@ namespace Hx.Sdk.Swagger
         /// <summary>
         /// <see cref="GetActionGroups(MethodInfo)"/> 缓存集合
         /// </summary>
-        private static readonly ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>> GetActionGroupsCached;
+        private static ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>> GetActionGroupsCached;
 
         /// <summary>
         /// 获取动作方法分组列表
@@ -447,7 +504,7 @@ namespace Hx.Sdk.Swagger
         /// <summary>
         /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合
         /// </summary>
-        private static readonly ConcurrentDictionary<ControllerActionDescriptor, string> GetControllerTagCached;
+        private static ConcurrentDictionary<ControllerActionDescriptor, string> GetControllerTagCached;
 
         /// <summary>
         /// 获取控制器标签
@@ -474,7 +531,7 @@ namespace Hx.Sdk.Swagger
         /// <summary>
         /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合
         /// </summary>
-        private static readonly ConcurrentDictionary<ApiDescription, string> GetActionTagCached;
+        private static ConcurrentDictionary<ApiDescription, string> GetActionTagCached;
 
         /// <summary>
         /// 获取动作方法标签
@@ -488,7 +545,7 @@ namespace Hx.Sdk.Swagger
             // 本地函数
             static string Function(ApiDescription apiDescription)
             {
-                if (!apiDescription.TryGetMethodInfo(out var method)) return "unknown";
+                if (!apiDescription.TryGetMethodInfo(out var method)) return Assembly.GetEntryAssembly().GetName().Name;
 
                 // 获取控制器描述器
                 var controllerActionDescriptor = apiDescription.ActionDescriptor as ControllerActionDescriptor;

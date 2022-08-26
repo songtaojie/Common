@@ -47,6 +47,11 @@ namespace Hx.Sdk.Swagger
         public string VirtualPath { get; set; }
 
         /// <summary>
+        /// 服务目录（修正 IIS 创建 Application 问题）
+        /// </summary>
+        public string ServerDir { get; set; }
+
+        /// <summary>
         /// 文档展开设置
         /// </summary>
         public DocExpansion? DocExpansionState { get; set; }

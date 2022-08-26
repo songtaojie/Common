@@ -19,7 +19,7 @@ namespace Hx.Sdk.EventBus.RabbitMq
         private readonly int _retryCount;
         private IConnection _connection;
         private bool _disposed;
-        private readonly object _sync_root = new();
+        private readonly object _sync_root = new object();
 
         public DefaultRabbitMQPersistentConnection(IConnectionFactory connectionFactory, ILogger<DefaultRabbitMQPersistentConnection> logger, int retryCount = 5)
         {

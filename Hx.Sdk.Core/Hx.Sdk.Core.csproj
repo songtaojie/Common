@@ -1,29 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <TargetFramework>net5.0</TargetFramework>
-    <Authors>Jay Song</Authors>
-    <Company>Jay Song</Company>
-    <Description>修改依赖注入，以及aop的bug
-</Description>
-    <Version>5.1.2.1</Version>
-  </PropertyGroup>
-    <ItemGroup>
-	    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>bin\Debug\Hx.Sdk.Core.xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;</TargetFrameworks>
+		<Authors>Jay Song</Authors>
+		<Company>Jay Song</Company>
+		<Description>
+			修改依赖注入，以及aop的bug
+		</Description>
+		<Version>5.2.0</Version>
+		<PackageTags>ASP.NET Core</PackageTags>
+		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
+		<PackageId>Hx.Sdk.Core</PackageId>
+		<Product>Cache for ASP.NET Core</Product>
+		<Copyright>2020 Hx.Sdk.Cache</Copyright>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>bin\Debug\</OutputPath>
+		<DocumentationFile>bin\Debug\Hx.Sdk.Core.xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
-    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
+	</ItemGroup>
 
 </Project>

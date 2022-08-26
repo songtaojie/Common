@@ -43,5 +43,10 @@ namespace Hx.Sdk.Swagger
         /// 是否可见
         /// </summary>
         public bool? Visible { get; set; }
+
+        /// <summary>
+        /// 路由模板
+        /// </summary>
+        public string RouteTemplate { get; internal set; }
     }
 }
