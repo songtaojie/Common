@@ -1,6 +1,7 @@
 using CSRedis;
 using Hx.Sdk.Test.Entity;
 using Hx.Sdk.Test.Entity.DbContexts;
+using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -42,8 +45,15 @@ namespace Hx.Sdk.WebApi
             });
             services.AddRedisCache(Configuration);
             services.AddCorsAccessor();
+            services.AddSwaggerDocuments(Configuration);
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger", Version = "v1" });
+            //    var path = System.IO.Path.Combine(AppContext.BaseDirectory, "Hx.Sdk.WebApi.xml");
+            //    if (File.Exists(path)) c.IncludeXmlComments(path, true);
+            //});
             //services.AddDbContext<DefaultDbContext>();
-            services.AddCapRabbitMQ(Configuration);
+            //services.AddCapRabbitMQ(Configuration);
         }
 
 
@@ -61,6 +71,14 @@ namespace Hx.Sdk.WebApi
             app.UseDatabaseAccessor();
             app.UseCorsAccessor();
             //app.UseCapRabbitMQ();
+            app.UseKnife4SwaggerDocuments();
+            //app.UseSwagger();
+            ////Swagger使用自定义UI
+            //app.UseKnife4UI(c =>
+            //{
+            //    c.RoutePrefix = string.Empty;
+            //    c.SwaggerEndpoint($"/swagger/v1/swagger.json", "h.swagger.webapi v1");
+            //});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

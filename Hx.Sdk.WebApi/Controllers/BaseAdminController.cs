@@ -11,7 +11,7 @@ namespace Hx.Sdk.WebApi.Controllers
     /// </summary>
     [Route("admin/api/[controller]/[action]")]
     [ApiController]
-    [ApiDescriptionSettings(GroupName = "Admin",Groups =new string[] {"Admin" })]
+    [ApiDescriptionSettings(GroupName = "Admin", Groups = new string[] { "Admin" })]
     public class BaseAdminController : ControllerBase
     {
     }

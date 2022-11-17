@@ -35,6 +35,11 @@ namespace Hx.Sdk.Core
         public bool? EnabledUnifyResult { get; set; }
 
         /// <summary>
+        /// 是否启用事件总线
+        /// </summary>
+        public bool? EnabledCapRabbitMQ { get; set; }
+
+        /// <summary>
         /// 是否开启全局异常过滤器
         /// </summary>
         public bool? EnabledExceptionFilter { get; set; }
@@ -58,6 +63,7 @@ namespace Hx.Sdk.Core
             options.EnabledUnifyResult ??= true;
             options.EnabledExceptionFilter ??= true;
             options.EnabledSqlLog ??= true;
+            options.EnabledCapRabbitMQ ??= false;
         }
 
     }
