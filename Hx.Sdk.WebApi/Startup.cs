@@ -46,6 +46,7 @@ namespace Hx.Sdk.WebApi
             services.AddRedisCache(Configuration);
             services.AddCorsAccessor();
             services.AddSwaggerDocuments(Configuration);
+            services.AddSqlSugar(Configuration,new SqlSugar.ConnectionConfig());
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger", Version = "v1" });

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>5.2.0</Version>
+    <Version>6.0</Version>
     <Authors>songtaojie</Authors>
     <Description>事件总线封装类</Description>
   </PropertyGroup>

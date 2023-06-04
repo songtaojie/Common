@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30225.117
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Entity", "Hx.Sdk.Entity\Hx.Sdk.Entity.csproj", "{CB0616A0-0B8A-4C40-B716-DFDD8FE40909}"
 EndProject
@@ -25,8 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.Autofac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.AutoMapper", "Hx.Sdk.NetFramework.AutoMapper\Hx.Sdk.NetFramework.AutoMapper.csproj", "{8FAF03F0-060D-47DF-8A92-0665B2428E37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.Test", "Hx.Sdk.NetFramework.Test\Hx.Sdk.NetFramework.Test.csproj", "{FDC8865D-31E3-4646-B4DD-7977D976EEE0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Core", "Hx.Sdk.Core\Hx.Sdk.Core.csproj", "{FB810313-7542-4553-A95B-322321A8D7BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Cache", "Hx.Sdk.Cache\Hx.Sdk.Cache.csproj", "{B128601D-1FF0-4183-B5DD-B369C3DE8D1C}"
@@ -46,6 +44,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.EventBus", "Hx.Sdk.EventBus\Hx.Sdk.EventBus.csproj", "{354C37A5-1909-48DE-BF3A-627202909020}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.EntityFrameworkCore", "Hx.Sdk.EntityFrameworkCore\Hx.Sdk.EntityFrameworkCore.csproj", "{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.Sqlsugar", "Hx.Sqlsugar\Hx.Sdk.Sqlsugar.csproj", "{84574EFE-33E6-42D7-BADC-6739415232CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0A36276-CEE7-4DB8-B70C-B171B91212A7}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,10 +94,6 @@ Global
 		{8FAF03F0-060D-47DF-8A92-0665B2428E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FAF03F0-060D-47DF-8A92-0665B2428E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FAF03F0-060D-47DF-8A92-0665B2428E37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDC8865D-31E3-4646-B4DD-7977D976EEE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDC8865D-31E3-4646-B4DD-7977D976EEE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDC8865D-31E3-4646-B4DD-7977D976EEE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDC8865D-31E3-4646-B4DD-7977D976EEE0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB810313-7542-4553-A95B-322321A8D7BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB810313-7542-4553-A95B-322321A8D7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB810313-7542-4553-A95B-322321A8D7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -129,6 +130,10 @@ Global
 		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84574EFE-33E6-42D7-BADC-6739415232CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84574EFE-33E6-42D7-BADC-6739415232CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84574EFE-33E6-42D7-BADC-6739415232CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84574EFE-33E6-42D7-BADC-6739415232CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,7 +146,6 @@ Global
 		{19194E76-F9C9-44EC-94E1-FDFA46B8BE24} = {23BAB2C0-CA56-438E-B42B-666E8CDD06A4}
 		{0AA220FB-A343-4F3E-B662-1D803E1B92F7} = {23BAB2C0-CA56-438E-B42B-666E8CDD06A4}
 		{8FAF03F0-060D-47DF-8A92-0665B2428E37} = {23BAB2C0-CA56-438E-B42B-666E8CDD06A4}
-		{FDC8865D-31E3-4646-B4DD-7977D976EEE0} = {19DB3EAC-9F3C-44E9-B875-D6AD032AC5B7}
 		{FB810313-7542-4553-A95B-322321A8D7BD} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 		{B128601D-1FF0-4183-B5DD-B369C3DE8D1C} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 		{6B6A5A8A-0A93-4AE3-B8EA-4A0CC44C570B} = {19DB3EAC-9F3C-44E9-B875-D6AD032AC5B7}
@@ -151,6 +155,7 @@ Global
 		{C4536EDC-9109-491E-A81B-6C827F9F9AA5} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 		{354C37A5-1909-48DE-BF3A-627202909020} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
+		{84574EFE-33E6-42D7-BADC-6739415232CA} = {079D3BE6-8111-4A75-8044-C1049F87CCA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3A06E77-0544-416C-8374-B89A2A7AE3DA}

@@ -10,7 +10,7 @@ namespace Hx.Sdk.NetCore.Test.EFCore
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.AddCustomConvention();
+            //optionsBuilder.AddCustomConvention();
             optionsBuilder.UseSqlServer("Server=.;Database=EFCoreTest;User ID=sa;Password=songtaojie;");
 
             base.OnConfiguring(optionsBuilder);
