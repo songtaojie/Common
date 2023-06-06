@@ -12,6 +12,9 @@ using System.DirectoryServices.ActiveDirectory;
 using System.Reflection;
 using System.Collections;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Hx.Sdk.Sqlsugar.Internal;
+using Hx.Sdk.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -148,83 +151,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetSqlString(config.DbType, ex.Sql, (SugarParameter[])ex.Parametres)} \r\n");
                 };
             }
-           
-            
-
-            // 数据审计
-            db.Aop.DataExecuting = (oldValue, entityInfo) =>
-            {
-                // 演示环境判断
-                if (IsInit && entityInfo.EntityColumnInfo.IsPrimarykey)
-                {
-                    if (entityInfo.EntityName != nameof(SysJobDetail) && entityInfo.EntityName != nameof(SysJobTrigger) &&
-                        entityInfo.EntityName != nameof(SysLogOp) && entityInfo.EntityName != nameof(SysLogVis) &&
-                        entityInfo.EntityName != nameof(SysOnlineUser))
-                    {
-                        var isDemoEnv = App.GetService<SysConfigService>().GetConfigValue<bool>(CommonConst.SysDemoEnv).GetAwaiter().GetResult();
-                        if (isDemoEnv)
-                            throw Oops.Oh(ErrorCodeEnum.D1200);
-                    }
-                }
-
-                if (entityInfo.OperationType == DataFilterType.InsertByObject)
-                {
-                    // 主键(long类型)且没有值的---赋值雪花Id
-                    if (entityInfo.EntityColumnInfo.IsPrimarykey && entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
-                    {
-                        var id = entityInfo.EntityColumnInfo.PropertyInfo.GetValue(entityInfo.EntityValue);
-                        if (id == null || (long)id == 0)
-                            entityInfo.SetValue(YitIdHelper.NextId());
-                    }
-                    if (entityInfo.PropertyName == "CreateTime")
-                        entityInfo.SetValue(DateTime.Now);
-                    if (App.User != null)
-                    {
-                        if (entityInfo.PropertyName == "TenantId")
-                        {
-                            var tenantId = ((dynamic)entityInfo.EntityValue).TenantId;
-                            if (tenantId == null || tenantId == 0)
-                                entityInfo.SetValue(App.User.FindFirst(ClaimConst.TenantId)?.Value);
-                        }
-                        if (entityInfo.PropertyName == "CreateUserId")
-                        {
-                            var createUserId = ((dynamic)entityInfo.EntityValue).CreateUserId;
-                            if (createUserId == 0 || createUserId == null)
-                                entityInfo.SetValue(App.User.FindFirst(ClaimConst.UserId)?.Value);
-                        }
-
-                        if (entityInfo.PropertyName == "CreateOrgId")
-                        {
-                            var createOrgId = ((dynamic)entityInfo.EntityValue).CreateOrgId;
-                            if (createOrgId == 0 || createOrgId == null)
-                                entityInfo.SetValue(App.User.FindFirst(ClaimConst.OrgId)?.Value);
-                        }
-                    }
-                }
-                if (entityInfo.OperationType == DataFilterType.UpdateByObject)
-                {
-                    if (entityInfo.PropertyName == "UpdateTime")
-                        entityInfo.SetValue(DateTime.Now);
-                    if (entityInfo.PropertyName == "UpdateUserId")
-                        entityInfo.SetValue(App.User?.FindFirst(ClaimConst.UserId)?.Value);
-                }
-            };
-
-            // 超管时排除各种过滤器
-            if (App.User?.FindFirst(ClaimConst.AccountType)?.Value == ((int)AccountTypeEnum.SuperAdmin).ToString())
-                return;
-
-            // 配置实体假删除过滤器
-            db.QueryFilter.AddTableFilter<IDeletedFilter>(u => u.IsDelete == false);
-            // 配置租户过滤器
-            var tenantId = App.User?.FindFirst(ClaimConst.TenantId)?.Value;
-            if (!string.IsNullOrWhiteSpace(tenantId))
-                db.QueryFilter.AddTableFilter<ITenantIdFilter>(u => u.TenantId == long.Parse(tenantId));
-
-            // 配置用户机构（数据范围）过滤器
-            SqlSugarFilter.SetOrgEntityFilter(db);
-            // 配置自定义过滤器
-            SqlSugarFilter.SetCustomEntityFilter(db);
         }
 
         /// <summary>
@@ -232,29 +158,27 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="db"></param>
         /// <param name="config"></param>
-        private static void SetDbDiffLog(SqlSugarScopeProvider db, DbConnectionConfig config)
+        private static void SetDbDiffLog(SqlSugarScopeProvider db, DbConnectionConfig config,ILogger logger)
         {
             if (!config.EnableDiffLog) return;
 
-            db.Aop.OnDiffLogEvent = async u =>
+            db.Aop.OnDiffLogEvent = u =>
             {
-                var logDiff = new SysLogDiff
+                var logDiff = new 
                 {
                     // 操作后记录（字段描述、列名、值、表名、表描述）
-                    AfterData = JSON.Serialize(u.AfterData),
+                    AfterData = JsonConvert.SerializeObject(u.AfterData),
                     // 操作前记录（字段描述、列名、值、表名、表描述）
-                    BeforeData = JSON.Serialize(u.BeforeData),
+                    BeforeData = JsonConvert.SerializeObject(u.BeforeData),
                     // 传进来的对象
-                    BusinessData = JSON.Serialize(u.BusinessData),
+                    BusinessData = JsonConvert.SerializeObject(u.BusinessData),
                     // 枚举（insert、update、delete）
                     DiffType = u.DiffType.ToString(),
                     Sql = UtilMethods.GetSqlString(config.DbType, u.Sql, u.Parameters),
-                    Parameters = JSON.Serialize(u.Parameters),
+                    Parameters = JsonConvert.SerializeObject(u.Parameters),
                     Elapsed = u.Time == null ? 0 : (long)u.Time.Value.TotalMilliseconds
                 };
-                await db.Insertable(logDiff).ExecuteCommandAsync();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(DateTime.Now + $"\r\n*****差异日志开始*****\r\n{Environment.NewLine}{JSON.Serialize(logDiff)}{Environment.NewLine}*****差异日志结束*****\r\n");
+                logger.LogInformation($"*****差异日志开始记录，时间：{DateTime.Now}*****{Environment.NewLine}{JsonConvert.SerializeObject(logDiff)}{Environment.NewLine}*****差异日志结束*****{Environment.NewLine}");
             };
         }
 
@@ -274,13 +198,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 dbProvider.DbMaintenance.CreateDatabase();
 
             // 获取所有实体表-初始化表结构
-            var entityTypes = App.EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass && u.IsDefined(typeof(SugarTable), false)).ToList();
+            var entityTypes = Penetrates.EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass && u.IsDefined(typeof(SugarTable), false)).ToList();
             if (!entityTypes.Any()) return;
             foreach (var entityType in entityTypes)
             {
                 var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
                 if (tAtt != null && tAtt.configId.ToString() != config.ConfigId) continue;
-                if (tAtt == null && config.ConfigId != SqlSugarConst.ConfigId) continue;
 
                 var splitTable = entityType.GetCustomAttribute<SplitTableAttribute>();
                 if (splitTable == null)
@@ -292,7 +215,7 @@ namespace Microsoft.Extensions.DependencyInjection
             if (!config.EnableInitSeed) return;
 
             // 获取所有种子配置-初始化数据
-            var seedDataTypes = App.EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
+            var seedDataTypes = Penetrates.EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
                 && u.GetInterfaces().Any(i => i.HasImplementedRawGeneric(typeof(ISqlSugarEntitySeedData<>)))).ToList();
             if (!seedDataTypes.Any()) return;
             foreach (var seedType in seedDataTypes)
@@ -306,7 +229,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
                 var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
                 if (tAtt != null && tAtt.configId.ToString() != config.ConfigId) continue;
-                if (tAtt == null && config.ConfigId != SqlSugarConst.ConfigId) continue;
+                //if (tAtt == null && config.ConfigId != SqlSugarConst.ConfigId) continue;
 
                 var entityInfo = dbProvider.EntityMaintenance.GetEntityInfo(entityType);
                 if (entityInfo.Columns.Any(u => u.IsPrimarykey))

@@ -1,6 +1,5 @@
-﻿using Hx.Sdk.Attributes;
-
-namespace Hx.Sdk.Entity.Page
+﻿
+namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// 分页参数
@@ -16,29 +15,29 @@ namespace Hx.Sdk.Entity.Page
         /// 当前页码
         /// 默认从第一页开始
         /// </summary>
-        public int PageIndex { get; set; } = 1;
+        public int Page { get; set; } = 1;
         /// <summary>
-        /// 排序的键
+        /// 排序的字段
         /// </summary>
-        public string SortKey { get; set; } = string.Empty;
+        public string SortField { get; set; } = string.Empty;
         /// <summary>
         /// 0 正序 1倒序
         /// </summary>
-        public SortTypeEnum SortType { get; set; }
+        public OrderTypeEnum OrderType { get; set; } = OrderTypeEnum.ASC;
     }
     /// <summary>
     /// 排序类型
     /// </summary>
     [SkipScan]
-    public enum SortTypeEnum
+    public enum OrderTypeEnum
     {
         /// <summary>
         /// 正序
         /// </summary>
-        ASC = 0,
+        ASC = 1,
         /// <summary>
         /// 倒序
         /// </summary>
-        DESC = 1
+        DESC = 2
     }
 }

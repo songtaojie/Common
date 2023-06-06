@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.Attributes
+namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// 自定义Decimal类型的精确度属性
