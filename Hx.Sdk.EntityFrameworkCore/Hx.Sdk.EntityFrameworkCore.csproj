@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net6.0;</TargetFrameworks>
+	  <TargetFramework>net6.0</TargetFramework>
     <Authors>songtaojie</Authors>
     <Description>Hx.Sdk.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
-    <Version>5.2.0</Version>
+    <Version>6.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

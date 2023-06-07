@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.Sdk.Attributes
+namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// 不被扫描和发现的特性

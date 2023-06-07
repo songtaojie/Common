@@ -1,7 +1,9 @@
 ﻿using DotNetCore.CAP;
 using Hx.Sdk.EventBus;
+using Hx.Sdk.Sqlsugar;
 using Hx.Sdk.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +14,15 @@ namespace Hx.Sdk.WebApi.Controllers
     public class TestController: BaseAdminController
     {
         private IEventBus _capPublisher;
+        private DbSettingsOptions dbConnectionOptions;
         /// <summary>
         /// 控制器
         /// </summary>
         /// <param name="capPublisher"></param>
-        public TestController(IEventBus capPublisher)
+        public TestController(IOptions<DbSettingsOptions> options)
         {
-            _capPublisher = capPublisher;
+            //_capPublisher = capPublisher;
+            dbConnectionOptions = options.Value;
         }
 
         [HttpPost]

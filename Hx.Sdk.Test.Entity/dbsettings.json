@@ -3,6 +3,6 @@
     "SqlServerConnectionString": "Server=localhost;Database=hx_sdk_core;User=sa;Password=000000;MultipleActiveResultSets=True;",
     "Sqlite3ConnectionString": "Data Source=./hx_sdk_core.db",
     "IdsConnectionString": "Data Source=localhost;Database=hxidentityserver;User ID=root;Password=songtaojie;CharSet=utf8;",
-    "MySqlConnectionString": "Data Source=localhost;Database=hx_sdk_core;User ID=root;Password=song123456;"
+    "MySqlConnectionString": "Data Source=localhost;Database=hx_sdk_core;User ID=root;Password=songtaojie;"
   }
 }

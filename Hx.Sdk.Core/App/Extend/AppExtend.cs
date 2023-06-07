@@ -20,5 +20,10 @@
         /// Hx.Sdk.Swagger文档包
         /// </summary>
         internal const string Swagger = "Hx.Sdk.Swagger";
+
+        /// <summary>
+        /// Hx.Sdk.EventBus事件总线包
+        /// </summary>
+        internal const string EventBus = "Hx.Sdk.EventBus";
     }
 }

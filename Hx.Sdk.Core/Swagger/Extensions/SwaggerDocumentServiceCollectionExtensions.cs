@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.Core;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Reflection;
 
@@ -14,8 +15,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加规范化文档服务
         /// </summary>
         /// <param name="services">服务集合</param>
+        /// <param name="config"></param>
         /// <returns>服务集合</returns>
-        internal static IServiceCollection AddSwaggerDocuments(this IServiceCollection services)
+        internal static IServiceCollection AddSwaggerDocuments(this IServiceCollection services,IConfiguration config)
         {
             // 判断是否安装了 DependencyInjection 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
@@ -27,7 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(u => u.Name == "AddSwaggerDocuments" && u.GetParameters().First().ParameterType == typeof(IServiceCollection));
             ConsoleHelper.WriteInfoLine("Add the SwaggerDocuments service");
-            addObjectMapperMethod?.Invoke(null, new object[] { services, null, null });
+            addObjectMapperMethod?.Invoke(null, new object[] { services, config,null, null });
             return services;
         }
 
@@ -35,8 +37,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加规范化文档服务
         /// </summary>
         /// <param name="mvcBuilder">Mvc 构建器</param>
+        /// <param name="config">配置</param>
         /// <returns>服务集合</returns>
-        internal static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder)
+        internal static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder, IConfiguration config)
         {
             // 判断是否安装了 Swagger 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
@@ -48,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(u => u.Name == "AddSwaggerDocuments" && u.GetParameters().First().ParameterType == typeof(IMvcBuilder));
             ConsoleHelper.WriteInfoLine("Add the SwaggerDocuments service");
-            addObjectMapperMethod?.Invoke(null, new object[] { mvcBuilder, null, null });
+            addObjectMapperMethod?.Invoke(null, new object[] { mvcBuilder, config,null, null });
             return mvcBuilder;
         }
     }

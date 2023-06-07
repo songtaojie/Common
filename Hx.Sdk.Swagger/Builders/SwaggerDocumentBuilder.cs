@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.Swagger.Internal;
+using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -180,6 +181,43 @@ namespace Hx.Sdk.Swagger
 
             // 自定义配置
             configure?.Invoke(swaggerUIOptions);
+        }
+
+        /// <summary>
+        /// Swagger UI 构建
+        /// </summary>
+        /// <param name="knife4UIOptions"></param>
+        /// <param name="routePrefix"></param>
+        /// <param name="configure"></param>
+        internal static void BuildKnife4UUI(Knife4UIOptions knife4UIOptions, string routePrefix = default, Action<Knife4UIOptions> configure = null)
+        {
+            // 配置分组终点路由
+            CreateGroupEndpoint(knife4UIOptions);
+
+            // 配置文档标题
+            knife4UIOptions.DocumentTitle = _swaggerSettings.DocumentTitle;
+
+            //// 配置UI地址
+            knife4UIOptions.RoutePrefix = _swaggerSettings.RoutePrefix ?? routePrefix ?? "swagger";
+
+            // 文档展开设置
+            knife4UIOptions.DocExpansion(GetKnife4jUIDocExpansion(_swaggerSettings.DocExpansionState));
+
+            // 注入 MiniProfiler 组件
+            //InjectMiniProfilerPlugin(swaggerUIOptions);
+
+            // 自定义配置
+            configure?.Invoke(knife4UIOptions);
+        }
+        private static IGeekFan.AspNetCore.Knife4jUI.DocExpansion GetKnife4jUIDocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion? docExpansion)
+        {
+            return docExpansion switch
+            {
+                Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List => IGeekFan.AspNetCore.Knife4jUI.DocExpansion.List,
+                Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None => IGeekFan.AspNetCore.Knife4jUI.DocExpansion.None,
+                Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.Full => IGeekFan.AspNetCore.Knife4jUI.DocExpansion.Full,
+                _ => IGeekFan.AspNetCore.Knife4jUI.DocExpansion.List
+            };
         }
 
         /// <summary>
@@ -434,6 +472,22 @@ namespace Hx.Sdk.Swagger
         }
 
         /// <summary>
+        /// 配置分组终点路由
+        /// </summary>
+        /// <param name="knife4UIOptions"></param>
+        private static void CreateGroupEndpoint(Knife4UIOptions knife4UIOptions)
+        {
+            foreach (var group in _documentGroups)
+            {
+                var groupOpenApiInfo = GetGroupOpenApiInfo(group);
+
+                // 替换路由模板
+                var routeTemplate = _swaggerSettings.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
+                knife4UIOptions.SwaggerEndpoint($"{_swaggerSettings.VirtualPath}/{routeTemplate}", groupOpenApiInfo?.Title ?? group);
+            }
+        }
+
+        /// <summary>
         /// 注入 MiniProfiler 插件
         /// </summary>
         /// <param name="swaggerUIOptions"></param>
@@ -450,6 +504,7 @@ namespace Hx.Sdk.Swagger
                 return stream;
             };
         }
+
 
         /// <summary>
         /// 获取分组信息缓存集合

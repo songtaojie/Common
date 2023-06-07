@@ -54,14 +54,15 @@ namespace Microsoft.AspNetCore.Hosting
 
             hostBuilder.ConfigureServices((hostContext, services) =>
             {
+                var config = hostContext.Configuration;
                 // 存储服务提供器
                 InternalApp.InternalServices = services;
                 // 存储配置对象
-                InternalApp.Configuration = hostContext.Configuration;
+                InternalApp.Configuration = config;
                 // 注册 Startup 过滤器
                 services.AddTransient<IStartupFilter, StartupFilter>();
                 // 初始化应用服务
-                services.AddApp();
+                services.AddApp(config);
                 ConsoleHelper.WriteSuccessLine("complete Hx.Sdk.Core ConfigureServices", true);
             });
             return hostBuilder;

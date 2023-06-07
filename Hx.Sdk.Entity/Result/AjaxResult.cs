@@ -3,7 +3,7 @@
     /// <summary>
     /// ajax返回结果统一封装
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public class AjaxResult<T>
     {
         /// <summary>
