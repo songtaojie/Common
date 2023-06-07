@@ -1,35 +1,130 @@
-﻿using Hx.Sdk.ImageSharp;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿using CSRedis;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.IO.Compression;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Hx.Sdk.NetCore.Test
 {
     static class Program
     {
-        const string LongText = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet lorem at magna mollis, non semper erat aliquet. In leo tellus, sollicitudin non eleifend et, luctus vel magna. Proin at lacinia tortor, malesuada molestie nisl. Quisque mattis dui quis eros ultricies, quis faucibus turpis dapibus. Donec urna ipsum, dignissim eget condimentum at, condimentum non magna. Donec non urna sit amet lectus tincidunt interdum vitae vitae leo. Aliquam in nisl accumsan, feugiat ipsum condimentum, scelerisque diam. Vivamus quam diam, rhoncus ut semper eget, gravida in metus.
-Nullam quis malesuada metus. In hac habitasse platea dictumst. Aliquam faucibus eget eros nec vulputate. Quisque sed dolor lacus. Proin non dolor vitae massa rhoncus vestibulum non a arcu. Morbi mollis, arcu id pretium dictum, augue dui cursus eros, eu pharetra arcu ante non lectus. Integer quis tellus ipsum. Integer feugiat augue id tempus rutrum. Ut eget interdum leo, id fermentum lacus. Morbi euismod, mi at tempus finibus, ante risus ornare eros, eu ultrices ipsum dolor vitae risus. Mauris molestie pretium massa vitae maximus. Fusce ut egestas ex, vitae semper nulla. Proin pretium elit libero, et interdum enim molestie ac.
-Pellentesque fermentum vitae lacus non aliquet. Sed nulla ipsum, hendrerit sit amet vulputate varius, volutpat eget est. Pellentesque eget ante erat. Vestibulum venenatis ex quis pretium sagittis. Etiam vel nibh sit amet leo gravida efficitur. In hac habitasse platea dictumst. Nullam lobortis euismod sem dapibus aliquam. Proin accumsan velit a magna gravida condimentum. Nam non massa ac nibh viverra rutrum. Phasellus elit tortor, malesuada et purus nec, placerat mattis neque. Proin auctor risus vel libero ultrices, id fringilla erat facilisis. Donec rutrum, enim sit amet faucibus viverra, velit tellus aliquam tellus, et tempus tellus diam sed dui. Integer fringilla convallis nisl venenatis elementum. Sed volutpat massa ut mauris accumsan, mollis finibus tortor pretium.";
         static void Main(string[] args)
         {
-            //System.IO.Directory.CreateDirectory("output");
-            //string letter = "A short piece of text";
-            //var fontOptions = new ImageSharp.Fonts.FontOptions(LongText);
-            //fontOptions.Wordwrap = true;
-            //fontOptions.WaterLocation = WaterLocation.RightBottom;
-            //ImageManager.MarkLetterWater("fb.jpg", fontOptions);
-            //Console.WriteLine("结束");
+            //var lockKey = "lockTest";
+            //var redisClient = new CSRedisClient("118.31.119.35:6379,defaultDatabase=5,poolsize=50,ssl=false,writeBuffer=10240");
+            //RedisHelper.Initialization(redisClient);
+            //var iHour = 0;
+            //var iMinute = 0;
+            //var Interval = 300;
+            //var time = "02:00".Split(':');
+            //iHour = int.Parse(time[0]);
+            //iMinute = int.Parse(time[1]);
+            //var now = DateTime.Now;
+            //if (now.Hour < iHour) Console.Write("未到上报时间");
+            //var oneOClock = DateTime.Today.AddHours(iHour).AddMinutes(iMinute);
+            //int msUntilFour = (int)((oneOClock - now).TotalSeconds);
+            //if (msUntilFour < 0)
+            //{
+            //    Interval = 3600 * 12 - msUntilFour;
+            //}
+            //else
+            //{
+            //    Interval = msUntilFour;
+            //}
+            //var cacheValue = RedisHelper.Get("HuiMinCardAPI:UserCard:TransactionRecord");//设置值。默认永不过期
+            //var jObject = JObject.Parse(cacheValue);
+            //var lastRefundTime = jObject.Value<string>("lastReChargeTime1");
 
-            //var valueType = typeof(ValueConverter);
-            //var stringType = typeof(EnumToStringConverter<Blog_Enum>);
-            //ConverterMappingHints mappingHints = null;
-            //Type[] types = stringType.GetGenericArguments();
-            ////var toIntType = stringType.MakeGenericType(types);
-            //object toIntInstance = Activator.CreateInstance(stringType, mappingHints);
-            //Console.WriteLine(valueType.IsAssignableFrom(stringType));
-            string s = null;
-            var arr = new string[] { };
-            Console.WriteLine(s);
+            //Console.WriteLine(lastRefundTime?.ToString("yyyy-MM-dd HH:mm:ss.ffff"));
+            //string str1 = "2016191601360271";
+            //string str2 = "2016191599808576";
+            //Console.WriteLine(str2.CompareTo(str2));
+
+            //Console.WriteLine(Math.Round((decimal)0.27/2,2));
+            //Console.WriteLine(Math.Ceiling(value));
+            //Console.WriteLine(Compress(Guid.NewGuid().ToString() + Guid.NewGuid().ToString() + Guid.NewGuid().ToString()));
+
+            //DateTime.TryParse("2022-01-01", out DateTime dateTime);
+            //var endDate = dateTime.AddYears(1).AddDays(-1).ToShortDateString();
+            var now = DateTime.UtcNow;
+            Console.WriteLine(now.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'"));
             Console.ReadLine();
+        }
+
+        public static string Compress(string value)
+        {
+            try
+            {
+                string data = string.Empty;
+                byte[] byteArray = Encoding.Default.GetBytes(value);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (GZipStream sw = new GZipStream(ms, CompressionMode.Compress))
+                    {
+                        sw.Write(byteArray, 0, byteArray.Length);
+                    }
+                    data = Convert.ToBase64String(ms.ToArray());
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static void Set(int dbid)
+        {
+            using (var sentinel = new RedisSentinelManager(false, new string[] { "127.0.0.1:26379" }))   //设置哨兵
+            {
+                sentinel.Connect("mymaster"); // 打开主数据库连接，参数是主数据库别称，在设置哨兵的时候有设置
+                var test2 = sentinel.Call(t => t.Select(dbid)); // 使用Call方法可以运行当前主数据的操作，select方法是选择数据库0-14号进行操作
+                sentinel.Call(t => t.Set("haha", DateTime.Now.ToString()));//执行方法
+            }
+        }
+
+        private static bool RedisLock(string lockKey,int delyInterval = 120)
+        {
+            
+            var now = new DateTimeOffset(DateTime.Now);
+            var currentTime = now.ToUnixTimeSeconds();
+            var isSetNx = RedisHelper.SetNx(lockKey, currentTime + delyInterval);
+            if (isSetNx)
+            {
+                //设置过期时间
+                RedisHelper.Expire(lockKey, delyInterval);
+                return true;
+            }
+            else
+            { 
+                //未找到锁，继续判断，判断时间戳是否可以重置并获取锁
+                var localValue = RedisHelper.Get<long>(lockKey);
+                if (currentTime > localValue)
+                {
+                    var getSetResult = RedisHelper.GetSet<long>(lockKey, currentTime + delyInterval);
+                    if (getSetResult == localValue)
+                    {
+                        //设置过期时间
+                        RedisHelper.Expire(lockKey, delyInterval);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        
+        private static bool DelLock(string lockKey)
+        {
+            RedisHelper.Del(lockKey);
+            return true;
         }
 
         public static bool IsAssignableFromGenericType(this Type genericType, Type givenType)
