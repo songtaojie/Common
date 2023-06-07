@@ -10,7 +10,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
     /// <summary>
     /// 规范化结构（请求成功）过滤器
     /// </summary>
-    [Hx.Sdk.Attributes.SkipScan]
+    [Hx.Sdk.SkipScan]
     public class UnifyResultFilterAttribute : ResultFilterAttribute
     {
         /// <summary>

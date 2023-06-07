@@ -5,7 +5,7 @@
     /// RESTful 风格结果集,泛型结果集
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Attributes.SkipScan]
+    [SkipScan]
     public class RESTfulResult<T>
     {
         /// <summary>

@@ -3,8 +3,8 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<Authors>Jay Song</Authors>
-		<Description>添加控制台输出</Description>
-		<Version>5.2.0</Version>
+		<Description>集成Knife4jUI框架，更新.Net版本为.Net6</Description>
+		<Version>6.0</Version>
 		<PackageTags>ASP.NET Core, Swagger</PackageTags>
 		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
 		<PackageId>Hx.Sdk.Swagger</PackageId>
@@ -29,7 +29,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" Version="0.0.13" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
 	</ItemGroup>
 </Project>

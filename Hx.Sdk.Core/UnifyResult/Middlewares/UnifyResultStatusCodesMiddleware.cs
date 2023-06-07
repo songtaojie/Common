@@ -6,7 +6,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// 状态码中间件
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public class UnifyResultStatusCodesMiddleware
     {
         /// <summary>

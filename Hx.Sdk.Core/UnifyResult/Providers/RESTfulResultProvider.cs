@@ -10,7 +10,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// RESTful 风格返回值
     /// </summary>
-    [Attributes.SkipScan, UnifyResultModel(typeof(RESTfulResult<>))]
+    [SkipScan, UnifyResultModel(typeof(RESTfulResult<>))]
     public class RESTfulResultProvider : IUnifyResultProvider
     {
         /// <summary>

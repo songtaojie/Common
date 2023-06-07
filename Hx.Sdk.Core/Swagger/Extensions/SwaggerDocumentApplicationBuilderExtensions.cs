@@ -7,7 +7,7 @@ namespace Microsoft.AspNetCore.Builder
     /// <summary>
     /// 规范化文档swagger中间件拓展
     /// </summary>
-    [Hx.Sdk.Attributes.SkipScan]
+    [Hx.Sdk.SkipScan]
     internal static class SwaggerDocumentApplicationBuilderExtensions
     {
         /// <summary>

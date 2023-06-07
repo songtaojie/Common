@@ -15,7 +15,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 全局应用类
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static partial class App
     {
 

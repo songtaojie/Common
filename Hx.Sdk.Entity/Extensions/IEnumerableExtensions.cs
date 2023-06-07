@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-
+using Hx.Sdk.Entity;
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// IEnumerable 拓展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class IEnumerableExtensions
     {
         /// <summary>

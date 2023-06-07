@@ -35,6 +35,11 @@ namespace Hx.Sdk.Sqlsugar
         /// </summary>
         public bool EnableSqlLog { get; set; }
 
+        /// <summary>
+        /// 开启数据缓存
+        /// </summary>
+        public bool EnableDataInfoCache { get; set; }
+
         internal ConnectionConfig ToConnectionConfig()
         {
             return new ConnectionConfig

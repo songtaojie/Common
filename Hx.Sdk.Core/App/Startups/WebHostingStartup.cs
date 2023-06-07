@@ -8,7 +8,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 配置程序启动时自动注入
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public sealed class WebHostingStartup : IHostingStartup
     {
         /// <summary>

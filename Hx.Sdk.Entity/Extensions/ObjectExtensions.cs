@@ -4,13 +4,13 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
+using Hx.Sdk.Entity;
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// Object扩展类
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class ObjectExtensions
     {
 

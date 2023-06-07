@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// 规范化接口服务拓展类
     /// </summary>
-    [Hx.Sdk.Attributes.SkipScan]
+    [Hx.Sdk.SkipScan]
     internal static class EventBusServiceCollectionExtensions
     {
         /// <summary>

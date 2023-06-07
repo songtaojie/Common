@@ -5,7 +5,7 @@ namespace Microsoft.AspNetCore.Builder
     /// <summary>
     /// 状态码中间件拓展
     /// </summary>
-    [Hx.Sdk.Attributes.SkipScan]
+    [Hx.Sdk.SkipScan]
     public static class UnifyResultMiddlewareExtensions
     {
         /// <summary>

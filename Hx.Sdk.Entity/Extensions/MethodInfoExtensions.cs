@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-
+using Hx.Sdk.Entity;
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// MethodInfo扩展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class MethodInfoExtensions
     {
         /// <summary>

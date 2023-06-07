@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using Hx.Sdk.Entity;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Hx.Sdk.Sqlsugar
         /// <param name="pageSize">页码容量</param>
         /// <param name="expression">查询结果 Select 表达式</param>
         /// <returns></returns>
-        public static SqlSugarPagedList<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize,
+        public static PagedListResult<TResult> ToPagedList<TEntity, TResult>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize,
             Expression<Func<TEntity, TResult>> expression)
             where TEntity : new()
             where TResult : new()
@@ -38,7 +39,7 @@ namespace Hx.Sdk.Sqlsugar
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
         /// <returns></returns>
-        public static SqlSugarPagedList<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize)
+        public static PagedListResult<TEntity> ToPagedList<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize)
             where TEntity : new()
         {
             var total = 0;
@@ -54,7 +55,7 @@ namespace Hx.Sdk.Sqlsugar
         /// <param name="pageSize">页码容量</param>
         /// <param name="expression">查询结果 Select 表达式</param>
         /// <returns></returns>
-        public static async Task<SqlSugarPagedList<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize,
+        public static async Task<PagedListResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize,
             Expression<Func<TEntity, TResult>> expression)
             where TEntity : new()
             where TResult : new()
@@ -71,7 +72,7 @@ namespace Hx.Sdk.Sqlsugar
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
         /// <returns></returns>
-        public static async Task<SqlSugarPagedList<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize)
+        public static async Task<PagedListResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize)
             where TEntity : new()
         {
             RefAsync<int> total = 0;
@@ -86,7 +87,7 @@ namespace Hx.Sdk.Sqlsugar
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
         /// <returns></returns>
-        public static SqlSugarPagedList<TEntity> ToPagedList<TEntity>(this IEnumerable<TEntity> list, int pageIndex, int pageSize)
+        public static PagedListResult<TEntity> ToPagedList<TEntity>(this IEnumerable<TEntity> list, int pageIndex, int pageSize)
             where TEntity : new()
         {
             var total = list.Count();
@@ -95,7 +96,7 @@ namespace Hx.Sdk.Sqlsugar
         }
 
         /// <summary>
-        /// 创建 <see cref="SqlSugarPagedList{TEntity}"/> 对象
+        /// 创建 <see cref="PagedListResult{TEntity}"/> 对象
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="items">分页内容的对象集合</param>
@@ -103,10 +104,10 @@ namespace Hx.Sdk.Sqlsugar
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
         /// <returns></returns>
-        private static SqlSugarPagedList<TEntity> CreateSqlSugarPagedList<TEntity>(IEnumerable<TEntity> items, int total, int pageIndex, int pageSize) where TEntity : new()
+        private static PagedListResult<TEntity> CreateSqlSugarPagedList<TEntity>(IEnumerable<TEntity> items, int total, int pageIndex, int pageSize) where TEntity : new()
         {
             var totalPages = pageSize > 0 ? (int)Math.Ceiling(total / (double)pageSize) : 0;
-            return new SqlSugarPagedList<TEntity>
+            return new PagedListResult<TEntity>
             {
                 Page = pageIndex,
                 PageSize = pageSize,

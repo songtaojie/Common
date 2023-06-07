@@ -5,7 +5,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// 规范化模型特性
     /// </summary>
-    [Attributes.SkipScan, AttributeUsage(AttributeTargets.Class)]
+    [SkipScan, AttributeUsage(AttributeTargets.Class)]
     public class UnifyResultModelAttribute : Attribute
     {
         /// <summary>

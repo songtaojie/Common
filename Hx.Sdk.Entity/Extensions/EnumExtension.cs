@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
+using Hx.Sdk.Entity;
 
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 枚举扩展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class EnumExtension
     {
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hx.Sdk.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +10,7 @@ namespace Hx.Sdk.Extensions
     /// <summary>
     /// 类型扩展类
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class TypeExtensions
     {
         /// <summary>

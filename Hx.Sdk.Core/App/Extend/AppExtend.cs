@@ -3,7 +3,7 @@
     /// <summary>
     /// App扩展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     internal static class AppExtend
     {
         /// <summary>

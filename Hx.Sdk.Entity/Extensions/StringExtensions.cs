@@ -1,11 +1,11 @@
 ﻿using System.Threading;
-
+using Hx.Sdk.Entity;
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// string类型扩展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class StringExtensions
     {
         /// <summary>

@@ -13,7 +13,7 @@ namespace Hx.Sdk.UnifyResult
     /// <summary>
     /// 规范化结果上下文
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class UnifyResultContext
     {
         /// <summary>

@@ -5,7 +5,7 @@ namespace Hx.Sdk.DependencyInjection
     /// <summary>
     /// 注册类型
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     internal enum DependencyInjectionType
     {
         /// <summary>

@@ -5,7 +5,7 @@ namespace Hx.Sdk.FriendlyException
     /// <summary>
     /// 用户友好的异常提示
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public class UserFriendlyException : Exception
     {
         /// <summary>

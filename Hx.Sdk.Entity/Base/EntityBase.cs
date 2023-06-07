@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 
-namespace Hx.Sdk.Entity.Base
+namespace Hx.Sdk.Entity
 {
 
     /// <summary>

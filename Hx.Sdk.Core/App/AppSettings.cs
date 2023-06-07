@@ -8,7 +8,7 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 读取appsettings.json中的配置的类
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class AppSettings
     {
         /// <summary>

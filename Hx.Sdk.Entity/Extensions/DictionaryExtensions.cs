@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-
+using Hx.Sdk.Entity;
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 字典类型扩展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class DictionaryExtensions
     {
         /// <summary>

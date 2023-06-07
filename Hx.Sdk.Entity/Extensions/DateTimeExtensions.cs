@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Hx.Sdk.Entity;
+using System;
 
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// 时间类型扩展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class DateTimeExtensions
     {
         /// <summary>

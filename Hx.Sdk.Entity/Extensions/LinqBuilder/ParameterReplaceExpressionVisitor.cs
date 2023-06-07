@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-
+using Hx.Sdk.Entity;
 namespace Hx.Sdk.Extensions.LinqBuilder
 {
     /// <summary>
     /// 处理 Lambda 参数不一致问题
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     internal sealed class ParameterReplaceExpressionVisitor : ExpressionVisitor
     {
         /// <summary>

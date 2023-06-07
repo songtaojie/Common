@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.Entity.Page;
+﻿using Hx.Sdk.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,55 +10,55 @@ namespace Hx.Sdk.Extensions
 	/// <summary>
 	/// IQueryable扩展类
 	/// </summary>
-	[Attributes.SkipScan]
+	[SkipScan]
 	public static class PagedQueryableExtensions
 	{
 		/// <summary>
-		/// 排序冰粉也
+		/// 排序并分页
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="source"></param>
 		/// <param name="param"></param>
 		/// <returns></returns>
-		public static PageModel<T> ToOrderAndPageList<T>(this IQueryable<T> source, BasePageParam param)
+		public static PagedListResult<T> ToOrderAndPageList<T>(this IQueryable<T> source, BasePageParam param)
 			where T : new()
 		{
-			if (!string.IsNullOrWhiteSpace(param.SortKey))
+			if (!string.IsNullOrWhiteSpace(param.SortField))
 			{
-				source = source.ApplyOrder(param.SortKey, param.SortType);
+				source = source.ApplyOrder(param.SortField, param.OrderType);
 			}
 			return source.ToPageList(param);
 		}
 
-		/// <summary>
-		/// 排序冰粉也
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="source"></param>
-		/// <param name="param"></param>
-		/// <returns></returns>
-		public async static Task<PageModel<T>> ToOrderAndPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
+        /// <summary>
+        /// 排序并分页
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public async static Task<PagedListResult<T>> ToOrderAndPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
 			where T : new()
 		{
-			if (!string.IsNullOrWhiteSpace(param.SortKey))
+			if (!string.IsNullOrWhiteSpace(param.SortField))
 			{
-				source = source.ApplyOrder(param.SortKey, param.SortType);
+				source = source.ApplyOrder(param.SortField, param.OrderType);
 			}
 			return await source.ToPageListAsync(param);
 		}
 
-		/// <summary>
-		/// 排序
-		/// </summary>
-		/// <typeparam name="T">源数据</typeparam>
-		/// <param name="source"></param>
-		/// <param name="fieldName">排序的字段名称</param>
-		/// <param name="sortType">排序的类型</param>
-		/// <returns></returns>
-		public static IQueryable<T> ApplyOrder<T>(this IQueryable<T> source, string fieldName, SortTypeEnum sortType)
+        /// <summary>
+        /// 排序
+        /// </summary>
+        /// <typeparam name="T">源数据</typeparam>
+        /// <param name="source"></param>
+        /// <param name="fieldName">排序的字段名称</param>
+        /// <param name="orderType">排序的类型</param>
+        /// <returns></returns>
+        public static IQueryable<T> ApplyOrder<T>(this IQueryable<T> source, string fieldName, OrderTypeEnum orderType)
 		{
 			// 升序 or 降序
-			string methodName = sortType == SortTypeEnum.DESC ? "OrderByDescending" : "OrderBy";
+			string methodName = orderType == OrderTypeEnum.DESC ? "OrderByDescending" : "OrderBy";
 			// 属性
 			var orderField = string.Empty;
 			Type type = typeof(T);
@@ -92,11 +92,11 @@ namespace Hx.Sdk.Extensions
 		/// <param name="source"></param>
 		/// <param name="param">分页的参数</param>
 		/// <returns></returns>
-		public static PageModel<T> ToPageList<T>(this IQueryable<T> source, BasePageParam param)
+		public static PagedListResult<T> ToPageList<T>(this IQueryable<T> source, BasePageParam param)
 			where T : new()
 		{
 			if (param == null) throw new ArgumentNullException("param is null");
-			return source.ToPageList(param.PageIndex, param.PageSize);
+			return source.ToPageList(param.Page, param.PageSize);
 		}
 
 		/// <summary>
@@ -106,11 +106,11 @@ namespace Hx.Sdk.Extensions
 		/// <param name="source"></param>
 		/// <param name="param">分页参数</param>
 		/// <returns></returns>
-		public static async Task<PageModel<T>> ToPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
+		public static async Task<PagedListResult<T>> ToPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
 			where T : new()
 		{
 			if (param == null) throw new ArgumentNullException("param is null");
-			return await source.ToPageListAsync(param.PageIndex, param.PageSize);
+			return await source.ToPageListAsync(param.Page, param.PageSize);
 		}
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="pageIndex">当前页码</param>
 		/// <param name="pageSize">每页显示的数据条数</param>
 		/// <returns></returns>
-		public static PageModel<T> ToPageList<T>(this IQueryable<T> source, int pageIndex, int pageSize)
+		public static PagedListResult<T> ToPageList<T>(this IQueryable<T> source, int pageIndex, int pageSize)
 			where T : new()
 		{
 			if (source == null) throw new ArgumentNullException("source is null");
@@ -145,9 +145,9 @@ namespace Hx.Sdk.Extensions
 			}
 			if (totalCount > 0)
 			{
-				return new PageModel<T>(source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList<T>(), totalCount, pageIndex, pageSize);
+				return new PagedListResult<T>(source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList<T>(), totalCount, pageIndex, pageSize);
 			}
-			return new PageModel<T>(new List<T>(), totalCount, pageIndex, pageSize);
+			return new PagedListResult<T>(new List<T>(), totalCount, pageIndex, pageSize);
 		}
 
 		/// <summary>
@@ -158,7 +158,7 @@ namespace Hx.Sdk.Extensions
 		/// <param name="pageIndex"></param>
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
-		public static async Task<PageModel<T>> ToPageListAsync<T>(this IQueryable<T> source, int pageIndex, int pageSize)
+		public static async Task<PagedListResult<T>> ToPageListAsync<T>(this IQueryable<T> source, int pageIndex, int pageSize)
 			where T : new()
 		{
 			return await Task.FromResult(source.ToPageList(pageIndex, pageSize));

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Hx.Sdk.Entity.Result
+namespace Hx.Sdk.Entity
 {
     /// <summary>
     /// 分页泛型集合

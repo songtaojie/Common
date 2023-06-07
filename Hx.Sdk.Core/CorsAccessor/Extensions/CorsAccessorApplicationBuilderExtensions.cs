@@ -7,7 +7,7 @@ namespace Microsoft.AspNetCore.Builder
     /// <summary>
     /// 跨域中间件拓展
     /// </summary>
-    [Hx.Sdk.Attributes.SkipScan]
+    [Hx.Sdk.SkipScan]
     public static class CorsAccessorApplicationBuilderExtensions
     {
         /// <summary>

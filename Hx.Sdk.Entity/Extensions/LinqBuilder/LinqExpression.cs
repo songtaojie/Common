@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-
-namespace Hx.Sdk.Extensions.LinqBuilder
+using Hx.Sdk.Entity;
+namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// EF Core Linq 拓展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class LinqExpression
     {
         /// <summary>

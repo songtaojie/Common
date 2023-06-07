@@ -183,5 +183,22 @@ namespace Hx.Sdk.Swagger.Internal
             options = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
             return options;
         }
+
+        /// <summary>
+        /// 添加配置
+        /// </summary>
+        /// <param name="services"></param>
+        private static void ConfigureSwaggerSettings(IServiceCollection services)
+        {
+            services.AddOptions<SwaggerSettingsOptions>()
+                   .BindConfiguration("DbSettings", options =>
+                   {
+                       options.BindNonPublicProperties = true; // 绑定私有变量
+                   })
+                   .PostConfigure(options =>
+                   {
+                       _ = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
+                   });
+        }
     }
 }

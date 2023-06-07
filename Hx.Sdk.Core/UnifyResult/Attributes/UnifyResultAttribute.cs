@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Mvc
     /// <summary>
     /// 规范化结果配置
     /// </summary>
-    [Hx.Sdk.Attributes.SkipScan, AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    [Hx.Sdk.SkipScan, AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class UnifyResultAttribute : ProducesResponseTypeAttribute
     {
         /// <summary>

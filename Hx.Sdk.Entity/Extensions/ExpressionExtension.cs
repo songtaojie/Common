@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-
+using Hx.Sdk.Entity;
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
     /// lambda扩展
     /// </summary>
-    [Attributes.SkipScan]
+    [SkipScan]
     public static class ExpressionExtension
     {
         /// <summary>
