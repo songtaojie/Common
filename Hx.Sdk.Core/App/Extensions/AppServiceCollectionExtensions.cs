@@ -24,7 +24,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddHostApp(s =>
             {
                 // 添加 HttContext 访问器
-                ConsoleHelper.WriteInfoLine("Add the HttpContextAccessor and UserContext service");
                 services.AddUserContext();
 
                 // 注册swagger

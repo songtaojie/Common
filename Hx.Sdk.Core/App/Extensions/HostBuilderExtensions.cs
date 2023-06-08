@@ -1,11 +1,7 @@
-﻿using Hx.Sdk.Core;
-using Hx.Sdk.Core.Internal;
-using Hx.Sdk.Attributes;
-using Hx.Sdk.Extensions;
+﻿using Hx.Sdk.Core.Internal;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Microsoft.Extensions.Hosting
 {
@@ -33,6 +29,7 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>IHostBuilder</returns>
         public static IHostBuilder ConfigureHxWebHostDefaults(this IHostBuilder hostBuilder, Action<IWebHostBuilder> configure,bool injectAutofac = true)
         {
+            // 获取命令行参数
             InternalApp.InjectAutofac = injectAutofac;
             hostBuilder.ConfigureWebHostDefaults(webBuilder =>
             {

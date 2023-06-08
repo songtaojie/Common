@@ -14,11 +14,11 @@ namespace Hx.Sdk.Core
         /// <summary>
         /// 配置应用启动
         /// </summary>
-        /// <param name="builder"></param>
-        public void Configure(IWebHostBuilder builder)
+        /// <param name="webHostBuilder"></param>
+        public void Configure(IWebHostBuilder webHostBuilder)
         {
             // 自动装载配置
-            builder.ConfigureHxAppConfiguration();
+            webHostBuilder.ConfigureHxAppConfiguration();
         }
     }
 }

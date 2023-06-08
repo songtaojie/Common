@@ -1,11 +1,9 @@
-﻿using Hx.Sdk.Core;
-using Hx.Sdk.Core.Internal;
-using Hx.Sdk.Attributes;
-using Hx.Sdk.Extensions;
+﻿using Hx.Sdk.Core.Internal;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace Microsoft.AspNetCore.Hosting
@@ -20,29 +18,33 @@ namespace Microsoft.AspNetCore.Hosting
         /// <summary>
         /// Web 主机配置
         /// </summary>
-        /// <param name="hostBuilder">Web主机构建器</param>
-        /// <param name="injectAutofac">是否使用Autofac依赖注入接管原生的依赖注入，
-        /// 设置为true时，只需引用Hx.Sdk.DependencyInjection程序集包中泛型主机IHostBuilder的
-        /// 扩展方法InjectContainerBuilder即可完成配置</param>
+        /// <param name="webHostBuilder">Web主机构建器</param>
+        /// <param name="injectAutofac">是否使用Autofac依赖注入接管原生的依赖注入</param>
         /// <returns>IWebHostBuilder</returns>
-        public static IWebHostBuilder ConfigureHxWebApp(this IWebHostBuilder hostBuilder, bool injectAutofac = false)
+        public static IWebHostBuilder ConfigureHxWebApp(this IWebHostBuilder webHostBuilder, bool injectAutofac = false)
         {
-            var assembly = typeof(HostBuilderExtensions).GetAssemblyName();
-            hostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, assembly);
+            // 获取默认程序集名称
+            var defaultAssemblyName = typeof(HostBuilderExtensions).GetAssemblyName();
+
+            //  获取环境变量 ASPNETCORE_HOSTINGSTARTUPASSEMBLIES 配置
+            var environmentVariables = Environment.GetEnvironmentVariable("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES");
+            var combineAssembliesName = $"{defaultAssemblyName};{environmentVariables}".Trim(';');
+
+            webHostBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, combineAssembliesName);
             InternalApp.InjectAutofac = injectAutofac;
-            return hostBuilder;
+            return webHostBuilder;
         }
 
         /// <summary>
         /// Web主机配置Configuration
         /// </summary>
-        /// <param name="hostBuilder">泛型主机注入构建器</param>
+        /// <param name="webHostBuilder">泛型主机注入构建器</param>
         /// <param name="configureDelegate">配置对象</param>
         /// <returns>IHostBuilder</returns>
-        public static IWebHostBuilder ConfigureHxAppConfiguration(this IWebHostBuilder hostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate = null)
+        public static IWebHostBuilder ConfigureHxAppConfiguration(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate = null)
         {
             // 自动装载配置
-            hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+            webHostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
                 // 存储环境对象
                 InternalApp.HostEnvironment = InternalApp.WebHostEnvironment = hostingContext.HostingEnvironment;
@@ -52,7 +54,7 @@ namespace Microsoft.AspNetCore.Hosting
                 configureDelegate?.Invoke(hostingContext, config);
             });
 
-            hostBuilder.ConfigureServices((hostContext, services) =>
+            webHostBuilder.ConfigureServices((hostContext, services) =>
             {
                 var config = hostContext.Configuration;
                 // 存储服务提供器
@@ -63,9 +65,8 @@ namespace Microsoft.AspNetCore.Hosting
                 services.AddTransient<IStartupFilter, StartupFilter>();
                 // 初始化应用服务
                 services.AddApp(config);
-                ConsoleHelper.WriteSuccessLine("complete Hx.Sdk.Core ConfigureServices", true);
             });
-            return hostBuilder;
+            return webHostBuilder;
         }
     }
 }
