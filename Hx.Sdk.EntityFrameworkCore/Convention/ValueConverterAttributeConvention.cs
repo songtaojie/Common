@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace Hx.Sdk.EntityFrameworkCore.Convention
+namespace Hx.Sdk.EntityFrameworkCore
 {
 
     /// <summary>

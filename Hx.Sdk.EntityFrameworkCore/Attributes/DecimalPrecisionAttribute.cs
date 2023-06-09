@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.EntityFrameworkCore.Attributes
+namespace Hx.Sdk.EntityFrameworkCore
 {
     /// <summary>
     /// 浮点类型精度设置特性

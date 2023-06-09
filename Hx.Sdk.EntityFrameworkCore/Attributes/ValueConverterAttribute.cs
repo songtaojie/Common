@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Hx.Sdk.EntityFrameworkCore.Attributes
+namespace Hx.Sdk.EntityFrameworkCore
 {
 
     /// <summary>

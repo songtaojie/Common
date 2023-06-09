@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.EntityFrameworkCore.Db
+namespace Hx.Sdk.EntityFrameworkCore
 {
     /// <summary>
     /// 如果没有提供对应模型的服务类，可以使用该方法进行CRUD操作

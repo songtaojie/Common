@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.EntityFrameworkCore.Db
+namespace Hx.Sdk.EntityFrameworkCore
 {
     /// <summary>
     /// 数据库上下文操作类

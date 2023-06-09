@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.EntityFrameworkCore.Extensions
+namespace Hx.Sdk.EntityFrameworkCore
 {
     /// <summary>
     /// 类型扩展函数

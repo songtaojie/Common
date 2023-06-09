@@ -111,7 +111,7 @@ namespace Hx.Sdk.DatabaseAccessor
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        /// <returns>代理中的实体</returns>
+        /// <returns>数据库中的实体</returns>
         public virtual EntityEntry<TEntity> UpdateInclude(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates)
         {
             // 判断是非参数只有一个，且是一个匿名类型

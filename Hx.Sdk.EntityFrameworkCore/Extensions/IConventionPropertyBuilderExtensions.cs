@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Hx.Sdk.EntityFrameworkCore.Extensions
+namespace Hx.Sdk.EntityFrameworkCore
 {
     /// <summary>
     /// IConventionPropertyBuilder扩展类
