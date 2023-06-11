@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hx.Sdk.Common\Hx.Sdk.Common.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.DatabaseAccessor\Hx.Sdk.DatabaseAccessor.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.EventBus\Hx.Sdk.EventBus.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.SqlSugar\Hx.Sdk.SqlSugar.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.Test.Entity\Hx.Sdk.Test.Entity.csproj" />
+  </ItemGroup>
+
+
+</Project>
