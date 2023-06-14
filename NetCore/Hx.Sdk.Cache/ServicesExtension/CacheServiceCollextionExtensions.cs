@@ -1,4 +1,5 @@
-﻿using Hx.Sdk.Cache;
+﻿using FreeRedis;
+using Hx.Sdk.Cache;
 using Hx.Sdk.Cache.Internal;
 using Hx.Sdk.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
@@ -46,7 +47,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //});
             services.AddSingleton<IDistributedCache, RedisCache>();
             services.AddTransient<IRedisCache, RedisCache>();
-        }
+    }
 
         /// <summary>
         /// 添加redis缓存
@@ -60,6 +61,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
             services.AddSingleton<IDistributedCache, RedisCache>();
             services.AddTransient<IRedisCache, RedisCache>();
+            var r = new RedisClient("192.168.164.10:6379,database=1"); //redis 6.0
         }
 
 
