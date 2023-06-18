@@ -17,13 +17,10 @@
 		<DocumentationFile>bin\Debug\Hx.Sdk.Cache.xml</DocumentationFile>
 		<OutputPath>bin\Debug\</OutputPath>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="FreeRedis.DistributedCache" Version="1.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 	</ItemGroup>
 
 </Project>

@@ -4,7 +4,10 @@ using Hx.Sdk.Cache.Internal;
 using Hx.Sdk.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
+using System.Xml.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -61,8 +64,8 @@ namespace Microsoft.Extensions.DependencyInjection
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
             services.AddSingleton<IDistributedCache, RedisCache>();
             services.AddTransient<IRedisCache, RedisCache>();
-
-            var r = new RedisClient("192.168.164.10:6379,database=1"); //redis 6.0
+            services.AddSingleton<IRedisClient, RedisClient>(new )
+            IRedisClient r = new RedisClient("192.168.164.10:6379,database=1"); //redis 6.0
             services.AddSingleton<IDistributedCache>(new FreeRedis.DistributedCache(cli));
         }
 
@@ -74,16 +77,10 @@ namespace Microsoft.Extensions.DependencyInjection
         private static void ConfigureRedisSettings(IServiceCollection services)
         {
             // 获取配置节点
-            // 配置验证
-            services.AddOptions<RedisSettingsOptions>()
-                    .BindConfiguration("RedisSettings")
-                    .ValidateDataAnnotations();
-
-            // 选项后期配置
-            services.PostConfigure<RedisSettingsOptions>(options =>
-            {
-                _ = options.SetDefaultRedisSettings(options);
-            });
+            services.AddOptions<RedisSettingsOptions>("RedisSettings")
+                .Configure<IConfiguration>( (options, config) => {
+                    config.GetSection("RedisSettings").Bind(options);
+                });
         }
     }
 }

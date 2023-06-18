@@ -114,8 +114,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加配置
         /// </summary>
         /// <param name="services"></param>
-        private static void ConfigureDbConnectionSettings(IServiceCollection services)
+        private static void ConfigureDbConnectionSettings(IServiceCollection services,IConfiguration configuration)
         {
+            services.Configure<DbSettingsOptions>(configuration.GetSection("RedisSettings"));
             services.AddOptions<DbSettingsOptions>()
                    .BindConfiguration("DbSettings", options =>
                    {
