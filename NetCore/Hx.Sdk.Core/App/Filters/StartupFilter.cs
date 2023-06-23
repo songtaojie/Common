@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Hx.Sdk.Core
 {
@@ -23,38 +25,16 @@ namespace Hx.Sdk.Core
             return app =>
             {
                 InternalApp.RootServices = app.ApplicationServices;
+                var hostEnvironment = app.ApplicationServices.GetService<IHostEnvironment>();
                 // 设置响应报文头信息，标记框架类型
                 // 环境名
-                var envName = InternalApp.HostEnvironment?.EnvironmentName ?? "Unknown";
+                var envName = hostEnvironment?.EnvironmentName ?? "Unknown";
 
                 // 设置响应报文头信息
                 app.Use(async (context, next) =>
                 {
-                    // 处理 WebSocket 请求
-                    if (context.IsWebSocketRequest()) await next.Invoke();
-                    else
-                    {
-                        // 输出当前环境标识
-                        context.Response.Headers["environment"] = envName;
-
-                        // 执行下一个中间件
-                        await next.Invoke();
-
-                        // 解决刷新 Token 时间和 Token 时间相近问题
-                        if (!context.Response.HasStarted
-                            && context.Response.StatusCode == StatusCodes.Status401Unauthorized
-                            && context.Response.Headers.ContainsKey("access-token")
-                            && context.Response.Headers.ContainsKey("x-access-token"))
-                        {
-                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        }
-                    }
-                });
-
-                app.Use(async (context, next) =>
-                {
                     context.Request.EnableBuffering();  // 启动 Request Body 重复读，解决微信问题
-
+                    context.Response.Headers["environment"] = envName;
                     await next.Invoke();
                 });
                 // 调用默认中间件

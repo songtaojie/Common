@@ -13,22 +13,23 @@ namespace Hx.Sdk.WebApi.Controllers
 {
     public class TestController: BaseAdminController
     {
-        private IEventBus _capPublisher;
+        private IEventPublisher _eventPublisher;
         private DbSettingsOptions dbConnectionOptions;
         /// <summary>
         /// 控制器
         /// </summary>
-        /// <param name="capPublisher"></param>
-        public TestController(IOptions<DbSettingsOptions> options)
+        /// <param name="eventPublisher"></param>
+        public TestController(IOptions<DbSettingsOptions> options,
+            IEventPublisher eventPublisher)
         {
-            //_capPublisher = capPublisher;
+            _eventPublisher = eventPublisher;
             dbConnectionOptions = options.Value;
         }
 
         [HttpPost]
         public string PublishTest(BasePush basePush)
         {
-            _capPublisher.Publish("Hx.Sdk.Cap.Test", basePush);
+            _eventPublisher.PublishAsync("Hx.Sdk.Cap.Test", basePush);
             return "ok";
         }
 

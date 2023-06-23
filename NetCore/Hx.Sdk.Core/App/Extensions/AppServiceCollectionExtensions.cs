@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -9,13 +10,12 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class AppServiceCollectionExtensions
     {
         /// <summary>
-        /// 添加应用配置
+        /// 添加Web应用配置
         /// </summary>
         /// <param name="services">服务集合</param>
         /// <param name="config">配置文件</param>
-        /// <param name="configure">服务配置</param>
         /// <returns>服务集合</returns>
-        internal static IServiceCollection AddApp(this IServiceCollection services,IConfiguration config, Action<IServiceCollection> configure = null)
+        internal static IServiceCollection AddWebHostApp(this IServiceCollection services,IConfiguration config)
         {
             services.AddHostApp(s =>
             {
@@ -32,12 +32,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 //判断是否启用全局异常处理
                 if (App.Settings.EnabledExceptionFilter == true) services.AddFriendlyException();
 
-                // 判断是否启用事件总线
-                if (App.Settings.EnabledCap == true) services.AddCapRabbitMQForMySql(config);
+                //判断是否启用全局异常处理
+                if (App.Settings.EnabledCors == true) services.AddCorsAccessor();
             });
-           
-            // 自定义服务
-            configure?.Invoke(services);
             return services;
         }
 
@@ -53,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddConfigureOptions<AppSettingsOptions>();
 
             // 注册内存和分布式内存
-            services.AddMemoryCache(); 
+            services.AddMemoryCache();
             services.AddDistributedMemoryCache();
 
             // 注册全局依赖注入

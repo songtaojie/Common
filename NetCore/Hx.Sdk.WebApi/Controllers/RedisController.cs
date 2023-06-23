@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hx.Sdk.Cache;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,21 +10,23 @@ namespace Hx.Sdk.WebApi.Controllers
 {
     public class RedisController : BaseApiController
     {
-        public RedisController()
+        private readonly ICache _cache;
+        public RedisController(ICache cache)
         {
+            _cache = cache;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "SetRedisValue")]
         public string SetRedisValue()
         {
-            RedisHelper.Set("test", "testvalue2", TimeSpan.FromSeconds(30));
+            _cache.Set("test", "testvalue2", TimeSpan.FromSeconds(30));
             return "成功";
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetRedisValue")]
         public string GetRedisValue()
         {
-            var testValue = RedisHelper.Get("test");
+            var testValue = _cache.Get("test");
             return testValue;
         }
     }

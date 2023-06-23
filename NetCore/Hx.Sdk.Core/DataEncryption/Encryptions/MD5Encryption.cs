@@ -15,13 +15,13 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Furion.DataEncryption;
+namespace Hx.Sdk.DataEncryption;
 
 /// <summary>
 /// MD5 加密
 /// </summary>
-[SuppressSniffer]
-public static unsafe class MD5Encryption
+[SkipScan]
+public static class MD5Encryption
 {
     /// <summary>
     /// MD5 比较

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
+﻿
 namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
@@ -19,27 +18,14 @@ namespace Microsoft.AspNetCore.Builder
         {
             
             // 判断是否启用规范化文档
-            if (App.Settings.EnabledSwagger == true) app.UseSwaggerDocuments();
+            if (App.Settings.EnabledSwagger == true) app.UseKnife4SwaggerDocuments();
 
             if (App.Settings.EnabledUnifyResult == true) app.UseUnifyResultStatusCodes();
+
+            if (App.Settings.EnabledCors == true) app.UseCorsAccessor();
             // 调用自定义服务
             configure?.Invoke(app);
             return app;
-        }
-
-        /// <summary>
-        /// 启用 Body 重复读功能
-        /// </summary>
-        /// <remarks>须在 app.UseRouting() 之前注册</remarks>
-        /// <param name="app"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder EnableBuffering(this IApplicationBuilder app)
-        {
-            return app.Use(next => context =>
-            {
-                context.Request.EnableBuffering();
-                return next(context);
-            });
         }
     }
 }

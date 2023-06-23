@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
 [assembly: HostingStartup(typeof(Hx.Sdk.Core.HxWebHostingStartup))]
 
@@ -18,7 +18,7 @@ namespace Hx.Sdk.Core
         public void Configure(IWebHostBuilder webHostBuilder)
         {
             // 自动装载配置
-            webHostBuilder.ConfigureHxAppConfiguration();
+            webHostBuilder.ConfigureHxWebAppConfiguration();
         }
     }
 }

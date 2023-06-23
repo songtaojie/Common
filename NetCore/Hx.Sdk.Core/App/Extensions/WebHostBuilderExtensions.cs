@@ -1,12 +1,13 @@
 ﻿using Hx.Sdk.Core.Internal;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
-namespace Microsoft.AspNetCore.Hosting
+namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
     /// 主机构建器拓展类
@@ -14,8 +15,6 @@ namespace Microsoft.AspNetCore.Hosting
     [SkipScan]
     public static class WebHostBuilderExtensions
     {
-
-
         /// <summary>
         /// Web 主机配置
         /// </summary>
@@ -40,7 +39,7 @@ namespace Microsoft.AspNetCore.Hosting
         /// <param name="webHostBuilder">泛型主机注入构建器</param>
         /// <param name="configureDelegate">配置对象</param>
         /// <returns>IHostBuilder</returns>
-        public static IWebHostBuilder ConfigureHxAppConfiguration(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate = null)
+        public static IWebHostBuilder ConfigureHxWebAppConfiguration(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate = null)
         {
             // 自动装载配置
             webHostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
@@ -63,7 +62,7 @@ namespace Microsoft.AspNetCore.Hosting
                 // 注册 Startup 过滤器
                 services.AddTransient<IStartupFilter, StartupFilter>();
                 // 初始化应用服务
-                services.AddApp(config);
+                services.AddWebHostApp(config);
             });
             return webHostBuilder;
         }

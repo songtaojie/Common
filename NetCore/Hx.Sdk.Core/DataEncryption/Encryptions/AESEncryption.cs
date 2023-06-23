@@ -13,16 +13,17 @@
 // 还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
 using System.Buffers.Text;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Furion.DataEncryption;
+namespace Hx.Sdk.DataEncryption;
 
 /// <summary>
 /// AES 加解密
 /// </summary>
-[SuppressSniffer]
+[SkipScan]
 public class AESEncryption
 {
     /// <summary>

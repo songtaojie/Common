@@ -32,6 +32,11 @@ namespace Hx.Sdk.UnifyResult
         {
             await _next(context);
 
+            // 只有请求错误（短路状态码）和非 WebSocket 才支持规范化处理
+            if (context.IsWebSocketRequest()
+                || context.Response.StatusCode < 400
+                || context.Response.StatusCode == 404) return;
+
             // 处理规范化结果
             if (!UnifyResultContext.IsSkipUnifyHandler(context, out var unifyResult))
             {

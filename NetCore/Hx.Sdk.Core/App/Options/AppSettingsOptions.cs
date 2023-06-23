@@ -50,6 +50,11 @@ namespace Hx.Sdk.Core
         public bool? EnabledSqlLog { get; set; }
 
         /// <summary>
+        /// 是否开启跨域
+        /// </summary>
+        public bool? EnabledCors { get; set; }
+        
+        /// <summary>
         /// 后期配置
         /// </summary>
         /// <param name="name"></param>
@@ -64,6 +69,7 @@ namespace Hx.Sdk.Core
             options.EnabledExceptionFilter ??= true;
             options.EnabledSqlLog ??= false;
             options.EnabledCap ??= false;
+            options.EnabledCors ??= true;
         }
 
     }

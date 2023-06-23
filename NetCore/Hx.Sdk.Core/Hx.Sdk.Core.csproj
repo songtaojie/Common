@@ -14,9 +14,6 @@
 		<Product>Cache for ASP.NET Core</Product>
 		<Copyright>2020 Hx.Sdk.Cache</Copyright>
 	</PropertyGroup>
-	<!--<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>bin\Debug\</OutputPath>
 		<DocumentationFile>bin\Debug\Hx.Sdk.Core.xml</DocumentationFile>

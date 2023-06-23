@@ -1,13 +1,10 @@
 ﻿using FreeRedis;
 using Hx.Sdk.Cache;
 using Hx.Sdk.Cache.Internal;
-using Hx.Sdk.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
-using System.Xml.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,63 +21,53 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             // 注册内存和分布式内存
-            services.AddMemoryCache();  // .NET 5.0.3+ 需要手动注册了
+            services.AddMemoryCache();
             services.AddDistributedMemoryCache();
+            services.AddSingleton<ICache, DefaultCache>();
+            return services;
+        }
+
+        /// <summary>
+        /// 缓存注册
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration">配置</param>
+        public static IServiceCollection AddCache(this IServiceCollection services,IConfiguration configuration)
+        {
+            services.AddNativeMemoryCache();
+            var cacheType = configuration["CacheSettings:CacheType"];
+            if ("Redis".Equals(cacheType, StringComparison.InvariantCultureIgnoreCase))
+            {
+                services.AddRedisCache();
+            }
             return services;
         }
 
         /// <summary>
         /// 添加redis缓存
-        /// 在appsettings.json中配置RedisCache配置选项
+        /// 在appsettings.json中配置CacheSettings配置选项
         /// </summary>
         /// <param name="services"></param>
-        public static void AddRedisCache(this IServiceCollection services)
+        /// <param name="builderAction">ConnectionString构造器</param>
+        public static IServiceCollection AddRedisCache(this IServiceCollection services,Action<ConnectionStringBuilder> builderAction = null)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            ConfigureRedisSettings(services);
-            // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
-            //services.AddSingleton<ConnectionMultiplexer>(resolver =>
-            //{
-            //    var options = resolver.GetRequiredService<IOptions<RedisCacheOptions>>().Value;
-            //    if (options.ConfigurationOptions == null)
-            //    {
-            //        return ConnectionMultiplexer.Connect(options.Configuration);
-            //    }
-            //    return ConnectionMultiplexer.Connect(options.ConfigurationOptions);
-            //});
-            services.AddSingleton<IDistributedCache, RedisCache>();
-            services.AddTransient<IRedisCache, RedisCache>();
-    }
-
-        /// <summary>
-        /// 添加redis缓存
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="setupAction">redis配置</param>
-        public static void AddRedisCache(this IServiceCollection services, Action<RedisSettingsOptions> setupAction)
-        {
-            if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddOptions<RedisSettingsOptions>().Configure(setupAction);
-            // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
-            services.AddSingleton<IDistributedCache, RedisCache>();
-            services.AddTransient<IRedisCache, RedisCache>();
-            services.AddSingleton<IRedisClient, RedisClient>(new )
-            IRedisClient r = new RedisClient("192.168.164.10:6379,database=1"); //redis 6.0
-            services.AddSingleton<IDistributedCache>(new FreeRedis.DistributedCache(cli));
-        }
-
-
-        /// <summary>
-        /// 添加 Redis 配置
-        /// </summary>
-        /// <param name="services"></param>
-        private static void ConfigureRedisSettings(IServiceCollection services)
-        {
-            // 获取配置节点
-            services.AddOptions<RedisSettingsOptions>("RedisSettings")
-                .Configure<IConfiguration>( (options, config) => {
-                    config.GetSection("RedisSettings").Bind(options);
-                });
+            services.AddSingleton<IRedisClient>(provider =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                var connectionString = configuration["CacheSettings:ConnectionString"];
+                ConnectionStringBuilder connectionStringBuilder = ConnectionStringBuilder.Parse(connectionString);
+                builderAction?.Invoke(connectionStringBuilder);
+                return new RedisClient(connectionStringBuilder);
+            });
+            services.AddSingleton<IDistributedCache, DistributedCache>(provider => 
+            {
+                var redisClient = provider.GetService<IRedisClient>();
+                return new DistributedCache(redisClient as RedisClient);
+            });
+            services.AddSingleton<IRedisCache, RedisCache>();
+            services.AddSingleton<ICache, RedisCache>();
+            return services;
         }
     }
 }

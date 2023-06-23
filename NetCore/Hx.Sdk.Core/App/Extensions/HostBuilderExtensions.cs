@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.Core.Internal;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,26 +26,24 @@ namespace Microsoft.Extensions.Hosting
         /// </remarks> 
         /// <param name="hostBuilder">泛型主机注入构建器</param>
         /// <param name="configure">配置回调</param>
-        /// <param name="injectAutofac">是否使用Autofac依赖注入接管原生的依赖注入，设置为true内部自动注入Autofac相关的配置</param>
         /// <returns>IHostBuilder</returns>
-        public static IHostBuilder ConfigureHxWebHostDefaults(this IHostBuilder hostBuilder, Action<IWebHostBuilder> configure,bool injectAutofac = true)
+        public static IHostBuilder ConfigureHxWebHostDefaults(this IHostBuilder hostBuilder, Action<IWebHostBuilder> configure = null)
         {
             // 获取命令行参数
-            hostBuilder.ConfigureWebHostDefaults(webBuilder =>
+            hostBuilder.ConfigureWebHostDefaults(webHostBuilder =>
             {
-                webBuilder.ConfigureHxWebApp();
-                configure(webBuilder);
+                webHostBuilder.ConfigureHxWebApp();
+                configure(webHostBuilder);
             });
             return hostBuilder;
         }
 
         /// <summary>
-        /// 泛型主机配置Hx.Sdk.Core
+        /// 泛型主机配置
         /// </summary>
         /// <param name="hostBuilder">泛型主机注入构建器</param>
-        /// <param name="injectAutofac">是否使用Autofac依赖注入接管原生的依赖注入</param>
         /// <returns>IHostBuilder</returns>
-        public static IHostBuilder ConfigureHxApp(this IHostBuilder hostBuilder, bool injectAutofac = true)
+        public static IHostBuilder ConfigureHxApp(this IHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureHxAppConfiguration();
             return hostBuilder;

@@ -13,7 +13,6 @@ namespace Hx.Sdk.Cache
     /// </summary>
     public interface ICache
     {
-
         /// <summary>
         /// 获取和设置缓存，永不过期
         /// </summary>
@@ -41,17 +40,17 @@ namespace Hx.Sdk.Cache
         /// <param name="value">值</param>
         /// <param name="expire">过期时间，秒</param>
         /// <returns></returns>
-        bool Set<T>(string key, T value, int expire = -1);
+        bool Set<T>(string key, T value, int? expire = -1);
 
         /// <summary>
-        /// 设置缓存项
+        /// 设置数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"> 键</param>
-        /// <param name="value">值</param>
-        /// <param name="expire">过期时间</param>
+        /// <typeparam name="T">数据的类型参数</typeparam>
+        /// <param name="key">缓存的键</param>
+        /// <param name="value">缓存的值</param>
+        /// <param name="expiry">过期时间</param>
         /// <returns></returns>
-        bool Set<T>(string key, T value, TimeSpan expire);
+        bool Set<T>(string key, T value, TimeSpan? expiry = null);
 
         /// <summary>
         /// 获取缓存项
@@ -62,9 +61,26 @@ namespace Hx.Sdk.Cache
         T Get<T>(string key);
 
         /// <summary>
+		/// 获取数据
+		/// </summary>
+		/// <param name="key">缓存的键</param>
+		/// <returns></returns>
+		string Get(string key);
+
+        /// <summary>
+        /// 设置数据
+        /// </summary>
+        /// <param name="key">缓存的键</param>
+        /// <param name="value">缓存的值</param>
+        /// <param name="expiry">过期时间</param>
+        /// <returns></returns>
+        bool Set(string key, string value, TimeSpan? expiry = null);
+
+        /// <summary>
         /// 批量移除缓存项
         /// </summary>
         /// <param name="keys">键集合</param>
         void Remove(params string[] keys);
+      
     }
 }

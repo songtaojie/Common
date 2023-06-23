@@ -15,12 +15,12 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Furion.DataEncryption;
+namespace Hx.Sdk.DataEncryption;
 
 /// <summary>
 /// DESC 加解密
 /// </summary>
-[SuppressSniffer]
+[SkipScan]
 public class DESCEncryption
 {
     /// <summary>

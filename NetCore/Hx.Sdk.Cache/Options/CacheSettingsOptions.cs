@@ -14,11 +14,14 @@ namespace Hx.Sdk.Cache
     {
         /// <summary>
         /// 缓存类型
+        /// Redis、Memory
         /// </summary>
-        public CacheTypeEnum? CacheType { get; set; }
+        public string CacheType { get; set; }
 
-
-
+        /// <summary>
+        /// 用于连接到Redis的配置。
+        /// </summary>
+        public string ConnectionString { get; set; }
 
         /// <summary>
         /// 后置配置
@@ -28,22 +31,7 @@ namespace Hx.Sdk.Cache
         /// <exception cref="NotImplementedException"></exception>
         public void PostConfigure(string name, CacheSettingsOptions options)
         {
-            throw new NotImplementedException();
+            CacheType ??= "Memory";
         }
-    }
-
-    /// <summary>
-    /// 缓存类型
-    /// </summary>
-    public enum CacheTypeEnum
-    { 
-        /// <summary>
-        /// 内存缓存
-        /// </summary>
-        Memory = 1,
-        /// <summary>
-        /// Redis缓存
-        /// </summary>
-        Redis = 2
     }
 }

@@ -24,7 +24,7 @@ namespace Hx.Sdk.Core
         /// <param name="color">想要打印的颜色</param>
         public static void WriteErrorLine(string str, bool newLine = false, ConsoleColor color = ConsoleColor.Red)
         {
-            WriteColorLine(": " + str, "Error", color);
+            WriteColorLine(str, "error：", color);
             if (newLine) Console.WriteLine();
         }
 
@@ -36,7 +36,7 @@ namespace Hx.Sdk.Core
         /// <param name="color">想要打印的颜色</param>
         public static void WriteWarningLine(string str, bool newLine = false, ConsoleColor color = ConsoleColor.Yellow)
         {
-            WriteColorLine(": " + str, "Warn", color);
+            WriteColorLine(str, "warn：", color);
             if (newLine) Console.WriteLine();
         }
         /// <summary>
@@ -47,7 +47,7 @@ namespace Hx.Sdk.Core
         /// <param name="color">想要打印的颜色</param>
         public static void WriteInfoLine(string str, bool newLine = false, ConsoleColor color = ConsoleColor.White)
         {
-            WriteColorLine(str, "      ", color);
+            WriteColorLine(str, "info：", color);
             if (newLine) Console.WriteLine();
         }
         /// <summary>
@@ -58,7 +58,7 @@ namespace Hx.Sdk.Core
         /// <param name="color">想要打印的颜色</param>
         public static void WriteSuccessLine(string str, bool newLine = false, ConsoleColor color = ConsoleColor.DarkGreen)
         {
-            WriteColorLine(": " + str, "Info", color);
+            WriteColorLine(str, "info：", color);
             if (newLine) Console.WriteLine();
         }
     }
