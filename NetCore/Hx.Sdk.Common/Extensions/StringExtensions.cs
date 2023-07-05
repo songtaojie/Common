@@ -1,49 +1,50 @@
-﻿using Hx.Sdk.Common.Security;
-
+﻿using System.Threading;
+using Hx.Sdk.Common;
 namespace Hx.Sdk.Extensions
 {
     /// <summary>
-    /// 字符串扩展类
+    /// string类型扩展
     /// </summary>
+    [SkipScan]
     public static class StringExtensions
     {
-        #region 加密解密
         /// <summary>
-        /// 使用内置的秘钥进行加密
+        /// 首字母大写
         /// </summary>
-        /// <param name="pToEncrypt">要加密的文本</param>
+        /// <param name="str"></param>
         /// <returns></returns>
-        public static string DESEncrypt(this string pToEncrypt)
+        public static string ToTitleCase(this string str)
         {
-            return SafeHelper.DESEncrypt(pToEncrypt);
+            return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
+
         /// <summary>
-        /// 使用内置的秘钥进行DES解密
+        /// 首字母小写
         /// </summary>
-        /// <param name="pToEncrypt">要解密的字符串</param>
-        /// <returns>返回解密后的字符串</returns>
-        public static string DESDecrypt(this string pToEncrypt)
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ToTitlePascal(this string str)
         {
-            return SafeHelper.DESDecrypt(pToEncrypt);
+            if (str == null) return string.Empty;
+
+            int iLen = str.Length;
+            return iLen == 0
+                ? string.Empty
+                : iLen == 1
+                    ? str.ToLower()
+                    : str[0].ToString().ToLower() + str.Substring(1);
         }
-        #endregion
+
         /// <summary>
-        /// 使用MD5对字符串进行加密
+        /// 字符串转为bool值
         /// </summary>
-        /// <param name="pToEncrypt">要加密的字符串</param>
-        /// <returns>已经加密的字符串</returns>
-        public static string MD5Encrypt(this string pToEncrypt)
+        /// <param name="value">要转换的值</param>
+        /// <returns>如果转换成功，返回转换后的值，否则返回null</returns>
+        public static bool? ToBool(this string value)
         {
-            return SafeHelper.Md5Encrypt(pToEncrypt);
-        }
-        /// <summary>
-        /// 使用MD5对字符串进行两次加密
-        /// </summary>
-        /// <param name="pToEncrypt">要加密的字符串</param>
-        /// <returns>已经加密的字符串</returns>
-        public static string MD5TwoEncrypt(this string pToEncrypt)
-        {
-            return pToEncrypt.MD5Encrypt().MD5Encrypt();
+            bool.TryParse(value, out bool r);
+            bool? result = r;
+            return result;
         }
     }
 }

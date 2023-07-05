@@ -1,9 +1,7 @@
 ﻿using FreeRedis;
 using Hx.Sdk.Cache;
-using Hx.Sdk.Cache.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection

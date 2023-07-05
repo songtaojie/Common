@@ -1,4 +1,5 @@
 // Early init of NLog to allow startup and exception logging, before host is built
+using Hx.Sdk.Core;
 using Hx.Sdk.Test.Entity;
 using Hx.Sdk.Test.Entity.DbContexts;
 using Hx.Sdk.WebApi;
@@ -17,18 +18,10 @@ try
     builder.Host.UseNLog();
 
     builder.ConfigureHxWebApp();
-    builder.Services.AddDatabaseAccessor(options =>
-    {
-        options.AddDbPool<DefaultDbContext>();
-        options.AddDbPool<IdsDbContext, IdsDbContextLocator>();
-    }, db =>
-    {
-        db.MigrationAssemblyName = "Hx.Sdk.Test.Entity";
-    });
 
     builder.Services.AddCache(builder.Configuration);
 
-    builder.Services.AddSqlSugar(new SqlSugar.ConnectionConfig());
+    builder.Services.AddSqlSugar(App.Assemblies);
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.

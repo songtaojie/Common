@@ -69,9 +69,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="buildAction"></param>
+        /// <param name="assemblies">实体所在的程序集</param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<ConnectionConfig> configAction = default,  Action<ISqlSugarClient> buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services,IEnumerable<Assembly> assemblies, Action<ConnectionConfig> configAction = default,  Action<ISqlSugarClient> buildAction = default)
         {
+            Penetrates.Assemblies = assemblies;
             ConfigureDbConnectionSettings(services);
             // 注册 SqlSugar 客户端
             services.AddSingleton<ISqlSugarClient>(provider =>
@@ -98,8 +100,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 });
                 return sqlSugar;
             });
-            services.AddMemoryCache();
-            services.AddSingleton<ICacheService, SqlSugarCache>();
             // 注册非泛型仓储
             services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 

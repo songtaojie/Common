@@ -54,7 +54,6 @@ public class AESEncryption
         Unsafe.CopyBlock(ref result[0], ref bVector[0], (uint)bVector.Length);
         Unsafe.CopyBlock(ref result[bVector.Length], ref decryptedContent[0], (uint)msEncrypt.Length);
         Base64.EncodeToUtf8InPlace(result, dataLength, out base64Length);
-
         return Encoding.ASCII.GetString(result.AsSpan()[..base64Length]);
     }
 

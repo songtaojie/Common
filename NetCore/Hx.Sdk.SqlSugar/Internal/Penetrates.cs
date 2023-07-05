@@ -1,21 +1,13 @@
 ﻿using Hx.Sdk.Entity;
 using Hx.Sdk.Extensions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SqlSugar;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime;
-using System.Runtime.Loader;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Hx.Sdk.SqlSugar.Internal
 {
@@ -24,25 +16,38 @@ namespace Hx.Sdk.SqlSugar.Internal
     /// </summary>
     internal static class Penetrates
     {
-    
         /// <summary>
         /// 应用有效程序集
         /// </summary>
-        internal static readonly IEnumerable<Assembly> Assemblies;
-
+        internal static IEnumerable<Assembly> Assemblies;
+        private static IEnumerable<Type> _effectiveTypes;
         /// <summary>
         /// 有效程序集类型
         /// </summary>
-        internal static readonly IEnumerable<Type> EffectiveTypes;
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        static Penetrates()
+        internal static IEnumerable<Type> EffectiveTypes
         {
-            Assemblies = GetAssemblies();
-
-            EffectiveTypes = Assemblies.SelectMany(GetTypes);
+            get
+            {
+                if (_effectiveTypes == null && Assemblies != null)
+                {
+                    _effectiveTypes = Assemblies.SelectMany(GetTypes);
+                }
+                else
+                {
+                    _effectiveTypes = Array.Empty<Type>();
+                }
+                return _effectiveTypes;
+            }
         }
+
+        ///// <summary>
+        ///// 构造函数
+        ///// </summary>
+        //static Penetrates()
+        //{
+        //    Assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(r=>r.FullName.StartsWith("Hx"));
+        //    EffectiveTypes = Assemblies?.SelectMany(GetTypes);
+        //}
 
         /// <summary>
         /// 加载程序集中的所有类型
@@ -65,31 +70,6 @@ namespace Hx.Sdk.SqlSugar.Internal
             return types.Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false));
         }
 
-
-        /// <summary>
-        /// 获取应用有效程序集
-        /// </summary>
-        /// <returns>IEnumerable</returns>
-        private static IEnumerable<Assembly> GetAssemblies()
-        {
-            // 需排除的程序集后缀
-            var excludeAssemblyNames = new string[] {
-                "Database.Migrations"
-            };
-
-            // 读取应用配置
-            var dependencyContext = DependencyContext.Default;
-
-            // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
-            var scanAssemblies = dependencyContext.CompileLibraries
-                .Where(u =>
-                       (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk")))    // 判断是否启用引用程序集扫描
-                .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
-                .ToList();
-
-            return scanAssemblies;
-        }
 
         #region  Sqlsugar
         /// <summary>
