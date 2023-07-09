@@ -1,14 +1,14 @@
-﻿using Hx.Sdk.DatabaseAccessor;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using Hx.Sdk.DatabaseAccessor;
+//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace Hx.Sdk.Test.Entity.DbContexts
-{
-    /// <summary>
-    /// 从库
-    /// </summary>
-    public class IdsDbContextLocator: IDbContextLocator
-    {
-    }
-}
+//namespace Hx.Sdk.Test.Entity.DbContexts
+//{
+//    /// <summary>
+//    /// 从库
+//    /// </summary>
+//    public class IdsDbContextLocator: IDbContextLocator
+//    {
+//    }
+//}

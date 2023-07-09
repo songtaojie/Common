@@ -1,10 +1,7 @@
-﻿using Hx.Sdk.EntityFrameworkCore.Extensions;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Hx.Sdk.EntityFrameworkCore
 {

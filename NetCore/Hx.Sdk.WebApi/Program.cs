@@ -1,9 +1,8 @@
 // Early init of NLog to allow startup and exception logging, before host is built
+using Hx.Sdk.Cache;
 using Hx.Sdk.Core;
-using Hx.Sdk.Test.Entity;
-using Hx.Sdk.Test.Entity.DbContexts;
-using Hx.Sdk.WebApi;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -18,9 +17,13 @@ try
     builder.Host.UseNLog();
 
     builder.ConfigureHxWebApp();
-
-    builder.Services.AddCache(builder.Configuration);
-
+    builder.Services.Configure<CacheSettingsOptions>(builder.Configuration.GetSection("CacheSettings"));
+    builder.Services.AddCache(options => 
+    {
+        options.CacheType = Hx.Sdk.Cache.CacheTypeEnum.Redis;
+        options.ConnectionString = builder.Configuration.GetConnectionString("Redis");
+    });
+    
     builder.Services.AddSqlSugar(App.Assemblies);
     var app = builder.Build();
 

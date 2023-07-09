@@ -5,17 +5,17 @@
     <Nullable>enable</Nullable>
 	<Authors>Jay Song</Authors>
 	<Description>Sqlsugar扩展类</Description>
-	<Version>6.0</Version>
+	<Version>6.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-    <PackageReference Include="SqlSugarCore" Version="5.1.4.88" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.89" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
+    <ProjectReference Include="..\Hx.Sdk.Common\Hx.Sdk.Common.csproj" />
   </ItemGroup>
 
 </Project>

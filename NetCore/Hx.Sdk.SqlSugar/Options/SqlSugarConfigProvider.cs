@@ -1,26 +1,46 @@
-﻿using Hx.Sdk.Entity;
-using Hx.Sdk.Extensions;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SqlSugar;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Hx.Sdk.Extensions;
+using Hx.Sdk.Common;
 
-namespace Hx.Sdk.SqlSugar.Internal
+namespace Hx.Sdk.SqlSugar
 {
     /// <summary>
-    /// 常量、公共方法配置类
+    /// SqlSugar配置初始化
     /// </summary>
-    internal static class Penetrates
+    public static class SqlSugarConfigProvider
     {
+        private readonly static ILogger _logger = null;
         /// <summary>
         /// 应用有效程序集
         /// </summary>
-        internal static IEnumerable<Assembly> Assemblies;
+        private static IEnumerable<Assembly> Assemblies;
+
         private static IEnumerable<Type> _effectiveTypes;
+
+        static SqlSugarConfigProvider()
+        {
+            _logger = NullLoggerFactory.Instance.CreateLogger(nameof(SqlSugarConfigProvider));
+            Assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        }
+
+        /// <summary>
+        /// 设置实体所在的程序集
+        /// </summary>
+        public static void SetAssemblies(IEnumerable<Assembly> assemblies)
+        {
+            Assemblies = assemblies;
+            _effectiveTypes = null;
+        }
         /// <summary>
         /// 有效程序集类型
         /// </summary>
@@ -40,15 +60,6 @@ namespace Hx.Sdk.SqlSugar.Internal
             }
         }
 
-        ///// <summary>
-        ///// 构造函数
-        ///// </summary>
-        //static Penetrates()
-        //{
-        //    Assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(r=>r.FullName.StartsWith("Hx"));
-        //    EffectiveTypes = Assemblies?.SelectMany(GetTypes);
-        //}
-
         /// <summary>
         /// 加载程序集中的所有类型
         /// </summary>
@@ -62,21 +73,20 @@ namespace Hx.Sdk.SqlSugar.Internal
             {
                 types = ass.GetTypes();
             }
-            catch
+            catch(Exception ex)
             {
-                Console.WriteLine($"Error load `{ass.FullName}` assembly.");
+                _logger.LogError(ex, $"Error load `{ass.FullName}` assembly.");
             }
 
             return types.Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false));
         }
 
 
-        #region  Sqlsugar
         /// <summary>
         /// 配置连接属性
         /// </summary>
         /// <param name="config"></param>
-        internal static void SetDbConfig(DbConnectionConfig config, ICacheService? cacheService = null)
+        public static DbConnectionConfig SetDbConfig(DbConnectionConfig config)
         {
             var configureExternalServices = new ConfigureExternalServices
             {
@@ -104,10 +114,7 @@ namespace Hx.Sdk.SqlSugar.Internal
                     }
                 }
             };
-            if (config.EnableDataInfoCache && cacheService != null)
-            {
-                configureExternalServices.DataInfoCacheService = cacheService;
-            }
+           
             config.ConfigureExternalServices = configureExternalServices;
             config.InitKeyType = InitKeyType.Attribute;
             config.IsAutoCloseConnection = true;
@@ -116,13 +123,14 @@ namespace Hx.Sdk.SqlSugar.Internal
                 IsAutoRemoveDataCache = true,
                 SqlServerCodeFirstNvarchar = true // 采用Nvarchar
             };
+            return config;
         }
 
         /// <summary>
-        /// 配置Aop
+        /// 配置Aop日志
         /// </summary>
         /// <param name="db"></param>
-        internal static void SetDbAop(DbConnectionConfig dbConfig, SqlSugarScopeProvider db, ILogger logger)
+        public static void SetAopLog(ISqlSugarClient db)
         {
             var config = db.CurrentConnectionConfig;
 
@@ -130,58 +138,28 @@ namespace Hx.Sdk.SqlSugar.Internal
             db.Ado.CommandTimeOut = 30;
 
             // 打印SQL语句
-            if (dbConfig.EnableSqlLog)
+            db.Aop.OnLogExecuting = (sql, pars) =>
             {
-                db.Aop.OnLogExecuting = (sql, pars) =>
-                {
-                    logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{UtilMethods.GetSqlString(config.DbType, sql, pars)}\r\n");
-                };
-                db.Aop.OnError = ex =>
-                {
-                    if (ex.Parametres == null) return;
-                    logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetSqlString(config.DbType, ex.Sql, (SugarParameter[])ex.Parametres)} \r\n");
-                };
-            }
-        }
-
-        /// <summary>
-        /// 开启库表差异化日志
-        /// </summary>
-        /// <param name="db"></param>
-        /// <param name="config"></param>
-        internal static void SetDbDiffLog(SqlSugarScopeProvider db, DbConnectionConfig config, ILogger logger)
-        {
-            if (!config.EnableDiffLog) return;
-
-            db.Aop.OnDiffLogEvent = u =>
+                _logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{UtilMethods.GetSqlString(config.DbType, sql, pars)}\r\n");
+            };
+            db.Aop.OnError = ex =>
             {
-                var logDiff = new
-                {
-                    // 操作后记录（字段描述、列名、值、表名、表描述）
-                    AfterData = JsonConvert.SerializeObject(u.AfterData),
-                    // 操作前记录（字段描述、列名、值、表名、表描述）
-                    BeforeData = JsonConvert.SerializeObject(u.BeforeData),
-                    // 传进来的对象
-                    BusinessData = JsonConvert.SerializeObject(u.BusinessData),
-                    // 枚举（insert、update、delete）
-                    DiffType = u.DiffType.ToString(),
-                    Sql = UtilMethods.GetSqlString(config.DbType, u.Sql, u.Parameters),
-                    Parameters = JsonConvert.SerializeObject(u.Parameters),
-                    Elapsed = u.Time == null ? 0 : (long)u.Time.Value.TotalMilliseconds
-                };
-                logger.LogInformation($"*****差异日志开始记录，时间：{DateTime.Now}*****{Environment.NewLine}{JsonConvert.SerializeObject(logDiff)}{Environment.NewLine}*****差异日志结束*****{Environment.NewLine}");
+                if (ex.Parametres == null) return;
+                _logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetSqlString(config.DbType, ex.Sql, (SugarParameter[])ex.Parametres)} \r\n");
             };
         }
 
+
         /// <summary>
-        /// 初始化数据库
+        /// 初始化数据库和种子数据
+        /// DbConnectionConfig需开启相应的开关
         /// </summary>
+        /// <param name="typeList">所有的实体类</param>
         /// <param name="db"></param>
         /// <param name="config"></param>
-        private static void InitDatabase(SqlSugarScope db, DbConnectionConfig config)
-        {
-            if (!config.EnableInitDb) return;
-
+        public static void InitDatabase(SqlSugarScope db, DbConnectionConfig config)
+        {   
+            
             SqlSugarScopeProvider dbProvider = db.GetConnectionScope(config.ConfigId);
 
             // 创建数据库
@@ -204,7 +182,6 @@ namespace Hx.Sdk.SqlSugar.Internal
             }
 
             if (!config.EnableInitSeed) return;
-
             // 获取所有种子配置-初始化数据
             var seedDataTypes = EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
                 && u.GetInterfaces().Any(i => i.HasImplementedRawGeneric(typeof(ISqlSugarEntitySeedData<>)))).ToList();
@@ -214,6 +191,7 @@ namespace Hx.Sdk.SqlSugar.Internal
                 var instance = Activator.CreateInstance(seedType);
 
                 var hasDataMethod = seedType.GetMethod("HasData");
+                if (hasDataMethod == null) continue;
                 var seedData = ((IEnumerable)hasDataMethod?.Invoke(instance, null))?.Cast<object>();
                 if (seedData == null) continue;
 
@@ -240,9 +218,11 @@ namespace Hx.Sdk.SqlSugar.Internal
             }
         }
 
+
         /// <summary>
         /// 初始化租户业务数据库
         /// </summary>
+        ///<param name="typeList">实体类型集合</param>
         /// <param name="iTenant"></param>
         /// <param name="config"></param>
         public static void InitTenantDatabase(ITenant iTenant, DbConnectionConfig config)
@@ -266,6 +246,5 @@ namespace Hx.Sdk.SqlSugar.Internal
                     db.CodeFirst.SplitTables().InitTables(entityType);
             }
         }
-        #endregion 
     }
 }

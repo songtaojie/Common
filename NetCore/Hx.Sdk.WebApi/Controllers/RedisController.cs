@@ -29,5 +29,11 @@ namespace Hx.Sdk.WebApi.Controllers
             var testValue = _cache.Get("test");
             return testValue;
         }
+
+        [HttpGet(Name = "allKeys")]
+        public IEnumerable<string> GetAllKeys()
+        {
+            return _cache.GetAllKeys();
+        }
     }
 }

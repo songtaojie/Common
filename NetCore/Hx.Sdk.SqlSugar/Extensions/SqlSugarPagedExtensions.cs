@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.Entity;
+﻿using Hx.Sdk.Common;
 using SqlSugar;
 using System;
 using System.Collections.Generic;

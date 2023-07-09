@@ -14,6 +14,11 @@ namespace Hx.Sdk.Cache
     public interface ICache
     {
         /// <summary>
+        /// 获取所有的缓存的key
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<string> GetAllKeys();
+        /// <summary>
         /// 获取和设置缓存，永不过期
         /// </summary>
         /// <param name="key"></param>
@@ -23,7 +28,7 @@ namespace Hx.Sdk.Cache
         /// <summary>
         ///  缓存个数
         /// </summary>
-        int Count { get; }
+        long Count { get; }
 
         /// <summary>
         /// 是否包含缓存项
@@ -81,6 +86,17 @@ namespace Hx.Sdk.Cache
         /// </summary>
         /// <param name="keys">键集合</param>
         void Remove(params string[] keys);
-      
+
+        /// <summary>
+        /// 根据前缀移除缓存项
+        /// </summary>
+        /// <param name="prefixKey"></param>
+        /// <returns></returns>
+        long RemoveByPrefix(string prefixKey);
+
+        /// <summary>
+        ///  清空所有缓存项
+        /// </summary>
+        void Clear();
     }
 }

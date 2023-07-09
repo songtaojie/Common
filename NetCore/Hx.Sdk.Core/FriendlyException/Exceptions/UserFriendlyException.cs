@@ -20,6 +20,16 @@ namespace Hx.Sdk.FriendlyException
         /// 构造函数
         /// </summary>
         /// <param name="message"></param>
+        public UserFriendlyException(string message) : base(message)
+        {
+            ErrorCode = StatusCodes.Status500InternalServerError;
+            ErrorMessage = message;
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="message"></param>
         /// <param name="errorCode"></param>
         public UserFriendlyException(string message, object errorCode) : base(message)
         {

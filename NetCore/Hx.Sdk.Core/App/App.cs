@@ -1,5 +1,5 @@
 ﻿using Hx.Sdk.Core.Internal;
-using Hx.Sdk.Entity;
+using Hx.Sdk.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

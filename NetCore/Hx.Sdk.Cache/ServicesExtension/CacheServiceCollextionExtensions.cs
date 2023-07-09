@@ -1,8 +1,9 @@
 ﻿using FreeRedis;
 using Hx.Sdk.Cache;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -29,34 +30,45 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 缓存注册
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="configuration">配置</param>
-        public static IServiceCollection AddCache(this IServiceCollection services,IConfiguration configuration)
+        /// <param name="setupAction"></param>
+        public static IServiceCollection AddCache(this IServiceCollection services, Action<CacheSettingsOptions> setupAction = null)
         {
+            CacheSettingsOptions cacheSettingsOptions = new CacheSettingsOptions();
+            setupAction?.Invoke(cacheSettingsOptions);
             services.AddNativeMemoryCache();
-            var cacheType = configuration["CacheSettings:CacheType"];
-            if ("Redis".Equals(cacheType, StringComparison.InvariantCultureIgnoreCase))
+            if (cacheSettingsOptions.CacheType == CacheTypeEnum.Redis)
             {
-                services.AddRedisCache();
+                if (string.IsNullOrEmpty(cacheSettingsOptions.ConnectionString))
+                    throw new ArgumentNullException("ConnectionString不能为空");
+                ConnectionStringBuilder[] slaveConnectionStrings = null;
+                if (cacheSettingsOptions.SlaveConnectionStrings != null && cacheSettingsOptions.SlaveConnectionStrings.Any())
+                {
+                    slaveConnectionStrings = cacheSettingsOptions.SlaveConnectionStrings.Select(r => ConnectionStringBuilder.Parse(r)).ToArray();
+                }
+                services.AddRedisCache(ConnectionStringBuilder.Parse(cacheSettingsOptions.ConnectionString), slaveConnectionStrings);
             }
             return services;
         }
 
         /// <summary>
         /// 添加redis缓存
-        /// 在appsettings.json中配置CacheSettings配置选项
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="builderAction">ConnectionString构造器</param>
-        public static IServiceCollection AddRedisCache(this IServiceCollection services,Action<ConnectionStringBuilder> builderAction = null)
+        /// <param name="connectionString">ConnectionString构造器</param>
+        /// <param name="slaveConnectionStrings">ConnectionString构造器</param>
+        public static IServiceCollection AddRedisCache(this IServiceCollection services, ConnectionStringBuilder connectionString, ConnectionStringBuilder[] slaveConnectionStrings = null)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddSingleton<IRedisClient>(provider =>
             {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                var connectionString = configuration["CacheSettings:ConnectionString"];
-                ConnectionStringBuilder connectionStringBuilder = ConnectionStringBuilder.Parse(connectionString);
-                builderAction?.Invoke(connectionStringBuilder);
-                return new RedisClient(connectionStringBuilder);
+                if (slaveConnectionStrings == null)
+                {
+                    return new RedisClient(connectionString);
+                }
+                else
+                {
+                    return new RedisClient(connectionString, slaveConnectionStrings);
+                }
             });
             services.AddSingleton<IDistributedCache, DistributedCache>(provider => 
             {

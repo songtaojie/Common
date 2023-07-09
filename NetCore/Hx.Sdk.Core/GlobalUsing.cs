@@ -1,4 +1,4 @@
-﻿global using Hx.Sdk.Entity;
+﻿global using Hx.Sdk.Common;
 global using Hx.Sdk.Core;
 global using Hx.Sdk.Extensions;
 global using System;

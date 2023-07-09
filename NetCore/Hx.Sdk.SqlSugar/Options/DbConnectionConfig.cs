@@ -21,11 +21,6 @@ namespace Hx.Sdk.SqlSugar
         public bool EnableInitSeed { get; set; }
 
         /// <summary>
-        /// 启用库表差异日志
-        /// </summary>
-        public bool EnableDiffLog { get; set; }
-
-        /// <summary>
         /// 启用驼峰转下划线
         /// </summary>
         public bool EnableUnderLine { get; set; }
@@ -34,11 +29,6 @@ namespace Hx.Sdk.SqlSugar
         /// 启用Sql日志记录
         /// </summary>
         public bool EnableSqlLog { get; set; }
-
-        /// <summary>
-        /// 开启数据缓存
-        /// </summary>
-        public bool EnableDataInfoCache { get; set; }
 
         internal ConnectionConfig ToConnectionConfig()
         {

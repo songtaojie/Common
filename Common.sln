@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Entity", "NetCore\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj", "{CB0616A0-0B8A-4C40-B716-DFDD8FE40909}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Common", "NetCore\Hx.Sdk.Common\Hx.Sdk.Common.csproj", "{C31204CE-ED57-47CF-B26C-0F60B94781F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore", "NetCore", "{079D3BE6-8111-4A75-8044-C1049F87CCA5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetFramework", "NetFramework", "{23BAB2C0-CA56-438E-B42B-666E8CDD06A4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.NetCore.Test", "NetCore\Hx.Sdk.NetCore.Test\Hx.Sdk.NetCore.Test.csproj", "{14FB6F3B-CD3C-4A43-9E58-448493EB1B1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.Cache", "NetFramework\Hx.Sdk.NetFramework.Cache\Hx.Sdk.NetFramework.Cache.csproj", "{B368078A-04EB-4823-A8B2-B31A22A2654A}"
 EndProject
@@ -58,18 +54,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CB0616A0-0B8A-4C40-B716-DFDD8FE40909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB0616A0-0B8A-4C40-B716-DFDD8FE40909}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB0616A0-0B8A-4C40-B716-DFDD8FE40909}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB0616A0-0B8A-4C40-B716-DFDD8FE40909}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C31204CE-ED57-47CF-B26C-0F60B94781F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C31204CE-ED57-47CF-B26C-0F60B94781F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C31204CE-ED57-47CF-B26C-0F60B94781F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C31204CE-ED57-47CF-B26C-0F60B94781F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14FB6F3B-CD3C-4A43-9E58-448493EB1B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14FB6F3B-CD3C-4A43-9E58-448493EB1B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14FB6F3B-CD3C-4A43-9E58-448493EB1B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14FB6F3B-CD3C-4A43-9E58-448493EB1B1A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B368078A-04EB-4823-A8B2-B31A22A2654A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B368078A-04EB-4823-A8B2-B31A22A2654A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B368078A-04EB-4823-A8B2-B31A22A2654A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -139,7 +127,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{14FB6F3B-CD3C-4A43-9E58-448493EB1B1A} = {19DB3EAC-9F3C-44E9-B875-D6AD032AC5B7}
 		{B368078A-04EB-4823-A8B2-B31A22A2654A} = {23BAB2C0-CA56-438E-B42B-666E8CDD06A4}
 		{839548BE-166F-4A43-A06A-1B3283ED9070} = {23BAB2C0-CA56-438E-B42B-666E8CDD06A4}
 		{9C70FC10-95F6-4221-A867-A328B144A1B4} = {23BAB2C0-CA56-438E-B42B-666E8CDD06A4}

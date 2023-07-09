@@ -1,8 +1,10 @@
 ﻿using FreeRedis;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +28,7 @@ namespace Hx.Sdk.Cache
             set => Set(key, value,-1);
         }
 
-        public int Count => (_memoryCache as MemoryCache).Count;
+        public long Count => (_memoryCache as MemoryCache).Count;
 
 
         public bool ContainsKey(string key)
@@ -104,6 +106,45 @@ namespace Hx.Sdk.Cache
                 return Set(key, Encoding.UTF8.GetBytes(value), expiry);
             }
         }
-       
+
+
+        public IEnumerable<string> GetAllKeys()
+        {
+            var entriesCollectionType = GetEntriesCollectionType(_memoryCache.GetType());
+            if(entriesCollectionType == null) return Array.Empty<string>();
+            var entriesField = GetEntriesField(entriesCollectionType);
+            if(entriesField == null) return Array.Empty<string>();
+            var entriesDictionary = entriesField.GetValue(_memoryCache);
+            var keysProperty = entriesDictionary.GetType().GetProperty("Keys");
+            var keys = keysProperty.GetValue(entriesDictionary) as ICollection<object>;
+            if (keys == null) return Array.Empty<string>();
+            return keys.Select(r=>r.ToString());
+        }
+
+        private Type GetEntriesCollectionType(Type cacheType)
+        {
+            var entriesCollectionType = cacheType.GetNestedType("EntriesCollection", BindingFlags.NonPublic);
+            return entriesCollectionType;
+        }
+
+        private FieldInfo GetEntriesField(Type entriesCollectionType)
+        {
+            var entriesField = entriesCollectionType.GetField("_entries", BindingFlags.NonPublic | BindingFlags.Instance);
+            return entriesField ;
+        }
+
+        public long RemoveByPrefix(string prefixKey)
+        {
+            var allKeys = GetAllKeys();
+            var keys = allKeys.Where(r => r.StartsWith(prefixKey));
+            Remove(keys.ToArray());
+            return keys.LongCount();
+        }
+
+        public void Clear()
+        {
+            var keys = GetAllKeys();
+            Remove(keys.ToArray());
+        }
     }
 }

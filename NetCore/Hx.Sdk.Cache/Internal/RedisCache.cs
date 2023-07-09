@@ -1,5 +1,6 @@
 ﻿using FreeRedis;
 using System;
+using System.Collections.Generic;
 
 namespace Hx.Sdk.Cache
 {
@@ -11,7 +12,7 @@ namespace Hx.Sdk.Cache
 		private static int? _dbNum;
         private readonly IRedisClient _redisClient;
 
-        public int Count => throw new NotImplementedException();
+        public long Count => _redisClient.DbSize();
 
         public object this[string key] 
         { 
@@ -135,6 +136,32 @@ namespace Hx.Sdk.Cache
             {
                 return func(_redisClient);
             }
+        }
+
+        public IEnumerable<string> GetAllKeys()
+        {
+            return this.Do(db =>
+            {
+                return db.Keys("*");
+            });
+        }
+
+        public long RemoveByPrefix(string prefixKey)
+        {
+            return this.Do(db =>
+            {
+                var keys = db.Keys($"{prefixKey}*");
+                return db.Del(keys);
+            });
+        }
+
+        public void Clear()
+        {
+            this.Do<bool>(db =>
+            {
+                db.FlushAll();
+                return true;
+            });
         }
 
         #endregion

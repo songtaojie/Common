@@ -1,6 +1,4 @@
-﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+﻿using SixLabors.ImageSharp.Drawing;
 using System;
 using System.IO;
 using System.Linq;
@@ -8,6 +6,9 @@ using SixLabors.Fonts;
 using SixLabors.ImageSharp.Drawing.Processing;
 using Hx.Sdk.ImageSharp.Fonts;
 using System.Collections.Concurrent;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Hx.Sdk.ImageSharp
 {
@@ -150,27 +151,23 @@ namespace Hx.Sdk.ImageSharp
         public static string MarkLetterWater(string path, Fonts.FontOptions fontOptions)
         {
             #region
-            string kz_name = Path.GetExtension(path);
-            if (_imageExtList.Contains(kz_name))
+            string fileExt = System.IO.Path.GetExtension(path);
+            if (_imageExtList.Contains(fileExt))
             {
                 DateTime time = DateTime.Now;
                 string filename = time.ToString("yyyyMMddHHmmssffff");
-                string newpath = Path.GetDirectoryName(path) + filename + kz_name;
+                string newpath = $"{System.IO.Path.GetDirectoryName(path)}{filename}{_imageExtList}";
                 //原始的img对象完全没有改变。
-                using (var img = Image.Load(path))
+                using Image<Rgba32> image = Image.Load<Rgba32>(path);
+                if (fontOptions.Wordwrap)
                 {
-                    if (fontOptions.Wordwrap)
-                    {
-                        using var img2 = img.Clone(ctx => ctx.ApplyScalingWaterMarkWordWrap(fontOptions));
-                        img2.Save(newpath);
-                    }
-                    else
-                    {
-                        using var img2 = img.Clone(ctx => ctx.ApplyScalingWaterMarkSimple(fontOptions));
-                        img2.Save(newpath);
-                    }
-                    Console.WriteLine("结束");
-                    Console.ReadLine();
+                    using var img2 = image.Clone(ctx => ctx.ApplyScalingWaterMarkWordWrap(fontOptions));
+                    img2.Save(newpath);
+                }
+                else
+                {
+                    using var img2 = image.Clone(ctx => ctx.ApplyScalingWaterMarkSimple(fontOptions));
+                    img2.Save(newpath);
                 }
                 return newpath;
             }
@@ -186,19 +183,12 @@ namespace Hx.Sdk.ImageSharp
         /// <param name="width">宽(当水印类型为文字时,传过来的就是字体的大小)</param>
         /// <param name="height">高(当水印类型为文字时,传过来的就是字符的长度)</param>
         /// <returns>返回的是水印的位置</returns>
-        private static (DrawingOptions, PointF) GetLocation(FontOptions fontOptions, Size imgSize, float width, float height)
+        private static (TextOptions, SixLabors.ImageSharp.PointF) GetLocation(FontOptions fontOptions, SixLabors.ImageSharp.Size imgSize, float width, float height)
         {
-            var textGraphicOptions = new DrawingOptions()
-            {
-                TextOptions = {
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                }
-            };
-            TextOptions textOptions = textGraphicOptions.TextOptions;
+             TextOptions textOptions = new TextOptions(fontOptions.Font);
             float x = 10;
             float y = 10;
-            PointF pointF = new PointF(x, y);
+            SixLabors.ImageSharp.PointF pointF = new SixLabors.ImageSharp.PointF(x, y);
             switch (fontOptions.WaterLocation)
             {
                 case WaterLocation.LeftTop:
@@ -298,8 +288,7 @@ namespace Hx.Sdk.ImageSharp
                     pointF.Y = y;
                     break;
             }
-            textGraphicOptions.TextOptions = textOptions;
-            return (textGraphicOptions, pointF);
+            return (textOptions, pointF);
         }
 
         /// <summary>
@@ -338,20 +327,20 @@ namespace Hx.Sdk.ImageSharp
            
             var font = GetFont(fontOptions);
             // 测量文字大小
-            FontRectangle size = TextMeasurer.Measure(fontOptions.Letter, new RendererOptions(font));
+            FontRectangle size = TextMeasurer.Measure(fontOptions.Letter, new TextOptions(font));
             //找出我们需要缩放文本以填充空间的大小（上下）
             float scalingFactor = Math.Min(imgSize.Width / size.Width, imgSize.Height / size.Height);
             //创建一个新字体
             Font scaledFont = new Font(font, scalingFactor * font.Size);
             var testOptions = GetLocation(fontOptions, imgSize, size.Width, size.Height);
-            return processingContext.DrawText(testOptions.Item1, fontOptions.Letter, scaledFont, fontOptions.Color, testOptions.Item2);
+            return processingContext.DrawText(new DrawingOptions(),fontOptions.Letter, scaledFont, fontOptions.Color, testOptions.Item2);
         }
 
         private static IImageProcessingContext ApplyScalingWaterMarkWordWrap(this IImageProcessingContext processingContext,
             FontOptions fontOptions)
         {
             var padding = fontOptions.Padding;
-            Size imgSize = processingContext.GetCurrentSize();
+            SixLabors.ImageSharp.Size imgSize = processingContext.GetCurrentSize();
             float targetWidth = imgSize.Width - (padding * 2);
             float targetHeight = imgSize.Height - (padding * 2);
 
@@ -394,15 +383,15 @@ namespace Hx.Sdk.ImageSharp
                     isTooSmall = true;
                 }
                 trapCount--;
-
-                s = TextMeasurer.Measure(fontOptions.Letter, new RendererOptions(scaledFont)
+                s = TextMeasurer.Measure(fontOptions.Letter, new TextOptions(scaledFont)
                 {
-                    WrappingWidth = targetWidth
+                    TabWidth = targetWidth
+                    //WrappingWidth = targetWidth
                 });
             }
             var textOptions = GetLocation(fontOptions, imgSize, s.Width, s.Height);
             var textGraphicOptions = textOptions.Item1;
-            textGraphicOptions.TextOptions.WrapTextWidth = targetWidth;
+            //textGraphicOptions.TextOptions.WrapTextWidth = targetWidth;
             var center = textOptions.Item2;
             //center.X = padding;
             //var center = new PointF(padding, imgSize.Height / 2);
@@ -414,7 +403,7 @@ namespace Hx.Sdk.ImageSharp
             //        WrapTextWidth = targetWidth
             //    }
             //};
-            return processingContext.DrawText(textGraphicOptions, fontOptions.Letter, scaledFont, fontOptions.Color, center);
+            return processingContext.DrawText(new DrawingOptions(), fontOptions.Letter, scaledFont, fontOptions.Color, center);
         }
 
         #endregion

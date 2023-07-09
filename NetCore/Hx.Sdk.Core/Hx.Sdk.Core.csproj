@@ -7,7 +7,7 @@
 		<Description>
 			修改依赖注入，以及aop的bug
 		</Description>
-		<Version>6.0</Version>
+		<Version>6.1</Version>
 		<PackageTags>ASP.NET Core</PackageTags>
 		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
 		<PackageId>Hx.Sdk.Core</PackageId>
@@ -26,11 +26,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Hx.Sdk.Entity\Hx.Sdk.Entity.csproj" />
+	  <Folder Include="CorsAccessor\Internal\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="CorsAccessor\Internal\" />
+	  <ProjectReference Include="..\Hx.Sdk.Common\Hx.Sdk.Common.csproj" />
 	</ItemGroup>
 
 </Project>
