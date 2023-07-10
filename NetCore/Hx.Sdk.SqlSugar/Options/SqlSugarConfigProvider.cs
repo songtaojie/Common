@@ -157,10 +157,10 @@ namespace Hx.Sdk.SqlSugar
         /// <param name="typeList">所有的实体类</param>
         /// <param name="db"></param>
         /// <param name="config"></param>
-        public static void InitDatabase(SqlSugarScope db, DbConnectionConfig config)
+        public static void InitDatabase(ISqlSugarClient dbProvider, DbConnectionConfig config)
         {   
             
-            SqlSugarScopeProvider dbProvider = db.GetConnectionScope(config.ConfigId);
+            //SqlSugarScopeProvider dbProvider = db.GetConnectionScope(config.ConfigId);
 
             // 创建数据库
             if (config.DbType != DbType.Oracle)
