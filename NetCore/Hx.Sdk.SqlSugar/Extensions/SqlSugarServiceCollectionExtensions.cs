@@ -1,5 +1,5 @@
-﻿using Hx.Sdk.SqlSugar.Repositories;
-using Hx.Sdk.SqlSugar;
+﻿using Hx.Sdk.Sqlsugar.Repositories;
+using Hx.Sdk.Sqlsugar;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Runtime;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -57,57 +58,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="buildAction"></param>
         /// <param name="assemblies">实体所在的程序集</param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services,IEnumerable<Assembly> assemblies = default, Action<ISqlSugarClient, DbConnectionConfig, IServiceProvider> buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration, IEnumerable<Assembly> assemblies = default, Action<SqlSugarScope> buildAction = default)
         {
             if(assemblies != default)  SqlSugarConfigProvider.SetAssemblies(assemblies);
-            ConfigureDbConnectionSettings(services);
-            // 注册 SqlSugar 客户端
-            services.AddSingleton<ISqlSugarClient>(provider =>
+            var obj = configuration.GetSection("DbSettings:ConnectionConfigs");
+            var dbOptions = configuration.GetValue("DbSettings", DbSettingsOptions.GetDefaultSettings());
+            foreach (var r in dbOptions.ConnectionConfigs)
             {
-                var dbOptions = provider.GetService<IOptions<DbSettingsOptions>>();
-                var dbSettings = dbOptions.Value.ConnectionConfigs;
-               
-                var connectionConfigs = dbSettings.Select(r =>
-                {
-                    r = SqlSugarConfigProvider.SetDbConfig(r);
-                    return r.ToConnectionConfig();
-                }).ToList();
-                SqlSugarScope sqlSugar = new SqlSugarScope(connectionConfigs, db =>
-                {
-                    foreach (var config in dbSettings)
-                    {
-                        SqlSugarScopeProvider dbProvider = db.GetConnectionScope(config.ConfigId);
-                        if(config.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider);
-                        SqlSugarConfigProvider.InitDatabase(dbProvider, config);
-                        buildAction?.Invoke(dbProvider,config, provider);
-                    }
-                });
-                return sqlSugar;
-            });
+                SqlSugarConfigProvider.SetDbConfig(r);
+            }
+            var sqlSugar = new SqlSugarScope(dbOptions.ConnectionConfigs.Select(r=>r.ToConnectionConfig()).ToList());
+            buildAction?.Invoke(sqlSugar);
+            foreach (var config in dbOptions.ConnectionConfigs)
+            {
+                SqlSugarScopeProvider dbProvider = sqlSugar.GetConnectionScope(config.ConfigId);
+                if (config.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider);
+                SqlSugarConfigProvider.InitDatabase(dbProvider, config);
+            }
+            // 注册 SqlSugar 客户端
+            services.AddSingleton<ISqlSugarClient>(sqlSugar);
+           
             // 注册非泛型仓储
             services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 
             // 注册 SqlSugar 仓储
             services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
             return services;
-        }
-      
-
-        /// <summary>
-        /// 添加配置
-        /// </summary>
-        /// <param name="services"></param>
-        private static void ConfigureDbConnectionSettings(IServiceCollection services)
-        {
-            services.AddOptions<DbSettingsOptions>()
-                   .BindConfiguration("DbSettings", options =>
-                   {
-                       options.BindNonPublicProperties = true; // 绑定私有变量
-                   })
-                   .PostConfigure(options =>
-                   {
-                       _ = options.SetDefaultSettings(options);
-                   });
         }
     }
 }

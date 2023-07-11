@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.SqlSugar
+namespace Hx.Sdk.Sqlsugar
 {
     /// <summary>
     /// 分页拓展类

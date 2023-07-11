@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.EventBus", "NetCore\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.EntityFrameworkCore", "NetCore\Hx.Sdk.EntityFrameworkCore\Hx.Sdk.EntityFrameworkCore.csproj", "{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.SqlSugar", "NetCore\Hx.Sdk.SqlSugar\Hx.Sdk.SqlSugar.csproj", "{84574EFE-33E6-42D7-BADC-6739415232CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Sqlsugar", "NetCore\Hx.Sdk.SqlSugar\Hx.Sdk.Sqlsugar.csproj", "{84574EFE-33E6-42D7-BADC-6739415232CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0A36276-CEE7-4DB8-B70C-B171B91212A7}"
 	ProjectSection(SolutionItems) = preProject

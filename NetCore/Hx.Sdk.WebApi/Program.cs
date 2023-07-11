@@ -23,10 +23,10 @@ try
         options.CacheType = Hx.Sdk.Cache.CacheTypeEnum.Redis;
         options.ConnectionString = builder.Configuration.GetConnectionString("Redis");
     });
-    
-    builder.Services.AddSqlSugar(App.Assemblies);
+    var obj = builder.Configuration["CacheSettings:ConnectionString"]; // returns "Warning"
+    builder.Services.AddSqlSugar(builder.Configuration);
     var app = builder.Build();
-
+ 
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {

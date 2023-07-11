@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sdk.SqlSugar
+namespace Hx.Sdk.Sqlsugar
 {
     /// <summary>
     /// 忽略更新种子数据特性

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.SqlSugar
+namespace Hx.Sdk.Sqlsugar
 {
     /// <summary>
     /// 数据库连接配置
@@ -22,10 +22,12 @@ namespace Hx.Sdk.SqlSugar
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        internal DbSettingsOptions SetDefaultSettings(DbSettingsOptions options)
+        internal static DbSettingsOptions GetDefaultSettings()
         {
-            options.ConnectionConfigs ??= new List<DbConnectionConfig>();
-            return options;
+            return new DbSettingsOptions
+            {
+                ConnectionConfigs = new List<DbConnectionConfig>()
+            };
         }
     }
 }

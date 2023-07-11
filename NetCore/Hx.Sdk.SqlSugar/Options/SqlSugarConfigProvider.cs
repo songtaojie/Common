@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Hx.Sdk.Extensions;
 using Hx.Sdk.Common;
 
-namespace Hx.Sdk.SqlSugar
+namespace Hx.Sdk.Sqlsugar
 {
     /// <summary>
     /// SqlSugar配置初始化

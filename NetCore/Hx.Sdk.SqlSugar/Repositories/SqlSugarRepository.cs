@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.SqlSugar.Repositories
+namespace Hx.Sdk.Sqlsugar.Repositories
 {
     /// <summary>
     /// 非泛型 SqlSugar 仓储
@@ -29,13 +29,14 @@ namespace Hx.Sdk.SqlSugar.Repositories
             , ISqlSugarClient db)
         {
             _serviceProvider = serviceProvider;
+            Context = db;
             Ado = db.Ado;
         }
 
         /// <summary>
         /// 数据库上下文
         /// </summary>
-        public virtual SqlSugarClient Context { get; }
+        public virtual ISqlSugarClient Context { get; }
 
         /// <summary>
         /// 原生 Ado 对象
@@ -75,15 +76,6 @@ namespace Hx.Sdk.SqlSugar.Repositories
             _sqlSugarRepository = sqlSugarRepository;
 
             Context = sqlSugarRepository.Context;
-
-            // 设置租户信息
-            var entityType = typeof(TEntity);
-            if (entityType.IsDefined(typeof(TenantAttribute), false))
-            {
-                var tenantAttribute = entityType.GetCustomAttribute<TenantAttribute>(false)!;
-                Context.ChangeDatabase(tenantAttribute.configId);
-            }
-
             Ado = sqlSugarRepository.Ado;
         }
 
@@ -95,7 +87,7 @@ namespace Hx.Sdk.SqlSugar.Repositories
         /// <summary>
         /// 数据库上下文
         /// </summary>
-        public virtual SqlSugarClient Context { get; }
+        public virtual ISqlSugarClient Context { get; }
 
         /// <summary>
         /// 原生 Ado 对象

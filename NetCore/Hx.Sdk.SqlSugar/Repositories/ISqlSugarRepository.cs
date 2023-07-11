@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.SqlSugar
+namespace Hx.Sdk.Sqlsugar
 {
     /// <summary>
     /// 非泛型 SqlSugar 仓储
@@ -24,7 +24,7 @@ namespace Hx.Sdk.SqlSugar
         /// <summary>
         /// 数据库上下文
         /// </summary>
-        SqlSugarClient Context { get; }
+        ISqlSugarClient Context { get; }
 
         /// <summary>
         /// 原生 Ado 对象
@@ -47,7 +47,7 @@ namespace Hx.Sdk.SqlSugar
         /// <summary>
         /// 数据库上下文
         /// </summary>
-        SqlSugarClient Context { get; }
+        ISqlSugarClient Context { get; }
 
         /// <summary>
         /// 原生 Ado 对象
