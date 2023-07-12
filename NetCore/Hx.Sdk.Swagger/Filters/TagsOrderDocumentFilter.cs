@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Hx.Sdk.Swagger.Internal;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 

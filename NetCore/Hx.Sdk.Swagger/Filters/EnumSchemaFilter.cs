@@ -32,14 +32,25 @@ namespace Hx.Sdk.Swagger
                 stringBuilder.Append($"{model.Description}<br />");
 
                 var enumValues = Enum.GetValues(type);
+                // 获取枚举实际值类型
+                var enumValueType = type.GetField("value__").FieldType;
                 foreach (var value in enumValues)
                 {
+                    var numValue = value.ChangeType(enumValueType);
+
                     // 获取枚举成员特性
                     var fieldinfo = type.GetField(Enum.GetName(type, value));
                     var descriptionAttribute = fieldinfo.GetCustomAttribute<DescriptionAttribute>(true);
-                    model.Enum.Add(OpenApiAnyFactory.CreateFromJson(JsonSerializer.Serialize(value)));
+                    model.Enum.Add(OpenApiAnyFactory.CreateFromJson($"{numValue}"));
 
-                    stringBuilder.Append($"&nbsp;{descriptionAttribute?.Description} {value} = {value}<br />");
+                    stringBuilder.Append($"&nbsp;{descriptionAttribute?.Description} {value} = {numValue}<br />");
+
+                    //// 获取枚举成员特性
+                    //var fieldinfo = type.GetField(Enum.GetName(type, value));
+                    //var descriptionAttribute = fieldinfo.GetCustomAttribute<DescriptionAttribute>(true);
+                    //model.Enum.Add(OpenApiAnyFactory.CreateFromJson(JsonSerializer.Serialize(value)));
+
+                    //stringBuilder.Append($"&nbsp;{descriptionAttribute?.Description} {value} = {value}<br />");
                 }
                 model.Description = stringBuilder.ToString();
             }

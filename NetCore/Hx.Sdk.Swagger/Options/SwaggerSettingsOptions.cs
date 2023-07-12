@@ -97,6 +97,11 @@ namespace Hx.Sdk.Swagger
         public bool? EnableTagsOrderDocumentFilter { get; set; }
 
         /// <summary>
+        /// 启用 All Groups 功能
+        /// </summary>
+        public bool? EnableAllGroups { get; set; }
+
+        /// <summary>
         /// 设置默认值
         /// </summary>
         /// <param name="options"></param>
@@ -131,6 +136,7 @@ namespace Hx.Sdk.Swagger
                         BearerFormat="JWT",
                         Scheme="Bearer",
                         In= ParameterLocation.Header,
+                        
                     }
                 };
             }
@@ -140,6 +146,7 @@ namespace Hx.Sdk.Swagger
             options.RouteTemplate ??= "swagger/{documentName}/swagger.json";
             options.EnableEnumSchemaFilter ??= true;
             options.EnableTagsOrderDocumentFilter ??= true;
+            options.EnableAllGroups ??= false;
             return options;
         }
     }

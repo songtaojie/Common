@@ -11,6 +11,8 @@ namespace Hx.Sdk.Test.Entity.Entities
     [SugarTable(null,"测试表")]
     public class TestSqlsugar:EntityBase
     {
+        [SugarColumn(IsPrimaryKey =true,ColumnDescription ="主键id")]
+        public override long Id { get => base.Id; set => base.Id = value; }
         /// <summary>
         /// 名称
         /// </summary>

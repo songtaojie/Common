@@ -258,6 +258,10 @@ namespace Hx.Sdk.Swagger
                 return false;
             }
 
+            // 处理贴有 [ApiExplorerSettings(IgnoreApi = true)] 或者 [ApiDescriptionSettings(false)] 特性的接口
+            var apiExplorerSettings = method.GetCustomAttribute<ApiExplorerSettingsAttribute>(true);
+            if (apiExplorerSettings?.IgnoreApi == true) return false;
+
             if (currentGroup == AllGroupsKey)
             {
                 return true;
@@ -555,7 +559,19 @@ namespace Hx.Sdk.Swagger
         {
             // 获取所有的控制器和动作方法
             var controllers = Penetrates.EffectiveTypes.Where(u => Penetrates.IsApiController(u));
-            if (!controllers.Any()) return new[] { _swaggerSettings.DefaultGroupName };
+            if (!controllers.Any())
+            {
+                var defaultGroups = new List<string>
+                {
+                    _swaggerSettings.DefaultGroupName
+                };
+                // 启用总分组功能
+                if (_swaggerSettings.EnableAllGroups == true)
+                {
+                    defaultGroups.Add(AllGroupsKey);
+                }
+                return defaultGroups;
+            }
 
             var actions = controllers.SelectMany(c => c.GetMethods().Where(u => IsApiAction(u, c)));
 
@@ -575,10 +591,17 @@ namespace Hx.Sdk.Swagger
                 });
 
             // 分组排序
-            return groupOrders
+            var groups = groupOrders
                 .OrderByDescending(u => u.Order)
                 .ThenBy(u => u.Group)
                 .Select(u => u.Group);
+            // 启用总分组功能
+            if (_swaggerSettings.EnableAllGroups == true)
+            {
+                groups = groups.Concat(new[] { AllGroupsKey });
+            }
+
+            return groups;
         }
 
         /// <summary>
@@ -591,7 +614,7 @@ namespace Hx.Sdk.Swagger
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static IEnumerable<GroupExtraInfo> GetControllerGroups(Type type)
+        internal static IEnumerable<GroupExtraInfo> GetControllerGroups(Type type)
         {
             return GetControllerGroupsCached.GetOrAdd(type, Function);
 

@@ -26,7 +26,7 @@ namespace Hx.Sdk.Swagger.Internal
         /// <summary>
         /// 控制器排序集合
         /// </summary>
-        internal static Dictionary<string, int> ControllerOrderCollection { get; set; }
+        internal static ConcurrentDictionary<string, (string, int, Type)> ControllerOrderCollection { get; set; }
         /// <summary>
         /// 应用有效程序集
         /// </summary>
@@ -41,7 +41,7 @@ namespace Hx.Sdk.Swagger.Internal
         /// </summary>
         static Penetrates()
         {
-            ControllerOrderCollection = new Dictionary<string, int>();
+            ControllerOrderCollection = new ConcurrentDictionary<string, (string, int, Type)>();
 
             IsApiControllerCached = new ConcurrentDictionary<Type, bool>();
 

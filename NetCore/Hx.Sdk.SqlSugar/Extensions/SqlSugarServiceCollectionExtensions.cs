@@ -24,22 +24,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configAction"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<SqlSugarClient,IServiceProvider> buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions> configAction = default,Action<SqlSugarScope> buildAction = default)
         {
+            var dbSettingsOptions = new DbSettingsOptions();
+            configAction?.Invoke(dbSettingsOptions);
+            var dbSettings = dbSettingsOptions.ConnectionConfigs;
+            var connectionConfigs = dbSettings.Select(r => r.ToConnectionConfig()).ToList();
+            var sqlSugarScope = new SqlSugarScope(connectionConfigs);
+            buildAction?.Invoke(sqlSugarScope);
             // 注册 SqlSugar 客户端
-            services.AddSingleton<ISqlSugarClient>(provider =>
-            {
-                var dbSettingsOptions = new DbSettingsOptions();
-                var options = provider.GetService<IOptions<DbSettingsOptions>>();
-                if(options != null) dbSettingsOptions = options.Value;
-                var dbSettings = dbSettingsOptions.ConnectionConfigs;
-                var connectionConfigs = dbSettings.Select(r => r.ToConnectionConfig()).ToList();
-                var sqlSugarScope = new SqlSugarScope(connectionConfigs,db =>
-                {
-                    buildAction?.Invoke(db, provider);
-                });
-                return sqlSugarScope;
-            });
+            services.AddSingleton<ISqlSugarClient>(sqlSugarScope);
 
             // 注册非泛型仓储
             services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
@@ -56,13 +50,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="buildAction"></param>
-        /// <param name="assemblies">实体所在的程序集</param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration, IEnumerable<Assembly> assemblies = default, Action<SqlSugarScope> buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration, Action<SqlSugarScope> buildAction = default)
         {
-            if(assemblies != default)  SqlSugarConfigProvider.SetAssemblies(assemblies);
-            var obj = configuration.GetSection("DbSettings:ConnectionConfigs");
-            var dbOptions = configuration.GetValue("DbSettings", DbSettingsOptions.GetDefaultSettings());
+            var dbOptions = GetDbSettingsOptions(configuration);
             foreach (var r in dbOptions.ConnectionConfigs)
             {
                 SqlSugarConfigProvider.SetDbConfig(r);
@@ -84,6 +75,17 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册 SqlSugar 仓储
             services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
             return services;
+        }
+        private static DbSettingsOptions GetDbSettingsOptions(IConfiguration configuration)
+        {
+            var result = DbSettingsOptions.GetDefaultSettings();
+            var dbSettingsSection = configuration.GetSection("DbSettings");
+            if (dbSettingsSection != null)
+            {
+                var options = dbSettingsSection.Get<DbSettingsOptions>();
+                if (options != null) return options;
+            }
+            return result;
         }
     }
 }
