@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -160,9 +161,8 @@ namespace Hx.Sdk.Swagger
         /// Swagger UI 构建
         /// </summary>
         /// <param name="swaggerUIOptions"></param>
-        /// <param name="routePrefix"></param>
         /// <param name="configure"></param>
-        internal static void BuildUI(SwaggerUIOptions swaggerUIOptions, string routePrefix = default, Action<SwaggerUIOptions> configure = null)
+        internal static void BuildUI(SwaggerUIOptions swaggerUIOptions, Action<SwaggerUIOptions> configure = null)
         {
             // 配置分组终点路由
             CreateGroupEndpoint(swaggerUIOptions);
@@ -170,14 +170,16 @@ namespace Hx.Sdk.Swagger
             // 配置文档标题
             swaggerUIOptions.DocumentTitle = _swaggerSettings.DocumentTitle;
 
-            //// 配置UI地址
-            swaggerUIOptions.RoutePrefix = _swaggerSettings.RoutePrefix ?? routePrefix ?? "swagger";
+            // 配置UI地址
+            swaggerUIOptions.RoutePrefix = _swaggerSettings.RoutePrefix ?? "swagger";
 
             // 文档展开设置
-            swaggerUIOptions.DocExpansion(_swaggerSettings.DocExpansionState.Value);
+            swaggerUIOptions.DocExpansion(_swaggerSettings.DocExpansion.Value);
 
-            // 注入 MiniProfiler 组件
-            InjectMiniProfilerPlugin(swaggerUIOptions);
+            // 自定义首页
+            CustomizeIndex(swaggerUIOptions);
+
+            AddDefaultInterceptor(swaggerUIOptions);
 
             // 自定义配置
             configure?.Invoke(swaggerUIOptions);
@@ -187,9 +189,8 @@ namespace Hx.Sdk.Swagger
         /// Swagger UI 构建
         /// </summary>
         /// <param name="knife4UIOptions"></param>
-        /// <param name="routePrefix"></param>
         /// <param name="configure"></param>
-        internal static void BuildKnife4UUI(Knife4UIOptions knife4UIOptions, string routePrefix = default, Action<Knife4UIOptions> configure = null)
+        internal static void BuildKnife4UUI(Knife4UIOptions knife4UIOptions,  Action<Knife4UIOptions> configure = null)
         {
             // 配置分组终点路由
             CreateGroupEndpoint(knife4UIOptions);
@@ -198,13 +199,10 @@ namespace Hx.Sdk.Swagger
             knife4UIOptions.DocumentTitle = _swaggerSettings.DocumentTitle;
 
             //// 配置UI地址
-            knife4UIOptions.RoutePrefix = _swaggerSettings.RoutePrefix ?? routePrefix ?? "swagger";
+            knife4UIOptions.RoutePrefix = _swaggerSettings.RoutePrefix ?? "swagger";
 
             // 文档展开设置
-            knife4UIOptions.DocExpansion(GetKnife4jUIDocExpansion(_swaggerSettings.DocExpansionState));
-
-            // 注入 MiniProfiler 组件
-            //InjectMiniProfilerPlugin(swaggerUIOptions);
+            knife4UIOptions.DocExpansion(GetKnife4jUIDocExpansion(_swaggerSettings.DocExpansion));
 
             // 自定义配置
             configure?.Invoke(knife4UIOptions);
@@ -470,8 +468,8 @@ namespace Hx.Sdk.Swagger
                 var groupOpenApiInfo = GetGroupOpenApiInfo(group);
 
                 // 替换路由模板
-                var routeTemplate = _swaggerSettings.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
-                swaggerUIOptions.SwaggerEndpoint($"{_swaggerSettings.VirtualPath}/{routeTemplate}", groupOpenApiInfo?.Title ?? group);
+                //var routeTemplate = _swaggerSettings.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
+                swaggerUIOptions.SwaggerEndpoint(groupOpenApiInfo.RouteTemplate, groupOpenApiInfo?.Title ?? group);
             }
         }
 
@@ -492,23 +490,54 @@ namespace Hx.Sdk.Swagger
         }
 
         /// <summary>
-        /// 注入 MiniProfiler 插件
+        /// 自定义 Swagger 首页
         /// </summary>
         /// <param name="swaggerUIOptions"></param>
-        private static void InjectMiniProfilerPlugin(SwaggerUIOptions swaggerUIOptions)
+        private static void CustomizeIndex(SwaggerUIOptions swaggerUIOptions)
         {
-            // 启用 MiniProfiler 组件
             var thisType = typeof(SwaggerDocumentBuilder);
             var thisAssembly = thisType.Assembly;
-            
-            // 自定义 Swagger 首页
-            swaggerUIOptions.IndexStream = () => 
+
+            // 判断是否启用 MiniProfile
+            var customIndex = $"{thisType.Namespace}.Assets.{(_swaggerSettings.EnabledMiniProfiler != true ? "index" : "index-mini-profiler")}.html";
+            swaggerUIOptions.IndexStream = () =>
             {
-                var stream = thisAssembly.GetManifestResourceStream($"{thisType.Namespace}.Assets.{(_swaggerSettings.EnabledMiniProfiler != true ? "index" : "index-mini-profiler")}.html");
-                return stream;
+                StringBuilder htmlBuilder;
+                // 自定义首页模板参数
+                var indexArguments = new Dictionary<string, string>
+                {
+                    {"%(VirtualPath)", _swaggerSettings.VirtualPath }    // 解决二级虚拟目录 MiniProfiler 丢失问题
+                };
+
+                // 读取文件内容
+                using (var stream = thisAssembly.GetManifestResourceStream(customIndex))
+                {
+                    using var reader = new StreamReader(stream);
+                    htmlBuilder = new StringBuilder(reader.ReadToEnd());
+                }
+
+                // 替换模板参数
+                foreach (var (template, value) in indexArguments)
+                {
+                    htmlBuilder.Replace(template, value);
+                }
+
+                // 返回新的内存流
+                var byteArray = Encoding.UTF8.GetBytes(htmlBuilder.ToString());
+                return new MemoryStream(byteArray);
             };
         }
 
+        /// <summary>
+        /// 添加默认请求/响应拦截器
+        /// </summary>
+        /// <param name="swaggerUIOptions"></param>
+        private static void AddDefaultInterceptor(SwaggerUIOptions swaggerUIOptions)
+        {
+            // 配置多语言和自动登录token
+            swaggerUIOptions.UseRequestInterceptor("function(request) { return defaultRequestInterceptor(request); }");
+            swaggerUIOptions.UseResponseInterceptor("function(response) { return defaultResponseInterceptor(response); }");
+        }
 
         /// <summary>
         /// 获取分组信息缓存集合

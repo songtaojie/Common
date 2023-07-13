@@ -54,7 +54,7 @@ namespace Hx.Sdk.Swagger
         /// <summary>
         /// 文档展开设置
         /// </summary>
-        public DocExpansion? DocExpansionState { get; set; }
+        public DocExpansion? DocExpansion { get; set; }
 
         /// <summary>
         /// XML 描述文件
@@ -112,7 +112,7 @@ namespace Hx.Sdk.Swagger
             options.DefaultGroupName ??= "Default";
             options.FormatAsV2 ??= false;
             options.RoutePrefix ??= "swagger";
-            options.DocExpansionState ??= DocExpansion.List;
+            options.DocExpansion ??= Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List;
             options.XmlComments ??= Penetrates.Assemblies.Where(u => !u.GetName().Name.Contains("Hx.Sdk")).Select(t => t.GetName().Name).ToArray();
             options.GroupOpenApiInfos ??= new SwaggerOpenApiInfo[]
             {
