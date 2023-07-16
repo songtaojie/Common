@@ -94,6 +94,7 @@ namespace Hx.Sdk.Sqlsugar
                 {
                     if (config.EnableUnderLine && !entity.DbTableName.Contains('_'))
                         entity.DbTableName = UtilMethods.ToUnderLine(entity.DbTableName); // 驼峰转下划线
+
                 },
                 EntityService = (type, column) => // 处理列
                 {
@@ -111,6 +112,39 @@ namespace Hx.Sdk.Sqlsugar
                             column.DataType = "number(18)";
                         if (type.PropertyType == typeof(bool) || type.PropertyType == typeof(bool?))
                             column.DataType = "number(1)";
+                    }
+
+                    if (typeof(IEntity<>).IsAssignableFromGenericType(type.ReflectedType) 
+                        && !type.IsDefined(typeof(SugarColumn), false))
+                    {
+                        switch (type.Name)
+                        {
+                            case "Id":
+                                column.IsPrimarykey = true;
+                                if (type.PropertyType == typeof(string))
+                                {
+                                    column.Length = 36;
+                                }
+                                break;
+                            case "CreatorId":
+                                if (type.PropertyType == typeof(string))
+                                {
+                                    column.Length = 36;
+                                }
+                                break;
+                            case "UpdaterId":
+                                if (type.PropertyType == typeof(string))
+                                {
+                                    column.Length = 36;
+                                }
+                                break;
+                            case "DeleterId":
+                                if (type.PropertyType == typeof(string))
+                                {
+                                    column.Length = 36;
+                                }
+                                break;
+                        }
                     }
                 }
             };
