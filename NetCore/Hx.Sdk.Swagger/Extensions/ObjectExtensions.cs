@@ -10,6 +10,30 @@ namespace Hx.Sdk.Swagger
     internal static class ObjectExtensions
     {
         /// <summary>
+        /// 首字母小写
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        internal static string ToLowerCamelCase(this string str)
+        {
+            if (string.IsNullOrWhiteSpace(str)) return str;
+
+            return string.Concat(str.First().ToString().ToLower(), str.AsSpan(1));
+        }
+
+        /// <summary>
+        /// 首字母大写
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        internal static string ToUpperCamelCase(this string str)
+        {
+            if (string.IsNullOrWhiteSpace(str)) return str;
+
+            return string.Concat(str.First().ToString().ToUpper(), str.AsSpan(1));
+        }
+
+        /// <summary>
         /// 将 DateTime 转换成 DateTimeOffset
         /// </summary>
         /// <param name="dateTime"></param>

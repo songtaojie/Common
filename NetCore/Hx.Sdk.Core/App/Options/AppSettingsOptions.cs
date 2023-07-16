@@ -15,6 +15,11 @@ namespace Hx.Sdk.Core
         public bool? EnabledSwagger { get; set; }
 
         /// <summary>
+        /// swagger配置
+        /// </summary>
+        public SwaggerUIEnum? SwaggerUI { get; set; }
+
+        /// <summary>
         /// 是否打印数据库连接信息到 MiniProfiler 中
         /// </summary>
         public bool? PrintDbConnectionInfo { get; set; }
@@ -23,11 +28,6 @@ namespace Hx.Sdk.Core
         /// 是否使用IdentityServer4授权认证，false：使用jwt授权认证
         /// </summary>
         public bool? UseIdentityServer4 { get; set; }
-
-        /// <summary>
-        ///Aop切面type全名
-        /// </summary>
-        public string[] AopTypeFullName { get; set; }
 
         /// <summary>
         /// 是否启用规范化结果
@@ -61,10 +61,10 @@ namespace Hx.Sdk.Core
         /// <param name="options"></param>
         public void PostConfigure(string name,AppSettingsOptions options)
         {
-            options.EnabledSwagger ??= true;
+            options.EnabledSwagger ??= false;
+            options.SwaggerUI ??= SwaggerUIEnum.Original;
             options.PrintDbConnectionInfo ??= true;
             options.UseIdentityServer4 ??= false;
-            options.AopTypeFullName ??= Array.Empty<string>();
             options.EnabledUnifyResult ??= true;
             options.EnabledExceptionFilter ??= true;
             options.EnabledSqlLog ??= false;
@@ -72,5 +72,20 @@ namespace Hx.Sdk.Core
             options.EnabledCors ??= true;
         }
 
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum SwaggerUIEnum
+    { 
+        /// <summary>
+        /// 原生ui的swagger
+        /// </summary>
+        Original = 1,
+        /// <summary>
+        /// 使用Knife4UI的swagger
+        /// </summary>
+        Knife4 = 2
     }
 }

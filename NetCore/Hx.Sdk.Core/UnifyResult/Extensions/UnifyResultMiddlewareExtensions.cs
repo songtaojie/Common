@@ -1,4 +1,6 @@
 ﻿using Hx.Sdk.UnifyResult;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -11,14 +13,15 @@ namespace Microsoft.AspNetCore.Builder
         /// <summary>
         /// 添加状态码拦截中间件
         /// </summary>
-        /// <param name="builder"></param>
+        /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseUnifyResultStatusCodes(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseUnifyResultStatusCodes(this IApplicationBuilder app)
         {
+            var logger = app.ApplicationServices.GetService<ILogger<HxCoreApp>>();
             // 提供配置
-            builder.UseMiddleware<UnifyResultStatusCodesMiddleware>();
-            Hx.Sdk.Core.ConsoleHelper.WriteInfoLine("Use the UnifyResultStatusCodes ApplicationBuilder");
-            return builder;
+            app.UseMiddleware<UnifyResultStatusCodesMiddleware>();
+            logger.LogDebug("Use the UnifyResultStatusCodes ApplicationBuilder");
+            return app;
         }
     }
 }

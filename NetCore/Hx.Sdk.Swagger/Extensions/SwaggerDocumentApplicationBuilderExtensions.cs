@@ -18,7 +18,6 @@ namespace Microsoft.AspNetCore.Builder
         /// 添加规范化文档中间件
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="routePrefix"></param>
         /// <param name="swaggerConfigure"></param>
         /// <param name="swaggerUIConfigure"></param>
         /// <returns></returns>
@@ -37,18 +36,18 @@ namespace Microsoft.AspNetCore.Builder
         /// 添加规范化文档中间件
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="routePrefix"></param>
+        /// <param name="swaggerConfigure"></param>
         /// <param name="swaggerUIConfigure"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseKnife4SwaggerDocuments(this IApplicationBuilder app, string routePrefix = default, Action<Knife4UIOptions> swaggerUIConfigure = null)
+        public static IApplicationBuilder UseSwaggerKnife4Documents(this IApplicationBuilder app, Action<SwaggerOptions> swaggerConfigure = null, Action<Knife4UIOptions> swaggerUIConfigure = null)
         {
             var config = app.ApplicationServices.GetService<IConfiguration>();
             SwaggerDocumentBuilder.Init(config);
             // 配置 Swagger 全局参数
-            app.UseSwagger(options => SwaggerDocumentBuilder.Build(options));
+            app.UseSwagger(options => SwaggerDocumentBuilder.Build(options, swaggerConfigure));
 
             // 配置 Swagger UI 参数
-            app.UseKnife4UI(options => SwaggerDocumentBuilder.BuildKnife4UUI(options,swaggerUIConfigure));
+            app.UseKnife4UI(options => SwaggerDocumentBuilder.BuildKnife4UI(options,swaggerUIConfigure));
             return app;
         }
     }

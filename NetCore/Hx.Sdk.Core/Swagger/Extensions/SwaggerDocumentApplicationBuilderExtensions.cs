@@ -1,4 +1,6 @@
 ﻿using Hx.Sdk.Core;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Reflection;
 
@@ -18,6 +20,7 @@ namespace Microsoft.AspNetCore.Builder
         internal static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app)
         {
             // 判断是否安装了 DependencyInjection 程序集
+            var logger = app.ApplicationServices.GetService<ILogger<HxCoreApp>>();
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
@@ -26,8 +29,8 @@ namespace Microsoft.AspNetCore.Builder
             var useSwaggerDocuments = swaggerBuilderExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(u => u.Name == "UseSwaggerDocuments" && u.GetParameters().First()?.ParameterType == typeof(IApplicationBuilder));
-            ConsoleHelper.WriteInfoLine("Use the SwaggerDocument ApplicationBuilder");
-            useSwaggerDocuments?.Invoke(null, new object[] { app, null, null, null });
+            logger.LogDebug("Use the SwaggerUI ApplicationBuilder");
+            useSwaggerDocuments?.Invoke(null, new object[] { app, null, null });
             return app;
 
         }
@@ -37,8 +40,9 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        internal static IApplicationBuilder UseKnife4SwaggerDocuments(this IApplicationBuilder app)
+        internal static IApplicationBuilder UseSwaggerKnife4Documents(this IApplicationBuilder app)
         {
+            var logger = app.ApplicationServices.GetService<ILogger<HxCoreApp>>();
             // 判断是否安装了 DependencyInjection 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
@@ -47,8 +51,8 @@ namespace Microsoft.AspNetCore.Builder
             if (swaggerBuilderExtensionsType == null) return app;
             var useSwaggerDocuments = swaggerBuilderExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .First(u => u.Name == "UseKnife4SwaggerDocuments" && u.GetParameters().First().ParameterType == typeof(IApplicationBuilder));
-            ConsoleHelper.WriteInfoLine("Use the Knife4 SwaggerDocument ApplicationBuilder");
+                .First(u => u.Name == "UseSwaggerKnife4Documents" && u.GetParameters().First().ParameterType == typeof(IApplicationBuilder));
+            logger.LogDebug("Use the Swagger Knife4UI ApplicationBuilder");
             useSwaggerDocuments?.Invoke(null, new object[] { app, null, null});
             return app;
         }

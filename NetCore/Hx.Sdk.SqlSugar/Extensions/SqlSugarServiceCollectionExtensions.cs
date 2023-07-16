@@ -45,13 +45,13 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// 添加 SqlSugar 拓展,
-        /// 使用配置文件配置，
+        /// 添加 默认的SqlSugar 拓展,
+        /// 使用配置文件配置数据库连接信息
         /// </summary>
         /// <param name="services"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration, Action<SqlSugarScope> buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,  Action<SqlSugarScope> buildAction = default)
         {
             var dbOptions = GetDbSettingsOptions(configuration);
             foreach (var r in dbOptions.ConnectionConfigs)

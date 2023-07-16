@@ -16,9 +16,19 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns>应用构建器</returns>
         internal static IApplicationBuilder UseHxApp(this IApplicationBuilder app, Action<IApplicationBuilder> configure = null)
         {
-            
+
             // 判断是否启用规范化文档
-            if (App.Settings.EnabledSwagger == true) app.UseKnife4SwaggerDocuments();
+            if (App.Settings.EnabledSwagger == true)
+            {
+                if (App.Settings.SwaggerUI == SwaggerUIEnum.Knife4)
+                {
+                    app.UseSwaggerKnife4Documents();
+                }
+                else
+                {
+                    app.UseSwaggerDocuments();
+                }
+            }
 
             if (App.Settings.EnabledUnifyResult == true) app.UseUnifyResultStatusCodes();
 

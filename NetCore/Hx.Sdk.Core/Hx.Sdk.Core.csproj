@@ -7,7 +7,7 @@
 		<Description>
 			修改依赖注入，以及aop的bug
 		</Description>
-		<Version>6.1</Version>
+		<Version>6.1.2</Version>
 		<PackageTags>ASP.NET Core</PackageTags>
 		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
 		<PackageId>Hx.Sdk.Core</PackageId>

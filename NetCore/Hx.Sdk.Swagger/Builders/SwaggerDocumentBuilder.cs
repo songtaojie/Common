@@ -1,4 +1,6 @@
-﻿using Hx.Sdk.Swagger.Internal;
+﻿using Hx.Sdk.Swagger.Attributes;
+using Hx.Sdk.Swagger.Filters;
+using Hx.Sdk.Swagger.Internal;
 using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -69,14 +71,14 @@ namespace Hx.Sdk.Swagger
             GetActionTagCached = new ConcurrentDictionary<ApiDescription, string>();
         }
 
-        internal static void Init(IConfiguration config)
+        internal static void Init(IConfiguration config, Action<SwaggerSettingsOptions> optionsAction = null)
         {
             if (_isInit) return;
             //// 载入配置
             _swaggerSettings = Penetrates.GetSwaggerSettings(config);
-           
-            // 默认分组，支持多个逗号分割
-            _groupExtraInfos = new List<GroupExtraInfo> { ResolveGroupExtraInfo(_swaggerSettings.DefaultGroupName) };
+            optionsAction?.Invoke(_swaggerSettings);
+             // 默认分组，支持多个逗号分割
+             _groupExtraInfos = new List<GroupExtraInfo> { ResolveGroupExtraInfo(_swaggerSettings.DefaultGroupName) };
 
             // 加载所有分组
             _documentGroups = ReadGroups();
@@ -128,6 +130,9 @@ namespace Hx.Sdk.Swagger
 
             //// 加载分组控制器和动作方法列表
             LoadGroupControllerWithActions(swaggerGenOptions);
+
+            // 配置 Swagger OperationIds
+            ConfigureOperationIds(swaggerGenOptions);
 
             // 配置 Swagger SchemaId
             ConfigureSchemaId(swaggerGenOptions);
@@ -190,7 +195,7 @@ namespace Hx.Sdk.Swagger
         /// </summary>
         /// <param name="knife4UIOptions"></param>
         /// <param name="configure"></param>
-        internal static void BuildKnife4UUI(Knife4UIOptions knife4UIOptions,  Action<Knife4UIOptions> configure = null)
+        internal static void BuildKnife4UI(Knife4UIOptions knife4UIOptions,  Action<Knife4UIOptions> configure = null)
         {
             // 配置分组终点路由
             CreateGroupEndpoint(knife4UIOptions);
@@ -298,6 +303,31 @@ namespace Hx.Sdk.Swagger
         }
 
         /// <summary>
+        /// 配置 Swagger OperationIds
+        /// </summary>
+        /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
+        private static void ConfigureOperationIds(SwaggerGenOptions swaggerGenOptions)
+        {
+            swaggerGenOptions.CustomOperationIds(apiDescription =>
+            {
+                var isMethod = apiDescription.TryGetMethodInfo(out var method);
+
+                // 判断是否自定义了 [OperationId] 特性
+                if (isMethod && method.IsDefined(typeof(OperationIdAttribute), false))
+                {
+                    return method.GetCustomAttribute<OperationIdAttribute>(false).OperationId;
+                }
+
+                var operationId = apiDescription.RelativePath.Replace("/", "-")
+                                           .Replace("{", "-")
+                                           .Replace("}", "-") + "-" + apiDescription.HttpMethod.ToLower().ToUpperCamelCase();
+
+                return operationId.Replace("--", "-");
+            });
+
+        }
+
+        /// <summary>
         /// 配置 Swagger SchemaId
         /// </summary>
         /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
@@ -318,6 +348,16 @@ namespace Hx.Sdk.Swagger
                     // 通过 _ 拼接多个泛型
                     modelName = modelName.Split('`').First() + "_" + prefix;
                 }
+
+                // 判断是否自定义了 [SchemaId] 特性，解决模块化多个程序集命名冲突
+                var isCustomize = modelType.IsDefined(typeof(SchemaIdAttribute));
+                if (isCustomize)
+                {
+                    var schemaIdAttribute = modelType.GetCustomAttribute<SchemaIdAttribute>();
+                    if (!schemaIdAttribute.Replace) return schemaIdAttribute.SchemaId + modelName;
+                    else return schemaIdAttribute.SchemaId;
+                }
+
                 return modelName;
             }
 
@@ -448,6 +488,8 @@ namespace Hx.Sdk.Swagger
 
             // 在header中添加token，传递到后台
             swaggerGenOptions.OperationFilter<SecurityRequirementsOperationFilter>();
+            // 在header中添加token，传递到后台
+            swaggerGenOptions.OperationFilter<OpenApiSecurityFilter>();
             ////生成安全定义
             foreach (var securityDefinition in _swaggerSettings.SecurityDefinitions)
             {

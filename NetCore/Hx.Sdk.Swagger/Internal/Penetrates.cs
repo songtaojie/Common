@@ -68,10 +68,13 @@ namespace Hx.Sdk.Swagger.Internal
             // 本地静态方法
             static bool Function(Type type)
             {
+                // 排除 OData 控制器
+                if (type.Assembly.GetName().Name.StartsWith("Microsoft.AspNetCore.OData")) return false;
+
                 // 不能是非公开、基元类型、值类型、抽象类、接口、泛型类
                 if (!type.IsPublic || type.IsPrimitive || type.IsValueType || type.IsAbstract || type.IsInterface || type.IsGenericType) return false;
 
-                // 继承 ControllerBase 或 实现 IDynamicApiController 的类型 或 贴了 [DynamicApiController] 特性
+                // 继承 ControllerBase 
                 if (!typeof(Controller).IsAssignableFrom(type) && typeof(ControllerBase).IsAssignableFrom(type))
                 {
                     // 不是能被导出忽略的接口
@@ -180,6 +183,7 @@ namespace Hx.Sdk.Swagger.Internal
         public static SwaggerSettingsOptions GetSwaggerSettings(IConfiguration config)
         {
             var options = config.GetSection("SwaggerSettings").Get<SwaggerSettingsOptions>();
+            if(options == default) options = new SwaggerSettingsOptions();
             options = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
             return options;
         }

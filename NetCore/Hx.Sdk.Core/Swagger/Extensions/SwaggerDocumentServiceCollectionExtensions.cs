@@ -1,5 +1,7 @@
 ﻿using Hx.Sdk.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -29,7 +31,8 @@ namespace Microsoft.Extensions.DependencyInjection
             var addSwaggerDocumentsMethod = swaggerBuilderExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(FirstMethod);
-            ConsoleHelper.WriteInfoLine("Add the SwaggerDocuments service");
+            var logger = NullLoggerFactory.Instance.CreateLogger<HxCoreApp>();
+            logger.LogDebug("Add the Swagger service");
             addSwaggerDocumentsMethod?.Invoke(null, new object[] { services, config,null, null });
             return services;
             static bool FirstMethod(MethodInfo methodInfo)

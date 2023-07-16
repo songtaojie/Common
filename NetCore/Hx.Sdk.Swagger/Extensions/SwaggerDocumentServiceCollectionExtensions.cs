@@ -21,10 +21,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services,IConfiguration config, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
         {
+            SwaggerDocumentBuilder.Init(config, swaggerSettings);
             // 添加Swagger生成器服务
             services.AddSwaggerGen(options =>
             {
-                SwaggerDocumentBuilder.Init(config);
                 SwaggerDocumentBuilder.BuildSwaggerGen(options, swaggerGenConfigure);
             });
             return services;
