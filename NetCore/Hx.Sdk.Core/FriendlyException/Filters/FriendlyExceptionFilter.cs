@@ -13,7 +13,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
     /// 友好异常拦截器
     /// </summary>
     [SkipScan]
-    public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter, IExceptionFilter
+    public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
     {
         /// <summary>
         /// 服务提供器
@@ -26,14 +26,6 @@ namespace Microsoft.AspNetCore.Mvc.Filters
         public FriendlyExceptionFilter(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-        }
-        /// <summary>
-        /// 异常处理
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnException(ExceptionContext context)
-        {
-            OnExceptionAsync(context).Wait();
         }
 
         /// <summary>
