@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Common", "NetCore\Hx.Sdk.Common\Hx.Sdk.Common.csproj", "{C31204CE-ED57-47CF-B26C-0F60B94781F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Common", "NetCore\Hx.Common\Hx.Common.csproj", "{C31204CE-ED57-47CF-B26C-0F60B94781F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore", "NetCore", "{079D3BE6-8111-4A75-8044-C1049F87CCA5}"
 EndProject
@@ -17,27 +17,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.Web", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.Logs", "NetFramework\Hx.Sdk.NetFramework.Logs\Hx.Sdk.NetFramework.Logs.csproj", "{19194E76-F9C9-44EC-94E1-FDFA46B8BE24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Core", "NetCore\Hx.Sdk.Core\Hx.Sdk.Core.csproj", "{FB810313-7542-4553-A95B-322321A8D7BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Core", "NetCore\Hx.Core\Hx.Core.csproj", "{FB810313-7542-4553-A95B-322321A8D7BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Cache", "NetCore\Hx.Sdk.Cache\Hx.Sdk.Cache.csproj", "{B128601D-1FF0-4183-B5DD-B369C3DE8D1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Cache", "NetCore\Hx.Cache\Hx.Cache.csproj", "{B128601D-1FF0-4183-B5DD-B369C3DE8D1C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{19DB3EAC-9F3C-44E9-B875-D6AD032AC5B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Test.Entity", "NetCore\Hx.Sdk.Test.Entity\Hx.Sdk.Test.Entity.csproj", "{6B6A5A8A-0A93-4AE3-B8EA-4A0CC44C570B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.WebApi", "NetCore\Hx.Sdk.WebApi\Hx.Sdk.WebApi.csproj", "{EC3DCAB5-4310-423B-B865-8DE2915D730D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.WebApi", "NetCore\Hx.WebApi\Hx.WebApi.csproj", "{EC3DCAB5-4310-423B-B865-8DE2915D730D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.ImageSharp", "NetCore\Hx.Sdk.ImageSharp\Hx.Sdk.ImageSharp.csproj", "{5166068A-A564-447E-A2A1-E57DA3E70915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.ImageSharp", "NetCore\Hx.ImageSharp\Hx.ImageSharp.csproj", "{5166068A-A564-447E-A2A1-E57DA3E70915}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Swagger", "NetCore\Hx.Sdk.Swagger\Hx.Sdk.Swagger.csproj", "{84801B20-AC34-490E-AF4A-6EA12E7EF38A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Swagger", "NetCore\Hx.Swagger\Hx.Swagger.csproj", "{84801B20-AC34-490E-AF4A-6EA12E7EF38A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.DatabaseAccessor", "NetCore\Hx.Sdk.DatabaseAccessor\Hx.Sdk.DatabaseAccessor.csproj", "{C4536EDC-9109-491E-A81B-6C827F9F9AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.DatabaseAccessor", "NetCore\Hx.DatabaseAccessor\Hx.DatabaseAccessor.csproj", "{C4536EDC-9109-491E-A81B-6C827F9F9AA5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.EventBus", "NetCore\Hx.Sdk.EventBus\Hx.Sdk.EventBus.csproj", "{354C37A5-1909-48DE-BF3A-627202909020}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.EventBus", "NetCore\Hx.EventBus\Hx.EventBus.csproj", "{354C37A5-1909-48DE-BF3A-627202909020}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.EntityFrameworkCore", "NetCore\Hx.Sdk.EntityFrameworkCore\Hx.Sdk.EntityFrameworkCore.csproj", "{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.EntityFrameworkCore", "NetCore\Hx.EntityFrameworkCore\Hx.EntityFrameworkCore.csproj", "{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Sqlsugar", "NetCore\Hx.Sdk.SqlSugar\Hx.Sdk.Sqlsugar.csproj", "{84574EFE-33E6-42D7-BADC-6739415232CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sqlsugar", "NetCore\Hx.Sqlsugar\Hx.Sqlsugar.csproj", "{84574EFE-33E6-42D7-BADC-6739415232CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0A36276-CEE7-4DB8-B70C-B171B91212A7}"
 	ProjectSection(SolutionItems) = preProject
