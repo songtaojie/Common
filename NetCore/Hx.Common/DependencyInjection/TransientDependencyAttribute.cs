@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common
+namespace Hx.Common.DependencyInjection
 {
     /// <summary>
     /// 每个依赖一个实例(即每次都重新实例),使用每个依赖的作用域, 
