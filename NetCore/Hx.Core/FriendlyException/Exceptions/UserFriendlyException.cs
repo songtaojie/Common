@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 
-namespace Hx.Sdk.FriendlyException
+namespace Hx.FriendlyException
 {
     /// <summary>
     /// 用户友好的异常提示

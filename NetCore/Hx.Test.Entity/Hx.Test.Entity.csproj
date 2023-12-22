@@ -14,12 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Cache\Hx.Cache.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.Common\Hx.Common.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.Core\Hx.Core.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.EventBus\Hx.EventBus.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.SqlSugar\Hx.Sdk.Sqlsugar.csproj" />
-    <ProjectReference Include="..\Hx.Sdk.Swagger\Hx.Swagger.csproj" />
+    <ProjectReference Include="..\Hx.Cache\Hx.Cache.csproj" />
+    <ProjectReference Include="..\Hx.Common\Hx.Common.csproj" />
+    <ProjectReference Include="..\Hx.Core\Hx.Core.csproj" />
+    <ProjectReference Include="..\Hx.EventBus\Hx.EventBus.csproj" />
+    <ProjectReference Include="..\Hx.Sqlsugar\Hx.Sqlsugar.csproj" />
+    <ProjectReference Include="..\Hx.Swagger\Hx.Swagger.csproj" />
   </ItemGroup>
 
   <ItemGroup>

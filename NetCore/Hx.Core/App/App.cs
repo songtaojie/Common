@@ -1,5 +1,5 @@
 ﻿using Hx.Core.Internal;
-using Hx.Sdk.Common;
+using Hx.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -127,7 +127,7 @@ namespace Hx.Core
             var scanAssemblies = dependencyContext.CompileLibraries
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk")))   
+                       || (u.Type == "package" && u.Name.StartsWith("Hx")))   
                 .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
                 .ToList();
 

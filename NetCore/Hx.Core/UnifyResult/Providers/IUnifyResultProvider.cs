@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.UnifyResult
+namespace Hx.Core
 {
     /// <summary>
     /// 规范化结果提供器

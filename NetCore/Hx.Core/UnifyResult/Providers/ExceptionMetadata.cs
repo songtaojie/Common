@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.UnifyResult
+namespace Hx.Core
 {
     /// <summary>
     /// 异常元数据

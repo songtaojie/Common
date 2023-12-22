@@ -1,5 +1,5 @@
-﻿using Hx.Sdk.FriendlyException;
-using Hx.Sdk.UnifyResult;
+﻿using Hx.FriendlyException;
+using Hx.Core;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;

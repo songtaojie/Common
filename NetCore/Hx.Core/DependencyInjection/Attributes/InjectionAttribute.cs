@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Hx.DependencyInjection
 {
     /// <summary>
     /// 设置依赖注入方式

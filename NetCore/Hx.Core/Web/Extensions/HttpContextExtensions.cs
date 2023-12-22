@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Linq;
 using System.Text;
 
-namespace Hx.Sdk.Extensions
+namespace Hx.Core.Extensions
 {
     /// <summary>
     /// HttpContext扩展类

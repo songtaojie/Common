@@ -1,6 +1,6 @@
 ﻿using DotNetCore.CAP;
-using Hx.Sdk.EventBus;
-using Hx.Sdk.Sqlsugar;
+using Hx.EventBus;
+using Hx.Sqlsugar;
 using Hx.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -25,15 +25,15 @@ namespace Hx.WebApi.Controllers
         [HttpPost]
         public string PublishTest(BasePush basePush)
         {
-            _eventPublisher.PublishAsync("Hx.Sdk.Cap.Test", basePush);
+            _eventPublisher.PublishAsync("Hx.Cap.Test", basePush);
             return "ok";
         }
 
         [HttpPost]
-        [CapSubscribe("Hx.Sdk.Cap.Test")]
+        [CapSubscribe("Hx.Cap.Test")]
         public string SubscribeTest(BasePush basePush)
         {
-            //_capPublisher.Publish("Hx.Sdk.Cap.Test", basePush);
+            //_capPublisher.Publish("Hx.Cap.Test", basePush);
             return "ok";
         }
     }

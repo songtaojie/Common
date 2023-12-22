@@ -7,23 +7,23 @@
     internal static class AppExtend
     {
         /// <summary>
-        /// Hx.Sdk.DependencyInjection依赖注入包
+        /// Hx.DependencyInjection依赖注入包
         /// </summary>
-        internal const string DependencyInjection = "Hx.Sdk.DependencyInjection";
+        internal const string DependencyInjection = "Hx.DependencyInjection";
 
         /// <summary>
-        /// Hx.Sdk.DatabaseAccessor数据访问注入包
+        /// Hx.DatabaseAccessor数据访问注入包
         /// </summary>
-        internal const string DatabaseAccessor = "Hx.Sdk.DatabaseAccessor";
+        internal const string DatabaseAccessor = "Hx.DatabaseAccessor";
 
         /// <summary>
-        /// Hx.Sdk.Swagger文档包
+        /// Hx.Swagger文档包
         /// </summary>
-        internal const string Swagger = "Hx.Sdk.Swagger";
+        internal const string Swagger = "Hx.Swagger";
 
         /// <summary>
-        /// Hx.Sdk.EventBus事件总线包
+        /// Hx.EventBus事件总线包
         /// </summary>
-        internal const string EventBus = "Hx.Sdk.EventBus";
+        internal const string EventBus = "Hx.EventBus";
     }
 }

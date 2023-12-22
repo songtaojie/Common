@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.AspNetCore.Mvc
+namespace Hx.Core
 {
     /// <summary>
     /// 禁止规范化处理

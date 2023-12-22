@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.FriendlyException
+namespace Hx.FriendlyException
 {
     /// <summary>
     /// 错误页面

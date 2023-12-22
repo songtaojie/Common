@@ -43,9 +43,9 @@ namespace Hx.Cache
         /// <typeparam name="T"></typeparam>
         /// <param name="key">键</param>
         /// <param name="value">值</param>
-        /// <param name="expire">过期时间，秒</param>
+        /// <param name="expire">过期时间，秒，-1：表示不过期</param>
         /// <returns></returns>
-        bool Set<T>(string key, T value, int? expire = -1);
+        bool Set<T>(string key, T value, int expire);
 
         /// <summary>
         /// 设置数据

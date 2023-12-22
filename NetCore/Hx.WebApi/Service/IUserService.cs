@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.Common;
+﻿using Hx.Common;
 using Hx.WebApi.Service.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;

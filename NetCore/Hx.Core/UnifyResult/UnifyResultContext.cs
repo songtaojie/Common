@@ -1,18 +1,14 @@
-﻿using Hx.Sdk.FriendlyException;
+﻿using Hx.FriendlyException;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Linq;
-using System.Reflection;
-using Hx.Core;
-using Hx.Sdk.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Hx.Common.Extensions;
 
-namespace Hx.Sdk.UnifyResult
+namespace Hx.Core
 {
     /// <summary>
     /// 规范化结果上下文

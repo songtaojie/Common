@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Cache", "NetCore\Hx.Cach
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{19DB3EAC-9F3C-44E9-B875-D6AD032AC5B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Test.Entity", "NetCore\Hx.Sdk.Test.Entity\Hx.Sdk.Test.Entity.csproj", "{6B6A5A8A-0A93-4AE3-B8EA-4A0CC44C570B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Test.Entity", "NetCore\Hx.Test.Entity\Hx.Test.Entity.csproj", "{6B6A5A8A-0A93-4AE3-B8EA-4A0CC44C570B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.WebApi", "NetCore\Hx.WebApi\Hx.WebApi.csproj", "{EC3DCAB5-4310-423B-B865-8DE2915D730D}"
 EndProject

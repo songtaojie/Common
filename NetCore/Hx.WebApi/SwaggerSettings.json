@@ -2,7 +2,7 @@
   "SwaggerSettings": {
     "DocumentTitle": "Swagger Document",
     //"EnabledMiniProfiler": false,
-    "XmlComments": [ "Hx.Sdk.Test.Entity", "Hx.Sdk.WebApi" ],
+    "XmlComments": [ "Hx.Test.Entity", "Hx.WebApi" ],
     //"VirtualPath": "/",
     "GroupOpenApiInfos": [
       {

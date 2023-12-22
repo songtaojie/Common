@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace Hx.Sdk.UnifyResult
+namespace Hx.Core
 {
     /// <summary>
     /// RESTful 风格返回值

@@ -52,12 +52,12 @@ namespace Hx.Cache
             }
         }
 
-        public bool Set<T>(string key, T value, int? expiry = -1)
+        public bool Set<T>(string key, T value, int expiry)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if (expiry.HasValue && expiry > 0)
+            if (expiry > 0)
             {
-                var result = _memoryCache.Set(key, value, TimeSpan.FromSeconds(expiry.Value));
+                var result = _memoryCache.Set(key, value, TimeSpan.FromSeconds(expiry));
                 return result != null;
                 
             }

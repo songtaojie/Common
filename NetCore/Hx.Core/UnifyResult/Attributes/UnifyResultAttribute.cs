@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using Hx.Sdk.Extensions;
-using Hx.Sdk.UnifyResult;
+using Hx.Common.Extensions;
 
 namespace Microsoft.AspNetCore.Mvc
 {

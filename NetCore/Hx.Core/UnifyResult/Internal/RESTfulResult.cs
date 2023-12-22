@@ -1,4 +1,4 @@
-﻿namespace Hx.Sdk.UnifyResult
+﻿namespace Hx.Core
 {
 
     /// <summary>

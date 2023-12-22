@@ -1,7 +1,9 @@
 ﻿using FreeRedis;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +24,12 @@ namespace Hx.Cache
         /// <summary>
         /// 用于连接到Redis的配置。
         /// </summary>
-        public string ConnectionString { get; set; }
+        public ConnectionStringBuilder ConnectionString { get; set; }
 
         /// <summary>
         /// Slave连接字符串
         /// </summary>
-        public IEnumerable<string> SlaveConnectionStrings { get; set; }
+        public IEnumerable<ConnectionStringBuilder> SlaveConnectionStrings { get; set; }
 
         /// <summary>
         /// 后置配置
@@ -38,6 +40,33 @@ namespace Hx.Cache
         public void PostConfigure(string name, CacheSettingsOptions options)
         {
             CacheType ??=  CacheTypeEnum.Memory;
+        }
+
+        internal void Initialize(IConfiguration configuration)
+        {
+            var cacheTypeStr = configuration["CacheSettings:CacheType"];
+            if (!string.IsNullOrEmpty(cacheTypeStr)
+                && Enum.TryParse<CacheTypeEnum>(cacheTypeStr,true, out CacheTypeEnum cacheType))
+            {
+                CacheType = cacheType;
+            }
+
+            var connectionString = configuration["CacheSettings:ConnectionString"];
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                ConnectionString = connectionString;
+            }
+            var slaveSection = configuration.GetSection("CacheSettings:SlaveConnectionStrings");
+            var slaveChildren = slaveSection.GetChildren();
+            if (slaveChildren.Any())
+            {
+                var slaveConnectionStrings = new List<ConnectionStringBuilder>();
+                foreach (var item in slaveChildren)
+                {
+                    slaveConnectionStrings.Add(item.Value);
+                }
+                SlaveConnectionStrings = slaveConnectionStrings;
+            }
         }
     }
 

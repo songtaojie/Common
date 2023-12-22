@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "Hx.Sdk.WebApi": {
+    "Hx.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

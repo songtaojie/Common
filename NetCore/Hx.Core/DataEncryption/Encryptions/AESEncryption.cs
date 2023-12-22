@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Hx.Sdk.DataEncryption;
+namespace Hx.DataEncryption;
 
 /// <summary>
 /// AES 加解密

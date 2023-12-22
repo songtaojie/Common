@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.FriendlyException
+namespace Hx.FriendlyException
 {
     /// <summary>
     /// 全局异常处理接口

@@ -1,9 +1,12 @@
 ﻿using FreeRedis;
 using Hx.Cache;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
+using System.Security.AccessControl;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -12,6 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class CacheServiceCollextionExtensions
     {
+        private const string CacheTypeKey = "CacheSettings:CacheType";
         /// <summary>
         /// 添加内置缓存MemoryCache
         /// </summary>
@@ -30,22 +34,60 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 缓存注册
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        public static IServiceCollection AddCache(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<CacheSettingsOptions>()
+               .Configure<IConfiguration>((options, configuration) =>
+               {
+                   options.Initialize(configuration);
+               });
+
+            var cacheTypeStr = configuration[CacheTypeKey];
+            if (!string.IsNullOrEmpty(cacheTypeStr) 
+                && Enum.TryParse(cacheTypeStr, true, out CacheTypeEnum cacheType) 
+                && cacheType == CacheTypeEnum.Redis)
+            {
+                services.AddSingleton<IRedisClient>(provider =>
+                {
+                    var options = provider.GetRequiredService<IOptions<CacheSettingsOptions>>().Value;
+                    if (string.IsNullOrEmpty(options.ConnectionString))
+                        throw new ArgumentNullException(nameof(CacheSettingsOptions.ConnectionString));
+
+                    if (options.SlaveConnectionStrings == null || !options.SlaveConnectionStrings.Any())
+                    {
+                        return new RedisClient(options.ConnectionString);
+                    }
+                    else
+                    {
+                        return new RedisClient(options.ConnectionString, options.SlaveConnectionStrings.ToArray());
+                    }
+                });
+                AddRedisCacheCore(services);
+            }
+            else
+            {
+                services.AddNativeMemoryCache();
+            }
+            return services;
+        }
+
+        /// <summary>
+        /// 缓存注册
+        /// </summary>
+        /// <param name="services"></param>
         /// <param name="setupAction"></param>
         public static IServiceCollection AddCache(this IServiceCollection services, Action<CacheSettingsOptions> setupAction = null)
         {
             CacheSettingsOptions cacheSettingsOptions = new CacheSettingsOptions();
             setupAction?.Invoke(cacheSettingsOptions);
-            services.AddNativeMemoryCache();
             if (cacheSettingsOptions.CacheType == CacheTypeEnum.Redis)
             {
-                if (string.IsNullOrEmpty(cacheSettingsOptions.ConnectionString))
-                    throw new ArgumentNullException("ConnectionString不能为空");
-                ConnectionStringBuilder[] slaveConnectionStrings = null;
-                if (cacheSettingsOptions.SlaveConnectionStrings != null && cacheSettingsOptions.SlaveConnectionStrings.Any())
-                {
-                    slaveConnectionStrings = cacheSettingsOptions.SlaveConnectionStrings.Select(r => ConnectionStringBuilder.Parse(r)).ToArray();
-                }
-                services.AddRedisCache(ConnectionStringBuilder.Parse(cacheSettingsOptions.ConnectionString), slaveConnectionStrings);
+                services.AddRedisCache(cacheSettingsOptions.ConnectionString, cacheSettingsOptions.SlaveConnectionStrings?.ToArray());
+            }
+            else
+            {
+                services.AddNativeMemoryCache();
             }
             return services;
         }
@@ -56,12 +98,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services"></param>
         /// <param name="connectionString">ConnectionString构造器</param>
         /// <param name="slaveConnectionStrings">ConnectionString构造器</param>
-        public static IServiceCollection AddRedisCache(this IServiceCollection services, ConnectionStringBuilder connectionString, ConnectionStringBuilder[] slaveConnectionStrings = null)
+        public static IServiceCollection AddRedisCache(this IServiceCollection services, ConnectionStringBuilder connectionString, params ConnectionStringBuilder[] slaveConnectionStrings)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+            if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException(nameof(connectionString));
+
             services.AddSingleton<IRedisClient>(provider =>
             {
-                if (slaveConnectionStrings == null)
+                if (slaveConnectionStrings == null || !slaveConnectionStrings.Any())
                 {
                     return new RedisClient(connectionString);
                 }
@@ -70,13 +114,20 @@ namespace Microsoft.Extensions.DependencyInjection
                     return new RedisClient(connectionString, slaveConnectionStrings);
                 }
             });
-            services.AddSingleton<IDistributedCache, DistributedCache>(provider => 
+            AddRedisCacheCore(services);
+            return services;
+        }
+
+        private static IServiceCollection AddRedisCacheCore(IServiceCollection services)
+        {
+            services.AddSingleton<IDistributedCache, DistributedCache>(provider =>
             {
                 var redisClient = provider.GetService<IRedisClient>();
                 return new DistributedCache(redisClient as RedisClient);
             });
             services.AddSingleton<IRedisCache, RedisCache>();
             services.AddSingleton<ICache, RedisCache>();
+            services.AddMemoryCache();
             return services;
         }
     }

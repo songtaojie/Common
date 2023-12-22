@@ -1,10 +1,10 @@
-﻿//using Hx.Sdk.DatabaseAccessor;
-//using Hx.Sdk.DependencyInjection;
-//using Hx.Sdk.Common;
-//using Hx.Sdk.Test.Entity;
-//using Hx.Sdk.Test.Entity.DbContexts;
-//using Hx.Sdk.Test.Entity.Entities;
-//using Hx.Sdk.UnifyResult;
+﻿//using Hx.DatabaseAccessor;
+//using Hx.DependencyInjection;
+//using Hx.Common;
+//using Hx.Test.Entity;
+//using Hx.Test.Entity.DbContexts;
+//using Hx.Test.Entity.Entities;
+//using Hx.UnifyResult;
 //using Hx.WebApi.Service.Dtos;
 //using Microsoft.EntityFrameworkCore;
 //using System;

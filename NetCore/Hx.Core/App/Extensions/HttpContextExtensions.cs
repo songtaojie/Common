@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.FriendlyException;
+﻿using Hx.FriendlyException;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System;
 using System.Collections.Generic;

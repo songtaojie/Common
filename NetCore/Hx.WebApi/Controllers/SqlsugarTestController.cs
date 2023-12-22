@@ -1,5 +1,5 @@
-﻿using Hx.Sdk.Sqlsugar;
-using Hx.Sdk.Test.Entity.Entities;
+﻿using Hx.Sqlsugar;
+using Hx.Test.Entity.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

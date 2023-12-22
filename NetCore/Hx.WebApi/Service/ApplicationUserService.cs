@@ -1,7 +1,7 @@
-﻿//using Hx.Sdk.DatabaseAccessor;
-//using Hx.Sdk.DependencyInjection;
-//using Hx.Sdk.Test.Entity.DbContexts;
-//using Hx.Sdk.Test.Entity.Entities;
+﻿//using Hx.DatabaseAccessor;
+//using Hx.DependencyInjection;
+//using Hx.Test.Entity.DbContexts;
+//using Hx.Test.Entity.Entities;
 //using Hx.WebApi.Service.Dtos;
 //using System;
 //using System.Collections.Generic;

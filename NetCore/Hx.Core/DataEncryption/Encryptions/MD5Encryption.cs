@@ -15,7 +15,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Hx.Sdk.DataEncryption;
+namespace Hx.DataEncryption;
 
 /// <summary>
 /// MD5 加密

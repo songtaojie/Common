@@ -1,4 +1,4 @@
-﻿//using Hx.Sdk.UnifyResult;
+﻿//using Hx.UnifyResult;
 //using Microsoft.AspNetCore.Http;
 
 //namespace System

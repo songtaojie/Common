@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.Sdk.UnifyResult
+namespace Hx.Core
 {
     /// <summary>
     /// 规范化模型特性

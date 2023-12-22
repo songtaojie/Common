@@ -15,7 +15,7 @@ namespace Hx.Sqlsugar
         /// <summary>
         /// 数据库连接配置
         /// </summary>
-        public IEnumerable<DbConnectionConfig> ConnectionConfigs { get; set; }
+        public IEnumerable<DbConnectionConfig>? ConnectionConfigs { get; set; }
         
         /// <summary>
         /// 设置默认 Redis 配置

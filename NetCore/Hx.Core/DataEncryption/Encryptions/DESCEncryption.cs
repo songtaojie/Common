@@ -15,7 +15,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Hx.Sdk.DataEncryption;
+namespace Hx.DataEncryption;
 
 /// <summary>
 /// DESC 加解密

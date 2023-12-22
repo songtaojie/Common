@@ -1,4 +1,4 @@
-﻿namespace Hx.Sdk.DependencyInjection
+﻿namespace Hx.DependencyInjection
 {
     /// <summary>
     /// 每个请求一个实例

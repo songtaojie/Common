@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Runtime;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,17 +25,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configAction"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions> configAction = default,Action<SqlSugarScope> buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions>? configAction = default,Action<ISqlSugarClient>? buildAction = default)
         {
             var dbSettingsOptions = new DbSettingsOptions();
             configAction?.Invoke(dbSettingsOptions);
             var dbSettings = dbSettingsOptions.ConnectionConfigs;
-            var connectionConfigs = dbSettings.Select(r => r.ToConnectionConfig()).ToList();
-            var sqlSugarScope = new SqlSugarScope(connectionConfigs);
-            buildAction?.Invoke(sqlSugarScope);
-            // 注册 SqlSugar 客户端
-            services.AddSingleton<ISqlSugarClient>(sqlSugarScope);
-
+            var connectionConfigs = dbSettings!.Select(r => r.ToConnectionConfig()).ToList();
+           
+            //注册SqlSugar用AddScoped
+            services.AddScoped<ISqlSugarClient>(provider =>
+            {
+                var logger = provider.GetService<ILogger<ISqlSugarClient>>();
+                //Scoped用SqlSugarClient 
+                SqlSugarClient sqlSugar = new SqlSugarClient(connectionConfigs, db =>
+                {
+                    foreach (var dbConnectionConfig in dbSettings!)
+                    {
+                        var dbProvider = db.GetConnectionScope(dbConnectionConfig.ConfigId);
+                        if (dbConnectionConfig.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider, logger);
+                        SqlSugarConfigProvider.SetDataExecuting(dbProvider);
+                        //每次上下文都会执行
+                        SqlSugarConfigProvider.InitDatabase(dbProvider, dbConnectionConfig);
+                    }
+                });
+                buildAction?.Invoke(sqlSugar);
+                return sqlSugar;
+            });
             // 注册非泛型仓储
             services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 

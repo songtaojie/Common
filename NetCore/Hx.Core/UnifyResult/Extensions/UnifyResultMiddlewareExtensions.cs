@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.UnifyResult;
+﻿using Hx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 

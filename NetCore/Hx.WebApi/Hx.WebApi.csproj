@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hx.Sdk.Test.Entity\Hx.Sdk.Test.Entity.csproj" />
+    <ProjectReference Include="..\Hx.Test.Entity\Hx.Test.Entity.csproj" />
   </ItemGroup>
 
 

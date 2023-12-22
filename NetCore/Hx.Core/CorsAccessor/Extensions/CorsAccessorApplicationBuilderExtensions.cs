@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.CorsAccessor;
+﻿using Hx.CorsAccessor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 

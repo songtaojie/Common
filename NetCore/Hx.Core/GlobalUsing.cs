@@ -1,6 +1,5 @@
-﻿global using Hx.Sdk.Common;
+﻿global using Hx.Common;
 global using Hx.Core;
-global using Hx.Sdk.Extensions;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;

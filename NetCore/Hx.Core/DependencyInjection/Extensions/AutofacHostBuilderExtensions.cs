@@ -1,6 +1,6 @@
 ﻿//using Autofac.Extensions.DependencyInjection;
 //using Hx.Core;
-//using Hx.Sdk.Extensions;
+//using Hx.Extensions;
 //using Microsoft.Extensions.DependencyInjection;
 //using System;
 //using System.Collections.Generic;

@@ -38,27 +38,11 @@
             保留位数（默认4）
             </summary>
         </member>
-        <member name="T:Hx.Common.ScopedDependencyAttribute">
-            <summary>
-            每个请求一个实例
-            </summary>
-        </member>
-        <member name="T:Hx.Common.SingletonDependencyAttribute">
-            <summary>
-            单例模式
-            </summary>
-        </member>
         <member name="T:Hx.Common.SkipScanAttribute">
             <summary>
             不被扫描和发现的特性
             </summary>
             <remarks>用于程序集扫描类型或方法时候</remarks>
-        </member>
-        <member name="T:Hx.Common.TransientDependencyAttribute">
-            <summary>
-            每个依赖一个实例(即每次都重新实例),使用每个依赖的作用域, 
-            当你解析一个每个依赖一个实例的组件时, 你每次获得一个新的实例.
-            </summary>
         </member>
         <member name="T:Hx.Common.AuditedEntityBase`1">
             <summary>
@@ -233,90 +217,38 @@
             主键id
             </summary>
         </member>
-        <member name="T:Hx.Common.Email.EmailHelper">
+        <member name="T:Hx.Common.DependencyInjection.IScopedDependency">
             <summary>
-            邮箱发送帮助类
+            每个请求一个实例
             </summary>
         </member>
-        <member name="P:Hx.Common.Email.EmailHelper.MailFrom">
+        <member name="T:Hx.Common.DependencyInjection.ISingletonDependency">
             <summary>
-            发送者
+            创建单一实例的类
+            也被称为 '单例.' 使用单一实例作用域,
+            在根容器和所有嵌套作用域内所有的请求都将会返回同一个实例.
             </summary>
         </member>
-        <member name="P:Hx.Common.Email.EmailHelper.MailToArray">
+        <member name="T:Hx.Common.DependencyInjection.ITransientDependency">
             <summary>
-            收件人
+            每个依赖一个实例(即每次都重新实例),使用每个依赖的作用域, 
+            当你解析一个每个依赖一个实例的组件时, 你每次获得一个新的实例.
             </summary>
         </member>
-        <member name="P:Hx.Common.Email.EmailHelper.MailCcArray">
+        <member name="T:Hx.Common.DependencyInjection.ScopedDependencyAttribute">
             <summary>
-            抄送
+            每个请求一个实例
             </summary>
         </member>
-        <member name="P:Hx.Common.Email.EmailHelper.MailSubject">
+        <member name="T:Hx.Common.DependencyInjection.SingletonDependencyAttribute">
             <summary>
-            标题
+            单例模式
             </summary>
         </member>
-        <member name="P:Hx.Common.Email.EmailHelper.MailBody">
+        <member name="T:Hx.Common.DependencyInjection.TransientDependencyAttribute">
             <summary>
-            正文
-            </summary>
-        </member>
-        <member name="P:Hx.Common.Email.EmailHelper.MailPwd">
-            <summary>
-            发件人密码
-            </summary>
-        </member>
-        <member name="P:Hx.Common.Email.EmailHelper.Host">
-            <summary>
-            SMTP邮件服务器
-            </summary>
-        </member>
-        <member name="P:Hx.Common.Email.EmailHelper.IsbodyHtml">
-            <summary>
-            正文是否是html格式
-            </summary>
-        </member>
-        <member name="P:Hx.Common.Email.EmailHelper.Nickname">
-            <summary>
-            发送者昵称
-            </summary>
-        </member>
-        <member name="P:Hx.Common.Email.EmailHelper.AttachmentsPath">
-            <summary>
-            附件
-            </summary>
-        </member>
-        <member name="P:Hx.Common.Email.EmailHelper.Priority">
-            <summary>
-            优先级别  默认正常优先级
-            </summary>
-        </member>
-        <member name="M:Hx.Common.Email.EmailHelper.TempBody(System.String,System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            {0}:用户名
-            {1}{2}{3}:正文内容
-            </summary>
-        </member>
-        <member name="M:Hx.Common.Email.EmailHelper.Send(System.Action{System.Net.Mail.MailMessage},System.Action{System.Net.Mail.MailMessage,System.Exception})">
-            <summary>
-            邮件发送
-            </summary>
-            <param name="CallSuccess">发送成功回调</param>
-            <param name="CallFailure">发送失败回调</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hx.Common.Email.EmailHelper.SendAsync(System.Action{System.Boolean,System.Exception})">
-            <summary>
-            异步发送邮件
-            </summary>
-            <param name="emailCompleted">邮件发送完成时需要调用的方法</param>
-            <returns></returns>
-        </member>
-        <member name="M:Hx.Common.Email.EmailHelper.SendAsyncCancel">
-            <summary>
-            取消异步发送，和SendAsync对应
+            每个依赖一个实例(即每次都重新实例),使用每个依赖的作用域, 
+            当你解析一个每个依赖一个实例的组件时, 你每次获得一个新的实例.
             </summary>
         </member>
         <member name="T:Hx.Common.Extensions.DateTimeExtensions">
@@ -1039,19 +971,19 @@
             <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="T:Hx.Common.Helper.ArrayHelper">
+        <member name="T:Hx.Common.ArrayHelper">
             <summary>
             数组帮助类
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.ArrayHelper.ReadAllBytesFromStream(System.IO.Stream)">
+        <member name="M:Hx.Common.ArrayHelper.ReadAllBytesFromStream(System.IO.Stream)">
             <summary>
             把流转换为字节数组
             </summary>
             <param name="stream"></param>
             <returns>字节数组</returns>
         </member>
-        <member name="M:Hx.Common.Helper.ArrayHelper.RemoveArrayItem``1(``0[],``0)">
+        <member name="M:Hx.Common.ArrayHelper.RemoveArrayItem``1(``0[],``0)">
             <summary>
             移除数组中的某一项，并返回剩余项的数组
             </summary>
@@ -1060,7 +992,7 @@
             <param name="item">要移除的项</param>
             <returns>移除指定项后的数组</returns>
         </member>
-        <member name="M:Hx.Common.Helper.ArrayHelper.ArrayMerge``1(``0[],``0[])">
+        <member name="M:Hx.Common.ArrayHelper.ArrayMerge``1(``0[],``0[])">
             <summary>
             把两个数组进行合并
             </summary>
@@ -1069,7 +1001,7 @@
             <param name="array2">第二个数组</param>
             <returns>合并后的数组</returns>
         </member>
-        <member name="M:Hx.Common.Helper.ArrayHelper.AddArrayItem``1(``0[],``0)">
+        <member name="M:Hx.Common.ArrayHelper.AddArrayItem``1(``0[],``0)">
             <summary>
             向数组中添加项
             </summary>
@@ -1078,7 +1010,7 @@
             <param name="item">要添加的项</param>
             <returns>添加指定项后的数组</returns>
         </member>
-        <member name="M:Hx.Common.Helper.ArrayHelper.AddArrayItem``1(``0[],``0[])">
+        <member name="M:Hx.Common.ArrayHelper.AddArrayItem``1(``0[],``0[])">
             <summary>
             向数组中添加多个项
             </summary>
@@ -1087,7 +1019,7 @@
             <param name="array2">添加的数组的项</param>
             <returns>添加后的数组</returns>
         </member>
-        <member name="M:Hx.Common.Helper.ArrayHelper.JoinString``1(``0[],System.String)">
+        <member name="M:Hx.Common.ArrayHelper.JoinString``1(``0[],System.String)">
             <summary>
             把数组使用指定的分隔符进行分割
             </summary>
@@ -1096,19 +1028,19 @@
             <param name="separator">分隔符</param>
             <returns>分割后的字符串</returns>
         </member>
-        <member name="T:Hx.Common.Helper.ByteHelper">
+        <member name="T:Hx.Common.ByteHelper">
             <summary>
             字节帮助类
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.ByteHelper.ToObject(System.Byte[])">
+        <member name="M:Hx.Common.ByteHelper.ToObject(System.Byte[])">
             <summary>
             把字节数组转换为对象
             </summary>
             <param name="bytes"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.ByteHelper.ToObject``1(System.Byte[])">
+        <member name="M:Hx.Common.ByteHelper.ToObject``1(System.Byte[])">
             <summary>
             把字节数组转换成指定的对象
             </summary>
@@ -1116,19 +1048,19 @@
             <param name="bytes"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.ByteHelper.ToBytes(System.Object)">
+        <member name="M:Hx.Common.ByteHelper.ToBytes(System.Object)">
             <summary>
             把对象转换成字节数组
             </summary>
             <param name="objInfo"></param>
             <returns></returns>
         </member>
-        <member name="T:Hx.Common.Helper.ConsoleHelper">
+        <member name="T:Hx.Common.ConsoleHelper">
             <summary>
             控制台帮助类
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.ConsoleHelper.WriteErrorLine(System.String,System.Boolean,System.ConsoleColor)">
+        <member name="M:Hx.Common.ConsoleHelper.WriteErrorLine(System.String,System.Boolean,System.ConsoleColor)">
             <summary>
             打印错误信息
             </summary>
@@ -1136,7 +1068,7 @@
             <param name="newLine">是否在后面添加一行空行</param>
             <param name="color">想要打印的颜色</param>
         </member>
-        <member name="M:Hx.Common.Helper.ConsoleHelper.WriteWarningLine(System.String,System.Boolean,System.ConsoleColor)">
+        <member name="M:Hx.Common.ConsoleHelper.WriteWarningLine(System.String,System.Boolean,System.ConsoleColor)">
             <summary>
             打印警告信息
             </summary>
@@ -1144,7 +1076,7 @@
             <param name="newLine">是否在后面添加一行空行</param>
             <param name="color">想要打印的颜色</param>
         </member>
-        <member name="M:Hx.Common.Helper.ConsoleHelper.WriteInfoLine(System.String,System.Boolean,System.ConsoleColor)">
+        <member name="M:Hx.Common.ConsoleHelper.WriteInfoLine(System.String,System.Boolean,System.ConsoleColor)">
             <summary>
             打印正常信息
             </summary>
@@ -1152,7 +1084,7 @@
             <param name="newLine">是否在后面添加一行空行</param>
             <param name="color">想要打印的颜色</param>
         </member>
-        <member name="M:Hx.Common.Helper.ConsoleHelper.WriteSuccessLine(System.String,System.Boolean,System.ConsoleColor)">
+        <member name="M:Hx.Common.ConsoleHelper.WriteSuccessLine(System.String,System.Boolean,System.ConsoleColor)">
             <summary>
             打印成功的信息
             </summary>
@@ -1160,59 +1092,145 @@
             <param name="newLine">是否在后面添加一行空行</param>
             <param name="color">想要打印的颜色</param>
         </member>
-        <member name="T:Hx.Common.Helper.ErrorHelper">
+        <member name="T:Hx.Common.EmailHelper">
+            <summary>
+            邮箱发送帮助类
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.MailFrom">
+            <summary>
+            发送者
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.MailToArray">
+            <summary>
+            收件人
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.MailCcArray">
+            <summary>
+            抄送
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.MailSubject">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.MailBody">
+            <summary>
+            正文
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.MailPwd">
+            <summary>
+            发件人密码
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.Host">
+            <summary>
+            SMTP邮件服务器
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.IsbodyHtml">
+            <summary>
+            正文是否是html格式
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.Nickname">
+            <summary>
+            发送者昵称
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.AttachmentsPath">
+            <summary>
+            附件
+            </summary>
+        </member>
+        <member name="P:Hx.Common.EmailHelper.Priority">
+            <summary>
+            优先级别  默认正常优先级
+            </summary>
+        </member>
+        <member name="M:Hx.Common.EmailHelper.TempBody(System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            {0}:用户名
+            {1}{2}{3}:正文内容
+            </summary>
+        </member>
+        <member name="M:Hx.Common.EmailHelper.Send(System.Action{System.Net.Mail.MailMessage},System.Action{System.Net.Mail.MailMessage,System.Exception})">
+            <summary>
+            邮件发送
+            </summary>
+            <param name="CallSuccess">发送成功回调</param>
+            <param name="CallFailure">发送失败回调</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.EmailHelper.SendAsync(System.Action{System.Boolean,System.Exception})">
+            <summary>
+            异步发送邮件
+            </summary>
+            <param name="emailCompleted">邮件发送完成时需要调用的方法</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.EmailHelper.SendAsyncCancel">
+            <summary>
+            取消异步发送，和SendAsync对应
+            </summary>
+        </member>
+        <member name="T:Hx.Common.ErrorHelper">
             <summary>
             错误帮助类
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.ErrorHelper.ThrowIfNull(System.Object,System.String)">
+        <member name="M:Hx.Common.ErrorHelper.ThrowIfNull(System.Object,System.String)">
             <summary>
             如果对象为null时，抛出异常
             </summary>
             <param name="value">对象信息</param>
             <param name="message">异常信息</param>
         </member>
-        <member name="M:Hx.Common.Helper.ErrorHelper.ThrowIfTrue(System.Nullable{System.Boolean},System.String)">
+        <member name="M:Hx.Common.ErrorHelper.ThrowIfTrue(System.Nullable{System.Boolean},System.String)">
             <summary>
             如果对象为null时，抛出异常
             </summary>
             <param name="value">对象信息</param>
             <param name="message">异常信息</param>
         </member>
-        <member name="M:Hx.Common.Helper.ErrorHelper.ThrowIfFalse(System.Nullable{System.Boolean},System.String)">
+        <member name="M:Hx.Common.ErrorHelper.ThrowIfFalse(System.Nullable{System.Boolean},System.String)">
             <summary>
             如果对象为null时，抛出异常
             </summary>
             <param name="value">对象信息</param>
             <param name="message">异常信息</param>
         </member>
-        <member name="M:Hx.Common.Helper.ErrorHelper.ThrowIfNullOrEmpty(System.String,System.String)">
+        <member name="M:Hx.Common.ErrorHelper.ThrowIfNullOrEmpty(System.String,System.String)">
             <summary>
             如果对象为null时，抛出异常
             </summary>
             <param name="value">对象信息</param>
             <param name="message">异常信息</param>
         </member>
-        <member name="T:Hx.Common.Helper.FileHelper">
+        <member name="T:Hx.Common.FileHelper">
             <summary>
             文件帮助类
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.GetFile(System.String)">
+        <member name="M:Hx.Common.FileHelper.GetFile(System.String)">
             <summary>
             读取文件的字节数组
             </summary>
             <param name="fileFullPath">文件的全路径</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.GetString(System.String)">
+        <member name="M:Hx.Common.FileHelper.GetString(System.String)">
             <summary>
             读取文件的文本
             </summary>
             <param name="fileFullPath">文件路径</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.GetString(System.String,System.Text.Encoding)">
+        <member name="M:Hx.Common.FileHelper.GetString(System.String,System.Text.Encoding)">
             <summary>
             使用指定的编码读取文件的文本
             </summary>
@@ -1220,67 +1238,67 @@
             <param name="encoding">编码</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.GetFileInfo(System.String)">
+        <member name="M:Hx.Common.FileHelper.GetFileInfo(System.String)">
             <summary>
             获取文件信息
             </summary>
             <param name="fileName"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.RemoveFile(System.String)">
+        <member name="M:Hx.Common.FileHelper.RemoveFile(System.String)">
             <summary>
             删除文件
             </summary>
             <param name="fullFilePath">文件全路径</param>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.TryDelete(System.String)">
+        <member name="M:Hx.Common.FileHelper.TryDelete(System.String)">
             <summary>
             删除文件，不会报错
             </summary>
             <param name="path"></param>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.TryCreateDirectory(System.String)">
+        <member name="M:Hx.Common.FileHelper.TryCreateDirectory(System.String)">
             <summary>
             创建文件夹
             </summary>
             <param name="path"></param>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.ExistDirectory(System.String)">
+        <member name="M:Hx.Common.FileHelper.ExistDirectory(System.String)">
             <summary>
             判断是否存在文件夹
             </summary>
             <param name="path"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.ExistFile(System.String)">
+        <member name="M:Hx.Common.FileHelper.ExistFile(System.String)">
             <summary>
             判断是否存在文件
             </summary>
             <param name="path"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.WriteAllBytes(System.String,System.Byte[])">
+        <member name="M:Hx.Common.FileHelper.WriteAllBytes(System.String,System.Byte[])">
             <summary>
             创建一个新文件，在其中写入指定的字节数组，然后关闭该文件。 如果目标文件已存在，则覆盖该文件
             </summary>
             <param name="path">要写入的文件。</param>
             <param name="bytes">要写入的字节数组</param>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.TryCopy(System.String,System.String)">
+        <member name="M:Hx.Common.FileHelper.TryCopy(System.String,System.String)">
             <summary>
             拷贝文件
             </summary>
             <param name="sourceFileName">源文件全路径</param>
             <param name="destFileName">目标文件全路径</param>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.IsImageFile(System.String)">
+        <member name="M:Hx.Common.FileHelper.IsImageFile(System.String)">
             <summary>
             根据文件扩展名称判断是否是图片文件
             </summary>
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.FileSizeToShow(System.Int64)">
+        <member name="M:Hx.Common.FileHelper.FileSizeToShow(System.Int64)">
             <summary>
             根据文件大小返回文件描述的文本
             如1024返回1KB
@@ -1288,48 +1306,48 @@
             <param name="fileSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.FileHelper.GetFileSizeDes(System.Int64)">
+        <member name="M:Hx.Common.FileHelper.GetFileSizeDes(System.Int64)">
             <summary>
             根据字节大小获取文件的大小描述
             </summary>
             <param name="Size"></param>
             <returns></returns>
         </member>
-        <member name="T:Hx.Common.Helper.Helper">
+        <member name="T:Hx.Common.Helper">
             <summary>
             帮助类
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.Helper.Regex_IDCard">
+        <member name="F:Hx.Common.Helper.Regex_IDCard">
             <summary>
             身份证
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.Helper.Regex_ZipCode">
+        <member name="F:Hx.Common.Helper.Regex_ZipCode">
             <summary>
             邮编
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.AreEqual(System.String,System.String)">
+        <member name="M:Hx.Common.Helper.AreEqual(System.String,System.String)">
             <summary>
             比较字符串，忽略大小写
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.IsYes(System.String)">
+        <member name="M:Hx.Common.Helper.IsYes(System.String)">
             <summary>
             判断当前字符串是否为Y
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.IsNo(System.String)">
+        <member name="M:Hx.Common.Helper.IsNo(System.String)">
             <summary>
             判断当前字符串是否为N
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.AreEqual(System.Boolean,System.String,System.String[])">
+        <member name="M:Hx.Common.Helper.AreEqual(System.Boolean,System.String,System.String[])">
             <summary>
             批量比较字符串
             </summary>
@@ -1338,47 +1356,47 @@
             <param name="valueArray">比较字符串集合</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.ToStr(System.Object)">
+        <member name="M:Hx.Common.Helper.ToStr(System.Object)">
             <summary>
             转化为字符串
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.NlTobr(System.String)">
+        <member name="M:Hx.Common.Helper.NlTobr(System.String)">
             <summary>
             将纯文本中的回车换行转换为Web中的<br/>标签
             </summary>
             <param name="source">TextArea带回车换行的文本</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.ToHex(System.Object)">
+        <member name="M:Hx.Common.Helper.ToHex(System.Object)">
             <summary>
             将对象转换成16进制的字符形式
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.FromHex(System.String)">
+        <member name="M:Hx.Common.Helper.FromHex(System.String)">
             <summary>
             将16进制的字符形式转换成字符串
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetLongSnowId">
+        <member name="M:Hx.Common.Helper.GetLongSnowId">
             <summary>
             获取雪花ID
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetSnowId">
+        <member name="M:Hx.Common.Helper.GetSnowId">
             <summary>
             获取雪花ID
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetYearAndMonth(System.String,System.Int32@,System.Int32@)">
+        <member name="M:Hx.Common.Helper.GetYearAndMonth(System.String,System.Int32@,System.Int32@)">
             <summary>
             
             </summary>
@@ -1386,21 +1404,21 @@
             <param name="year"></param>
             <param name="month"></param>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetFirstDate(System.String)">
+        <member name="M:Hx.Common.Helper.GetFirstDate(System.String)">
             <summary>
             返回当前日期第一天的日期对象
             </summary>
             <param name="absID"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetLastDate(System.String)">
+        <member name="M:Hx.Common.Helper.GetLastDate(System.String)">
             <summary>
             返回当前日期对应的最后一天的日期对象
             </summary>
             <param name="absID"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetDays(System.Int32,System.Int32)">
+        <member name="M:Hx.Common.Helper.GetDays(System.Int32,System.Int32)">
             <summary>
             获取指定的年月中那一月的总的天数
             </summary>
@@ -1408,21 +1426,21 @@
             <param name="month"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.IsLeapYear(System.Int32)">
+        <member name="M:Hx.Common.Helper.IsLeapYear(System.Int32)">
             <summary>
             判断所给的年是否是闰年
             </summary>
             <param name="year"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetWeekOfYear(System.DateTime)">
+        <member name="M:Hx.Common.Helper.GetWeekOfYear(System.DateTime)">
             <summary>
             日期是一年中所在的第几周
             </summary>
             <param name="dateTime"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetWeekBetween(System.DateTime,System.DateTime)">
+        <member name="M:Hx.Common.Helper.GetWeekBetween(System.DateTime,System.DateTime)">
             <summary>
             相对开始日期，当前是第几周
             </summary>
@@ -1430,13 +1448,13 @@
             <param name="end"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GetTimestamp">
+        <member name="M:Hx.Common.Helper.GetTimestamp">
             <summary>
             获取时间戳
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.Compare(System.Decimal,System.Decimal)">
+        <member name="M:Hx.Common.Helper.Compare(System.Decimal,System.Decimal)">
             <summary>
             比较两个十进制的数值
             </summary>
@@ -1444,14 +1462,14 @@
             <param name="value2"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.IsGuid(System.String)">
+        <member name="M:Hx.Common.Helper.IsGuid(System.String)">
             <summary>
             判断是否是Guid
             </summary>
             <param name="str"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.Clone``1(System.Collections.Generic.List{``0})">
+        <member name="M:Hx.Common.Helper.Clone``1(System.Collections.Generic.List{``0})">
             <summary>
             克隆集合对象
             </summary>
@@ -1459,7 +1477,7 @@
             <param name="list"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.Clone``1(``0)">
+        <member name="M:Hx.Common.Helper.Clone``1(``0)">
             <summary>
             复制对象
             </summary>
@@ -1467,47 +1485,47 @@
             <param name="info">info必须具有[Serializable]标签</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.GuessMIME(System.String)">
+        <member name="M:Hx.Common.Helper.GuessMIME(System.String)">
             <summary>
             根据后缀获取MIME
             </summary>
             <param name="fileExtension">带.后缀</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.DataRowToDictionary(System.Data.DataRow)">
+        <member name="M:Hx.Common.Helper.DataRowToDictionary(System.Data.DataRow)">
             <summary>
             DataRow 转 Dictionary
             </summary>
             <param name="row"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.CelsiusToFahrenheit(System.String)">
+        <member name="M:Hx.Common.Helper.CelsiusToFahrenheit(System.String)">
             <summary>
             摄氏温度转换成华氏温度
             </summary>
             <param name="temperatureCelsius"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Helper.FahrenheitToCelsius(System.String)">
+        <member name="M:Hx.Common.Helper.FahrenheitToCelsius(System.String)">
             <summary>
             华氏温度转换成摄氏温度
             </summary>
             <param name="temperatureFahrenheit"></param>
             <returns></returns>
         </member>
-        <member name="T:Hx.Common.Helper.HtmlHelper">
+        <member name="T:Hx.Common.HtmlHelper">
             <summary>
             Html帮助类
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.HtmlHelper.GetHtmlImageUrlList(System.String)">
+        <member name="M:Hx.Common.HtmlHelper.GetHtmlImageUrlList(System.String)">
              <summary>
             从html文本中获取图片链接
              </summary>
              <param name="sHtmlText"></param>
              <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.HtmlHelper.FilterHtml(System.String,System.Int32,System.Boolean)">
+        <member name="M:Hx.Common.HtmlHelper.FilterHtml(System.String,System.Int32,System.Boolean)">
             <summary>
             过滤html中的p标签
             </summary>
@@ -1516,34 +1534,34 @@
             <param name="onlyText">是否只返回纯文本，还是返回带有标签的</param>
             <returns></returns>
         </member>
-        <member name="T:Hx.Common.Helper.PinYinHelper">
+        <member name="T:Hx.Common.PinYinHelper">
             <summary>
             拼音的帮助类
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.PinYinHelper.strChineseFirstPY">
+        <member name="F:Hx.Common.PinYinHelper.strChineseFirstPY">
              summary>
             汉字拼音首字母列表 本列表包含了20902个汉字,用于配合 GetChineseSpell 函数使用,本表收录的字符的Unicode编码范围为19968至40869
              /summary>
         </member>
-        <member name="F:Hx.Common.Helper.PinYinHelper.otherChinese">
+        <member name="F:Hx.Common.PinYinHelper.otherChinese">
             <summary>
             二级汉字数组
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.PinYinHelper.otherPinYin">
+        <member name="F:Hx.Common.PinYinHelper.otherPinYin">
             <summary>
             二级汉字对应拼音数组
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.PinYinHelper.Get(System.Char)">
+        <member name="M:Hx.Common.PinYinHelper.Get(System.Char)">
             <summary>
             获取单字拼音
             </summary>
             <param name="ch"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.PinYinHelper.GetFullPYLetters(System.String)">
+        <member name="M:Hx.Common.PinYinHelper.GetFullPYLetters(System.String)">
             <summary>
             把汉字转换成拼音(全拼)
             如：质管部->ZhiGuanBu
@@ -1551,7 +1569,7 @@
             <param name="str">汉字字符串</param>
             <returns>转换后的拼音(全拼)字符串</returns>
         </member>
-        <member name="M:Hx.Common.Helper.PinYinHelper.GetShortPYLetters(System.String)">
+        <member name="M:Hx.Common.PinYinHelper.GetShortPYLetters(System.String)">
             <summary>
             获得一个字符串的汉语拼音码,
             如：质管部->ZGB
@@ -1559,7 +1577,7 @@
             <param name="strText">字符串</param>
             汉语拼音码,该字符串只包含大写的英文字母
         </member>
-        <member name="M:Hx.Common.Helper.PinYinHelper.GetFirstPYLetter(System.String)">
+        <member name="M:Hx.Common.PinYinHelper.GetFirstPYLetter(System.String)">
             <summary>
             获取字符的首个拼音的首个字母
             如：质管部->Z
@@ -1567,162 +1585,162 @@
             <param name="strText"></param>
             <returns></returns>
         </member>
-        <member name="T:Hx.Common.Helper.Snowflake">
+        <member name="T:Hx.Common.Snowflake">
             <summary>
             动态生产有规律的ID Snowflake算法是Twitter的工程师为实现递增而不重复的ID实现的
             C# 实现 Snowflake算法 
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.Snowflake.GetTimestamp">
+        <member name="M:Hx.Common.Snowflake.GetTimestamp">
             <summary>
             生成当前时间戳
             </summary>
             <returns>毫秒</returns>
         </member>
-        <member name="M:Hx.Common.Helper.Snowflake.GetNextTimestamp(System.Int64)">
+        <member name="M:Hx.Common.Snowflake.GetNextTimestamp(System.Int64)">
             <summary>
             获取下一微秒时间戳
             </summary>
             <param name="lastTimestamp"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.Snowflake.GetId">
+        <member name="M:Hx.Common.Snowflake.GetId">
             <summary>
             获取长整形的ID
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Hx.Common.Helper.TypeHelper">
+        <member name="T:Hx.Common.TypeHelper">
             <summary>
             类型帮助类
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.TypeHelper.MIN_DATETIME">
+        <member name="F:Hx.Common.TypeHelper.MIN_DATETIME">
             <summary>
             最小的时间对象
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.TypeHelper.MAX_DATETIME">
+        <member name="F:Hx.Common.TypeHelper.MAX_DATETIME">
             <summary>
             设置最大的时间对象
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.TypeHelper.MIN_DECIMAL">
+        <member name="F:Hx.Common.TypeHelper.MIN_DECIMAL">
             <summary>
             最小的十进制数值
             </summary>
         </member>
-        <member name="F:Hx.Common.Helper.TypeHelper.MAX_DECIMAL">
+        <member name="F:Hx.Common.TypeHelper.MAX_DECIMAL">
             <summary>
             最大的十进制数值
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.IsNull(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.IsNull(System.Object)">
             <summary>
             判断给定的值是否为空
             </summary>
             <param name="value"></param>
             <returns>true代表为空，false代表不为空</returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.IsNotNull(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.IsNotNull(System.Object)">
             <summary>
             判断给定的值是否不为空
             </summary>
             <param name="value"></param>
             <returns>true代表不为空;false代表为空</returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetInt64(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetInt64(System.Object)">
             <summary>
             将指定值表示形式转换为等效的 64位带符号整数
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetNInt64(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetNInt64(System.Object)">
             <summary>
             将指定值表示形式转换为等效的 64位带符号整数，可返回null值
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetInt32(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetInt32(System.Object)">
             <summary>
             将指定值表示形式转换为等效的 32位带符号整数
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetNInt32(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetNInt32(System.Object)">
             <summary>
             将指定值表示形式转换为等效的 32位带符号整数，可返回null值
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetInt16(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetInt16(System.Object)">
             <summary>
             将指定值表示形式转换为等效的 16位带符号整数
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetNInt16(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetNInt16(System.Object)">
             <summary>
             将指定值表示形式转换为等效的 16位带符号整数，可返回null值
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetDecimal(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetDecimal(System.Object)">
             <summary>
             将指定的对象栓换成十进制数值
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetNDecimal(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetNDecimal(System.Object)">
             <summary>
             将指定的对象栓换成十进制数值，可返回null值
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.IsOverDecimal(System.Decimal)">
+        <member name="M:Hx.Common.TypeHelper.IsOverDecimal(System.Decimal)">
             <summary>
             是否超出了十进制的范围
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetDateTime(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetDateTime(System.Object)">
             <summary>
             将指定的对象转换成时间,如果给定的值为null则返回当前时间
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetNDateTime(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetNDateTime(System.Object)">
             <summary>
             将指定的对象转换成时间,如果给定的值为null则返回null
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetString(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetString(System.Object)">
             <summary>
             将制定的对象转换成等效的字符串形式
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetBoolean(System.Object)">
+        <member name="M:Hx.Common.TypeHelper.GetBoolean(System.Object)">
             <summary>
             判断该值是否等于Y
             </summary>
             <param name="value">要与Y比较的值</param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.GetBoolean(System.Object,System.String)">
+        <member name="M:Hx.Common.TypeHelper.GetBoolean(System.Object,System.String)">
             <summary>
             判断对象是否与另一个字符串相等
             </summary>
@@ -1730,12 +1748,12 @@
             <param name="compare"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.Abs(System.Decimal)">
+        <member name="M:Hx.Common.TypeHelper.Abs(System.Decimal)">
             <summary>
             取绝对值
             </summary>
         </member>
-        <member name="M:Hx.Common.Helper.TypeHelper.Abs(System.Decimal,System.Decimal)">
+        <member name="M:Hx.Common.TypeHelper.Abs(System.Decimal,System.Decimal)">
             <summary>
             取绝对值, 且等于0时,使用1替换
             </summary>

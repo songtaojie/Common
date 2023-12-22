@@ -1,4 +1,4 @@
-﻿namespace Hx.Sdk.DependencyInjection
+﻿namespace Hx.DependencyInjection
 {
     /// <summary>
     /// 创建单一实例的类

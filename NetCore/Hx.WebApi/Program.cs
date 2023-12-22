@@ -1,6 +1,6 @@
 // Early init of NLog to allow startup and exception logging, before host is built
-using Hx.Sdk.Cache;
-using Hx.Sdk.Core;
+using Hx.Cache;
+using Hx.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +20,7 @@ try
     builder.Services.Configure<CacheSettingsOptions>(builder.Configuration.GetSection("CacheSettings"));
     builder.Services.AddCache(options => 
     {
-        options.CacheType = Hx.Sdk.Cache.CacheTypeEnum.Redis;
+        options.CacheType = Hx.Cache.CacheTypeEnum.Redis;
         options.ConnectionString = builder.Configuration.GetConnectionString("Redis");
     });
     var obj = builder.Configuration["CacheSettings:ConnectionString"]; // returns "Warning"

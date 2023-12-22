@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.UnifyResult
+namespace Hx.Core
 {
     /// <summary>
     /// 状态码中间件

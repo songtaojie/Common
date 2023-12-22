@@ -26,11 +26,7 @@ namespace Hx.Cache
         }
 
         #region ICache接口实现
-        public void SetRedisDbNum(int dbNum)
-        {
-            _dbNum = dbNum;
-        }
-
+       
         public string Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
@@ -93,13 +89,13 @@ namespace Hx.Cache
             });
         }
 
-        public bool Set<T>(string key, T value, int? expire = -1)
+        public bool Set<T>(string key, T value, int expire)
         {
             return this.Do(db =>
             {
-                if (expire.HasValue && expire > 0)
+                if (expire > 0)
                 {
-                    db.Set(key, value, TimeSpan.FromSeconds(expire.Value));
+                    db.Set(key, value, TimeSpan.FromSeconds(expire));
                 }
                 else
                 {
@@ -118,14 +114,22 @@ namespace Hx.Cache
             });
         }
         #endregion
+
+        #region IRedisCache接口实现
+        public void SetRedisDbNum(int dbNum)
+        {
+            _dbNum = dbNum;
+        }
+        #endregion
+
         #region 私有方法
         /// <summary>
-		/// 获取数据库
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="func"></param>
-		/// <returns></returns>
-		private T Do<T>(Func<IRedisClient, T> func)
+        /// 获取数据库
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        private T Do<T>(Func<IRedisClient, T> func)
         {
             if (_dbNum.HasValue && _dbNum > 0)
             {

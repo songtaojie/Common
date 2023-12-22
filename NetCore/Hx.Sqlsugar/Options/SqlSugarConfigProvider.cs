@@ -6,11 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Hx.Extensions;
 using Hx.Common;
+using Hx.Common.Extensions;
 
 namespace Hx.Sqlsugar
 {
@@ -19,17 +16,18 @@ namespace Hx.Sqlsugar
     /// </summary>
     public static class SqlSugarConfigProvider
     {
-        private readonly static ILogger _logger = null;
         /// <summary>
         /// 应用有效程序集
         /// </summary>
         private static IEnumerable<Assembly> Assemblies;
 
-        private static IEnumerable<Type> _effectiveTypes;
+        private static IEnumerable<Type>? _effectiveTypes;
 
+        /// <summary>
+        /// SqlSugar配置初始化
+        /// </summary>
         static SqlSugarConfigProvider()
         {
-            _logger = NullLoggerFactory.Instance.CreateLogger(nameof(SqlSugarConfigProvider));
             Assemblies = AppDomain.CurrentDomain.GetAssemblies();
         }
 
@@ -164,7 +162,7 @@ namespace Hx.Sqlsugar
         /// 配置Aop日志
         /// </summary>
         /// <param name="db"></param>
-        public static void SetAopLog(ISqlSugarClient db)
+        public static void SetAopLog(ISqlSugarClient db,ILogger logger)
         {
             var config = db.CurrentConnectionConfig;
 
@@ -174,15 +172,38 @@ namespace Hx.Sqlsugar
             // 打印SQL语句
             db.Aop.OnLogExecuting = (sql, pars) =>
             {
-                _logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{UtilMethods.GetSqlString(config.DbType, sql, pars)}\r\n");
+                logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{UtilMethods.GetSqlString(config.DbType, sql, pars)}\r\n");
             };
             db.Aop.OnError = ex =>
             {
                 if (ex.Parametres == null) return;
-                _logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetSqlString(config.DbType, ex.Sql, (SugarParameter[])ex.Parametres)} \r\n");
+                logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetSqlString(config.DbType, ex.Sql, (SugarParameter[])ex.Parametres)} \r\n");
             };
         }
 
+
+        /// <summary>
+        /// 设置数据审计
+        /// </summary>
+        /// <param name="db"></param>
+        public static void SetDataExecuting(ISqlSugarClient db)
+        {
+            // 数据审计
+            db.Aop.DataExecuting = (oldValue, entityInfo) =>
+            {
+                if (entityInfo.OperationType == DataFilterType.InsertByObject)
+                {
+                    if (entityInfo.PropertyName == "CreateTime")
+                        entityInfo.SetValue(DateTime.Now);
+                }
+                if (entityInfo.OperationType == DataFilterType.UpdateByObject)
+                {
+                    if (entityInfo.PropertyName == "UpdateTime")
+                        entityInfo.SetValue(DateTime.Now);
+                }
+            };
+
+        }
 
         /// <summary>
         /// 初始化数据库和种子数据
@@ -226,7 +247,7 @@ namespace Hx.Sqlsugar
 
                 var hasDataMethod = seedType.GetMethod("HasData");
                 if (hasDataMethod == null) continue;
-                var seedData = ((IEnumerable)hasDataMethod?.Invoke(instance, null))?.Cast<object>();
+                var seedData = ((IEnumerable)hasDataMethod.Invoke(instance, null)!)?.Cast<object>();
                 if (seedData == null) continue;
 
                 var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();

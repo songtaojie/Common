@@ -1,9 +1,6 @@
-﻿using Hx.Common.Helper;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
 
 namespace Hx.Common.Serialization
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Hx.Sdk.DependencyInjection
+namespace Hx.DependencyInjection
 {
     /// <summary>
     /// 注册类型

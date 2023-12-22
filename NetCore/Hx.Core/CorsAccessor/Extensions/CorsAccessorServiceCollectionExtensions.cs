@@ -1,4 +1,4 @@
-﻿using Hx.Sdk.CorsAccessor;
+﻿using Hx.CorsAccessor;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection

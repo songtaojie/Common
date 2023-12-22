@@ -1,5 +1,5 @@
-﻿using Hx.Sdk.DependencyInjection;
-using Hx.Sdk.DependencyInjection.Internal;
+﻿using Hx.DependencyInjection;
+using Hx.DependencyInjection.Internal;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Concurrent;
