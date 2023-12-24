@@ -5,14 +5,14 @@
 		<Authors>Carina</Authors>
 		<Company>Carina</Company>
 		<Description>
-			修改依赖注入，以及aop的bug
+			HXCore核心类库
 		</Description>
-		<Version>1.0</Version>
+		<Version>1.0.0</Version>
 		<PackageTags>ASP.NET Core</PackageTags>
-		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>
 		<PackageId>Hx.Core</PackageId>
-		<Product>Cache for ASP.NET Core</Product>
-		<Copyright>2020 Hx.Sdk.Cache</Copyright>
+		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>
+		<Product>Hx.Core for ASP.NET Core</Product>
+		<Copyright>2020 Hx.Core</Copyright>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>bin\Debug\</OutputPath>
