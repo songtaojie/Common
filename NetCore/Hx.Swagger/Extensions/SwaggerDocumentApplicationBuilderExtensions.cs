@@ -1,5 +1,4 @@
 ﻿using Hx.Swagger;
-using Hx.Swagger.Internal;
 using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,12 +22,11 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app, Action<SwaggerOptions> swaggerConfigure = null, Action<SwaggerUIOptions> swaggerUIConfigure = null)
         {
-            var config = app.ApplicationServices.GetService<IConfiguration>();
-            SwaggerDocumentBuilder.Init(config);
+            var builder = app.ApplicationServices.GetService<SwaggerDocumentBuilder>();
             // 配置 Swagger 全局参数
-            app.UseSwagger(options => SwaggerDocumentBuilder.Build(options, swaggerConfigure));
+            app.UseSwagger(options => builder.Build(options, swaggerConfigure));
             // 配置 Swagger UI 参数
-            app.UseSwaggerUI(options => SwaggerDocumentBuilder.BuildUI(options, swaggerUIConfigure));
+            app.UseSwaggerUI(options => builder.BuildUI(options, swaggerUIConfigure));
             return app;
         }
 
@@ -39,15 +37,14 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="swaggerConfigure"></param>
         /// <param name="swaggerUIConfigure"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseSwaggerKnife4Documents(this IApplicationBuilder app, Action<SwaggerOptions> swaggerConfigure = null, Action<Knife4UIOptions> swaggerUIConfigure = null)
+        public static IApplicationBuilder UseSwaggerKnife4jDocuments(this IApplicationBuilder app, Action<SwaggerOptions> swaggerConfigure = null, Action<Knife4UIOptions> swaggerUIConfigure = null)
         {
-            var config = app.ApplicationServices.GetService<IConfiguration>();
-            SwaggerDocumentBuilder.Init(config);
+            var builder = app.ApplicationServices.GetService<SwaggerDocumentBuilder>();
             // 配置 Swagger 全局参数
-            app.UseSwagger(options => SwaggerDocumentBuilder.Build(options, swaggerConfigure));
+            app.UseSwagger(options => builder.Build(options, swaggerConfigure));
 
             // 配置 Swagger UI 参数
-            app.UseKnife4UI(options => SwaggerDocumentBuilder.BuildKnife4UI(options,swaggerUIConfigure));
+            app.UseKnife4UI(options => builder.BuildKnife4UI(options,swaggerUIConfigure));
             return app;
         }
     }

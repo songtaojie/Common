@@ -51,7 +51,7 @@ namespace Hx.Sqlsugar.Repositories
         public virtual ISqlSugarRepository<TEntity> Change<TEntity>()
             where TEntity : class, new()
         {
-            return _serviceProvider.GetService<ISqlSugarRepository<TEntity>>();
+            return _serviceProvider.GetRequiredService<ISqlSugarRepository<TEntity>>();
         }
     }
 
@@ -210,7 +210,7 @@ namespace Hx.Sqlsugar.Repositories
         /// <param name="orderByExpression"></param>
         /// <param name="orderByType"></param>
         /// <returns></returns>
-        public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, OrderByType orderByType = OrderByType.Asc)
+        public List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, OrderByType orderByType = OrderByType.Asc)
         {
             return Entities.OrderByIF(orderByExpression != null, orderByExpression, orderByType).Where(whereExpression).ToList();
         }
@@ -241,7 +241,7 @@ namespace Hx.Sqlsugar.Repositories
         /// <param name="orderByExpression"></param>
         /// <param name="orderByType"></param>
         /// <returns></returns>
-        public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, OrderByType orderByType = OrderByType.Asc)
+        public Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, OrderByType orderByType = OrderByType.Asc)
         {
             return Entities.OrderByIF(orderByExpression != null, orderByExpression, orderByType).Where(whereExpression).ToListAsync();
         }

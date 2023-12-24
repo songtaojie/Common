@@ -217,6 +217,78 @@
             主键id
             </summary>
         </member>
+        <member name="T:Hx.Common.DependencyInjection.DependencyInjectionType">
+            <summary>
+            注册类型
+            </summary>
+        </member>
+        <member name="F:Hx.Common.DependencyInjection.DependencyInjectionType.Transient">
+            <summary>
+            瞬时
+            </summary>
+        </member>
+        <member name="F:Hx.Common.DependencyInjection.DependencyInjectionType.Scoped">
+            <summary>
+            作用域
+            </summary>
+        </member>
+        <member name="F:Hx.Common.DependencyInjection.DependencyInjectionType.Singleton">
+            <summary>
+            单例
+            </summary>
+        </member>
+        <member name="T:Hx.Common.DependencyInjection.InjectionPatterns">
+            <summary>
+            注册范围
+            </summary>
+        </member>
+        <member name="F:Hx.Common.DependencyInjection.InjectionPatterns.Self">
+            <summary>
+            只注册自己
+            </summary>
+        </member>
+        <member name="F:Hx.Common.DependencyInjection.InjectionPatterns.FirstInterface">
+            <summary>
+            第一个接口,默认值
+            </summary>
+        </member>
+        <member name="F:Hx.Common.DependencyInjection.InjectionPatterns.ImplementedInterfaces">
+            <summary>
+            所有接口
+            </summary>
+        </member>
+        <member name="T:Hx.Common.DependencyInjection.InjectionAttribute">
+            <summary>
+            设置依赖注入方式
+            </summary>
+        </member>
+        <member name="M:Hx.Common.DependencyInjection.InjectionAttribute.#ctor(System.Type[])">
+            <summary>
+            构造函数
+            </summary>
+            <param name="expectInterfaces"></param>
+        </member>
+        <member name="P:Hx.Common.DependencyInjection.InjectionAttribute.Pattern">
+            <summary>
+            注册选项，默认为FirstInterface
+            </summary>
+        </member>
+        <member name="P:Hx.Common.DependencyInjection.InjectionAttribute.Named">
+            <summary>
+            注册别名
+            </summary>
+            <remarks>多服务时使用</remarks>
+        </member>
+        <member name="P:Hx.Common.DependencyInjection.InjectionAttribute.Order">
+            <summary>
+            排序，排序越大，则在后面注册
+            </summary>
+        </member>
+        <member name="P:Hx.Common.DependencyInjection.InjectionAttribute.ExpectInterfaces">
+            <summary>
+            排除接口
+            </summary>
+        </member>
         <member name="T:Hx.Common.DependencyInjection.IScopedDependency">
             <summary>
             每个请求一个实例

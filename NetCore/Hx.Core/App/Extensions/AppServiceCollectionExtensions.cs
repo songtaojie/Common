@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 // 注册swagger
                 // 判断是否启用规范化文档
-                if (App.Settings.EnabledSwagger == true) services.AddSwaggerDocuments(config);
+                if (App.Settings.EnabledSwagger == true) services.AddSwaggerDocuments();
 
                 // 判断是否启用规范化文档
                 if (App.Settings.EnabledUnifyResult == true) services.AddUnifyResult();

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hx.WebApi.Options;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +17,12 @@ namespace Hx.WebApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private TestOptions _testOptions;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger,
+            IOptions<TestOptions> options)
         {
             _logger = logger;
+            _testOptions = options.Value;
         }
 
         [HttpGet]

@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class SqlSugarServiceCollectionExtensions
     {
-
+        private const string DbSettings_Key = "DbSettings";
         /// <summary>
         /// 添加 SqlSugar 拓展
         /// </summary>
@@ -27,19 +27,23 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions>? configAction = default,Action<ISqlSugarClient>? buildAction = default)
         {
-            var dbSettingsOptions = new DbSettingsOptions();
-            configAction?.Invoke(dbSettingsOptions);
-            var dbSettings = dbSettingsOptions.ConnectionConfigs;
-            var connectionConfigs = dbSettings!.Select(r => r.ToConnectionConfig()).ToList();
-           
+            services.AddOptions<DbSettingsOptions>()
+                .BindConfiguration(DbSettings_Key)
+                .Configure(options =>
+                {
+                    options.Configure(options);
+                    configAction?.Invoke(options);
+                });
+       
             //注册SqlSugar用AddScoped
             services.AddScoped<ISqlSugarClient>(provider =>
             {
                 var logger = provider.GetService<ILogger<ISqlSugarClient>>();
-                //Scoped用SqlSugarClient 
+                var options = provider.GetRequiredService<IOptions<DbSettingsOptions>>().Value;
+                var connectionConfigs = options.ConnectionConfigs!.Select(r => r.ToConnectionConfig()).ToList();
                 SqlSugarClient sqlSugar = new SqlSugarClient(connectionConfigs, db =>
                 {
-                    foreach (var dbConnectionConfig in dbSettings!)
+                    foreach (var dbConnectionConfig in options.ConnectionConfigs!)
                     {
                         var dbProvider = db.GetConnectionScope(dbConnectionConfig.ConfigId);
                         if (dbConnectionConfig.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider, logger);
@@ -61,47 +65,30 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// 添加 默认的SqlSugar 拓展,
-        /// 使用配置文件配置数据库连接信息
+        /// 添加 SqlSugar 拓展
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="configs"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, IConfiguration configuration,  Action<SqlSugarScope> buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, ConnectionConfig[] configs, Action<ISqlSugarClient>? buildAction = default)
         {
-            var dbOptions = GetDbSettingsOptions(configuration);
-            foreach (var r in dbOptions.ConnectionConfigs)
-            {
-                SqlSugarConfigProvider.SetDbConfig(r);
-            }
-            var sqlSugar = new SqlSugarScope(dbOptions.ConnectionConfigs.Select(r=>r.ToConnectionConfig()).ToList());
-            buildAction?.Invoke(sqlSugar);
-            foreach (var config in dbOptions.ConnectionConfigs)
-            {
-                SqlSugarScopeProvider dbProvider = sqlSugar.GetConnectionScope(config.ConfigId);
-                if (config.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider);
-                SqlSugarConfigProvider.InitDatabase(dbProvider, config);
-            }
             // 注册 SqlSugar 客户端
-            services.AddSingleton<ISqlSugarClient>(sqlSugar);
-           
+            services.AddScoped<ISqlSugarClient>(u =>
+            {
+                var sqlSugarClient = new SqlSugarClient(configs.ToList());
+                buildAction?.Invoke(sqlSugarClient);
+
+                return sqlSugarClient;
+            });
+
             // 注册非泛型仓储
             services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 
             // 注册 SqlSugar 仓储
             services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
+
             return services;
-        }
-        private static DbSettingsOptions GetDbSettingsOptions(IConfiguration configuration)
-        {
-            var result = DbSettingsOptions.GetDefaultSettings();
-            var dbSettingsSection = configuration.GetSection("DbSettings");
-            if (dbSettingsSection != null)
-            {
-                var options = dbSettingsSection.Get<DbSettingsOptions>();
-                if (options != null) return options;
-            }
-            return result;
         }
     }
 }

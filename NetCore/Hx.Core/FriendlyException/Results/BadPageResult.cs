@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.FriendlyException
+namespace Hx.Core.FriendlyException
 {
     /// <summary>
     /// 错误页面
@@ -126,7 +126,7 @@ namespace Hx.FriendlyException
             var thisType = typeof(BadPageResult);
             var thisAssembly = thisType.Assembly;
             // 读取嵌入式页面路径
-            var errorhtml = $"{thisAssembly.GetName().Name}{thisType.Namespace.Replace("Hx.Sdk", string.Empty)}.Assets.error.html";
+            var errorhtml = $"{thisAssembly.GetName().Name}{thisType.Namespace.Replace("Hx", string.Empty)}.Assets.error.html";
 
             // 解析嵌入式文件流
             byte[] buffer;

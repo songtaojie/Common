@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 if (App.Settings.SwaggerUI == SwaggerUIEnum.Knife4)
                 {
-                    app.UseSwaggerKnife4Documents();
+                    app.UseSwaggerKnife4jDocuments();
                 }
                 else
                 {

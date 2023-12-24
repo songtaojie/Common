@@ -1,5 +1,6 @@
 using Hx.Swagger.Internal;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
@@ -10,7 +11,7 @@ namespace Hx.Swagger
     /// <summary>
     /// 规范化文档Swagger配置选项
     /// </summary>
-    public sealed class SwaggerSettingsOptions
+    public sealed class SwaggerSettingsOptions:IConfigureOptions<SwaggerSettingsOptions>
     {
         /// <summary>
         /// 是否允许启用MiniProfiler，默认为true
@@ -102,18 +103,18 @@ namespace Hx.Swagger
         public bool? EnableAllGroups { get; set; }
 
         /// <summary>
-        /// 设置默认值
+        /// 后置配置
         /// </summary>
         /// <param name="options"></param>
-        public static SwaggerSettingsOptions SetDefaultSwaggerSettings(SwaggerSettingsOptions options)
+        public void Configure(SwaggerSettingsOptions options)
         {
-            options.EnabledMiniProfiler ??= true;
+            options.EnabledMiniProfiler ??= false;
             options.DocumentTitle ??= "Specification Api Document";
             options.DefaultGroupName ??= "Default";
             options.FormatAsV2 ??= false;
             options.RoutePrefix ??= "swagger";
             options.DocExpansion ??= Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List;
-            options.XmlComments ??= Penetrates.Assemblies.Where(u => !u.GetName().Name.Contains("Hx.Sdk")).Select(t => t.GetName().Name).ToArray();
+            options.XmlComments ??= Penetrates.Assemblies.Where(u => !u.GetName().Name.Contains("Hx")).Select(t => t.GetName().Name).ToArray();
             options.GroupOpenApiInfos ??= new SwaggerOpenApiInfo[]
             {
                 new SwaggerOpenApiInfo()
@@ -136,7 +137,7 @@ namespace Hx.Swagger
                         BearerFormat="JWT",
                         Scheme="Bearer",
                         In= ParameterLocation.Header,
-                        
+
                     }
                 };
             }
@@ -147,7 +148,6 @@ namespace Hx.Swagger
             options.EnableEnumSchemaFilter ??= true;
             options.EnableTagsOrderDocumentFilter ??= true;
             options.EnableAllGroups ??= false;
-            return options;
         }
     }
 }

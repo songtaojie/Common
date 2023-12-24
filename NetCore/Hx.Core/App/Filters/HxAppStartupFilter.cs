@@ -13,7 +13,7 @@ namespace Hx.Core
     /// <remarks>
     /// </remarks>
     [SkipScan]
-    public class StartupFilter : IStartupFilter
+    public class HxAppStartupFilter : IStartupFilter
     {
         /// <summary>
         /// 配置中间件

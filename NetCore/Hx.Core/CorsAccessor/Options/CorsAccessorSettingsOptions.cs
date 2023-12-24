@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Hx.CorsAccessor
+namespace Hx.Core.CorsAccessor
 {
     /// <summary>
     /// 跨域配置选项

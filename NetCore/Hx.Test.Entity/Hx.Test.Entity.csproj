@@ -19,7 +19,6 @@
     <ProjectReference Include="..\Hx.Core\Hx.Core.csproj" />
     <ProjectReference Include="..\Hx.EventBus\Hx.EventBus.csproj" />
     <ProjectReference Include="..\Hx.Sqlsugar\Hx.Sqlsugar.csproj" />
-    <ProjectReference Include="..\Hx.Swagger\Hx.Swagger.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Hx.FriendlyException;
+﻿using Hx.Core.FriendlyException;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

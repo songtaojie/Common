@@ -61,6 +61,52 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
+
+        /// <summary>
+        /// 添加选项配置，放在AddAppSettings之后
+        /// </summary>
+        /// <typeparam name="TOptions">选项类型</typeparam>
+        /// <typeparam name="TDep"></typeparam>
+        /// <param name="services">服务集合</param>
+        /// <returns>服务集合</returns>
+        public static IServiceCollection AddConfigureOptions<TOptions, TDep>(this IServiceCollection services)
+            where TOptions : class
+            where TDep : class
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            var optionsType = typeof(TOptions);
+            var optionsSettings = optionsType.GetCustomAttribute<OptionsRuleAttribute>(false);
+
+            // 获取键名
+            var jsonKey = GetOptionsJsonKey(optionsSettings, optionsType);
+            var optionsBuilder = services.AddOptions<TOptions>()
+                .BindConfiguration(jsonKey, options =>
+                {
+                    options.BindNonPublicProperties = true; // 绑定私有变量
+                })
+                .ValidateDataAnnotations();
+            // 配置后期配置
+            if (typeof(IPostConfigureOptions<TOptions>).IsAssignableFrom(optionsType))
+            {
+                var postConfigureMethod = optionsType.GetMethod(nameof(IPostConfigureOptions<TOptions>.PostConfigure));
+                if (postConfigureMethod != null)
+                {
+                    if (optionsSettings?.PostConfigureAll != true)
+                        optionsBuilder.PostConfigure<TDep>((options,_) => postConfigureMethod.Invoke(options, new object[] { optionsType.Name, options }));
+                    else
+                        optionsBuilder.PostConfigure<TDep>((options,_) => postConfigureMethod.Invoke(options, new object[] { optionsType.Name, options }));
+                }
+                //services.AddSingleton(typeof(IPostConfigureOptions<TOptions>), optionsType);
+            }
+            // 配置后期配置
+            if (typeof(IConfigureOptions<TOptions>).IsAssignableFrom(optionsType))
+            {
+                services.AddSingleton(typeof(IConfigureOptions<TOptions>), optionsType);
+            }
+
+            return services;
+        }
+
         /// <summary>
         /// 获取选项键
         /// </summary>

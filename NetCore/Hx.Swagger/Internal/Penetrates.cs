@@ -36,6 +36,7 @@ namespace Hx.Swagger.Internal
         /// 有效程序集类型
         /// </summary>
         internal static readonly IEnumerable<Type> EffectiveTypes;
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -47,7 +48,7 @@ namespace Hx.Swagger.Internal
 
             Assemblies = GetAssemblies();
 
-            EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()
+            EffectiveTypes = Assemblies.SelectMany(u => u.GetExportedTypes()
                 .Where(u => u.IsPublic));
         }
 
@@ -151,58 +152,24 @@ namespace Hx.Swagger.Internal
             return SplitCamelCase(str).First();
         }
 
+        #region 获取程序集
         /// <summary>
         /// 获取应用有效程序集
         /// </summary>
         /// <returns>IEnumerable</returns>
         private static IEnumerable<Assembly> GetAssemblies()
         {
-            // 需排除的程序集后缀
-            var excludeAssemblyNames = new string[] {
-                "Database.Migrations"
-            };
-
             // 读取应用配置
             var dependencyContext = DependencyContext.Default;
 
             // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
             var scanAssemblies = dependencyContext.CompileLibraries
-                .Where(u =>
-                       (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk")))    // 判断是否启用引用程序集扫描
+                .Where(u => (u.Type == "project") || (u.Type == "package" && u.Name.StartsWith(nameof(Hx))))    // 判断是否启用引用程序集扫描
                 .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
                 .ToList();
 
             return scanAssemblies;
         }
-
-        /// <summary>
-        /// 获取 Swagger 配置
-        /// </summary>
-        /// <returns></returns>
-        public static SwaggerSettingsOptions GetSwaggerSettings(IConfiguration config)
-        {
-            var options = config.GetSection("SwaggerSettings").Get<SwaggerSettingsOptions>();
-            if(options == default) options = new SwaggerSettingsOptions();
-            options = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
-            return options;
-        }
-
-        /// <summary>
-        /// 添加配置
-        /// </summary>
-        /// <param name="services"></param>
-        private static void ConfigureSwaggerSettings(IServiceCollection services)
-        {
-            services.AddOptions<SwaggerSettingsOptions>()
-                   .BindConfiguration("DbSettings", options =>
-                   {
-                       options.BindNonPublicProperties = true; // 绑定私有变量
-                   })
-                   .PostConfigure(options =>
-                   {
-                       _ = SwaggerSettingsOptions.SetDefaultSwaggerSettings(options);
-                   });
-        }
+        #endregion 
     }
 }

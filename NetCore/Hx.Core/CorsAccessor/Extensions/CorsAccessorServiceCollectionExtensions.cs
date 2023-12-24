@@ -1,5 +1,6 @@
-﻿using Hx.CorsAccessor;
+﻿using Hx.Core.CorsAccessor;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -28,69 +29,69 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             // 添加跨域配置选项
             services.AddConfigureOptions<CorsAccessorSettingsOptions>();
-            // 添加跨域服务
-            services.AddCors(options =>
-            {
-                // 获取选项
-                var corsAccessorSettings = App.GetOptions<CorsAccessorSettingsOptions>();
-                // 添加策略跨域
-                options.AddPolicy(name: corsAccessorSettings.PolicyName, builder =>
+            services.AddCors();
+            services.AddOptions<CorsOptions>()
+                .Configure<IOptions<CorsAccessorSettingsOptions>>((corsOptions, corsAccessorSettingsOptions) =>
                 {
-                    // 判断是否设置了来源，因为 AllowAnyOrigin 不能和 AllowCredentials一起公用
-                    var isNotSetOrigins = corsAccessorSettings.WithOrigins == null || corsAccessorSettings.WithOrigins.Length == 0;
-
-                    var enabledSignalR = corsAccessorSettings.EnabledSignalR == true;
-
-                    // 如果没有配置来源，则允许所有来源
-                    if (isNotSetOrigins)
+                    var corsAccessorSettings = corsAccessorSettingsOptions.Value;
+                    // 添加策略跨域
+                    corsOptions.AddPolicy(name: corsAccessorSettings.PolicyName, builder =>
                     {
-                        // 解决 SignarlR  不能配置允许所有源问题
-                        if (!enabledSignalR) builder.AllowAnyOrigin();
-                    }
-                    else builder.WithOrigins(corsAccessorSettings.WithOrigins)
-                                      .SetIsOriginAllowedToAllowWildcardSubdomains();
+                        // 判断是否设置了来源，因为 AllowAnyOrigin 不能和 AllowCredentials一起公用
+                        var isNotSetOrigins = corsAccessorSettings.WithOrigins == null || corsAccessorSettings.WithOrigins.Length == 0;
 
-                    // 如果没有配置请求标头，则允许所有表头
-                    if (corsAccessorSettings.WithHeaders == null || corsAccessorSettings.WithHeaders.Length == 0) builder.AllowAnyHeader();
-                    else builder.WithHeaders(corsAccessorSettings.WithHeaders);
+                        var enabledSignalR = corsAccessorSettings.EnabledSignalR == true;
 
-                    // 如果没有配置任何请求谓词，则允许所有请求谓词
-                    if (corsAccessorSettings.WithMethods == null || corsAccessorSettings.WithMethods.Length == 0)
-                    {
-                        builder.AllowAnyMethod();
-                    }
-                    else
-                    {
-                        // 解决 SignarlR 必须允许 GET POST 问题
-                        if (enabledSignalR)
+                        // 如果没有配置来源，则允许所有来源
+                        if (isNotSetOrigins)
                         {
-                            builder.WithMethods(corsAccessorSettings.WithMethods.Concat(new[] { "GET", "POST" }).Distinct(StringComparer.OrdinalIgnoreCase).ToArray());
+                            // 解决 SignarlR  不能配置允许所有源问题
+                            if (!enabledSignalR) builder.AllowAnyOrigin();
+                        }
+                        else builder.WithOrigins(corsAccessorSettings.WithOrigins)
+                                          .SetIsOriginAllowedToAllowWildcardSubdomains();
+
+                        // 如果没有配置请求标头，则允许所有表头
+                        if (corsAccessorSettings.WithHeaders == null || corsAccessorSettings.WithHeaders.Length == 0) builder.AllowAnyHeader();
+                        else builder.WithHeaders(corsAccessorSettings.WithHeaders);
+
+                        // 如果没有配置任何请求谓词，则允许所有请求谓词
+                        if (corsAccessorSettings.WithMethods == null || corsAccessorSettings.WithMethods.Length == 0)
+                        {
+                            builder.AllowAnyMethod();
                         }
                         else
                         {
-                            builder.WithMethods(corsAccessorSettings.WithMethods);
+                            // 解决 SignarlR 必须允许 GET POST 问题
+                            if (enabledSignalR)
+                            {
+                                builder.WithMethods(corsAccessorSettings.WithMethods.Concat(new[] { "GET", "POST" }).Distinct(StringComparer.OrdinalIgnoreCase).ToArray());
+                            }
+                            else
+                            {
+                                builder.WithMethods(corsAccessorSettings.WithMethods);
+                            }
                         }
-                    }
 
-                    // 配置跨域凭据
-                    if ((corsAccessorSettings.AllowCredentials == true && !isNotSetOrigins) || enabledSignalR)
-                    {
-                        builder.AllowCredentials();
-                    }
+                        // 配置跨域凭据
+                        if ((corsAccessorSettings.AllowCredentials == true && !isNotSetOrigins) || enabledSignalR)
+                        {
+                            builder.AllowCredentials();
+                        }
 
-                    // 配置响应头，如果前端不能获取自定义的 header 信息，必须配置该项，默认配置了 access-token 和 x-access-token，可取消默认行为
-                    IEnumerable<string> exposedHeaders = corsAccessorSettings.FixedToken == true
-                        ? _defaultExposedHeaders
-                        : Array.Empty<string>();
-                    if (corsAccessorSettings.WithExposedHeaders != null && corsAccessorSettings.WithExposedHeaders.Length > 0)
-                        exposedHeaders.Concat(corsAccessorSettings.WithExposedHeaders).Distinct(StringComparer.OrdinalIgnoreCase);
-                    if (exposedHeaders.Any()) builder.WithExposedHeaders(exposedHeaders.ToArray());
-                    // 设置预检过期时间
-                    builder.SetPreflightMaxAge(TimeSpan.FromSeconds(corsAccessorSettings.SetPreflightMaxAge ?? 24 * 60 * 60));
+                        // 配置响应头，如果前端不能获取自定义的 header 信息，必须配置该项，默认配置了 access-token 和 x-access-token，可取消默认行为
+                        IEnumerable<string> exposedHeaders = corsAccessorSettings.FixedToken == true
+                            ? _defaultExposedHeaders
+                            : Array.Empty<string>();
+                        if (corsAccessorSettings.WithExposedHeaders != null && corsAccessorSettings.WithExposedHeaders.Length > 0)
+                            exposedHeaders.Concat(corsAccessorSettings.WithExposedHeaders).Distinct(StringComparer.OrdinalIgnoreCase);
+                        if (exposedHeaders.Any()) builder.WithExposedHeaders(exposedHeaders.ToArray());
+                        // 设置预检过期时间
+                        builder.SetPreflightMaxAge(TimeSpan.FromSeconds(corsAccessorSettings.SetPreflightMaxAge ?? 24 * 60 * 60));
+                    });
+                    // 添加自定义配置
+                    corsOptionsHandler?.Invoke(corsOptions);
                 });
-                // 添加自定义配置
-                corsOptionsHandler?.Invoke(options);
-            });
             return services;
         }
     }

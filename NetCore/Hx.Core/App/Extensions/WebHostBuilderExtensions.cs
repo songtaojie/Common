@@ -1,4 +1,6 @@
-﻿using Hx.Core.Internal;
+﻿using Hx.Common;
+using Hx.Common.Extensions;
+using Hx.Core.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +22,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="webHostBuilder">Web主机构建器</param>
         /// <returns>IWebHostBuilder</returns>
-        public static IWebHostBuilder ConfigureHxWebApp(this IWebHostBuilder webHostBuilder)
+        internal static IWebHostBuilder ConfigureHxWebApp(this IWebHostBuilder webHostBuilder)
         {
             // 获取默认程序集名称
             var defaultAssemblyName = typeof(HostBuilderExtensions).GetAssemblyName();
@@ -60,7 +62,7 @@ namespace Microsoft.AspNetCore.Builder
                 // 存储配置对象
                 InternalApp.Configuration = config;
                 // 注册 Startup 过滤器
-                services.AddTransient<IStartupFilter, StartupFilter>();
+                services.AddTransient<IStartupFilter, HxAppStartupFilter>();
                 // 初始化应用服务
                 services.AddWebHostApp(config);
             });

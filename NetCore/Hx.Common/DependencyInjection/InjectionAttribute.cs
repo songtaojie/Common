@@ -1,6 +1,14 @@
-﻿using System;
+﻿// MIT License
+//
+// Copyright (c) 2021-present songtaojie, Daming Co.,Ltd and Contributors
+//
+// 电话/微信：song977601042
 
-namespace Hx.DependencyInjection
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Hx.Common.DependencyInjection
 {
     /// <summary>
     /// 设置依赖注入方式

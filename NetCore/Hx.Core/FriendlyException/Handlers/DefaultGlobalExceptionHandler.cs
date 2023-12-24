@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Hx.FriendlyException
+namespace Hx.Core.FriendlyException
 {
     /// <summary>
     /// 默认的异常处理

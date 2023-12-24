@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using Microsoft.Extensions.Options;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +11,16 @@ namespace Hx.Sqlsugar
     /// <summary>
     /// 数据库连接配置
     /// </summary>
-    public class DbSettingsOptions
+    public class DbSettingsOptions : IConfigureOptions<DbSettingsOptions>
     {
         /// <summary>
         /// 数据库连接配置
         /// </summary>
         public IEnumerable<DbConnectionConfig>? ConnectionConfigs { get; set; }
-        
-        /// <summary>
-        /// 设置默认 Redis 配置
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        internal static DbSettingsOptions GetDefaultSettings()
+
+        public void Configure(DbSettingsOptions options)
         {
-            return new DbSettingsOptions
-            {
-                ConnectionConfigs = new List<DbConnectionConfig>()
-            };
+            options.ConnectionConfigs ??= new List<DbConnectionConfig>();
         }
     }
 }

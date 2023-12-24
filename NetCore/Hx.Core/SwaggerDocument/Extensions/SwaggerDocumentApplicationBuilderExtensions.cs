@@ -40,7 +40,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        internal static IApplicationBuilder UseSwaggerKnife4Documents(this IApplicationBuilder app)
+        internal static IApplicationBuilder UseSwaggerKnife4jDocuments(this IApplicationBuilder app)
         {
             var logger = app.ApplicationServices.GetService<ILogger<HxCoreApp>>();
             // 判断是否安装了 DependencyInjection 程序集
@@ -51,7 +51,7 @@ namespace Microsoft.AspNetCore.Builder
             if (swaggerBuilderExtensionsType == null) return app;
             var useSwaggerDocuments = swaggerBuilderExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .First(u => u.Name == "UseSwaggerKnife4Documents" && u.GetParameters().First().ParameterType == typeof(IApplicationBuilder));
+                .First(u => u.Name == "UseSwaggerKnife4jDocuments" && u.GetParameters().First().ParameterType == typeof(IApplicationBuilder));
             logger.LogDebug("Use the Swagger Knife4UI ApplicationBuilder");
             useSwaggerDocuments?.Invoke(null, new object[] { app, null, null});
             return app;

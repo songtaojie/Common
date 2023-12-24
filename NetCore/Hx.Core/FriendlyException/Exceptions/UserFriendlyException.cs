@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// MIT License
+//
+// Copyright (c) 2021-present songtaojie, Daming Co.,Ltd and Contributors
+//
+// 电话/微信：song977601042
+
+using Microsoft.AspNetCore.Http;
 using System;
 
-namespace Hx.FriendlyException
+namespace Hx.Core.FriendlyException
 {
     /// <summary>
     /// 用户友好的异常提示

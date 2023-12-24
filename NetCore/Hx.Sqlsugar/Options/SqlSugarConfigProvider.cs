@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Hx.Common;
 using Hx.Common.Extensions;
+using System.Runtime.Loader;
 
 namespace Hx.Sqlsugar
 {
@@ -28,17 +29,9 @@ namespace Hx.Sqlsugar
         /// </summary>
         static SqlSugarConfigProvider()
         {
-            Assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            Assemblies = GetAssemblies();
         }
 
-        /// <summary>
-        /// 设置实体所在的程序集
-        /// </summary>
-        public static void SetAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            Assemblies = assemblies;
-            _effectiveTypes = null;
-        }
         /// <summary>
         /// 有效程序集类型
         /// </summary>
@@ -65,18 +58,7 @@ namespace Hx.Sqlsugar
         /// <returns></returns>
         private static IEnumerable<Type> GetTypes(Assembly ass)
         {
-            var types = Array.Empty<Type>();
-
-            try
-            {
-                types = ass.GetTypes();
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex, $"Error load `{ass.FullName}` assembly.");
-            }
-
-            return types.Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false));
+            return ass.GetTypes().Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false));
         }
 
 
@@ -205,6 +187,7 @@ namespace Hx.Sqlsugar
 
         }
 
+        private static bool _isInit = false;
         /// <summary>
         /// 初始化数据库和种子数据
         /// DbConnectionConfig需开启相应的开关
@@ -213,10 +196,10 @@ namespace Hx.Sqlsugar
         /// <param name="db"></param>
         /// <param name="config"></param>
         public static void InitDatabase(ISqlSugarClient dbProvider, DbConnectionConfig config)
-        {   
-            
+        {
+            if (_isInit) return;
+            _isInit = true;
             //SqlSugarScopeProvider dbProvider = db.GetConnectionScope(config.ConfigId);
-
             // 创建数据库
             if (config.DbType != DbType.Oracle)
                 dbProvider.DbMaintenance.CreateDatabase();
@@ -300,6 +283,51 @@ namespace Hx.Sqlsugar
                 else
                     db.CodeFirst.SplitTables().InitTables(entityType);
             }
+        }
+
+
+        /// <summary>
+        /// 框架 App 静态类
+        /// </summary>
+        internal static Type? HxCoreApp { get; set; }
+
+        /// <summary>
+        /// 获取框架上下文
+        /// </summary>
+        /// <returns></returns>
+        internal static Assembly? GetFrameworkContext(Assembly? callAssembly)
+        {
+            if (callAssembly == null) return null;
+            if (HxCoreApp != null) return HxCoreApp.Assembly;
+
+            var hxCoreAssemblyName = callAssembly.GetReferencedAssemblies()
+                                                       .FirstOrDefault(u => u.Name == "Hx.Core");
+            if (hxCoreAssemblyName == null) return null;
+            var hxCoreAssembly = AssemblyLoadContext.Default.LoadFromAssemblyName(hxCoreAssemblyName);
+
+            // 获取 Furion.App 静态类
+            HxCoreApp = hxCoreAssembly.GetType("Hx.Core.App");
+
+            return hxCoreAssembly;
+        }
+
+
+        private static IEnumerable<Assembly> GetAssemblies()
+        {
+            var entryAssembly = Assembly.GetEntryAssembly();
+            var frameworkAssembly = GetFrameworkContext(entryAssembly);
+            IEnumerable<Assembly>? result = null;
+            if (frameworkAssembly != null)
+            {
+                var assembliesField = HxCoreApp!.GetField("Assemblies", BindingFlags.Static);
+                result = assembliesField!.GetValue(null) as IEnumerable<Assembly>;
+            }
+            if (result == null)
+            {
+                var refAssembyNames = entryAssembly!.GetReferencedAssemblies();
+                result = refAssembyNames.Select(AssemblyLoadContext.Default.LoadFromAssemblyName);
+            }
+            return result;
         }
     }
 }

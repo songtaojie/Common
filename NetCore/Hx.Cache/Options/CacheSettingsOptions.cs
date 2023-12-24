@@ -1,4 +1,6 @@
 ﻿using FreeRedis;
+using Hx.Cache.Options;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
@@ -22,14 +24,14 @@ namespace Hx.Cache
         public CacheTypeEnum? CacheType { get; set; }
 
         /// <summary>
-        /// 用于连接到Redis的配置。
+        /// redis配置
         /// </summary>
-        public ConnectionStringBuilder ConnectionString { get; set; }
+        public RedisCacheSettingsOptions Redis {  get; set; }
 
         /// <summary>
-        /// Slave连接字符串
+        /// 缓存配置
         /// </summary>
-        public IEnumerable<ConnectionStringBuilder> SlaveConnectionStrings { get; set; }
+        public MemoryDistributedCacheOptions Memory {  get; set; }
 
         /// <summary>
         /// 后置配置
@@ -41,35 +43,8 @@ namespace Hx.Cache
         {
             CacheType ??=  CacheTypeEnum.Memory;
         }
-
-        internal void Initialize(IConfiguration configuration)
-        {
-            var cacheTypeStr = configuration["CacheSettings:CacheType"];
-            if (!string.IsNullOrEmpty(cacheTypeStr)
-                && Enum.TryParse<CacheTypeEnum>(cacheTypeStr,true, out CacheTypeEnum cacheType))
-            {
-                CacheType = cacheType;
-            }
-
-            var connectionString = configuration["CacheSettings:ConnectionString"];
-            if (!string.IsNullOrEmpty(connectionString))
-            {
-                ConnectionString = connectionString;
-            }
-            var slaveSection = configuration.GetSection("CacheSettings:SlaveConnectionStrings");
-            var slaveChildren = slaveSection.GetChildren();
-            if (slaveChildren.Any())
-            {
-                var slaveConnectionStrings = new List<ConnectionStringBuilder>();
-                foreach (var item in slaveChildren)
-                {
-                    slaveConnectionStrings.Add(item.Value);
-                }
-                SlaveConnectionStrings = slaveConnectionStrings;
-            }
-        }
     }
-
+   
     /// <summary>
     /// 缓存类型
     /// </summary>

@@ -137,7 +137,7 @@ namespace Hx.Sqlsugar
         /// <param name="orderByExpression"></param>
         /// <param name="orderByType"></param>
         /// <returns></returns>
-        List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, OrderByType orderByType = OrderByType.Asc);
+        List<TEntity> ToList(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, OrderByType orderByType = OrderByType.Asc);
 
         /// <summary>
         /// 获取列表
@@ -159,7 +159,7 @@ namespace Hx.Sqlsugar
         /// <param name="orderByExpression"></param>
         /// <param name="orderByType"></param>
         /// <returns></returns>
-        Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression = null, OrderByType orderByType = OrderByType.Asc);
+        Task<List<TEntity>> ToListAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>>? orderByExpression = null, OrderByType orderByType = OrderByType.Asc);
 
         /// <summary>
         /// 新增一条记录

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Hx.DependencyInjection
+namespace Hx.Common.DependencyInjection
 {
     /// <summary>
     /// 注册范围
