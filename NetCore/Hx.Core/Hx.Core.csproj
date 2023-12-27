@@ -7,9 +7,9 @@
 		<Description>
 			HXCore核心类库
 		</Description>
-		<Version>1.0.0</Version>
+		<Version>6.2.0</Version>
 		<PackageTags>ASP.NET Core</PackageTags>
-		<PackageId>Hx.Core</PackageId>
+		<PackageId>Hx.Sdk.Core</PackageId>
 		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>
 		<Product>Hx.Core for ASP.NET Core</Product>
 		<Copyright>2020 Hx.Core</Copyright>
