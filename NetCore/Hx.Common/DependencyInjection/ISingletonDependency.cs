@@ -15,7 +15,7 @@ namespace Hx.Common.DependencyInjection
     /// 也被称为 '单例.' 使用单一实例作用域,
     /// 在根容器和所有嵌套作用域内所有的请求都将会返回同一个实例.
     /// </summary>
-    public class ISingletonDependency
+    public interface ISingletonDependency
     {
     }
 }

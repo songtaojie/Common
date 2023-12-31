@@ -23,7 +23,7 @@ namespace Hx.Common
         /// <summary>
         /// 0 正序 1倒序
         /// </summary>
-        public OrderTypeEnum OrderType { get; set; } = OrderTypeEnum.ASC;
+        public OrderTypeEnum? OrderType { get; set; } = OrderTypeEnum.ASC;
     }
     /// <summary>
     /// 排序类型

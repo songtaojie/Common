@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Text;
+using System.Threading;
 using Hx.Common;
 namespace Hx.Common.Extensions
 {
@@ -45,6 +46,16 @@ namespace Hx.Common.Extensions
             bool.TryParse(value, out bool r);
             bool? result = r;
             return result;
+        }
+
+        /// <summary>
+        /// 将字符串URL编码
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string UrlEncode(this string str)
+        {
+            return string.IsNullOrEmpty(str) ? "" : System.Web.HttpUtility.UrlEncode(str, Encoding.UTF8);
         }
     }
 }

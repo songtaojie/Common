@@ -21,7 +21,7 @@ namespace Hx.Common.Extensions
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, bool>> expression)
+        public static IQueryable<TSource> WhereIF<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, bool>> expression)
         {
             return condition ? Queryable.Where(sources, expression) : sources;
         }
@@ -34,7 +34,7 @@ namespace Hx.Common.Extensions
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, int, bool>> expression)
+        public static IQueryable<TSource> WhereIF<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, int, bool>> expression)
         {
             return condition ? Queryable.Where(sources, expression) : sources;
         }
@@ -86,7 +86,7 @@ namespace Hx.Common.Extensions
         /// <param name="sources">集合对象</param>
         /// <param name="conditionExpressions">条件表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, params (bool condition, Expression<Func<TSource, bool>> expression)[] conditionExpressions)
+        public static IQueryable<TSource> WhereIF<TSource>(this IQueryable<TSource> sources, params (bool condition, Expression<Func<TSource, bool>> expression)[] conditionExpressions)
         {
             var expressions = new List<Expression<Func<TSource, bool>>>();
             foreach (var (condition, expression) in conditionExpressions)
@@ -103,7 +103,7 @@ namespace Hx.Common.Extensions
         /// <param name="sources">集合对象</param>
         /// <param name="conditionExpressions">条件表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, params (bool condition, Expression<Func<TSource, int, bool>> expression)[] conditionExpressions)
+        public static IQueryable<TSource> WhereIF<TSource>(this IQueryable<TSource> sources, params (bool condition, Expression<Func<TSource, int, bool>> expression)[] conditionExpressions)
         {
             var expressions = new List<Expression<Func<TSource, int, bool>>>();
             foreach (var (condition, expression) in conditionExpressions)
@@ -121,7 +121,7 @@ namespace Hx.Common.Extensions
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, bool> expression)
+        public static IEnumerable<TSource> WhereIF<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, bool> expression)
         {
             return condition ? sources.Where(expression) : sources;
         }
@@ -134,7 +134,7 @@ namespace Hx.Common.Extensions
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, int, bool> expression)
+        public static IEnumerable<TSource> WhereIF<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, int, bool> expression)
         {
             return condition ? sources.Where(expression) : sources;
         }

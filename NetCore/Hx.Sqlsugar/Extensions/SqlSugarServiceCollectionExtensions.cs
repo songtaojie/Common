@@ -40,6 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var logger = provider.GetService<ILogger<ISqlSugarClient>>();
                 var options = provider.GetRequiredService<IOptions<DbSettingsOptions>>().Value;
+                RepositoryExtension.ConnectionConfigs = options.ConnectionConfigs;
                 var connectionConfigs = options.ConnectionConfigs!.Select(r => r.ToConnectionConfig()).ToList();
                 SqlSugarClient sqlSugar = new SqlSugarClient(connectionConfigs, db =>
                 {

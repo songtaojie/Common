@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common.Base
+namespace Hx.Common
 {
     /// <summary>
     /// 带有状态数据的实体（泛型）
