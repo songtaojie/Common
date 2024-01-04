@@ -21,6 +21,7 @@ namespace Hx.Cache
         {
             _memoryCache = memoryCache;
         }
+        public CacheTypeEnum CacheType => CacheTypeEnum.Memory;
 
         public object this[string key] 
         {
@@ -31,7 +32,7 @@ namespace Hx.Cache
         public long Count => (_memoryCache as MemoryCache).Count;
 
 
-        public bool ContainsKey(string key)
+        public bool ExistsKey(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return _memoryCache.TryGetValue(key,out object _);
@@ -86,7 +87,7 @@ namespace Hx.Cache
         public string Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if (ContainsKey(key))
+            if (ExistsKey(key))
             {
                 var bytes = _memoryCache.Get<byte[]>(key);
                 return Encoding.UTF8.GetString(bytes);

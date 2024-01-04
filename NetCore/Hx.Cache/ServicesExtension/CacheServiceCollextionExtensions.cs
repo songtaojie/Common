@@ -27,11 +27,20 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="setupAction"></param>
-        public static IServiceCollection AddNativeMemoryCache(this IServiceCollection services, Action<MemoryCacheOptions> setupAction = null)
+        public static IServiceCollection AddNativeMemoryCache(this IServiceCollection services, Action<CacheSettingsOptions> setupAction = null)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddOptions<CacheSettingsOptions>()
-               .BindConfiguration(CacheSettingsKey);
+            if (setupAction != null)
+            {
+                services.Configure(setupAction);
+            }
+            else
+            {
+                services.AddOptions<CacheSettingsOptions>()
+                   .BindConfiguration(CacheSettingsKey);
+            }
+            
+            services.Configure(setupAction);
             services.AddOptions<MemoryCacheOptions>()
                 .Configure<IOptions<CacheSettingsOptions>>((options, cacheSettingsOptions) =>
                 {
@@ -47,7 +56,6 @@ namespace Microsoft.Extensions.DependencyInjection
                             options.SizeLimit = cacheSettings.Memory.SizeLimit;
                         }
                     }
-                    setupAction?.Invoke(options);
                 });
             services.AddOptions<MemoryDistributedCacheOptions>()
                .Configure<IOptions<CacheSettingsOptions>>((options, cacheSettingsOptions) =>
@@ -64,7 +72,6 @@ namespace Microsoft.Extensions.DependencyInjection
                            options.SizeLimit = cacheSettings.Memory.SizeLimit;
                        }
                    }
-                   setupAction?.Invoke(options);
                });
             // 注册内存和分布式内存
             services.AddMemoryCache();
