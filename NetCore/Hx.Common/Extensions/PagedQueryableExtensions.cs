@@ -55,7 +55,7 @@ namespace Hx.Common.Extensions
         /// <param name="fieldName">排序的字段名称</param>
         /// <param name="orderType">排序的类型</param>
         /// <returns></returns>
-        public static IQueryable<T> ApplyOrder<T>(this IQueryable<T> source, string fieldName, OrderTypeEnum orderType)
+        public static IQueryable<T> ApplyOrder<T>(this IQueryable<T> source, string fieldName, OrderTypeEnum? orderType)
 		{
 			// 升序 or 降序
 			string methodName = orderType == OrderTypeEnum.DESC ? "OrderByDescending" : "OrderBy";

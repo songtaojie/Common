@@ -25,6 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .Configure<IConfiguration>((options, configuration) =>
                 {
                     options.Configure(options);
+                    swaggerSettings?.Invoke(options);
                 });
             services.AddSingleton<SwaggerDocumentBuilder>();
             services.AddSwaggerGen();

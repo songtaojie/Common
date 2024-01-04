@@ -1,6 +1,6 @@
 {
   "SwaggerSettings": {
-    "DocumentTitle": "Swagger Document",
+    "DocumentTitle": "Swagger DocumentTest",
     //"EnabledMiniProfiler": false,
     "XmlComments": [ "Hx.Test.Entity", "Hx.WebApi" ],
     //"VirtualPath": "/",

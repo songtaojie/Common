@@ -166,42 +166,42 @@
             雪花Id
             </summary>
         </member>
-        <member name="T:Hx.Common.Base.FullAuditedEntityBase`1">
+        <member name="T:Hx.Common.FullAuditedEntityBase`1">
             <summary>
             带有状态数据的实体（泛型）
             </summary>
         </member>
-        <member name="P:Hx.Common.Base.FullAuditedEntityBase`1.IsDeleted">
+        <member name="P:Hx.Common.FullAuditedEntityBase`1.IsDeleted">
             <summary>
             是否删除
             </summary>
         </member>
-        <member name="P:Hx.Common.Base.FullAuditedEntityBase`1.DeleterId">
+        <member name="P:Hx.Common.FullAuditedEntityBase`1.DeleterId">
             <summary>
             删除人id
             </summary>
         </member>
-        <member name="P:Hx.Common.Base.FullAuditedEntityBase`1.DeleteTime">
+        <member name="P:Hx.Common.FullAuditedEntityBase`1.DeleteTime">
             <summary>
             删除时间
             </summary>
         </member>
-        <member name="T:Hx.Common.Base.FullAuditedEntityBase">
+        <member name="T:Hx.Common.FullAuditedEntityBase">
             <summary>
             带有状态数据的实体（非泛型）
             </summary>
         </member>
-        <member name="P:Hx.Common.Base.FullAuditedEntityBase.IsDeleted">
+        <member name="P:Hx.Common.FullAuditedEntityBase.IsDeleted">
             <summary>
             是否删除
             </summary>
         </member>
-        <member name="P:Hx.Common.Base.FullAuditedEntityBase.DeleterId">
+        <member name="P:Hx.Common.FullAuditedEntityBase.DeleterId">
             <summary>
             删除人id
             </summary>
         </member>
-        <member name="P:Hx.Common.Base.FullAuditedEntityBase.DeleteTime">
+        <member name="P:Hx.Common.FullAuditedEntityBase.DeleteTime">
             <summary>
             删除时间
             </summary>
@@ -356,17 +356,112 @@
             <param name="newDic">新字典</param>
             <returns></returns>
         </member>
+        <member name="M:Hx.Common.Extensions.DictionaryExtensions.ToQueryString(System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
+            <summary>
+            将字典转化为QueryString格式
+            </summary>
+            <param name="dict"></param>
+            <param name="urlEncode"></param>
+            <returns></returns>
+        </member>
         <member name="T:Hx.Common.Extensions.EnumExtension">
             <summary>
             枚举扩展
             </summary>
         </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.GetEnumDictionary(System.Type)">
+            <summary>
+            获取枚举对象Key与名称的字典（缓存）
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.GetEnumDictionaryItems(System.Type)">
+            <summary>
+            获取枚举对象Key与名称的字典
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.GetEnumDescDictionary(System.Type)">
+            <summary>
+            获取枚举类型key与描述的字典（缓存）
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.GetEnumDescDictionaryItems(System.Type)">
+            <summary>
+            获取枚举类型key与描述的字典（没有描述则获取name）
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.TryToGetEnumType(System.Reflection.Assembly,System.String)">
+            <summary>
+            从程序集中查找指定枚举类型
+            </summary>
+            <param name="assembly"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.LoadEnumTypeDict(System.Reflection.Assembly)">
+            <summary>
+            从程序集中加载所有枚举类型
+            </summary>
+            <param name="assembly"></param>
+            <returns></returns>
+        </member>
         <member name="M:Hx.Common.Extensions.EnumExtension.GetDescription(System.Enum)">
             <summary>
-             获取枚举的中文描述
+            获取枚举的Description
             </summary>
-            <param name="obj"></param>
+            <param name="value"></param>
             <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.GetDescription(System.Object)">
+            <summary>
+            获取枚举的Description
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.EnumToList(System.Type)">
+            <summary>
+            将枚举转成枚举信息集合
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.EnumExtension.EnumToList``1(System.Type)">
+            <summary>
+            枚举ToList
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hx.Common.Extensions.EnumEntity">
+            <summary>
+            枚举实体
+            </summary>
+        </member>
+        <member name="P:Hx.Common.Extensions.EnumEntity.Describe">
+            <summary>
+            枚举的描述
+            </summary>
+        </member>
+        <member name="P:Hx.Common.Extensions.EnumEntity.Name">
+            <summary>
+            枚举名称
+            </summary>
+        </member>
+        <member name="P:Hx.Common.Extensions.EnumEntity.Value">
+            <summary>
+            枚举对象的值
+            </summary>
         </member>
         <member name="T:Hx.Common.Extensions.ExpressionExtension">
             <summary>
@@ -406,7 +501,7 @@
             IEnumerable 拓展
             </summary>
         </member>
-        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
             <summary>
             [EF Core] 根据条件成立再构建 Where 查询
             </summary>
@@ -416,7 +511,7 @@
             <param name="expression">表达式</param>
             <returns>新的集合对象</returns>
         </member>
-        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
             <summary>
             [EF Core] 根据条件成立再构建 Where 查询，支持索引器
             </summary>
@@ -444,7 +539,7 @@
             <param name="expressions">表达式数组</param>
             <returns>新的集合对象</returns>
         </member>
-        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}}[])">
+        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}}[])">
             <summary>
             [EF Core] 根据条件成立再构建 WhereOr 查询
             </summary>
@@ -453,7 +548,7 @@
             <param name="conditionExpressions">条件表达式</param>
             <returns>新的集合对象</returns>
         </member>
-        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}}[])">
+        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}}[])">
             <summary>
             [EF Core] 根据条件成立再构建 WhereOr 查询，支持索引器
             </summary>
@@ -462,7 +557,7 @@
             <param name="conditionExpressions">条件表达式</param>
             <returns>新的集合对象</returns>
         </member>
-        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.Where``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Boolean})">
+        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Boolean})">
             <summary>
             根据条件成立再构建 Where 查询
             </summary>
@@ -472,7 +567,7 @@
             <param name="expression">表达式</param>
             <returns>新的集合对象</returns>
         </member>
-        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.Where``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Int32,System.Boolean})">
+        <member name="M:Hx.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Int32,System.Boolean})">
             <summary>
             根据条件成立再构建 Where 查询，支持索引器
             </summary>
@@ -669,6 +764,38 @@
             <param name="parameterExpression"></param>
             <returns></returns>
         </member>
+        <member name="T:Hx.Common.Extensions.ListExtensions">
+            <summary>
+            List扩展类
+            </summary>
+        </member>
+        <member name="M:Hx.Common.Extensions.ListExtensions.ForEachAsync``1(System.Collections.Generic.List{``0},System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            list异步便利
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.ListExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            IEnumerable便利
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.ListExtensions.ForEachAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            IEnumerable异步便利
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
         <member name="T:Hx.Common.Extensions.MethodInfoExtensions">
             <summary>
             MethodInfo扩展
@@ -686,6 +813,14 @@
             判断方法是否是异步
             </summary>
             <param name="method">方法</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.MethodInfoExtensions.GetDescriptionValue``1(System.Reflection.FieldInfo)">
+            <summary>
+            获取字段特性
+            </summary>
+            <param name="field"></param>
+            <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
         <member name="T:Hx.Common.Extensions.ObjectExtensions">
@@ -769,7 +904,7 @@
             <param name="param"></param>
             <returns></returns>
         </member>
-        <member name="M:Hx.Common.Extensions.PagedQueryableExtensions.ApplyOrder``1(System.Linq.IQueryable{``0},System.String,Hx.Common.OrderTypeEnum)">
+        <member name="M:Hx.Common.Extensions.PagedQueryableExtensions.ApplyOrder``1(System.Linq.IQueryable{``0},System.String,System.Nullable{Hx.Common.OrderTypeEnum})">
             <summary>
             排序
             </summary>
@@ -842,6 +977,13 @@
             </summary>
             <param name="value">要转换的值</param>
             <returns>如果转换成功，返回转换后的值，否则返回null</returns>
+        </member>
+        <member name="M:Hx.Common.Extensions.StringExtensions.UrlEncode(System.String)">
+            <summary>
+            将字符串URL编码
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
         </member>
         <member name="T:Hx.Common.Extensions.TypeExtensions">
             <summary>

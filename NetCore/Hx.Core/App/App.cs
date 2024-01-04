@@ -124,11 +124,23 @@ namespace Hx.Core
             var dependencyContext = DependencyContext.Default;
 
             // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
-            var scanAssemblies = dependencyContext.CompileLibraries
+            var packages = dependencyContext.CompileLibraries
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx")))   
-                .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
+                       || (u.Type == "package" && u.Name.StartsWith("Hx")));
+                
+                var scanAssemblies = packages.Select(u =>
+                {
+                    try
+                    {
+                        if (u.Name == "Hx.Sdk.Core")
+                        {
+                            return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName("Hx.Core"));
+                        }
+                        return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name));
+                    }
+                    catch { return null; }
+                })
                 .ToList();
 
             return scanAssemblies;

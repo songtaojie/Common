@@ -11,7 +11,7 @@ namespace Hx.Swagger
     /// <summary>
     /// 规范化文档Swagger配置选项
     /// </summary>
-    public sealed class SwaggerSettingsOptions:IConfigureOptions<SwaggerSettingsOptions>
+    public sealed class SwaggerSettingsOptions
     {
         /// <summary>
         /// 是否允许启用MiniProfiler，默认为true
@@ -106,7 +106,7 @@ namespace Hx.Swagger
         /// 后置配置
         /// </summary>
         /// <param name="options"></param>
-        public void Configure(SwaggerSettingsOptions options)
+        internal void Configure(SwaggerSettingsOptions options)
         {
             options.EnabledMiniProfiler ??= false;
             options.DocumentTitle ??= "Specification Api Document";
