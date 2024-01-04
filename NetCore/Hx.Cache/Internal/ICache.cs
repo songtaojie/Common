@@ -14,6 +14,10 @@ namespace Hx.Cache
     public interface ICache
     {
         /// <summary>
+        /// 缓存实例类型
+        /// </summary>
+        CacheTypeEnum CacheType { get; }
+        /// <summary>
         /// 获取所有的缓存的key
         /// </summary>
         /// <returns></returns>
@@ -35,7 +39,7 @@ namespace Hx.Cache
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        bool ContainsKey(string key);
+        bool ExistsKey(string key);
 
         /// <summary>
         /// 设置缓存项

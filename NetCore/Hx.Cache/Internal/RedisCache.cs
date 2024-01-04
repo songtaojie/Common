@@ -14,6 +14,8 @@ namespace Hx.Cache
 
         public long Count => _redisClient.DbSize();
 
+        public CacheTypeEnum CacheType => CacheTypeEnum.Redis;
+
         public object this[string key] 
         { 
             get => Get<object>(key); 
@@ -81,7 +83,7 @@ namespace Hx.Cache
         }
 
 
-        public bool ContainsKey(string key)
+        public bool ExistsKey(string key)
         {
             return this.Do(db =>
             {
