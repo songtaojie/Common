@@ -14,6 +14,11 @@ namespace Hx.Cache
     public interface ICache
     {
         /// <summary>
+        /// 缓存的实例对象
+        /// </summary>
+        object Instance { get; }
+
+        /// <summary>
         /// 缓存实例类型
         /// </summary>
         CacheTypeEnum CacheType { get; }
@@ -102,5 +107,11 @@ namespace Hx.Cache
         ///  清空所有缓存项
         /// </summary>
         void Clear();
+
+        /// <summary>
+        /// 设置Redis数据库
+        /// </summary>
+        /// <param name="dbNum"></param>
+        void SetRedisDbNum(int dbNum);
     }
 }

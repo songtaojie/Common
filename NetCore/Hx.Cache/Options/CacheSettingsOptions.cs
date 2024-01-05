@@ -15,7 +15,7 @@ namespace Hx.Cache
     /// <summary>
     /// 缓存配置
     /// </summary>
-    public class CacheSettingsOptions : IPostConfigureOptions<CacheSettingsOptions>
+    public sealed class CacheSettingsOptions
     {
         /// <summary>
         /// 缓存类型
@@ -33,16 +33,6 @@ namespace Hx.Cache
         /// </summary>
         public MemoryDistributedCacheOptions Memory {  get; set; }
 
-        /// <summary>
-        /// 后置配置
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="options"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void PostConfigure(string name, CacheSettingsOptions options)
-        {
-            CacheType ??=  CacheTypeEnum.Memory;
-        }
     }
    
     /// <summary>

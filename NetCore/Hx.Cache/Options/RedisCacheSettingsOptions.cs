@@ -15,7 +15,7 @@ namespace Hx.Cache.Options;
 /// <summary>
 /// redis缓存配置
 /// </summary>
-public class RedisCacheSettingsOptions
+public sealed class RedisCacheSettingsOptions
 {
     /// <summary>
     /// 用于连接到Redis的配置。

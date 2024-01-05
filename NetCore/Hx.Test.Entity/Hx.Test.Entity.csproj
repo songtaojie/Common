@@ -16,7 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Hx.Cache\Hx.Cache.csproj" />
     <ProjectReference Include="..\Hx.Common\Hx.Common.csproj" />
-    <ProjectReference Include="..\Hx.Core\Hx.Core.csproj" />
+    <ProjectReference Include="..\Hx.Core\Hx.Sdk.Core.csproj" />
     <ProjectReference Include="..\Hx.EventBus\Hx.EventBus.csproj" />
     <ProjectReference Include="..\Hx.Sqlsugar\Hx.Sqlsugar.csproj" />
   </ItemGroup>

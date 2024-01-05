@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 namespace Hx.Cache
 {
-    internal class RedisCache : IRedisCache
+    internal class RedisCache : ICache
     {
         /// <summary>
 		/// 数据库编号
 		/// </summary>
 		private static int? _dbNum;
         private readonly IRedisClient _redisClient;
+
+        public object Instance => _redisClient;
 
         public long Count => _redisClient.DbSize();
 
@@ -28,7 +30,6 @@ namespace Hx.Cache
         }
 
         #region ICache接口实现
-       
         public string Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));

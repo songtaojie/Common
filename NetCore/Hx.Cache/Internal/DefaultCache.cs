@@ -15,13 +15,15 @@ namespace Hx.Cache
     /// </summary>
     internal class DefaultCache : ICache
     {
-        private IMemoryCache _memoryCache;
+        private readonly IMemoryCache _memoryCache;
 
         public DefaultCache(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
         }
         public CacheTypeEnum CacheType => CacheTypeEnum.Memory;
+
+        public object Instance => _memoryCache;
 
         public object this[string key] 
         {
@@ -146,6 +148,11 @@ namespace Hx.Cache
         {
             var keys = GetAllKeys();
             Remove(keys.ToArray());
+        }
+
+        public void SetRedisDbNum(int dbNum)
+        {
+            throw new NotImplementedException();
         }
     }
 }

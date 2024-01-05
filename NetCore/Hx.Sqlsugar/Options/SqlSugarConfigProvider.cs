@@ -301,12 +301,12 @@ namespace Hx.Sqlsugar
             if (HxCoreApp != null) return HxCoreApp.Assembly;
 
             var hxCoreAssemblyName = callAssembly.GetReferencedAssemblies()
-                                                       .FirstOrDefault(u => u.Name == "Hx.Core");
+                                                       .FirstOrDefault(u => u.Name == "Hx.Sdk.Core");
             if (hxCoreAssemblyName == null) return null;
             var hxCoreAssembly = AssemblyLoadContext.Default.LoadFromAssemblyName(hxCoreAssemblyName);
 
             // 获取 Furion.App 静态类
-            HxCoreApp = hxCoreAssembly.GetType("Hx.Core.App");
+            HxCoreApp = hxCoreAssembly.GetType("Hx.Sdk.Core.App");
 
             return hxCoreAssembly;
         }

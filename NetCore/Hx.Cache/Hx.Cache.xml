@@ -14,6 +14,16 @@
             缓存接口
             </summary>
         </member>
+        <member name="P:Hx.Cache.ICache.Instance">
+            <summary>
+            缓存的实例对象
+            </summary>
+        </member>
+        <member name="P:Hx.Cache.ICache.CacheType">
+            <summary>
+            缓存实例类型
+            </summary>
+        </member>
         <member name="M:Hx.Cache.ICache.GetAllKeys">
             <summary>
             获取所有的缓存的key
@@ -32,7 +42,7 @@
              缓存个数
             </summary>
         </member>
-        <member name="M:Hx.Cache.ICache.ContainsKey(System.String)">
+        <member name="M:Hx.Cache.ICache.ExistsKey(System.String)">
             <summary>
             是否包含缓存项
             </summary>
@@ -101,14 +111,9 @@
              清空所有缓存项
             </summary>
         </member>
-        <member name="T:Hx.Cache.IRedisCache">
+        <member name="M:Hx.Cache.ICache.SetRedisDbNum(System.Int32)">
             <summary>
-            redis处理类接口
-            </summary>
-        </member>
-        <member name="M:Hx.Cache.IRedisCache.SetRedisDbNum(System.Int32)">
-            <summary>
-            设置redis数据库编号
+            设置Redis数据库
             </summary>
             <param name="dbNum"></param>
         </member>
@@ -146,14 +151,6 @@
             缓存配置
             </summary>
         </member>
-        <member name="M:Hx.Cache.CacheSettingsOptions.PostConfigure(System.String,Hx.Cache.CacheSettingsOptions)">
-            <summary>
-            后置配置
-            </summary>
-            <param name="name"></param>
-            <param name="options"></param>
-            <exception cref="T:System.NotImplementedException"></exception>
-        </member>
         <member name="T:Hx.Cache.CacheTypeEnum">
             <summary>
             缓存类型
@@ -189,33 +186,32 @@
             缓存的扩展类
             </summary>
         </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddNativeMemoryCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.Extensions.Caching.Memory.MemoryCacheOptions})">
+        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-            添加内置缓存MemoryCache
+            增加了一个默认的实现<see cref="T:Hx.Cache.ICache"/>，将项目存储在 memory/redis到<see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />。
+            需要分布式缓存工作的框架可以安全地将此依赖项添加到其依赖项列表中，以确保至少有一个实现可用。
             </summary>
-            <param name="services"></param>
-            <param name="setupAction"></param>
+            <remarks>
+            <see cref="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)"/> 内存缓存应该只在单服务器场景中使用，因为该缓存将项目存储在内存中，
+            不会跨多台机器扩展。对于这些场景，建议使用合适的分布式缓存(redis缓存)，可以跨多台机器扩展。
+            </remarks>
+            <param name="services"> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> 添加服务.</param>
+            <returns> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 这样额外的调用就可以被链接起来。</returns>
         </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Hx.Cache.CacheSettingsOptions})">
             <summary>
-            缓存注册
+            增加了一个默认的实现<see cref="T:Hx.Cache.ICache"/>，将项目存储在 memory/redis到<see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />。
+            需要分布式缓存工作的框架可以安全地将此依赖项添加到其依赖项列表中，以确保至少有一个实现可用。
             </summary>
-            <param name="services"></param>
-            <param name="configuration"></param>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Nullable{Hx.Cache.CacheTypeEnum})">
-            <summary>
-            缓存注册
-            </summary>
-            <param name="services"></param>
-            <param name="cacheType"></param>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddRedisCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Hx.Cache.Options.RedisCacheSettingsOptions})">
-            <summary>
-            添加redis缓存
-            </summary>
-            <param name="services"></param>
-            <param name="setupAction">ConnectionString构造器</param>
+            <remarks>
+            <see cref="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)"/> 内存缓存应该只在单服务器场景中使用，因为该缓存将项目存储在内存中，
+            不会跨多台机器扩展。对于这些场景，建议使用合适的分布式缓存(redis缓存)，可以跨多台机器扩展。
+            </remarks>
+            <param name="services"> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> 添加服务.</param>
+            <param name="setupAction">
+             <see cref="T:System.Action`1"/> 要提供的配置 <see cref="T:Hx.Cache.CacheSettingsOptions"/>.
+            </param>
+            <returns> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 这样额外的调用就可以被链接起来。</returns>
         </member>
     </members>
 </doc>

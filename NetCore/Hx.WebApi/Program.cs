@@ -1,6 +1,6 @@
 // Early init of NLog to allow startup and exception logging, before host is built
 using Hx.Cache;
-using Hx.Core;
+using Hx.Sdk.Core;
 using Hx.WebApi.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +17,7 @@ try
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
     builder.ConfigureHxWebApp();
-    builder.Services.AddCache(builder.Configuration);
+    builder.Services.AddCache();
     builder.Services.Configure<TestOptions>(builder.Configuration.GetSection("TestSettings"));
     builder.Services.AddSqlSugar();
     var app = builder.Build();

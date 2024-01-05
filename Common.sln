@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.Web", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hx.Sdk.NetFramework.Logs", "NetFramework\Hx.Sdk.NetFramework.Logs\Hx.Sdk.NetFramework.Logs.csproj", "{19194E76-F9C9-44EC-94E1-FDFA46B8BE24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Core", "NetCore\Hx.Core\Hx.Core.csproj", "{FB810313-7542-4553-A95B-322321A8D7BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Sdk.Core", "NetCore\Hx.Sdk.Core\Hx.Sdk.Core.csproj", "{FB810313-7542-4553-A95B-322321A8D7BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hx.Cache", "NetCore\Hx.Cache\Hx.Cache.csproj", "{B128601D-1FF0-4183-B5DD-B369C3DE8D1C}"
 EndProject

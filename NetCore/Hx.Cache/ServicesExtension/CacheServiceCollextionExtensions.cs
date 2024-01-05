@@ -3,13 +3,10 @@ using Hx.Cache;
 using Hx.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Security.AccessControl;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -19,44 +16,67 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class CacheServiceCollextionExtensions
     {
         private const string CacheSettingsKey = "CacheSettings";
-        private const string CacheSettings_MemoryKey = "CacheSettings:Memory";
-        private const string CacheSettings_RedisKey = "CacheSettings:Redis";
-        private const string CacheTypeKey = "CacheSettings:CacheType";
+
         /// <summary>
-        /// 添加内置缓存MemoryCache
+        /// 增加了一个默认的实现<see cref="ICache"/>，将项目存储在 memory/redis到<see cref="IServiceCollection" />。
+        /// 需要分布式缓存工作的框架可以安全地将此依赖项添加到其依赖项列表中，以确保至少有一个实现可用。
         /// </summary>
-        /// <param name="services"></param>
-        /// <param name="setupAction"></param>
-        public static IServiceCollection AddNativeMemoryCache(this IServiceCollection services, Action<CacheSettingsOptions> setupAction = null)
+        /// <remarks>
+        /// <see cref="AddCache(IServiceCollection)"/> 内存缓存应该只在单服务器场景中使用，因为该缓存将项目存储在内存中，
+        /// 不会跨多台机器扩展。对于这些场景，建议使用合适的分布式缓存(redis缓存)，可以跨多台机器扩展。
+        /// </remarks>
+        /// <param name="services"> <see cref="IServiceCollection" /> 添加服务.</param>
+        /// <returns> <see cref="IServiceCollection"/> 这样额外的调用就可以被链接起来。</returns>
+        public static IServiceCollection AddCache(this IServiceCollection services)
         {
-            if (services == null) throw new ArgumentNullException(nameof(services));
-            if (setupAction != null)
-            {
-                services.Configure(setupAction);
-            }
-            else
-            {
-                services.AddOptions<CacheSettingsOptions>()
-                   .BindConfiguration(CacheSettingsKey);
-            }
-            
-            services.Configure(setupAction);
+            return AddCacheCore(services);
+        }
+
+        /// <summary>
+        /// 增加了一个默认的实现<see cref="ICache"/>，将项目存储在 memory/redis到<see cref="IServiceCollection" />。
+        /// 需要分布式缓存工作的框架可以安全地将此依赖项添加到其依赖项列表中，以确保至少有一个实现可用。
+        /// </summary>
+        /// <remarks>
+        /// <see cref="AddCache(IServiceCollection)"/> 内存缓存应该只在单服务器场景中使用，因为该缓存将项目存储在内存中，
+        /// 不会跨多台机器扩展。对于这些场景，建议使用合适的分布式缓存(redis缓存)，可以跨多台机器扩展。
+        /// </remarks>
+        /// <param name="services"> <see cref="IServiceCollection" /> 添加服务.</param>
+        /// <param name="setupAction">
+        ///  <see cref="Action{CacheSettingsOptions}"/> 要提供的配置 <see cref="CacheSettingsOptions"/>.
+        /// </param>
+        /// <returns> <see cref="IServiceCollection"/> 这样额外的调用就可以被链接起来。</returns>
+        public static IServiceCollection AddCache(this IServiceCollection services, Action<CacheSettingsOptions> setupAction)
+        {
+            if (services == null)  throw new ArgumentNullException(nameof(services));
+            if (setupAction == null) throw new ArgumentNullException(nameof(setupAction));
+            return AddCacheCore(services, setupAction);
+        }
+
+
+        private static IServiceCollection AddCacheCore(IServiceCollection services, Action<CacheSettingsOptions> setupAction = null)
+        {
+            services.AddOptions<CacheSettingsOptions>()
+               .BindConfiguration(CacheSettingsKey)
+               .Configure(options =>
+               {
+                   setupAction?.Invoke(options);
+               });
             services.AddOptions<MemoryCacheOptions>()
-                .Configure<IOptions<CacheSettingsOptions>>((options, cacheSettingsOptions) =>
-                {
-                    var cacheSettings = cacheSettingsOptions.Value;
-                    if (cacheSettings.Memory != null)
-                    {
-                        if (cacheSettings.Memory.CompactionPercentage > 0 && cacheSettings.Memory.CompactionPercentage < 1)
-                        {
-                            options.CompactionPercentage = cacheSettings.Memory.CompactionPercentage;
-                        }
-                        if (cacheSettings.Memory.SizeLimit.HasValue)
-                        {
-                            options.SizeLimit = cacheSettings.Memory.SizeLimit;
-                        }
-                    }
-                });
+              .Configure<IOptions<CacheSettingsOptions>>((options, cacheSettingsOptions) =>
+              {
+                  var cacheSettings = cacheSettingsOptions.Value;
+                  if (cacheSettings.Memory != null)
+                  {
+                      if (cacheSettings.Memory.CompactionPercentage > 0 && cacheSettings.Memory.CompactionPercentage < 1)
+                      {
+                          options.CompactionPercentage = cacheSettings.Memory.CompactionPercentage;
+                      }
+                      if (cacheSettings.Memory.SizeLimit.HasValue)
+                      {
+                          options.SizeLimit = cacheSettings.Memory.SizeLimit;
+                      }
+                  }
+              });
             services.AddOptions<MemoryDistributedCacheOptions>()
                .Configure<IOptions<CacheSettingsOptions>>((options, cacheSettingsOptions) =>
                {
@@ -73,97 +93,59 @@ namespace Microsoft.Extensions.DependencyInjection
                        }
                    }
                });
-            // 注册内存和分布式内存
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
-            services.AddSingleton<ICache, DefaultCache>();
-            return services;
-        }
-
-        /// <summary>
-        /// 缓存注册
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configuration"></param>
-        public static IServiceCollection AddCache(this IServiceCollection services, IConfiguration configuration)
-        {
-            var cacheTypeStr = configuration[CacheTypeKey];
-            CacheTypeEnum cacheType = CacheTypeEnum.Memory;
-            if (!string.IsNullOrEmpty(cacheTypeStr))
+            services.AddSingleton<IDistributedCache>(sp =>
             {
-                Enum.TryParse(cacheTypeStr, true, out cacheType);
-            }
-            return services.AddCache(cacheType);
-        }
-
-        /// <summary>
-        /// 缓存注册
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="cacheType"></param>
-        public static IServiceCollection AddCache(this IServiceCollection services, CacheTypeEnum? cacheType = CacheTypeEnum.Memory)
-        {
-            if (cacheType == CacheTypeEnum.Redis)
-            {
-                services.AddRedisCache();
-            }
-            else
-            {
-                services.AddNativeMemoryCache();
-            }
-            return services;
-        }
-
-        /// <summary>
-        /// 添加redis缓存
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="setupAction">ConnectionString构造器</param>
-        public static IServiceCollection AddRedisCache(this IServiceCollection services, Action<RedisCacheSettingsOptions> setupAction = null)
-        {
-            if (services == null) throw new ArgumentNullException(nameof(services));
-            if (setupAction != null) services.Configure(setupAction);
-            services.AddOptions<CacheSettingsOptions>()
-                .BindConfiguration(CacheSettingsKey)
-                .Configure(options =>
+                var options = sp.GetService<IOptions<CacheSettingsOptions>>().Value;
+                if (options.CacheType == CacheTypeEnum.Memory)
                 {
-                    setupAction?.Invoke(options.Redis ?? new RedisCacheSettingsOptions());
-                });
-            AddRedisCacheCore(services);
-            return services;
-        }
-
-        private static IServiceCollection AddRedisCacheCore(IServiceCollection services)
-        {
-            services.AddSingleton<IRedisClient>(provider =>
-            {
-                var options = provider.GetRequiredService<IOptions<CacheSettingsOptions>>().Value;
-                var redisOptions = options.Redis;
-                if (string.IsNullOrEmpty(redisOptions.ConnectionString))
-                    throw new ArgumentNullException(nameof(RedisCacheSettingsOptions.ConnectionString));
-
-                if (redisOptions.SlaveConnectionStrings == null || !redisOptions.SlaveConnectionStrings.Any())
-                {
-                    return new RedisClient(redisOptions.ConnectionString);
+                    return sp.GetService<IDistributedCache>();
                 }
                 else
                 {
-                    var slaveConnectionStrings = redisOptions.SlaveConnectionStrings.Select(r => ConnectionStringBuilder.Parse(r)).ToArray();
-                    return new RedisClient(redisOptions.ConnectionString, slaveConnectionStrings);
+                    var redisClient = sp.GetService<IRedisClient>();
+                    return new DistributedCache(redisClient as RedisClient);
                 }
             });
 
-            services.AddSingleton<IDistributedCache, DistributedCache>(provider =>
+            services.AddSingleton<IRedisClient>(sp =>
             {
-                var redisClient = provider.GetService<IRedisClient>();
-                return new DistributedCache(redisClient as RedisClient);
+                var options = sp.GetRequiredService<IOptions<CacheSettingsOptions>>().Value;
+                if (options.CacheType == CacheTypeEnum.Memory)
+                {
+                    return null;
+                }
+                else
+                {
+                    var redisOptions = options.Redis;
+                    if (string.IsNullOrEmpty(redisOptions.ConnectionString))
+                        throw new ArgumentNullException(nameof(RedisCacheSettingsOptions.ConnectionString));
+
+                    if (redisOptions.SlaveConnectionStrings == null || !redisOptions.SlaveConnectionStrings.Any())
+                    {
+                        return new RedisClient(redisOptions.ConnectionString);
+                    }
+                    else
+                    {
+                        var slaveConnectionStrings = redisOptions.SlaveConnectionStrings.Select(r => ConnectionStringBuilder.Parse(r)).ToArray();
+                        return new RedisClient(redisOptions.ConnectionString, slaveConnectionStrings);
+                    }
+                }
             });
-            services.AddSingleton<IRedisCache, RedisCache>();
-            services.AddSingleton<ICache, RedisCache>();
-            services.AddMemoryCache();
+            services.TryAddSingleton<ICache>(sp =>
+            {
+                var options = sp.GetService<IOptions<CacheSettingsOptions>>().Value;
+                if (options.CacheType == CacheTypeEnum.Memory)
+                {
+                    return new DefaultCache(sp.GetService<IMemoryCache>());
+                }
+                else
+                {
+                    return new RedisCache(sp.GetService<IRedisClient>());
+                }
+            });
             return services;
         }
-
-        
     }
 }
