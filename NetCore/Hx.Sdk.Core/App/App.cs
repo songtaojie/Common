@@ -129,18 +129,7 @@ namespace Hx.Sdk.Core
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
                        || (u.Type == "package" && u.Name.StartsWith("Hx")));
                 
-                var scanAssemblies = packages.Select(u =>
-                {
-                    try
-                    {
-                        if (u.Name == "Hx.Sdk.Core")
-                        {
-                            return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName("Hx.Core"));
-                        }
-                        return AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name));
-                    }
-                    catch { return null; }
-                })
+                var scanAssemblies = packages.Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
                 .ToList();
 
             return scanAssemblies;
