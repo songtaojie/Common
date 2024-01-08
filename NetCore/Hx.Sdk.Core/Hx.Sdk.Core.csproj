@@ -7,7 +7,7 @@
 		<Description>
 			HXCore核心类库
 		</Description>
-		<Version>6.2.2</Version>
+		<Version>6.2.3</Version>
 		<PackageTags>ASP.NET Core</PackageTags>
 		<PackageId>Hx.Sdk.Core</PackageId>
 		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>

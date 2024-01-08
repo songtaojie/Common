@@ -27,9 +27,6 @@ namespace Microsoft.AspNetCore.Builder
             // 配置跨域中间件
             app.UseCors(corsAccessorSettings.PolicyName);
 
-            // 添加压缩缓存
-            app.UseResponseCaching();
-
             return app;
         }
     }

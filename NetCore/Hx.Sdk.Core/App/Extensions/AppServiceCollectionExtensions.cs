@@ -49,10 +49,6 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册全局配置选项
             services.AddConfigureOptions<AppSettingsOptions>();
 
-            // 注册内存和分布式内存
-            services.AddMemoryCache();
-            services.AddDistributedMemoryCache();
-
             // 注册全局依赖注入
             services.AddNativeDependencyInjection(App.EffectiveTypes);
 

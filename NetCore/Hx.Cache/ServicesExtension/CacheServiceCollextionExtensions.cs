@@ -98,25 +98,21 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IDistributedCache>(sp =>
             {
                 var options = sp.GetService<IOptions<CacheSettingsOptions>>().Value;
-                if (options.CacheType == CacheTypeEnum.Memory)
-                {
-                    return sp.GetService<IDistributedCache>();
-                }
-                else
+                if (options.CacheType == CacheTypeEnum.Redis)
                 {
                     var redisClient = sp.GetService<IRedisClient>();
                     return new DistributedCache(redisClient as RedisClient);
+                }
+                else
+                {
+                    return sp.GetService<IDistributedCache>();
                 }
             });
 
             services.AddSingleton<IRedisClient>(sp =>
             {
                 var options = sp.GetRequiredService<IOptions<CacheSettingsOptions>>().Value;
-                if (options.CacheType == CacheTypeEnum.Memory)
-                {
-                    return null;
-                }
-                else
+                if (options.CacheType == CacheTypeEnum.Redis)
                 {
                     var redisOptions = options.Redis;
                     if (string.IsNullOrEmpty(redisOptions.ConnectionString))
@@ -132,17 +128,21 @@ namespace Microsoft.Extensions.DependencyInjection
                         return new RedisClient(redisOptions.ConnectionString, slaveConnectionStrings);
                     }
                 }
+                else
+                {
+                    return null;
+                }
             });
             services.TryAddSingleton<ICache>(sp =>
             {
                 var options = sp.GetService<IOptions<CacheSettingsOptions>>().Value;
-                if (options.CacheType == CacheTypeEnum.Memory)
+                if (options.CacheType == CacheTypeEnum.Redis)
                 {
-                    return new DefaultCache(sp.GetService<IMemoryCache>());
+                    return new RedisCache(sp.GetService<IRedisClient>());
                 }
                 else
                 {
-                    return new RedisCache(sp.GetService<IRedisClient>());
+                    return new DefaultCache(sp.GetService<IMemoryCache>());
                 }
             });
             return services;
