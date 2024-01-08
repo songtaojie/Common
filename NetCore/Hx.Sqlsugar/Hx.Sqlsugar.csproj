@@ -10,13 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hx.Common" Version="1.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Include="SqlSugarCore" Version="5.1.4.89" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Hx.Common\Hx.Common.csproj" />
   </ItemGroup>
 
 </Project>

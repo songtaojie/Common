@@ -105,7 +105,7 @@ public static class RepositoryExtension
         }
        
         // 排序是否可用-排序字段和排序顺序都为非空才启用排序
-        if (!string.IsNullOrEmpty(pageInput.SortField) && pageInput.OrderType.HasValue
+        if (!string.IsNullOrEmpty(pageInput.SortField) 
             && ConnectionConfigs != null && ConnectionConfigs!.Any())
         {
             var config = ConnectionConfigs!.FirstOrDefault(u => u.ConfigId == queryable.Context.CurrentConnectionConfig.ConfigId);

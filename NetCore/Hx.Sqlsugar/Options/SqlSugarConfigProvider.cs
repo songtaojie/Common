@@ -319,7 +319,7 @@ namespace Hx.Sqlsugar
             IEnumerable<Assembly>? result = null;
             if (frameworkAssembly != null)
             {
-                var assembliesField = HxCoreApp!.GetField("Assemblies", BindingFlags.Static);
+                var assembliesField = HxCoreApp!.GetField("Assemblies", BindingFlags.Public|BindingFlags.Static);
                 result = assembliesField!.GetValue(null) as IEnumerable<Assembly>;
             }
             if (result == null)
