@@ -305,7 +305,7 @@ namespace Hx.Sqlsugar
             if (hxCoreAssemblyName == null) return null;
             var hxCoreAssembly = AssemblyLoadContext.Default.LoadFromAssemblyName(hxCoreAssemblyName);
 
-            // 获取 Furion.App 静态类
+            // 获取 App 静态类
             HxCoreApp = hxCoreAssembly.GetType("Hx.Sdk.Core.App");
 
             return hxCoreAssembly;
@@ -320,7 +320,10 @@ namespace Hx.Sqlsugar
             if (frameworkAssembly != null)
             {
                 var assembliesField = HxCoreApp!.GetField("Assemblies", BindingFlags.Public|BindingFlags.Static);
-                result = assembliesField!.GetValue(null) as IEnumerable<Assembly>;
+                if (assembliesField != null)
+                {
+                    result = assembliesField.GetValue(null) as IEnumerable<Assembly>;
+                }
             }
             if (result == null)
             {

@@ -73,6 +73,7 @@ namespace Hx.Sqlsugar.Repositories
         /// <param name="sqlSugarRepository"></param>
         public SqlSugarRepository(ISqlSugarRepository sqlSugarRepository)
         {
+            var type = typeof(TEntity);
             _sqlSugarRepository = sqlSugarRepository;
 
             Context = sqlSugarRepository.Context;

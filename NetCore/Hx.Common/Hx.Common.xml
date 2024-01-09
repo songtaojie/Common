@@ -217,6 +217,108 @@
             主键id
             </summary>
         </member>
+        <member name="T:Hx.Common.DateTimeJsonConverter">
+            <summary>
+            时间格式化
+            </summary>
+        </member>
+        <member name="M:Hx.Common.DateTimeJsonConverter.#ctor">
+            <summary>
+            时间格式化
+            使用内置的时间格式化
+            </summary>
+        </member>
+        <member name="M:Hx.Common.DateTimeJsonConverter.#ctor(System.String)">
+            <summary>
+            时间格式化
+            </summary>
+            <param name="format">格式化字符串</param>
+        </member>
+        <member name="P:Hx.Common.DateTimeJsonConverter.DateTimeFormat">
+            <summary>
+            获取或设置DateTime格式
+            <para>默认为: yyyy-MM-dd HH:mm:ss</para>
+            </summary>           
+        </member>
+        <member name="M:Hx.Common.DateTimeJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.DateTimeJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Hx.Common.DateTimeNullJsonConverter">
+            <summary>
+            可空的时间格式化
+            </summary>
+        </member>
+        <member name="M:Hx.Common.DateTimeNullJsonConverter.#ctor">
+            <summary>
+            时间格式化
+            使用内置的时间格式化
+            </summary>
+        </member>
+        <member name="M:Hx.Common.DateTimeNullJsonConverter.#ctor(System.String)">
+            <summary>
+            时间格式化
+            </summary>
+            <param name="format">格式化字符串</param>
+        </member>
+        <member name="P:Hx.Common.DateTimeNullJsonConverter.DateTimeFormat">
+            <summary>
+             获取或设置DateTime格式
+             <para>默认为: yyyy-MM-dd HH:mm:ss</para>
+            </summary>
+        </member>
+        <member name="M:Hx.Common.DateTimeNullJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.DateTimeNullJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTime},System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Hx.Common.LongJsonConverter">
+            <summary>
+            时间格式化
+            </summary>
+        </member>
+        <member name="M:Hx.Common.LongJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hx.Common.LongJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Int64,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+        </member>
         <member name="T:Hx.Common.DependencyInjection.DependencyInjectionType">
             <summary>
             注册类型

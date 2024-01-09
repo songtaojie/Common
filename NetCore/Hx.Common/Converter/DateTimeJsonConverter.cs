@@ -2,25 +2,25 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Hx.Sdk.Core
+namespace Hx.Common
 {
     /// <summary>
     /// 时间格式化
     /// </summary>
-    public class DateTimeConverter : JsonConverter<DateTime>
+    public class DateTimeJsonConverter : JsonConverter<DateTime>
     {
         /// <summary>
         /// 时间格式化
         /// 使用内置的时间格式化
         /// </summary>
-        public DateTimeConverter()
+        public DateTimeJsonConverter()
         {}
 
         /// <summary>
         /// 时间格式化
         /// </summary>
         /// <param name="format">格式化字符串</param>
-        public DateTimeConverter(string format)
+        public DateTimeJsonConverter(string format)
         {
             DateTimeFormat = format;
         }
@@ -60,20 +60,20 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 可空的时间格式化
     /// </summary>
-    public class DateTimeNullConverter : JsonConverter<DateTime?>
+    public class DateTimeNullJsonConverter : JsonConverter<DateTime?>
     {
         /// <summary>
         /// 时间格式化
         /// 使用内置的时间格式化
         /// </summary>
-        public DateTimeNullConverter()
+        public DateTimeNullJsonConverter()
         { }
 
         /// <summary>
         /// 时间格式化
         /// </summary>
         /// <param name="format">格式化字符串</param>
-        public DateTimeNullConverter(string format)
+        public DateTimeNullJsonConverter(string format)
         {
             DateTimeFormat = format;
         }
