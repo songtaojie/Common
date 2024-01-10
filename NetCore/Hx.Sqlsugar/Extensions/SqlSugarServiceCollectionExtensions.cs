@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class SqlSugarServiceCollectionExtensions
     {
         private const string DbSettings_Key = "DbSettings";
+        private static bool _isInitialized = false;
         /// <summary>
         /// 添加 SqlSugar 拓展
         /// </summary>
@@ -40,7 +41,16 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var logger = provider.GetService<ILogger<ISqlSugarClient>>();
                 var options = provider.GetRequiredService<IOptions<DbSettingsOptions>>().Value;
-                RepositoryExtension.ConnectionConfigs = options.ConnectionConfigs;
+                //options.ConnectionConfigs SetDbConfig
+                if (!_isInitialized)
+                {
+                    foreach (var item in options.ConnectionConfigs!)
+                    {
+                        SqlSugarConfigProvider.SetDbConfig(item);
+                    }
+                    RepositoryExtension.ConnectionConfigs = options.ConnectionConfigs;
+                }
+
                 var connectionConfigs = options.ConnectionConfigs!.Select(r => r.ToConnectionConfig()).ToList();
                 SqlSugarClient sqlSugar = new SqlSugarClient(connectionConfigs, db =>
                 {
@@ -48,11 +58,15 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         var dbProvider = db.GetConnectionScope(dbConnectionConfig.ConfigId);
                         if (dbConnectionConfig.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider, logger);
-                        SqlSugarConfigProvider.SetDataExecuting(dbProvider);
-                        //每次上下文都会执行
-                        SqlSugarConfigProvider.InitDatabase(dbProvider, dbConnectionConfig);
+                        if (!_isInitialized)
+                        {
+                            SqlSugarConfigProvider.SetDataExecuting(dbProvider);
+                            //每次上下文都会执行
+                            SqlSugarConfigProvider.InitDatabase(dbProvider, dbConnectionConfig);
+                        }
                     }
                 });
+                _isInitialized = true;
                 buildAction?.Invoke(sqlSugar);
                 return sqlSugar;
             });

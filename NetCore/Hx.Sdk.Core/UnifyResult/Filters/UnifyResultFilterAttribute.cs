@@ -42,7 +42,8 @@ namespace Microsoft.AspNetCore.Mvc.Filters
                     {
                         StatusCode = badResult.StatusCode.HasValue ? badResult.StatusCode.Value : StatusCodes.Status500InternalServerError,  // 处理没有返回值情况 204
                         Succeeded = false,
-                        Message = "Internal Server Error",
+                        ErrorCode = badResult.StatusCode.HasValue ? badResult.StatusCode.Value : StatusCodes.Status500InternalServerError,
+                        Errors = "Internal Server Error",
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     };
 
@@ -53,13 +54,12 @@ namespace Microsoft.AspNetCore.Mvc.Filters
                         var validationResult = modelState.Where(u => modelState[u.Key].ValidationState == ModelValidationState.Invalid)
                             .Select(u => u.Value)
                             .FirstOrDefault();
-                        result.Message = validationResult?.Errors.FirstOrDefault().ErrorMessage;
+                        result.Errors = validationResult?.Errors.Select(r=>r.ErrorMessage);
                     }
                     // 如果是 ValidationProblemDetails 特殊类型
                     else if (badResult.Value is ValidationProblemDetails validation)
                     {
-                        var error = validation.Errors.FirstOrDefault().Value;
-                        result.Message = error.FirstOrDefault();
+                        result.Errors = validation.Errors.Select(r => r.Value);
                     }
                     // 解析验证消息
                     context.Result = new JsonResult(result);

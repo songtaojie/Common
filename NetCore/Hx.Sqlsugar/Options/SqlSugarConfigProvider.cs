@@ -39,7 +39,8 @@ namespace Hx.Sqlsugar
         {
             get
             {
-                if (_effectiveTypes == null && Assemblies != null)
+                if (_effectiveTypes != null && _effectiveTypes.Any()) return _effectiveTypes;
+                if (Assemblies != null)
                 {
                     _effectiveTypes = Assemblies.SelectMany(GetTypes);
                 }

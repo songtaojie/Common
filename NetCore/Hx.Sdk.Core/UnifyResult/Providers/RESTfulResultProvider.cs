@@ -28,7 +28,8 @@ namespace Hx.Sdk.Core
                 StatusCode = metadata.StatusCode,
                 Succeeded = false,
                 Data = metadata.Data,
-                Message = metadata.ErrorMessage,
+                ErrorCode = metadata.ErrorCode,
+                Errors = metadata.Errors,
                 Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             });
         }
@@ -83,9 +84,10 @@ namespace Hx.Sdk.Core
                     await context.Response.WriteAsJsonAsync(new RESTfulResult<object>
                     {
                         StatusCode = StatusCodes.Status401Unauthorized,
+                        ErrorCode = StatusCodes.Status401Unauthorized,
                         Succeeded = false,
                         Data = null,
-                        Message = "401 Unauthorized",
+                        Errors = "401 Unauthorized",
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     });
                     break;
@@ -97,9 +99,10 @@ namespace Hx.Sdk.Core
                     await context.Response.WriteAsJsonAsync(new RESTfulResult<object>
                     {
                         StatusCode = StatusCodes.Status403Forbidden,
+                        ErrorCode = StatusCodes.Status401Unauthorized,
                         Succeeded = false,
                         Data = null,
-                        Message = "403 Forbidden",
+                        Errors = "403 Forbidden",
                         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     });
                     break;

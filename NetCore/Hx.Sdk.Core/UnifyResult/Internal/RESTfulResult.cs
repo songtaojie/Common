@@ -24,9 +24,14 @@
         public bool Succeeded { get; set; }
 
         /// <summary>
+        /// 异常码
+        /// </summary>
+        public object ErrorCode { get; set; }
+
+        /// <summary>
         /// 错误信息
         /// </summary>
-        public string Message { get; set; }
+        public object Errors { get; set; }
 
         /// <summary>
         /// 时间戳

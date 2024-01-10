@@ -7,7 +7,7 @@
 		<Description>
 			HXCore核心类库
 		</Description>
-		<Version>6.2.4</Version>
+		<Version>6.2.5</Version>
 		<PackageTags>ASP.NET Core</PackageTags>
 		<PackageId>Hx.Sdk.Core</PackageId>
 		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>
@@ -22,6 +22,10 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
 		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Hx.Common\Hx.Common.csproj" />
 	</ItemGroup>
 
 </Project>
