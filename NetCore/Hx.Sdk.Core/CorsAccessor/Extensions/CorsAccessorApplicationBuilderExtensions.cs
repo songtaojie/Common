@@ -1,4 +1,5 @@
 ﻿using Hx.Sdk.Core.CorsAccessor;
+using Hx.Sdk.Core.CorsAccessor.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -23,9 +24,19 @@ namespace Microsoft.AspNetCore.Builder
             if(options == null)
                 throw new ArgumentNullException(nameof(options), "Add the AddCorsAccessor method to services");
             var corsAccessorSettings = options.Value;
-
-            // 配置跨域中间件
-            app.UseCors(corsAccessorSettings.PolicyName);
+            if (corsAccessorSettings.EnabledSignalR ?? false)
+            {
+                // 配置跨域中间件
+                app.UseCors(builder =>
+                {
+                    CorsAccessorPolicy.SetCorsPolicy(builder, corsAccessorSettings,true);
+                });
+            }
+            else
+            {
+                // 配置跨域中间件
+                app.UseCors(corsAccessorSettings.PolicyName);
+            }
 
             return app;
         }

@@ -39,7 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //注册SqlSugar用AddScoped
             services.AddScoped<ISqlSugarClient>(provider =>
             {
-                var logger = provider.GetService<ILogger<ISqlSugarClient>>();
+                var logger = provider.GetRequiredService<ILogger<ISqlSugarClient>>();
                 var options = provider.GetRequiredService<IOptions<DbSettingsOptions>>().Value;
                 //options.ConnectionConfigs SetDbConfig
                 if (!_isInitialized)

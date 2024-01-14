@@ -49,7 +49,7 @@ namespace Hx.Sdk.Core.CorsAccessor
         /// <summary>
         /// 修正前端无法获取 Token 问题
         /// </summary>
-        public bool? FixedToken { get; set; }
+        public bool? FixedClientToken { get; set; }
 
         /// <summary>
         /// 启用 SignalR 跨域支持
@@ -66,7 +66,7 @@ namespace Hx.Sdk.Core.CorsAccessor
             PolicyName ??= "HxCorsAccessor";
             WithOrigins ??= Array.Empty<string>();
             AllowCredentials ??= true;
-            FixedToken ??= true;
+            FixedClientToken ??= true;
             EnabledSignalR ??= false;
         }
     }

@@ -211,7 +211,7 @@ namespace Hx.Sqlsugar
             foreach (var entityType in entityTypes)
             {
                 var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
-                if (tAtt != null && tAtt.configId.ToString() != config.ConfigId) continue;
+                if (tAtt != null && tAtt.configId?.ToString() != config?.ConfigId?.ToString()) continue;
 
                 var splitTable = entityType.GetCustomAttribute<SplitTableAttribute>();
                 if (splitTable == null)
@@ -236,7 +236,7 @@ namespace Hx.Sqlsugar
 
                 var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
                 var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
-                if (tAtt != null && tAtt.configId.ToString() != config.ConfigId) continue;
+                if (tAtt != null && tAtt.configId.ToString() != config?.ConfigId?.ToString()) continue;
                 //if (tAtt == null && config.ConfigId != SqlSugarConst.ConfigId) continue;
 
                 var entityInfo = dbProvider.EntityMaintenance.GetEntityInfo(entityType);
@@ -261,7 +261,6 @@ namespace Hx.Sqlsugar
         /// <summary>
         /// 初始化租户业务数据库
         /// </summary>
-        ///<param name="typeList">实体类型集合</param>
         /// <param name="iTenant"></param>
         /// <param name="config"></param>
         public static void InitTenantDatabase(ITenant iTenant, DbConnectionConfig config)

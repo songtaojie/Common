@@ -65,6 +65,11 @@ namespace Hx.Sdk.Core
                 data = friendlyException.Data;
                 errorMessage = friendlyException.ErrorMessage;
             }
+            else if (exception != null)
+            {
+                errorMessage = exception.Message;
+                errors = exception.Message;
+            }
             var validationFlag = "[Validation]";
 
             // 处理验证失败异常

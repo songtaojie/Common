@@ -283,12 +283,12 @@ public static class RepositoryExtension
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    private static Tuple<string, string> GetTableInfo<T>()
+    private static Tuple<string?, string?> GetTableInfo<T>()
     {
         var entityType = typeof(T);
         var attr = entityType.GetCustomAttribute<TenantAttribute>();
         var configId = attr == null ? ConnectionConfigs?.FirstOrDefault()?.ConfigId.ToString() : attr.configId.ToString();
         var tableName = entityType.GetCustomAttribute<SugarTable>()?.TableName;
-        return new Tuple<string, string>(configId, tableName);
+        return new Tuple<string?, string?>(configId, tableName);
     }
 }
