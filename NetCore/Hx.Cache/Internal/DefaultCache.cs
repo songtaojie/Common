@@ -140,6 +140,11 @@ namespace Hx.Cache
             Remove(keys.ToArray());
         }
 
+        public KeyType TYPE(string key)
+        {
+            return KeyType.@string;
+        }
+
         public void SetRedisDbNum(int dbNum)
         {
         }

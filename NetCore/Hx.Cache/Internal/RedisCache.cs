@@ -125,6 +125,15 @@ namespace Hx.Cache
         }
         #endregion
 
+
+        public KeyType TYPE(string key)
+        {
+            return this.Do(db =>
+            {
+                return db.Type(key);
+            });
+        }
+
         #region 私有方法
         /// <summary>
         /// 获取数据库

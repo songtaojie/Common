@@ -113,5 +113,12 @@ namespace Hx.Cache
         /// </summary>
         /// <param name="dbNum"></param>
         void SetRedisDbNum(int dbNum);
+
+        /// <summary>
+        ///  获取指定键的数据结构类型
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        KeyType TYPE(string key);
     }
 }

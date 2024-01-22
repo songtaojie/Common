@@ -117,6 +117,13 @@
             </summary>
             <param name="dbNum"></param>
         </member>
+        <member name="M:Hx.Cache.ICache.TYPE(System.String)">
+            <summary>
+             获取指定键的数据结构类型
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
         <member name="F:Hx.Cache.RedisCache._dbNum">
             <summary>
             数据库编号
