@@ -113,27 +113,17 @@ namespace Hx.Cache
 
         public IEnumerable<string> GetAllKeys()
         {
-            var entriesCollectionType = GetEntriesCollectionType(_memoryCache.GetType());
-            if(entriesCollectionType == null) return Array.Empty<string>();
-            var entriesField = GetEntriesField(entriesCollectionType);
-            if(entriesField == null) return Array.Empty<string>();
-            var entriesDictionary = entriesField.GetValue(_memoryCache);
-            var keysProperty = entriesDictionary.GetType().GetProperty("Keys");
-            var keys = keysProperty.GetValue(entriesDictionary) as ICollection<object>;
-            if (keys == null) return Array.Empty<string>();
-            return keys.Select(r=>r.ToString());
-        }
-
-        private Type GetEntriesCollectionType(Type cacheType)
-        {
-            var entriesCollectionType = cacheType.GetNestedType("EntriesCollection", BindingFlags.NonPublic);
-            return entriesCollectionType;
-        }
-
-        private FieldInfo GetEntriesField(Type entriesCollectionType)
-        {
-            var entriesField = entriesCollectionType.GetField("_entries", BindingFlags.NonPublic | BindingFlags.Instance);
-            return entriesField ;
+            var cacheType = _memoryCache.GetType();
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            var coherentStateField = cacheType.GetField("_coherentState", flags);//增加一个获取CoherentState对象环节
+            if(coherentStateField == null) return Enumerable.Empty<string>();
+            var coherentState = coherentStateField.GetValue(_memoryCache);
+            if(coherentState == null) return Enumerable.Empty<string>();
+            var entriesField = coherentState.GetType().GetField("_entries", flags);
+            if(entriesField == null) return Enumerable.Empty<string>();
+            var cacheItems = entriesField.GetValue(coherentState) as IDictionary;
+            if (cacheItems == null) return Enumerable.Empty<string>();
+            return cacheItems.Keys.Cast<string>();
         }
 
         public long RemoveByPrefix(string prefixKey)
@@ -150,9 +140,13 @@ namespace Hx.Cache
             Remove(keys.ToArray());
         }
 
+        public KeyType TYPE(string key)
+        {
+            return KeyType.@string;
+        }
+
         public void SetRedisDbNum(int dbNum)
         {
-            throw new NotImplementedException();
         }
     }
 }

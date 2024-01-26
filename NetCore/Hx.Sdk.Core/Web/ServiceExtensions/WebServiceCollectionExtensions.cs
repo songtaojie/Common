@@ -3,6 +3,7 @@ using Hx.Sdk.Core.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -49,7 +50,14 @@ namespace Microsoft.Extensions.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
             var exist = services.Any(x => x.ServiceType == typeof(IHxHttpClient));
             if (exist) return services;
-            services.AddHttpClient<IHxHttpClient, HxHttpClient>();
+            services.AddHttpClient<IHxHttpClient, HxHttpClient>()
+                // 忽略 SSL 不安全检查，或 https 不安全或 https 证书有误
+                .ConfigurePrimaryHttpMessageHandler(u => new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
+                })
+                // 设置客户端生存期为 5 分钟
+                .SetHandlerLifetime(TimeSpan.FromMinutes(5));
             return services;
         }
     }
