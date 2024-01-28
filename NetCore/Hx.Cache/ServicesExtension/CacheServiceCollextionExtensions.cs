@@ -95,8 +95,7 @@ namespace Microsoft.Extensions.DependencyInjection
                    }
                });
             services.AddMemoryCache();
-            services.AddDistributedMemoryCache();
-            services.AddSingleton<IDistributedCache>(sp =>
+            services.TryAddSingleton<IDistributedCache>(sp =>
             {
                 var options = sp.GetService<IOptions<CacheSettingsOptions>>().Value;
                 if (options.CacheType == CacheTypeEnum.Redis)
@@ -110,7 +109,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             });
 
-            services.AddSingleton<IRedisClient>(sp =>
+            services.TryAddSingleton<IRedisClient>(sp =>
             {
                 var options = sp.GetRequiredService<IOptions<CacheSettingsOptions>>().Value;
                 if (options.CacheType == CacheTypeEnum.Redis)

@@ -266,8 +266,6 @@ namespace Hx.Common
         }
         #endregion
 
-
-
         #region 数值
         /// <summary>
         /// 比较两个十进制的数值

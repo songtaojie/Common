@@ -7,16 +7,16 @@ namespace Hx.Sdk.Core
     /// <summary>
     /// 自定义声明
     /// </summary>
-    internal static class HxClaimTypes
+    public static class HxClaimTypes
     {
-        /// <summary>
-        /// IdentityServer4的name claim
-        /// </summary>
-        public const string Ids4Name = "name";
         /// <summary>
         /// http://tools.ietf.org/html/rfc7519#section-4    
         /// </summary>
-        public const string Jti = "jti";
+        public const string Jti = "http://schemas.xmlsoap.org/ws/2009/09/identity/claims/jti";
+        /// <summary>
+        /// IdentityServer4的name claim
+        /// </summary>
+        public const string OrgId = "http://schemas.xmlsoap.org/ws/2009/09/identity/claims/oid";
     }
 
     /// <summary>

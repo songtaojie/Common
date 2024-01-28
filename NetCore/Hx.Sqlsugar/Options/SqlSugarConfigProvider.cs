@@ -163,8 +163,7 @@ namespace Hx.Sqlsugar
                 logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetSqlString(config.DbType, ex.Sql, (SugarParameter[])ex.Parametres)} \r\n");
             };
         }
-
-
+        
         /// <summary>
         /// 设置数据审计
         /// </summary>
@@ -179,7 +178,7 @@ namespace Hx.Sqlsugar
                     if (entityInfo.PropertyName == "CreateTime")
                         entityInfo.SetValue(DateTime.Now);
                 }
-                if (entityInfo.OperationType == DataFilterType.UpdateByObject)
+                else if (entityInfo.OperationType == DataFilterType.UpdateByObject)
                 {
                     if (entityInfo.PropertyName == "UpdateTime")
                         entityInfo.SetValue(DateTime.Now);
@@ -220,7 +219,7 @@ namespace Hx.Sqlsugar
                     dbProvider.CodeFirst.SplitTables().InitTables(entityType);
             }
 
-            if (!config.EnableInitSeed) return;
+            if (!config!.EnableInitSeed) return;
             // 获取所有种子配置-初始化数据
             var seedDataTypes = EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
                 && u.GetInterfaces().Any(i => i.HasImplementedRawGeneric(typeof(ISqlSugarEntitySeedData<>)))).ToList();

@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddHttpContextAccessor();
-            services.AddScoped<IUserContext, UserContext>();
+            services.AddScoped<UserManager>();
             return services;
         }
 
@@ -35,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddWebManager(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddSingleton<IWebManager, WebManager>();
+            services.AddSingleton<WebManager>();
             return services;
         }
 

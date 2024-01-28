@@ -26,57 +26,64 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configAction"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions>? configAction = default,Action<ISqlSugarClient>? buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions>? configAction = default,Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
         {
-            services.AddOptions<DbSettingsOptions>()
-                .BindConfiguration(DbSettings_Key)
-                .Configure(options =>
-                {
-                    options.Configure(options);
-                    configAction?.Invoke(options);
-                });
-       
+            AddSqlSugarCore(services, configAction);
             //注册SqlSugar用AddScoped
             services.AddScoped<ISqlSugarClient>(provider =>
             {
-                var logger = provider.GetRequiredService<ILogger<ISqlSugarClient>>();
-                var options = provider.GetRequiredService<IOptions<DbSettingsOptions>>().Value;
-                //options.ConnectionConfigs SetDbConfig
-                if (!_isInitialized)
-                {
-                    foreach (var item in options.ConnectionConfigs!)
-                    {
-                        SqlSugarConfigProvider.SetDbConfig(item);
-                    }
-                    RepositoryExtension.ConnectionConfigs = options.ConnectionConfigs;
-                }
-
-                var connectionConfigs = options.ConnectionConfigs!.Select(r => r.ToConnectionConfig()).ToList();
-                SqlSugarClient sqlSugar = new SqlSugarClient(connectionConfigs, db =>
-                {
-                    foreach (var dbConnectionConfig in options.ConnectionConfigs!)
-                    {
-                        var dbProvider = db.GetConnectionScope(dbConnectionConfig.ConfigId);
-                        if (dbConnectionConfig.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider, logger);
-                        if (!_isInitialized)
-                        {
-                            SqlSugarConfigProvider.SetDataExecuting(dbProvider);
-                            //每次上下文都会执行
-                            SqlSugarConfigProvider.InitDatabase(dbProvider, dbConnectionConfig);
-                        }
-                    }
-                });
+                var sugarClient = InitSqlSugarClient(provider);
+                buildAction?.Invoke(sugarClient, provider);
                 _isInitialized = true;
-                buildAction?.Invoke(sqlSugar);
-                return sqlSugar;
+                return sugarClient;
             });
+            return services;
+        }
+
+
+        private static ISqlSugarClient InitSqlSugarClient(IServiceProvider provider)
+        {
+            var logger = provider.GetRequiredService<ILogger<ISqlSugarClient>>();
+            var options = provider.GetRequiredService<IOptions<DbSettingsOptions>>().Value;
+            //options.ConnectionConfigs SetDbConfig
+            if (!_isInitialized)
+            {
+                foreach (var item in options.ConnectionConfigs!)
+                {
+                    SqlSugarConfigProvider.SetDbConfig(item);
+                }
+                RepositoryExtension.ConnectionConfigs = options.ConnectionConfigs;
+            }
+
+            var connectionConfigs = options.ConnectionConfigs!.Select(r => r.ToConnectionConfig()).ToList();
+            SqlSugarClient sugarClient = new SqlSugarClient(connectionConfigs, db =>
+            {
+                foreach (var dbConnectionConfig in options.ConnectionConfigs!)
+                {
+                    var dbProvider = db.GetConnectionScope(dbConnectionConfig.ConfigId);
+                    if (dbConnectionConfig.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider, logger);
+                    SqlSugarConfigProvider.SetDataExecuting(dbProvider);
+                    //每次上下文都会执行
+                    SqlSugarConfigProvider.InitDatabase(dbProvider, dbConnectionConfig);
+                }
+            });
+            return sugarClient;
+        }
+
+        private static void AddSqlSugarCore(IServiceCollection services, Action<DbSettingsOptions>? configAction = default)
+        {
+            services.AddOptions<DbSettingsOptions>()
+               .BindConfiguration(DbSettings_Key)
+               .Configure(options =>
+               {
+                   options.Configure(options);
+                   configAction?.Invoke(options);
+               });
             // 注册非泛型仓储
             services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 
             // 注册 SqlSugar 仓储
             services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
-
-            return services;
         }
 
         /// <summary>
@@ -86,15 +93,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configs"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, ConnectionConfig[] configs, Action<ISqlSugarClient>? buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, ConnectionConfig[] configs, Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
         {
             // 注册 SqlSugar 客户端
-            services.AddScoped<ISqlSugarClient>(u =>
+            services.AddScoped<ISqlSugarClient>(provider =>
             {
-                var sqlSugarClient = new SqlSugarClient(configs.ToList());
-                buildAction?.Invoke(sqlSugarClient);
+                var sugarClient = new SqlSugarClient(configs.ToList());
+                buildAction?.Invoke(sugarClient, provider);
 
-                return sqlSugarClient;
+                return sugarClient;
             });
 
             // 注册非泛型仓储

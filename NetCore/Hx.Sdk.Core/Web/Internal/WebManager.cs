@@ -3,12 +3,12 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Hx.Sdk.Core.Internal
+namespace Hx.Sdk.Core
 {
     /// <summary>
     /// Web管理类
     /// </summary>
-    internal class WebManager: IWebManager
+    public sealed class WebManager
     {
         private readonly IHostEnvironment env;
         /// <summary>

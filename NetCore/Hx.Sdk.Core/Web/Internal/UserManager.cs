@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 
-namespace Hx.Sdk.Core.Internal
+namespace Hx.Sdk.Core
 {
     /// <summary>
     /// 用户上下文操作类
     /// </summary>
-    internal class UserContext : IUserContext
+    public sealed class UserManager
     {
         /// <summary>
         /// 是否使用IdentityServer4
@@ -20,6 +22,9 @@ namespace Hx.Sdk.Core.Internal
         /// </summary>
         private IHttpContextAccessor _contextAccessor;
 
+        /// <summary>
+        /// Http上下文操作类
+        /// </summary>
         public HttpContext HttpContext
         {
             get
@@ -28,7 +33,11 @@ namespace Hx.Sdk.Core.Internal
             }
         }
 
-        public UserContext(IHttpContextAccessor contextAccessor)
+        /// <summary>
+        /// 用户上下文操作类
+        /// </summary>
+        /// <param name="contextAccessor"></param>
+        public UserManager(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
             _isUseIds4 = App.Settings.UseIdentityServer4 == true;
@@ -42,8 +51,8 @@ namespace Hx.Sdk.Core.Internal
             { 
                 string name = HttpContext.User.Identity.Name;
                 if (!string.IsNullOrEmpty(name)) return name;
-                string getNameType = _isUseIds4 ? HxClaimTypes.Ids4Name : ClaimTypes.Name;
-               return GetClaimValueByType(getNameType).FirstOrDefault();
+                //string getNameType = _isUseIds4 ? HxClaimTypes.Ids4Name : ClaimTypes.Name;
+               return GetClaimValueByType(ClaimTypes.Name).FirstOrDefault();
             }
         }
 
@@ -76,6 +85,24 @@ namespace Hx.Sdk.Core.Internal
         /// Jwt的id
         /// </summary>
         public string JwtId => GetClaimValueByType(HxClaimTypes.Jti).FirstOrDefault();
+
+        /// <summary>
+        /// 用户的id
+        /// </summary>
+        public T GetUserId<T>()
+        {
+            return GetClaimValueByType<T>(ClaimTypes.NameIdentifier);
+        }
+
+        /// <summary>
+        /// 获取机构id
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T GetOrgId<T>()
+        {
+            return GetClaimValueByType<T>(HxClaimTypes.OrgId);
+        }
 
         /// <summary>
         /// 用户的id
@@ -131,9 +158,9 @@ namespace Hx.Sdk.Core.Internal
         /// <returns></returns>
         public string GetToken()
         {
-            var auth = HttpContext.Request.Headers["Authorization"];
-            if (Microsoft.Extensions.Primitives.StringValues.IsNullOrEmpty(auth)) return string.Empty;
-            return auth.ToString().Replace("Bearer ", "");
+            var auth = HttpContext?.Request?.Headers["Authorization"];
+            if (!auth.HasValue || Microsoft.Extensions.Primitives.StringValues.IsNullOrEmpty(auth.Value)) return string.Empty;
+            return auth.Value.ToString().Replace("Bearer ", "");
         }
        
         /// <summary>
@@ -142,8 +169,9 @@ namespace Hx.Sdk.Core.Internal
         /// <returns></returns>
         public IEnumerable<Claim> GetClaimsIdentity()
         {
-            return HttpContext.User.Claims;
+            return HttpContext?.User?.Claims ?? Enumerable.Empty<Claim>();
         }
+
         /// <summary>
         /// 根据claim获取相应的值
         /// </summary>
@@ -158,32 +186,37 @@ namespace Hx.Sdk.Core.Internal
 
         }
 
-        public T GetClaimValueByType<T>(string ClaimType)
+        /// <summary>
+        /// 根据claimType获取ClaimValue值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="claimType"></param>
+        /// <returns></returns>
+        public dynamic GetClaimValueByType<T>(string claimType)
         {
-            var claim = GetClaimValueByType(ClaimType).FirstOrDefault();
-            if (claim == null) return default;
-            var type = typeof(T);
-            if (type == typeof(int) || type == typeof(int?))
+            var claim = GetClaimValueByType(claimType).FirstOrDefault();
+            if (claim == null) return default(T);
+            var type = Type.GetTypeCode(typeof(T));
+            return type switch
             {
-                int.TryParse(claim, out int result);
-                return (T)(object)result;
-            }
-            else if (type == typeof(bool) || type == typeof(bool?))
-            {
-                bool.TryParse(claim, out bool result);
-                return (T)(object)result;
-            }
-            else if (type == typeof(decimal) || type == typeof(decimal?))
-            {
-                decimal.TryParse(claim, out decimal result);
-                return (T)(object)result;
-            }
-            else if (type == typeof(DateTime) || type == typeof(DateTime?))
-            {
-                DateTime.TryParse(claim, out DateTime result);
-                return (T)(object)result;
-            }
-            return default;
+                TypeCode.Object => JsonSerializer.Deserialize<T>(claim),
+                TypeCode.Boolean => Convert.ToBoolean(claim),
+                TypeCode.Char => Convert.ToChar(claim),
+                TypeCode.SByte => Convert.ToSByte(claim),
+                TypeCode.Byte => Convert.ToByte(claim),
+                TypeCode.Int16 => Convert.ToInt16(claim),
+                TypeCode.UInt16 => Convert.ToUInt16(claim),
+                TypeCode.Int32 => Convert.ToInt32(claim),
+                TypeCode.UInt32 => Convert.ToUInt32(claim),
+                TypeCode.Int64 => Convert.ToInt64(claim),
+                TypeCode.UInt64 => Convert.ToUInt64(claim),
+                TypeCode.Single => Convert.ToSingle(claim),
+                TypeCode.Double => Convert.ToDouble(claim),
+                TypeCode.Decimal => Convert.ToDecimal(claim),
+                TypeCode.DateTime => Convert.ToDateTime(claim),
+                TypeCode.DBNull or TypeCode.Empty => claim,
+                _ => claim,
+            };
         }
     }
 }
