@@ -15,7 +15,7 @@ namespace Hx.Sqlsugar
     /// <summary>
     /// SqlSugar配置初始化
     /// </summary>
-    public static class SqlSugarConfigProvider
+    internal static class SqlSugarConfigProvider
     {
         /// <summary>
         /// 应用有效程序集
@@ -67,7 +67,7 @@ namespace Hx.Sqlsugar
         /// 配置连接属性
         /// </summary>
         /// <param name="config"></param>
-        public static DbConnectionConfig SetDbConfig(DbConnectionConfig config)
+        internal static DbConnectionConfig SetDbConfig(DbConnectionConfig config)
         {
             var configureExternalServices = new ConfigureExternalServices
             {
@@ -145,7 +145,7 @@ namespace Hx.Sqlsugar
         /// 配置Aop日志
         /// </summary>
         /// <param name="db"></param>
-        public static void SetAopLog(ISqlSugarClient db,ILogger logger)
+        internal static void SetAopLog(ISqlSugarClient db,ILogger logger)
         {
             var config = db.CurrentConnectionConfig;
 
