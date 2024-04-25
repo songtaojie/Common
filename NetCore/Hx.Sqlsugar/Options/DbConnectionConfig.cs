@@ -26,6 +26,11 @@ namespace Hx.Sqlsugar
         public bool EnableUnderLine { get; set; }
 
         /// <summary>
+        /// 启用库表差异日志
+        /// </summary>
+        public bool EnableDiffLog { get; set; }
+
+        /// <summary>
         /// 启用Sql日志记录
         /// </summary>
         public bool EnableSqlLog { get; set; }

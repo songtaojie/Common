@@ -9,6 +9,8 @@ using System.Reflection;
 using Hx.Common;
 using Hx.Common.Extensions;
 using System.Runtime.Loader;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Hx.Sqlsugar
 {
@@ -100,26 +102,26 @@ namespace Hx.Sqlsugar
                     {
                         switch (type.Name)
                         {
-                            case "Id":
+                            case nameof(EntityBase.Id):
                                 column.IsPrimarykey = true;
                                 if (type.PropertyType == typeof(string))
                                 {
                                     column.Length = 36;
                                 }
                                 break;
-                            case "CreatorId":
+                            case nameof(CreationEntityBase.CreatorId):
                                 if (type.PropertyType == typeof(string))
                                 {
                                     column.Length = 36;
                                 }
                                 break;
-                            case "UpdaterId":
+                            case nameof(Hx.Common.AuditedEntityBase.UpdaterId):
                                 if (type.PropertyType == typeof(string))
                                 {
                                     column.Length = 36;
                                 }
                                 break;
-                            case "DeleterId":
+                            case nameof(FullAuditedEntityBase.DeleterId):
                                 if (type.PropertyType == typeof(string))
                                 {
                                     column.Length = 36;
@@ -145,42 +147,84 @@ namespace Hx.Sqlsugar
         /// 配置Aop日志
         /// </summary>
         /// <param name="db"></param>
-        internal static void SetAopLog(ISqlSugarClient db,ILogger logger)
+        internal static void SetAopLog(ISqlSugarClient db, DbConnectionConfig config, ILogger logger)
         {
-            var config = db.CurrentConnectionConfig;
-
-            // 设置超时时间
-            db.Ado.CommandTimeOut = 30;
-
-            // 打印SQL语句
-            db.Aop.OnLogExecuting = (sql, pars) =>
+            if (config.EnableSqlLog)
             {
-                logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{UtilMethods.GetSqlString(config.DbType, sql, pars)}\r\n");
-            };
-            db.Aop.OnError = ex =>
+                // 设置超时时间
+                db.Ado.CommandTimeOut = 30;
+
+                // 打印SQL语句
+                db.Aop.OnLogExecuting = (sql, pars) =>
+                {
+                    var fullSql = UtilMethods.GetSqlString(db.CurrentConnectionConfig.DbType, sql, pars);
+                    using (logger.BeginScope(new Dictionary<string, object>
+                    {
+                        [SugarLogScope.Source] = SugarLogScope.SourceValue,
+                        [SugarLogScope.Sql] = fullSql,
+                        [SugarLogScope.LogType] = 1,
+                        [SugarLogScope.SugarActionType] = db.SugarActionType,
+                    }))
+                    {
+                        logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{fullSql}\r\n");
+                    }
+                };
+                db.Aop.OnError = ex =>
+                {
+                    if (ex.Parametres == null) return;
+                    var fullSql = UtilMethods.GetSqlString(db.CurrentConnectionConfig.DbType, ex.Sql, ex.Parametres as SugarParameter[]);
+                    using (logger.BeginScope(new Dictionary<string, object>
+                    {
+                        [SugarLogScope.Source] = SugarLogScope.SourceValue,
+                        [SugarLogScope.Sql] = fullSql,
+                        [SugarLogScope.LogType] = 2,
+                        [SugarLogScope.SugarActionType] = db.SugarActionType,
+                    }))
+                    {
+                        logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {fullSql} \r\n");
+                    }
+                };
+            }
+
+
+            if (!config.EnableDiffLog) return;
+            //开启库表差异化日志
+            if (config.EnableDiffLog)
             {
-                if (ex.Parametres == null) return;
-                logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetSqlString(config.DbType, ex.Sql, (SugarParameter[])ex.Parametres)} \r\n");
-            };
+                db.Aop.OnDiffLogEvent = u =>
+                {
+                    var logDiff = JsonSerializer.Serialize(u);
+                    using (logger.BeginScope(new Dictionary<string, object>
+                    {
+                        [SugarLogScope.Source] = SugarLogScope.SourceValue,
+                        [SugarLogScope.Sql] = logDiff,
+                        [SugarLogScope.LogType] = 3,
+                        [SugarLogScope.SugarActionType] = db.SugarActionType,
+                    }))
+                    {
+                        logger.LogInformation(DateTime.Now + $"\r\n*****差异日志开始*****\r\n{Environment.NewLine}{logDiff}{Environment.NewLine}*****差异日志结束*****\r\n");
+                    }
+                };
+            }
         }
         
         /// <summary>
         /// 设置数据审计
         /// </summary>
         /// <param name="db"></param>
-        public static void SetDataExecuting(ISqlSugarClient db)
+        internal static void SetDataExecuting(ISqlSugarClient db)
         {
             // 数据审计
             db.Aop.DataExecuting = (oldValue, entityInfo) =>
             {
                 if (entityInfo.OperationType == DataFilterType.InsertByObject)
                 {
-                    if (entityInfo.PropertyName == "CreateTime")
+                    if (entityInfo.PropertyName == nameof(CreationEntityBase.CreateTime))
                         entityInfo.SetValue(DateTime.Now);
                 }
                 else if (entityInfo.OperationType == DataFilterType.UpdateByObject)
                 {
-                    if (entityInfo.PropertyName == "UpdateTime")
+                    if (entityInfo.PropertyName == nameof(AuditedEntityBase.UpdateTime))
                         entityInfo.SetValue(DateTime.Now);
                 }
             };
@@ -227,8 +271,7 @@ namespace Hx.Sqlsugar
             foreach (var seedType in seedDataTypes)
             {
                 var instance = Activator.CreateInstance(seedType);
-
-                var hasDataMethod = seedType.GetMethod("HasData");
+                var hasDataMethod = seedType.GetMethod(nameof(ISqlSugarEntitySeedData<object>.HasData));
                 if (hasDataMethod == null) continue;
                 var seedData = ((IEnumerable)hasDataMethod.Invoke(instance, null)!)?.Cast<object>();
                 if (seedData == null) continue;
