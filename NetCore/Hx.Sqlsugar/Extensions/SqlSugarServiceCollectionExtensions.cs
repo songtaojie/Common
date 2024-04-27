@@ -29,15 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
         {
-            AddSqlSugarCore(services, null);
-            //注册SqlSugar用AddScoped
-            services.AddScoped<ISqlSugarClient>(provider =>
-            {
-                var sugarClient = InitSqlSugarClient(provider, buildAction);
-                _isInitialized = true;
-                return sugarClient;
-            });
-            return services;
+            return services.AddSqlSugar(default(Action<DbSettingsOptions>), buildAction);
         }
 
         /// <summary>
@@ -47,16 +39,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configAction"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions> configAction,Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions>? configAction,Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
         {
             AddSqlSugarCore(services, configAction);
-            //注册SqlSugar用AddScoped
-            services.AddScoped<ISqlSugarClient>(provider =>
-            {
-                var sugarClient = InitSqlSugarClient(provider,buildAction);
-                _isInitialized = true;
-                return sugarClient;
-            });
+            services.AddScoped<ISqlSugarClient>(provider => InitSqlSugarClient(provider, buildAction));
             return services;
         }
 
@@ -67,6 +53,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //options.ConnectionConfigs SetDbConfig
             if (!_isInitialized)
             {
+                _isInitialized = true;
                 foreach (var item in options.ConnectionConfigs!)
                 {
                     SqlSugarConfigProvider.SetDbConfig(item);
@@ -80,8 +67,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 foreach (var dbConnectionConfig in options.ConnectionConfigs!)
                 {
                     var dbProvider = db.GetConnectionScope(dbConnectionConfig.ConfigId);
-                    if (dbConnectionConfig.EnableSqlLog) SqlSugarConfigProvider.SetAopLog(dbProvider, logger);
-                    SqlSugarConfigProvider.SetDataExecuting(dbProvider);
+                    SqlSugarConfigProvider.SetAopLog(dbProvider, dbConnectionConfig, logger);
                     buildAction?.Invoke(dbProvider, provider);
                     //每次上下文都会执行
                     SqlSugarConfigProvider.InitDatabase(dbProvider, dbConnectionConfig);

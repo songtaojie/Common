@@ -27,13 +27,19 @@ public class SugarLogScope
     /// sql语句
     /// </summary>
     public const string Sql = "SugarSql";
+
+    /// <summary>
+    /// sql语句参数
+    /// </summary>
+    public const string SqlPars = "SugarSqlPars";
+
     /// <summary>
     /// sql行为
     /// </summary>
     public const string SugarActionType = "SugarActionType";
 
     /// <summary>
-    /// 日志类型，1：普通日志，2：异常日志，3：差异化日志
+    /// 日志类型，1：普通Sql日志，2：异常Sql日志，3：差异化日志
     /// </summary>
     public const string LogType = "SugarLogType";
 }

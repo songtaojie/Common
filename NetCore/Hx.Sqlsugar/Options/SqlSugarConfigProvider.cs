@@ -157,31 +157,31 @@ namespace Hx.Sqlsugar
                 // 打印SQL语句
                 db.Aop.OnLogExecuting = (sql, pars) =>
                 {
-                    var fullSql = UtilMethods.GetSqlString(db.CurrentConnectionConfig.DbType, sql, pars);
                     using (logger.BeginScope(new Dictionary<string, object>
                     {
                         [SugarLogScope.Source] = SugarLogScope.SourceValue,
-                        [SugarLogScope.Sql] = fullSql,
+                        [SugarLogScope.Sql] = sql,
+                        [SugarLogScope.SqlPars] = JsonSerializer.Serialize(pars),
                         [SugarLogScope.LogType] = 1,
                         [SugarLogScope.SugarActionType] = db.SugarActionType,
                     }))
                     {
-                        logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{fullSql}\r\n");
+                        logger.LogInformation($"【{DateTime.Now}——执行SQL】\r\n{UtilMethods.GetNativeSql(sql, pars)}\r\n");
                     }
                 };
                 db.Aop.OnError = ex =>
                 {
                     if (ex.Parametres == null) return;
-                    var fullSql = UtilMethods.GetSqlString(db.CurrentConnectionConfig.DbType, ex.Sql, ex.Parametres as SugarParameter[]);
                     using (logger.BeginScope(new Dictionary<string, object>
                     {
                         [SugarLogScope.Source] = SugarLogScope.SourceValue,
-                        [SugarLogScope.Sql] = fullSql,
+                        [SugarLogScope.Sql] = ex.Sql,
+                        [SugarLogScope.SqlPars] = JsonSerializer.Serialize(ex.Parametres),
                         [SugarLogScope.LogType] = 2,
                         [SugarLogScope.SugarActionType] = db.SugarActionType,
                     }))
                     {
-                        logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {fullSql} \r\n");
+                        logger.LogError($"【{DateTime.Now}——错误SQL】\r\n {UtilMethods.GetNativeSql(ex.Sql, ex.Parametres as SugarParameter[])} \r\n");
                     }
                 };
             }
@@ -208,29 +208,6 @@ namespace Hx.Sqlsugar
             }
         }
         
-        /// <summary>
-        /// 设置数据审计
-        /// </summary>
-        /// <param name="db"></param>
-        internal static void SetDataExecuting(ISqlSugarClient db)
-        {
-            // 数据审计
-            db.Aop.DataExecuting = (oldValue, entityInfo) =>
-            {
-                if (entityInfo.OperationType == DataFilterType.InsertByObject)
-                {
-                    if (entityInfo.PropertyName == nameof(CreationEntityBase.CreateTime))
-                        entityInfo.SetValue(DateTime.Now);
-                }
-                else if (entityInfo.OperationType == DataFilterType.UpdateByObject)
-                {
-                    if (entityInfo.PropertyName == nameof(AuditedEntityBase.UpdateTime))
-                        entityInfo.SetValue(DateTime.Now);
-                }
-            };
-
-        }
-
         private static bool _isInit = false;
         /// <summary>
         /// 初始化数据库和种子数据
