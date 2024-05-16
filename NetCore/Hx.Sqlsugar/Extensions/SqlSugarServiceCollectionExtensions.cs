@@ -24,7 +24,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 添加 SqlSugar 拓展
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="configAction"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
         public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
