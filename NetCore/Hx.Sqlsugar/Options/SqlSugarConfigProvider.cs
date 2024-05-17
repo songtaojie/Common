@@ -19,6 +19,7 @@ namespace Hx.Sqlsugar
     /// </summary>
     internal static class SqlSugarConfigProvider
     {
+        internal const string DefaultConfigId = "hx_sqlsugar_configid";
         /// <summary>
         /// 应用有效程序集
         /// </summary>
@@ -208,7 +209,7 @@ namespace Hx.Sqlsugar
             }
         }
         
-        private static bool _isInit = false;
+        private static List<string?> _isInitDbList = new List<string?>();
         /// <summary>
         /// 初始化数据库和种子数据
         /// DbConnectionConfig需开启相应的开关
@@ -218,9 +219,10 @@ namespace Hx.Sqlsugar
         /// <param name="config"></param>
         public static void InitDatabase(ISqlSugarClient dbProvider, DbConnectionConfig config)
         {
-            if (_isInit) return;
-            _isInit = true;
-            //SqlSugarScopeProvider dbProvider = db.GetConnectionScope(config.ConfigId);
+            if (!config.EnableInitDb) return;
+            var configId = config.ConfigId.ToString();
+            if (_isInitDbList.Contains(configId)) return;
+            _isInitDbList.Add(configId);
             // 创建数据库
             if (config.DbType != DbType.Oracle)
                 dbProvider.DbMaintenance.CreateDatabase();
@@ -231,13 +233,14 @@ namespace Hx.Sqlsugar
             foreach (var entityType in entityTypes)
             {
                 var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
-                if (tAtt != null && tAtt.configId?.ToString() != config?.ConfigId?.ToString()) continue;
-
-                var splitTable = entityType.GetCustomAttribute<SplitTableAttribute>();
-                if (splitTable == null)
-                    dbProvider.CodeFirst.InitTables(entityType);
-                else
-                    dbProvider.CodeFirst.SplitTables().InitTables(entityType);
+                if ((tAtt != null && tAtt.configId?.ToString() == configId) || (tAtt == null && configId == DefaultConfigId))
+                {
+                    var splitTable = entityType.GetCustomAttribute<SplitTableAttribute>();
+                    if (splitTable == null)
+                        dbProvider.CodeFirst.InitTables(entityType);
+                    else
+                        dbProvider.CodeFirst.SplitTables().InitTables(entityType);
+                }
             }
 
             if (!config!.EnableInitSeed) return;
@@ -255,23 +258,23 @@ namespace Hx.Sqlsugar
 
                 var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
                 var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
-                if (tAtt != null && tAtt.configId.ToString() != config?.ConfigId?.ToString()) continue;
-                //if (tAtt == null && config.ConfigId != SqlSugarConst.ConfigId) continue;
-
-                var entityInfo = dbProvider.EntityMaintenance.GetEntityInfo(entityType);
-                if (entityInfo.Columns.Any(u => u.IsPrimarykey))
+                if ((tAtt != null && tAtt.configId.ToString() == configId) || (tAtt == null && configId == DefaultConfigId))
                 {
-                    // 按主键进行批量增加和更新
-                    var storage = dbProvider.StorageableByObject(seedData.ToList()).ToStorage();
-                    storage.AsInsertable.ExecuteCommand();
-                    var ignoreUpdate = hasDataMethod.GetCustomAttribute<IgnoreSeedUpdateAttribute>();
-                    if (ignoreUpdate == null) storage.AsUpdateable.ExecuteCommand();
-                }
-                else
-                {
-                    // 无主键则只进行插入
-                    if (!dbProvider.Queryable(entityInfo.DbTableName, entityInfo.DbTableName).Any())
-                        dbProvider.InsertableByObject(seedData.ToList()).ExecuteCommand();
+                    var entityInfo = dbProvider.EntityMaintenance.GetEntityInfo(entityType);
+                    if (entityInfo.Columns.Any(u => u.IsPrimarykey))
+                    {
+                        // 按主键进行批量增加和更新
+                        var storage = dbProvider.StorageableByObject(seedData.ToList()).ToStorage();
+                        storage.AsInsertable.ExecuteCommand();
+                        var ignoreUpdate = hasDataMethod.GetCustomAttribute<IgnoreSeedUpdateAttribute>();
+                        if (ignoreUpdate == null) storage.AsUpdateable.ExecuteCommand();
+                    }
+                    else
+                    {
+                        // 无主键则只进行插入
+                        if (!dbProvider.Queryable(entityInfo.DbTableName, entityInfo.DbTableName).Any())
+                            dbProvider.InsertableByObject(seedData.ToList()).ExecuteCommand();
+                    }
                 }
             }
         }

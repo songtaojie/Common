@@ -21,6 +21,11 @@ namespace Hx.Sqlsugar
         public void Configure(DbSettingsOptions options)
         {
             options.ConnectionConfigs ??= new List<DbConnectionConfig>();
+            foreach (var dbConfig in options.ConnectionConfigs)
+            {
+                if (dbConfig.ConfigId == null || string.IsNullOrWhiteSpace(dbConfig.ConfigId.ToString()))
+                    dbConfig.ConfigId = SqlSugarConfigProvider.DefaultConfigId;
+            }
         }
     }
 }
