@@ -61,6 +61,8 @@ namespace Microsoft.AspNetCore.Builder
                 InternalApp.InternalServices = services;
                 // 存储配置对象
                 InternalApp.Configuration = config;
+                // 存储服务提供器
+                services.AddHostedService<GenericHostLifetimeEventsHostedService>();
                 // 注册 Startup 过滤器
                 services.AddTransient<IStartupFilter, HxAppStartupFilter>();
                 // 初始化应用服务
