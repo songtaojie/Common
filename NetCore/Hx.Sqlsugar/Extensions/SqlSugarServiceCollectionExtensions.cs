@@ -84,9 +84,6 @@ namespace Microsoft.Extensions.DependencyInjection
                    options.Configure(options);
                    configAction?.Invoke(options);
                });
-            // 注册非泛型仓储
-            services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
-
             // 注册 SqlSugar 仓储
             services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
         }
@@ -108,9 +105,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 return sugarClient;
             });
-
-            // 注册非泛型仓储
-            services.AddScoped<ISqlSugarRepository, SqlSugarRepository>();
 
             // 注册 SqlSugar 仓储
             services.AddScoped(typeof(ISqlSugarRepository<>), typeof(SqlSugarRepository<>));
