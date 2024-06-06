@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hx.Sqlsugar
@@ -72,11 +73,11 @@ namespace Hx.Sqlsugar
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
         /// <returns></returns>
-        public static async Task<PagedListResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize)
+        public static async Task<PagedListResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize,CancellationToken token = default)
             where TEntity : new()
         {
             RefAsync<int> total = 0;
-            var items = await query.ToPageListAsync(pageIndex, pageSize, total);
+            var items = await query.ToPageListAsync(pageIndex, pageSize, total, token);
             return CreateSqlSugarPagedList(items, total, pageIndex, pageSize);
         }
 
