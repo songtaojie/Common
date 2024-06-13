@@ -11,16 +11,14 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json.Serialization;
+
 
 namespace Hx.Common
 {
-    internal class ComputerHelper
-    {
-    }
-
-    public static class ComputerUtil
+    /// <summary>
+    /// 计算机帮助类
+    /// </summary>
+    public static class ComputerHelper
     {
         /// <summary>
         /// 内存信息
@@ -256,14 +254,11 @@ namespace Hx.Common
     /// </summary>
     public class MemoryMetrics
     {
-        [JsonIgnore]
-        public double Total { get; set; }
+        internal double Total { get; set; }
 
-        [JsonIgnore]
-        public double Used { get; set; }
+        internal double Used { get; set; }
 
-        [JsonIgnore]
-        public double Free { get; set; }
+        internal double Free { get; set; }
 
         /// <summary>
         /// 已用内存
@@ -332,7 +327,8 @@ namespace Hx.Common
         public decimal AvailablePercent { get; set; }
     }
 
-    public class MemoryMetricsClient
+
+    internal class MemoryMetricsClient
     {
         /// <summary>
         /// windows系统获取内存信息
@@ -380,7 +376,8 @@ namespace Hx.Common
         }
     }
 
-    public class ShellUtil
+   
+    internal class ShellUtil
     {
         /// <summary>
         /// linux 系统命令

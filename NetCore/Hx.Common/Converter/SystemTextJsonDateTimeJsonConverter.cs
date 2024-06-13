@@ -7,31 +7,31 @@ namespace Hx.Common
     /// <summary>
     /// 时间格式化
     /// </summary>
-    public class DateTimeJsonConverter : JsonConverter<DateTime>
+    public class SystemTextJsonDateTimeJsonConverter : JsonConverter<DateTime>
     {
         /// <summary>
         /// 时间格式化
         /// 使用内置的时间格式化
         /// </summary>
-        public DateTimeJsonConverter()
+        public SystemTextJsonDateTimeJsonConverter():this(default)
         {}
 
         /// <summary>
         /// 时间格式化
         /// </summary>
         /// <param name="format">格式化字符串</param>
-        public DateTimeJsonConverter(string format)
+        public SystemTextJsonDateTimeJsonConverter(string format = "yyyy-MM-dd HH:mm:ss")
         {
-            DateTimeFormat = format;
+            Format = format;
         }
         /// <summary>
         /// 获取或设置DateTime格式
         /// <para>默认为: yyyy-MM-dd HH:mm:ss</para>
         /// </summary>           
-        public string DateTimeFormat { get; set; } = "yyyy-MM-dd HH:mm:ss";
+        public string Format { get; private set; }
 
         /// <summary>
-        /// 
+        /// 反序列化
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
@@ -47,44 +47,44 @@ namespace Hx.Common
             return reader.GetDateTime();
         }
         /// <summary>
-        /// 
+        /// 序列化
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="value"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value.ToString(this.DateTimeFormat));
+            writer.WriteStringValue(value.ToString(Format));
         }
     }
     /// <summary>
     /// 可空的时间格式化
     /// </summary>
-    public class DateTimeNullJsonConverter : JsonConverter<DateTime?>
+    public class SystemTextJsonDateTimeNullJsonConverter : JsonConverter<DateTime?>
     {
         /// <summary>
         /// 时间格式化
         /// 使用内置的时间格式化
         /// </summary>
-        public DateTimeNullJsonConverter()
+        public SystemTextJsonDateTimeNullJsonConverter() : this(default)
         { }
 
         /// <summary>
         /// 时间格式化
         /// </summary>
         /// <param name="format">格式化字符串</param>
-        public DateTimeNullJsonConverter(string format)
+        public SystemTextJsonDateTimeNullJsonConverter(string format = "yyyy-MM-dd HH:mm:ss")
         {
-            DateTimeFormat = format;
+            Format = format;
         }
-        /// <summary>
-        ///  获取或设置DateTime格式
-        ///  <para>默认为: yyyy-MM-dd HH:mm:ss</para>
-        /// </summary>
-        public string DateTimeFormat { get; set; } = "yyyy-MM-dd HH:mm:ss";
 
         /// <summary>
-        /// 
+        /// 时间格式化格式
+        /// </summary>
+        public string Format { get; private set; }
+
+        /// <summary>
+        /// 反序列化
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
@@ -95,14 +95,15 @@ namespace Hx.Common
             return string.IsNullOrEmpty(reader.GetString()) ? default(DateTime?) : DateTime.Parse(reader.GetString());
         }
         /// <summary>
-        /// 
+        /// 序列化
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="value"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value?.ToString(this.DateTimeFormat));
+            if (value == null) writer.WriteNullValue();
+            else writer.WriteStringValue(value.Value.ToString(Format));
         }
     }
 }
